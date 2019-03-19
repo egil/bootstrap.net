@@ -96,6 +96,7 @@ Results in:
     </div>
   </div>
 </div>
+```
 
 ### Mix and match
 ```cshtml
