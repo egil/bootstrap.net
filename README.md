@@ -1,5 +1,6 @@
 # Strongly typed Bootstrap in Blazor/Razor Components #
-**NOTE:** Very experimental at the moment. Feedback is very welcome.
+**NOTE:** Very experimental at the moment. Feedback is very welcome.  
+
 **NOTE:** Documentation is far from complete. [TestClient](tests/Egil.BlazorComponents.Bootstrap.TestClient/) *may* contain a working examples of how to use this library.
 
 ## Usage
