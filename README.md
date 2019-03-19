@@ -29,7 +29,7 @@ This section contains the basic examples from Bootstraps
     </Row>
 </Container>
 ```
-
+Results in:
 ```html
 <div class="container">
   <div class="row">
@@ -70,7 +70,7 @@ Notice that both `Span="5"` and `Span=5` works.
     </Row>
 </Container>
 ```
-
+Results in:
 ```html
 <div class="container">
   <div class="row">
@@ -116,7 +116,7 @@ Notice that both `Span="5"` and `Span=5` works.
     </Row>
 </Container>
 ```
-
+Results in:
 ```html
 <div class="container">
   <div class="row">
@@ -153,7 +153,7 @@ Notice that both `Span="5"` and `Span=5` works.
     </Row>
 </Container>
 ```
-
+Results in:
 ```html
 <div class="container">
   <div class="row">
