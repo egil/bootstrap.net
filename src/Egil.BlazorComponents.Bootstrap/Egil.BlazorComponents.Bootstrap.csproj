@@ -9,6 +9,7 @@
     </RestoreAdditionalProjectSources>
     <LangVersion>8.0</LangVersion>
     <NullableContextOptions>enable</NullableContextOptions>
+    <Version>0.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>

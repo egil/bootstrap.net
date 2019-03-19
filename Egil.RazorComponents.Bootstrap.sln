@@ -13,6 +13,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Egil.BlazorComponents.Boots
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Egil.BlazorComponents.Bootstrap.TestClient", "tests\Egil.BlazorComponents.Bootstrap.TestClient\Egil.BlazorComponents.Bootstrap.TestClient.csproj", "{A321D207-3632-4BC5-9FA8-BD9CCB6CCE79}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6BAF6A40-B165-474F-93E4-B4D31729A9E2}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

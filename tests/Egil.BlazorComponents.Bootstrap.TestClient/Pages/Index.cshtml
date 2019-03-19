@@ -1,36 +1,61 @@
 ﻿@page "/"
 
+<h1>Grid system</h1>
+
+<h2>Equal-width</h2>
 <Container>
-    <div class="bd-example-row">
-        <Row>
-            <Column Span=@(MD-Auto)>.col-md-auto</Column>
-            <Column Span=@Auto>.col-auto</Column>
-            <Column Span=3>.col-3</Column>
-            <Column Span=@(Default | LG-4)>.col .col-lg-4</Column>
-        </Row>
-    </div>
-    <br />
-    <br />
-    <div class="bd-example-row">
-        <Row>
-            <Column>
-                1 of 2
-            </Column>
-            <Column>
-                2 of 2
-            </Column>
-        </Row>
-        <Row>
-            <Column>
-                1 of 3
-            </Column>
-            <Column>
-                2 of 3
-            </Column>
-            <Column>
-                3 of 3
-            </Column>
-        </Row>
-    </div>
+    <Row>
+        <Column>1 of 2</Column>
+        <Column>2 of 2</Column>
+    </Row>
+    <Row>
+        <Column>1 of 3</Column>
+        <Column>2 of 3</Column>
+        <Column>3 of 3</Column>
+    </Row>
 </Container>
 
+<h2>Setting one column width</h2>
+<Container>
+    <Row>
+        <Column>1 of 3</Column>
+        <Column Span="6">2 of 3 (wider)</Column>
+        <Column>3 of 3</Column>
+    </Row>
+    <Row>
+        <Column>1 of 3</Column>
+        <Column Span=5>2 of 3</Column>
+        <Column>3 of 3</Column>
+    </Row>
+</Container>
+
+<h2>Mix and match</h2>
+<Container>
+    <Row>
+        <Column Span=@(12 | Medium-8 | Large-4)>.col-12 .col-md-8 .col-lg-4</Column>
+        <Column Span=@(6 | Medium-4 | Large-2)>.col-6 .col-md-4 .col-lg-2</Column>
+    </Row>
+    <Row>
+        <Column Span=@(6 | Medium-4)>.col-6 .col-md-4</Column>
+        <Column Span=@(6 | Medium-4)>.col-6 .col-md-4</Column>
+        <Column Span=@(6 | Medium-4)>.col-6 .col-md-4</Column>
+    </Row>
+    <Row>
+        <Column Span="6">.col-6</Column>
+        <Column Span="6">.col-6</Column>
+    </Row>
+</Container>
+
+<h2>Variable width content</h2>
+<Container>
+    <Row>
+        <Column Span=@(Default | Large-2)>1 of 3</Column>
+        <Column Span=@(Medium-Auto)>Variable width content</Column>
+        <Column Span=@(Default | Large-2)>3 of 3</Column>
+    </Row>
+    <Row>
+        <Column>1 of 3</Column>
+        <Column Span=@(Medium-Auto)>Variable width content</Column>
+        <Column Span=@(Default | Large-2)>3 of 3</Column>
+    </Row>
+</Container>
