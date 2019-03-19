@@ -1,0 +1,27 @@
+﻿<div class=@CssClasses>
+    @ChildContent
+</div>
+
+@functions {
+    [Parameter]
+    RenderFragment ChildContent { get; set; }
+
+    [Parameter]
+    bool NoGutter { get; set; } = false;
+
+    string CssClasses
+    {
+        get
+        {
+            var classes = "row";
+            classes = NoGutter ? $"{classes} no-gutters" : classes;
+
+            return classes;
+        }
+    }
+
+    protected override void OnInit()
+    {
+        Console.WriteLine(this);
+    }
+}

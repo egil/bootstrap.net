@@ -1,0 +1,13 @@
+﻿@using Egil.BlazorComponents.Bootstrap.Grid.Columns
+
+<div class=@(Span.CssClass)>
+    @ChildContent
+</div>
+
+@functions {
+    [Parameter]
+    RenderFragment ChildContent { get; set; }
+
+    [Parameter]
+    SpanOptionBase Span { get; set; } = SpanOption.Default;
+}

@@ -1,0 +1,11 @@
+﻿<div class="container@(Type==ContainerType.Fluid ? "-fluid" : string.Empty)">
+    @ChildContent
+</div>
+
+@functions {
+    [Parameter]
+    ContainerType Type { get; set; } = ContainerType.Responive;
+
+    [Parameter]
+    RenderFragment ChildContent { get; set; }
+}

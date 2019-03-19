@@ -7,9 +7,38 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{96D02C7A-1D4
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{BB5BC974-8940-4DD0-AA0B-EAAA981AEE5E}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Egil.BlazorComponents.Bootstrap", "src\Egil.BlazorComponents.Bootstrap\Egil.BlazorComponents.Bootstrap.csproj", "{D819E5BE-70F3-4571-98DE-BFEF2F822969}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Egil.BlazorComponents.Bootstrap.Tests", "tests\Egil.BlazorComponents.Bootstrap.Tests\Egil.BlazorComponents.Bootstrap.Tests.csproj", "{E2D573BF-0EA4-46C8-BA82-9C18E8689FDE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Egil.BlazorComponents.Bootstrap.TestClient", "tests\Egil.BlazorComponents.Bootstrap.TestClient\Egil.BlazorComponents.Bootstrap.TestClient.csproj", "{A321D207-3632-4BC5-9FA8-BD9CCB6CCE79}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D819E5BE-70F3-4571-98DE-BFEF2F822969}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D819E5BE-70F3-4571-98DE-BFEF2F822969}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D819E5BE-70F3-4571-98DE-BFEF2F822969}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D819E5BE-70F3-4571-98DE-BFEF2F822969}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E2D573BF-0EA4-46C8-BA82-9C18E8689FDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2D573BF-0EA4-46C8-BA82-9C18E8689FDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E2D573BF-0EA4-46C8-BA82-9C18E8689FDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E2D573BF-0EA4-46C8-BA82-9C18E8689FDE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A321D207-3632-4BC5-9FA8-BD9CCB6CCE79}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A321D207-3632-4BC5-9FA8-BD9CCB6CCE79}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A321D207-3632-4BC5-9FA8-BD9CCB6CCE79}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A321D207-3632-4BC5-9FA8-BD9CCB6CCE79}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D819E5BE-70F3-4571-98DE-BFEF2F822969} = {96D02C7A-1D40-4A88-BE5E-7BBF6E2FBC92}
+		{E2D573BF-0EA4-46C8-BA82-9C18E8689FDE} = {BB5BC974-8940-4DD0-AA0B-EAAA981AEE5E}
+		{A321D207-3632-4BC5-9FA8-BD9CCB6CCE79} = {BB5BC974-8940-4DD0-AA0B-EAAA981AEE5E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2BB71BBE-C97E-45E8-9422-E29CB3EBF4F4}
