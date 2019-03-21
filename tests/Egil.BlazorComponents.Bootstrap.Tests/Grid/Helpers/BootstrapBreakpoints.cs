@@ -3,6 +3,7 @@ using System;
 using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
+using Egil.BlazorComponents.Bootstrap.Grid.Options;
 
 namespace Egil.BlazorComponents.Bootstrap.Tests.Grid.Helpers
 {

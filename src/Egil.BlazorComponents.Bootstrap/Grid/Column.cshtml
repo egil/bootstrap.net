@@ -1,6 +1,4 @@
-﻿@using Egil.BlazorComponents.Bootstrap.Grid.Columns
-
-<div class=@(Span.CssClass)>
+﻿<div class=@Span>
     @ChildContent
 </div>
 
@@ -9,5 +7,5 @@
     RenderFragment ChildContent { get; set; }
 
     [Parameter]
-    SpanOptionBase Span { get; set; } = SpanOption.Default;
+    string Span { get; set; } = string.Empty;
 }

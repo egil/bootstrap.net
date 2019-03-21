@@ -1,8 +1,7 @@
-﻿namespace Egil.BlazorComponents.Bootstrap.Tests
+﻿namespace Egil.BlazorComponents.Bootstrap.Grid.Options
 {
     public enum BreakpointType
     {
-        None,
         Small,
         Medium,
         Large,

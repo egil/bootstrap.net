@@ -1,4 +1,5 @@
-﻿using Shouldly;
+﻿using Egil.BlazorComponents.Bootstrap.Grid.Options;
+using Shouldly;
 using Xunit;
 
 namespace Egil.BlazorComponents.Bootstrap.Tests
@@ -15,6 +16,12 @@ namespace Egil.BlazorComponents.Bootstrap.Tests
         public void LastOptionReturnsCorrectCssClass()
         {
             new LastOption().CssClass.ShouldBe("last");
+        }
+
+        [Fact(DisplayName = "Auto returns correct css class")]
+        public void AutoOptionReturnsCorrectCssClass()
+        {
+            new AutoOption().CssClass.ShouldBe("auto");
         }
     }
 }

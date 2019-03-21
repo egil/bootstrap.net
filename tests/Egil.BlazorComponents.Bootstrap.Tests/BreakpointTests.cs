@@ -1,4 +1,5 @@
-﻿using Shouldly;
+﻿using Egil.BlazorComponents.Bootstrap.Grid.Options;
+using Shouldly;
 using System;
 using System.Text;
 using Xunit;
@@ -8,18 +9,17 @@ namespace Egil.BlazorComponents.Bootstrap.Tests
 
     public class BreakpointTests
     {
-        [Fact]
+        [Fact(DisplayName ="CssClass returns correct value based on breakpoint")]
         public void CssClassReturnsCorrectBootstrapBreakpoint()
         {
-            new Breakpoint(BreakpointType.None).CssClass.ShouldBe("");
             new Breakpoint(BreakpointType.Small).CssClass.ShouldBe("sm");
             new Breakpoint(BreakpointType.Medium).CssClass.ShouldBe("md");
             new Breakpoint(BreakpointType.Large).CssClass.ShouldBe("lg");
             new Breakpoint(BreakpointType.ExtraLarge).CssClass.ShouldBe("xl");
         }
 
-        [Fact]
-        public void BreakpointCanHaveWidthAddedViaMinusOperator()
+        [Fact(DisplayName = "Breakpoint can have width specified via - operator")]
+        public void BreakpointCanHaveWidthSpecifiedViaMinusOperator()
         {
             var bp = new Breakpoint(BreakpointType.Large);
             var span = 2;
@@ -27,13 +27,7 @@ namespace Egil.BlazorComponents.Bootstrap.Tests
             bpw.CssClass.ShouldBe($"{bp.CssClass}-{span}");
         }
 
-        [Fact]
-        public void NoneBreakpointCannotHaveWidth()
-        {
-            Should.Throw<InvalidOperationException>(() => new BreakpointWithSpan(BreakpointType.None, 2));
-        }
-
-        [Fact]
+        [Fact(DisplayName ="Breakpoint can be combined with first option via - operator")]
         public void BreakpoingWithFirst()
         {
             var bp = new Breakpoint(BreakpointType.Large);
@@ -42,7 +36,7 @@ namespace Egil.BlazorComponents.Bootstrap.Tests
             bpf.CssClass.ShouldBe($"{bp.CssClass}-{first.CssClass}");
         }
 
-        [Fact]
+        [Fact(DisplayName = "Breakpoint can be combined with last option via - operator")]
         public void BreakpoingWithLast()
         {
             var bp = new Breakpoint(BreakpointType.Large);
@@ -50,5 +44,31 @@ namespace Egil.BlazorComponents.Bootstrap.Tests
             var bpf = bp - last;
             bpf.CssClass.ShouldBe($"{bp.CssClass}-{last.CssClass}");
         }
+
+        [Fact(DisplayName = "Breakpoint can be combined with auto option using - operator")]
+        public void BreakpointWithAutoOption()
+        {
+            var bp = new Breakpoint(BreakpointType.Large);
+            var auto = new AutoOption();
+            var bpa = bp - auto;
+            bpa.CssClass.ShouldBe($"{bp.CssClass}-{auto.CssClass}");
+        }
+
+        //[Fact(DisplayName = "Breakpoint and number option combined with a number using | operator")]
+        //public void BreakpointAndNumberOption()
+        //{
+        //    var number = 3;
+        //    var bp = new Breakpoint(BreakpointType.Medium);
+        //    var os = bp | number;
+        //    os.Option.ShouldBe(bp);
+        //    os.Number.ShouldBe(number);
+
+        //    var osReverse = number | bp;
+        //    osReverse.Breakpoint.ShouldBe(bp);
+        //    osReverse.Number.ShouldBe(number);
+        //}
+
+
+        // validate number option within range
     }
 }

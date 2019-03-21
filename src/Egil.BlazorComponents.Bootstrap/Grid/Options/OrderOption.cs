@@ -1,17 +1,16 @@
-﻿namespace Egil.BlazorComponents.Bootstrap.Tests
+﻿using Egil.BlazorComponents.Bootstrap.Grid.Options;
+
+namespace Egil.BlazorComponents.Bootstrap.Grid.Options
 {
     public abstract class OrderOption : Option
     {
-        protected static readonly string OptionPrefix = "order-";
+        private const string OptionPrefix = "order";
+
+        public override string CssClass => OptionPrefix;
 
         public static implicit operator OrderOption(int number)
         {
             return new OrderIndexOption(number);
-        }
-
-        public static implicit operator OrderOption(BreakpointWithSpan bpw)
-        {
-            return new OrderBreakpointOption(bpw);
         }
 
         public static implicit operator OrderOption(FirstOption option)
@@ -22,6 +21,11 @@
         public static implicit operator OrderOption(LastOption option)
         {
             return new OrderOptionOption(option);
+        }
+
+        public static implicit operator OrderOption(BreakpointWithNumber bpw)
+        {
+            return new OrderOptionOption(bpw);
         }
 
         public static implicit operator OrderOption(BreakpointWithFirstOption option)
@@ -40,23 +44,11 @@
 
             public OrderIndexOption(int index)
             {
-                ValidateGridNumber(index);
+                ValidateGridNumberInRange(index);
                 this.index = index;
             }
 
-            public override string CssClass => OptionPrefix + index;
-        }
-
-        class OrderBreakpointOption : OrderOption
-        {
-            private readonly BreakpointWithSpan breakpoint;
-
-            public OrderBreakpointOption(BreakpointWithSpan breakpoint)
-            {
-                this.breakpoint = breakpoint;
-            }
-
-            public override string CssClass => OptionPrefix + breakpoint.CssClass;
+            public override string CssClass => string.Concat(base.CssClass, OptionSeparator, index);
         }
 
         class OrderOptionOption : OrderOption
@@ -68,8 +60,7 @@
                 this.option = option;
             }
 
-            public override string CssClass => OptionPrefix + option.CssClass;
+            public override string CssClass => string.Concat(base.CssClass, OptionSeparator, option.CssClass);
         }
     }
-
 }

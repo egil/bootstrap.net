@@ -1,4 +1,4 @@
-﻿namespace Egil.BlazorComponents.Bootstrap.Tests
+﻿namespace Egil.BlazorComponents.Bootstrap.Grid.Options
 {
     public class BreakpointWithLastOption : BreakpointWithOption
     {
@@ -8,5 +8,4 @@
 
         }
     }
-
 }
