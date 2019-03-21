@@ -70,5 +70,7 @@
   </Rules>
   <Rules AnalyzerId="xunit.analyzers" RuleNamespace="xunit.analyzers">
     <Rule Id="xUnit1007" Action="None" />
+    <Rule Id="xUnit1019" Action="None" />
+    <Rule Id="xUnit1018" Action="None" />
   </Rules>
 </RuleSet>
