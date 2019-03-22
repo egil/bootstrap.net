@@ -6,43 +6,43 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Egil.BlazorComponents.Bootstrap.Grid.Options
-{
-    public class SpanOption : Option
+{    
+    public class SpanParameter : Parameter
     {
         private const string OptionPrefix = "col";
 
-        public override string CssClass => OptionPrefix;
+        public virtual string CssClass => OptionPrefix;
 
-        public static implicit operator SpanOption(int width)
+        public static implicit operator SpanParameter(int width)
         {
-            return new SpanWidthOption(width);
+            return new SpanWidthParameter(width);
         }
 
-        public static implicit operator SpanOption(Breakpoint breakpoint)
+        public static implicit operator SpanParameter(Breakpoint breakpoint)
         {
-            return new SpanOptionOption(breakpoint);
+            return new SpanOptionParameter(breakpoint);
         }
 
-        public static implicit operator SpanOption(BreakpointWithNumber breakpoint)
+        public static implicit operator SpanParameter(BreakpointWithNumber breakpoint)
         {
-            return new SpanOptionOption(breakpoint);
+            return new SpanOptionParameter(breakpoint);
         }
 
-        public static implicit operator SpanOption(BreakpointWithAutoOption breakpoint)
+        public static implicit operator SpanParameter(BreakpointWithAutoOption breakpoint)
         {
-            return new SpanOptionOption(breakpoint);
+            return new SpanOptionParameter(breakpoint);
         }
 
-        public static IntermediateOptionSet operator |(SpanOption breakpoint, int number)
+        public static implicit operator SpanParameter(OptionSet options)
         {
-            return new IntermediateOptionSet(breakpoint, number);
+            return new SpanParameterOptionSet(options);
         }
 
-        private class SpanWidthOption : SpanOption
+        private class SpanWidthParameter : SpanParameter
         {
             private readonly int width;
 
-            public SpanWidthOption(int width)
+            public SpanWidthParameter(int width)
             {
                 this.width = width;
             }
@@ -50,16 +50,35 @@ namespace Egil.BlazorComponents.Bootstrap.Grid.Options
             public override string CssClass => string.Concat(base.CssClass, OptionSeparator, width);
         }
 
-        private class SpanOptionOption : SpanOption
+        private class SpanOptionParameter : SpanParameter
         {
             private readonly Option option;
 
-            public SpanOptionOption(Option option)
+            public SpanOptionParameter(Option option)
             {
                 this.option = option;
             }
 
             public override string CssClass => string.Concat(base.CssClass, OptionSeparator, option.CssClass);
+        }
+
+        private class SpanParameterOptionSet : SpanParameter
+        {
+            private readonly OptionSet options;
+
+            public SpanParameterOptionSet(OptionSet options)
+            {
+                this.options = options;
+            }
+
+            public override string CssClass
+            {
+                get
+                {
+                    var cssClasses = options.Select(option => string.Concat(base.CssClass, OptionSeparator, option.CssClass));
+                    return string.Join(" ", cssClasses);
+                }
+            }
         }
     }
 }

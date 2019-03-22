@@ -2,11 +2,10 @@
 
 namespace Egil.BlazorComponents.Bootstrap.Grid.Options
 {
-    public abstract class BreakpointBase : Option
+    public class BreakpointBase : Option
     {
         protected readonly BreakpointType type;
-
-        public BreakpointBase(BreakpointType type)
+        protected BreakpointBase(BreakpointType type)
         {
             this.type = type;
         }
@@ -39,11 +38,6 @@ namespace Egil.BlazorComponents.Bootstrap.Grid.Options
         {
             return new BreakpointWithAutoOption(breakpoint.type, option);
         }
-
-        public static IntermediateOptionSet operator |(BreakpointBase breakpoint, int number)
-        {
-            return new IntermediateOptionSet(breakpoint, number);
-        }
     }
 
     public class Breakpoint : BreakpointBase
@@ -51,17 +45,5 @@ namespace Egil.BlazorComponents.Bootstrap.Grid.Options
         public Breakpoint(BreakpointType type) : base(type)
         {
         }
-    }
-
-    public class IntermediateOptionSet
-    {
-        public Option Option { get; }
-        public int Number { get; }
-
-        public IntermediateOptionSet(Option breakpoint, int number)
-        {
-            Option = breakpoint;
-            Number = number;
-        }        
     }
 }

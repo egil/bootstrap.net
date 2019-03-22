@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Egil.BlazorComponents.Bootstrap.Grid.Options
 {
@@ -20,6 +21,15 @@ namespace Egil.BlazorComponents.Bootstrap.Grid.Options
                 throw new ArgumentOutOfRangeException(nameof(number),
                     "Bootstrap grid has 12 columns. Numbers referring to it must be between 1 and 12.");
         }
-    }
 
+        public static implicit operator Option(int number)
+        {
+            return new NumberOption(number);
+        }
+
+        public static OptionSet operator |(Option option1, Option option2)
+        {
+            return new OptionSet(option1, option2);
+        }
+    }
 }

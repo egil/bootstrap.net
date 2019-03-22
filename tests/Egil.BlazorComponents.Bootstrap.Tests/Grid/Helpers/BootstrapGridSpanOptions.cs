@@ -5,13 +5,13 @@
 //{
 //    public class BootstrapGridSpanOptions : IEnumerable<object[]>
 //    {
-//        private static readonly SpanOption[] Options = new[]
+//        private static readonly SpanParameter[] Options = new[]
 //        {
-//            SpanOption.Default,
-//            SpanOption.Small,
-//            SpanOption.Medium,
-//            SpanOption.Large,
-//            SpanOption.ExtraLarge
+//            SpanParameter.Default,
+//            SpanParameter.Small,
+//            SpanParameter.Medium,
+//            SpanParameter.Large,
+//            SpanParameter.ExtraLarge
 //        };
 
 //        public IEnumerator<object[]> GetEnumerator()

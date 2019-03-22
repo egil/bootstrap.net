@@ -60,12 +60,7 @@ namespace Egil.BlazorComponents.Bootstrap.Tests
         //    var number = 3;
         //    var bp = new Breakpoint(BreakpointType.Medium);
         //    var os = bp | number;
-        //    os.Option.ShouldBe(bp);
-        //    os.Number.ShouldBe(number);
-
         //    var osReverse = number | bp;
-        //    osReverse.Breakpoint.ShouldBe(bp);
-        //    osReverse.Number.ShouldBe(number);
         //}
 
 

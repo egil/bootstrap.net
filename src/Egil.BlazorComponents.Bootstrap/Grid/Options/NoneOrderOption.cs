@@ -1,9 +1,9 @@
 ﻿namespace Egil.BlazorComponents.Bootstrap.Grid.Options
 {
-    public class NoneOrderOption : OrderOption
+    public class NoneOrderOption : OrderParameter
     {
         public override string CssClass => string.Empty;
-        public static readonly OrderOption Instance = new NoneOrderOption();
+        public static readonly OrderParameter Instance = new NoneOrderOption();
     }
 
 }
