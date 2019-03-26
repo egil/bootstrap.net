@@ -1,6 +1,7 @@
 ﻿using Egil.BlazorComponents.Bootstrap.Grid.Options;
 using Shouldly;
 using Xunit;
+using static Egil.BlazorComponents.Bootstrap.Grid.Options.Statics;
 
 namespace Egil.BlazorComponents.Bootstrap.Tests
 {
@@ -104,21 +105,6 @@ namespace Egil.BlazorComponents.Bootstrap.Tests
             //sut.Span = bpf; // TODO: SHOULD NOT BE POSSIBLE
             //sut.Span.CssClass.ShouldBe("// TODO: SHOULD NOT BE POSSIBLE");
         }
-
-        //[Fact]
-        //public void MyTestMethod()
-        //{
-        //    var xt1 = new XxxTest1();
-        //    var xt2 = new XxxTest2();
-        //    var yt1 = new YyyTest1();
-        //    var yt2 = new YyyTest2();
-        //    var xy = new YXTest();
-        //    var a1 = xt1 | xt2;
-        //    var a2 = yt1 | yt2;
-        //    //var a3 = xt1 | yt1;
-        //    var a4 = xt1 | xy;
-        //    var a5 = yt1 | xy;
-        //}
 
         //[Fact(DisplayName = "Breakpoint and number option combined with a number using | operator")]
         //public void BreakpointAndNumberOption()
