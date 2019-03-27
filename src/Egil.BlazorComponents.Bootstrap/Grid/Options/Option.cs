@@ -1,35 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Egil.BlazorComponents.Bootstrap.Grid.Options
+﻿namespace Egil.BlazorComponents.Bootstrap.Grid.Options
 {
-    public abstract class Option
+    public abstract class Option<T> : IOption<T> where T : IOption<T>
     {
-        protected const string OptionSeparator = "-";
+        public abstract string Value { get; }
 
-        public abstract string CssClass { get; }
-
-        /// <summary>
-        /// Checks if the provided number is between 1 and 12. The valid
-        /// range for specifying columns in Bootstrap. 
-        /// Throws ArgumentOutOfRangeException if the number is outside the valid range.
-        /// </summary>
-        /// <param name="number">Number to check.</param>
-        protected static void ValidateGridNumberInRange(int number)
+        public static OptionSet<T> operator |(int number, Option<T> option)
         {
-            if (number < 1 || number > 12)
-                throw new ArgumentOutOfRangeException(nameof(number),
-                    "Bootstrap grid has 12 columns. Numbers referring to it must be between 1 and 12.");
+            return new OptionSet<T> { new Number<T>(number), option };
         }
-
-        public static implicit operator Option(int number)
+        public static OptionSet<T> operator |(Option<T> option, int number)
         {
-            return new NumberOption(number);
+            return new OptionSet<T> { new Number<T>(number), option };
         }
-
-        public static OptionSet operator |(Option option1, Option option2)
+        public static OptionSet<T> operator |(Option<T> option1, T option2)
         {
-            return new OptionSet(option1, option2);
+            return new OptionSet<T> { option1, option2 };
         }
     }
 }

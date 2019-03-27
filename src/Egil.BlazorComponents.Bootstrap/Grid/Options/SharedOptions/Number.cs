@@ -1,14 +1,15 @@
 ﻿namespace Egil.BlazorComponents.Bootstrap.Grid.Options
 {
-    public class NumberOption : Option
+    public class Number<T> : IOption<T>
     {
         private readonly int number;
 
-        public NumberOption(int number)
+        public Number(int number)
         {
             this.number = number;
         }
 
-        public override string CssClass => number.ToString();
+        public string Value => number.ToString();
     }
+
 }

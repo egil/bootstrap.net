@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Egil.BlazorComponents.Bootstrap.Tests
+namespace Egil.BlazorComponents.Bootstrap.Grid
 {    
     public class EnumEnumerator<T> : IEnumerable<object[]> where T : struct
     {

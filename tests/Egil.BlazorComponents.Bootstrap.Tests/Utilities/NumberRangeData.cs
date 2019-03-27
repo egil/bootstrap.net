@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using Xunit.Sdk;
 
-namespace Egil.BlazorComponents.Bootstrap.Tests
+namespace Egil.BlazorComponents.Bootstrap.Grid
 {
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true, Inherited = true)]
     public class NumberRangeData : DataAttribute

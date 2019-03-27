@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Collections;
 
-namespace Egil.BlazorComponents.Bootstrap.Tests.Grid.Helpers
+namespace Egil.BlazorComponents.Bootstrap.Grid.Grid.Helpers
 {
     public class BootstrapGridWidths : IEnumerable<object[]>
     {

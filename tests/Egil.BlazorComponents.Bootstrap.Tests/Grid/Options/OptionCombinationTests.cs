@@ -8,11 +8,11 @@ using Shouldly;
 using Xunit.Abstractions;
 using Microsoft.CodeAnalysis.Scripting;
 using Microsoft.CodeAnalysis.CSharp.Scripting;
-using Egil.BlazorComponents.Bootstrap.Tests.Options;
+using Egil.BlazorComponents.Bootstrap.Grid.Options;
 
-namespace Egil.BlazorComponents.Bootstrap.Tests
+namespace Egil.BlazorComponents.Bootstrap.Tests.Grid.Options
 {
-    public class OptCombiTests
+    public class OptionCombinationTests
     {
 
         /*
@@ -22,7 +22,7 @@ namespace Egil.BlazorComponents.Bootstrap.Tests
          */
         private readonly ITestOutputHelper output;
 
-        public OptCombiTests(ITestOutputHelper output)
+        public OptionCombinationTests(ITestOutputHelper output)
         {
             this.output = output;
         }
@@ -80,7 +80,7 @@ namespace Egil.BlazorComponents.Bootstrap.Tests
         #endregion
 
         [Fact]
-        public void OptionSetTypesAreCorrect()
+        public void SharedOptionsCombinedResultsInSharedOptionsSet()
         {
             int n = 2;
             BreakpointNumber bpn = new BreakpointNumber();
@@ -1041,7 +1041,7 @@ namespace Egil.BlazorComponents.Bootstrap.Tests
         private static void ShouldNotCompile<TOption1, TOption2>()
         {
             var combinationExpression = "(option1, option2) => { var dummy = option1 | option2; }";
-            var options = ScriptOptions.Default.AddReferences(typeof(OptCombiTests).Assembly);
+            var options = ScriptOptions.Default.AddReferences(typeof(OptionCombinationTests).Assembly);
             var actual = Should.Throw<CompilationErrorException>(() =>
             {
                 return CSharpScript.EvaluateAsync<Action<TOption1, TOption2>>(combinationExpression, options);
