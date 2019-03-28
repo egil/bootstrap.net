@@ -12,14 +12,17 @@ using Egil.BlazorComponents.Bootstrap.Grid.Options;
 
 namespace Egil.BlazorComponents.Bootstrap.Tests.Grid.Options
 {
+    /// <summary>
+    /// Tests all legal and illigal combinations of options using the | operator.
+    /// 
+    /// The following is legal for each type of option set:
+    /// 
+    /// SharedOptionSet:         Number, BreakpointNumber.
+    /// OptionSet<ISpanOption> : Number, Auto, Breakpoint, BreakpointNumber, BreakpointAuto.
+    /// OptionSet<IOrderOption>: Number, First, Last, BreakpointNumber, BreakpointFirst, BreakpointLast.
+    /// </summary>
     public class OptionCombinationTests
     {
-
-        /*
-         * OptionSet<ISpanOption> : number, auto, breakpoint, breakpointWithNumber, breakpoint-auto.
-         * OptionSet<IOrderOption>: number, first, last, breakpointWithNumber, breakpoint-first, breakpoint-last.
-         * OptionSet:  number, breakpointWithNumber.
-         */
         private readonly ITestOutputHelper output;
 
         public OptionCombinationTests(ITestOutputHelper output)
@@ -43,7 +46,7 @@ namespace Egil.BlazorComponents.Bootstrap.Tests.Grid.Options
             }
         }
 
-        [Fact(Skip = "generator")]
+        [Fact(Skip = "generator", DisplayName = "Generator for all combinations of SharedOptions")]
         public void OptionSetPermutationsCreator()
         {
             var options = new[] { "n", "bpn", "bpn", };
@@ -55,7 +58,7 @@ namespace Egil.BlazorComponents.Bootstrap.Tests.Grid.Options
         }
 
 
-        [Fact(Skip = "generator")]
+        [Fact(Skip = "generator", DisplayName = "Generator for all combinations of SpanOptions")]
         public void SpanOptionSetPermutationsCreator()
         {
             var options = new[] { "n", "auto", "bp", "bpn", "bpa", };
@@ -66,7 +69,7 @@ namespace Egil.BlazorComponents.Bootstrap.Tests.Grid.Options
             }
         }
 
-        [Fact(Skip = "generator")]
+        [Fact(Skip = "generator", DisplayName = "Generator for all combinations of OrderOptions")]
         public void OrderOptionSetPermutationsCreator()
         {
             // number, first, last, breakpointWithNumber, breakpointFirst, breakpointLast
@@ -79,7 +82,7 @@ namespace Egil.BlazorComponents.Bootstrap.Tests.Grid.Options
         }
         #endregion
 
-        [Fact]
+        [Fact(DisplayName = "When SharedOption's are combined the result is a SharedOptionSet")]
         public void SharedOptionsCombinedResultsInSharedOptionsSet()
         {
             int n = 2;
@@ -93,7 +96,7 @@ namespace Egil.BlazorComponents.Bootstrap.Tests.Grid.Options
             (bpn | bpn | n).ShouldBeOfType<SharedOptionsSet>();
         }
 
-        [Fact]
+        [Fact(DisplayName = "When SpanOption's are combined with a SharedOptionSet the result is a OptionSet<ISpanOption>")]
         public void SpanOptionSetCombinedWithOptionSet()
         {
             SharedOptionsSet optSet = new SharedOptionsSet();
@@ -109,8 +112,8 @@ namespace Egil.BlazorComponents.Bootstrap.Tests.Grid.Options
             (bpa | optSet).ShouldBeOfType<OptionSet<ISpanOption>>();
         }
 
-        [Fact]
-        public void SpanOptionSetTypesAreCorrect()
+        [Fact(DisplayName = "SpanOption's can be combined in all possible ways")]
+        public void SpanOptionCanBeCombined()
         {
             int n = 2;
             Auto auto = new Auto();
@@ -245,7 +248,7 @@ namespace Egil.BlazorComponents.Bootstrap.Tests.Grid.Options
             #endregion
         }
 
-        [Fact]
+        [Fact(DisplayName = "When OrderOption's are combined with a SharedOptionSet the result is a OptionSet<IOrderOption>")]
         public void OrderOptionSetCombinedWithOptionSet()
         {
             SharedOptionsSet optSet = new SharedOptionsSet();
@@ -264,8 +267,8 @@ namespace Egil.BlazorComponents.Bootstrap.Tests.Grid.Options
             (bpl | optSet).ShouldBeOfType<OptionSet<IOrderOption>>();
         }
 
-        [Fact]
-        public void OrderOptionSetTypesAreCorrect()
+        [Fact(DisplayName = "OrderOption's can be combined in all possible ways")]
+        public void OrderOptionsCanBeCombined()
         {
             int n = 2;
             First first = new First();
@@ -1001,8 +1004,8 @@ namespace Egil.BlazorComponents.Bootstrap.Tests.Grid.Options
             #endregion
         }
 
-        [Fact]
-        public void NotPossibleCombinationsAsync()
+        [Fact(DisplayName = "OrderOptions and SpanOptions cannot be combined - fail to compile")]
+        public void OrderOptionsAndSpanOptionsCannotCombine()
         {
             ShouldNotCompile<OptionSet<IOrderOption>, Auto>();
             ShouldNotCompile<OptionSet<IOrderOption>, Breakpoint>();
@@ -1036,17 +1039,17 @@ namespace Egil.BlazorComponents.Bootstrap.Tests.Grid.Options
             ShouldNotCompile<Auto, BreakpointLast>();
             ShouldNotCompile<Breakpoint, BreakpointLast>();
             ShouldNotCompile<BreakpointAuto, BreakpointLast>();
-        }
 
-        private static void ShouldNotCompile<TOption1, TOption2>()
-        {
-            var combinationExpression = "(option1, option2) => { var dummy = option1 | option2; }";
-            var options = ScriptOptions.Default.AddReferences(typeof(OptionCombinationTests).Assembly);
-            var actual = Should.Throw<CompilationErrorException>(() =>
+            void ShouldNotCompile<TOption1, TOption2>()
             {
-                return CSharpScript.EvaluateAsync<Action<TOption1, TOption2>>(combinationExpression, options);
-            });
-            actual.Message.ShouldContain("error CS0019: Operator '|' cannot be applied to operands of type");
+                var combinationExpression = "(option1, option2) => { var dummy = option1 | option2; }";
+                var options = ScriptOptions.Default.AddReferences(typeof(OptionCombinationTests).Assembly);
+                var actual = Should.Throw<CompilationErrorException>(() =>
+                {
+                    return CSharpScript.EvaluateAsync<Action<TOption1, TOption2>>(combinationExpression, options);
+                });
+                actual.Message.ShouldContain("error CS0019: Operator '|' cannot be applied to operands of type");
+            }
         }
     }
 }

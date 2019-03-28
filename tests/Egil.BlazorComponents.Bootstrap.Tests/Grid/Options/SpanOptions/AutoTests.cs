@@ -11,7 +11,7 @@ namespace Egil.BlazorComponents.Bootstrap.Tests.Grid.Options.SpanOptions
 {
     public class AutoTests
     {
-        [Fact(DisplayName = "Auto returns correct css class")]
+        [Fact(DisplayName = "Auto returns 'auto' as value")]
         public void AutoOptionReturnsCorrectCssClass()
         {
             new Auto().Value.ShouldBe("auto");

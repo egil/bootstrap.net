@@ -4,8 +4,8 @@ namespace Egil.BlazorComponents.Bootstrap.Grid.Options
 {
     public class Last : OrderOption
     {
-        public override string Value => throw new NotImplementedException();
-
+        private const string OptionText = "last";
+        public override string Value => OptionText;
     }
 
 }
