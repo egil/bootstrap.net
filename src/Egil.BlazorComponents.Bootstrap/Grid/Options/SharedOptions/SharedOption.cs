@@ -4,6 +4,8 @@ namespace Egil.BlazorComponents.Bootstrap.Grid.Options
 {
     public abstract class SharedOption : ISharedOption
     {
+        protected const string OptionSeparator = "-";
+
         public abstract string Value { get; }
 
         public static SharedOptionsSet operator |(int number, SharedOption option)

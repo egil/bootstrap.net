@@ -2,6 +2,8 @@
 {
     public abstract class Option<T> : IOption<T> where T : IOption<T>
     {
+        protected const string OptionSeparator = "-";
+
         public abstract string Value { get; }
 
         public static OptionSet<T> operator |(int number, Option<T> option)
