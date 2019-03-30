@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Egil.BlazorComponents.Bootstrap.Grid.Options
+﻿namespace Egil.BlazorComponents.Bootstrap.Grid.Options
 {
     public class BreakpointNumber : SharedOption
     {

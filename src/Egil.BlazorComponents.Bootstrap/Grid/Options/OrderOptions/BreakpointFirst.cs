@@ -1,13 +1,11 @@
-﻿using System;
-
-namespace Egil.BlazorComponents.Bootstrap.Grid.Options
+﻿namespace Egil.BlazorComponents.Bootstrap.Grid.Options
 {
     public class BreakpointFirst : OrderOption
     {
         private Breakpoint breakpoint;
-        private First option;
+        private FirstOption option;
 
-        public BreakpointFirst(Breakpoint breakpoint, First option)
+        public BreakpointFirst(Breakpoint breakpoint, FirstOption option)
         {
             this.breakpoint = breakpoint;
             this.option = option;

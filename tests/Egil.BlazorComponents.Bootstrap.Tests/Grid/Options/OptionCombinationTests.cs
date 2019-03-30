@@ -9,6 +9,7 @@ using Xunit.Abstractions;
 using Microsoft.CodeAnalysis.Scripting;
 using Microsoft.CodeAnalysis.CSharp.Scripting;
 using Egil.BlazorComponents.Bootstrap.Grid.Options;
+using static Egil.BlazorComponents.Bootstrap.Grid.Options.OptionFactory.LowerCase.Abbr;
 
 namespace Egil.BlazorComponents.Bootstrap.Tests.Grid.Options
 {
@@ -25,15 +26,12 @@ namespace Egil.BlazorComponents.Bootstrap.Tests.Grid.Options
     {
         private readonly ITestOutputHelper output;
         private int num = 2;
-        private BreakpointNumber bpn = new BreakpointNumber(new Breakpoint(BreakpointType.Medium), 4);
+        private BreakpointNumber bpn = md - 4;
         private SharedOptionsSet optSet = new SharedOptionsSet();
-        private Auto auto = new Auto();
-        private Breakpoint bp = new Breakpoint(BreakpointType.Medium);
-        private BreakpointAuto bpa = new BreakpointAuto(new Breakpoint(BreakpointType.Large), new Auto());
-        private First first = new First();
-        private Last last = new Last();
-        private BreakpointFirst bpf = new BreakpointFirst(new Breakpoint(BreakpointType.ExtraLarge), new First());
-        private BreakpointLast bpl = new BreakpointLast(new Breakpoint(BreakpointType.Small), new Last());
+        private Breakpoint bp = md;
+        private BreakpointAuto bpa = md - auto;
+        private BreakpointFirst bpf = xl - first;
+        private BreakpointLast bpl = sm - last;
 
         public OptionCombinationTests(ITestOutputHelper output)
         {
@@ -990,36 +988,36 @@ namespace Egil.BlazorComponents.Bootstrap.Tests.Grid.Options
         [Fact(DisplayName = "OrderOptions and SpanOptions cannot be combined - fail to compile")]
         public void OrderOptionsAndSpanOptionsCannotCombine()
         {
-            ShouldNotCompile<OptionSet<IOrderOption>, Auto>();
+            ShouldNotCompile<OptionSet<IOrderOption>, AutoOption>();
             ShouldNotCompile<OptionSet<IOrderOption>, Breakpoint>();
             ShouldNotCompile<OptionSet<IOrderOption>, BreakpointAuto>();
-            ShouldNotCompile<First, Auto>();
-            ShouldNotCompile<Last, Auto>();
-            ShouldNotCompile<BreakpointFirst, Auto>();
-            ShouldNotCompile<BreakpointLast, Auto>();
-            ShouldNotCompile<First, Breakpoint>();
-            ShouldNotCompile<Last, Breakpoint>();
+            ShouldNotCompile<FirstOption, AutoOption>();
+            ShouldNotCompile<LastOption, AutoOption>();
+            ShouldNotCompile<BreakpointFirst, AutoOption>();
+            ShouldNotCompile<BreakpointLast, AutoOption>();
+            ShouldNotCompile<FirstOption, Breakpoint>();
+            ShouldNotCompile<LastOption, Breakpoint>();
             ShouldNotCompile<BreakpointFirst, Breakpoint>();
             ShouldNotCompile<BreakpointLast, Breakpoint>();
-            ShouldNotCompile<First, BreakpointAuto>();
-            ShouldNotCompile<Last, BreakpointAuto>();
+            ShouldNotCompile<FirstOption, BreakpointAuto>();
+            ShouldNotCompile<LastOption, BreakpointAuto>();
             ShouldNotCompile<BreakpointFirst, BreakpointAuto>();
             ShouldNotCompile<BreakpointLast, BreakpointAuto>();
 
-            ShouldNotCompile<OptionSet<ISpanOption>, First>();
-            ShouldNotCompile<OptionSet<ISpanOption>, Last>();
+            ShouldNotCompile<OptionSet<ISpanOption>, FirstOption>();
+            ShouldNotCompile<OptionSet<ISpanOption>, LastOption>();
             ShouldNotCompile<OptionSet<ISpanOption>, BreakpointFirst>();
             ShouldNotCompile<OptionSet<ISpanOption>, BreakpointLast>();
-            ShouldNotCompile<Auto, First>();
-            ShouldNotCompile<Breakpoint, First>();
-            ShouldNotCompile<BreakpointAuto, First>();
-            ShouldNotCompile<Auto, Last>();
-            ShouldNotCompile<Breakpoint, Last>();
-            ShouldNotCompile<BreakpointAuto, Last>();
-            ShouldNotCompile<Auto, BreakpointFirst>();
+            ShouldNotCompile<AutoOption, FirstOption>();
+            ShouldNotCompile<Breakpoint, FirstOption>();
+            ShouldNotCompile<BreakpointAuto, FirstOption>();
+            ShouldNotCompile<AutoOption, LastOption>();
+            ShouldNotCompile<Breakpoint, LastOption>();
+            ShouldNotCompile<BreakpointAuto, LastOption>();
+            ShouldNotCompile<AutoOption, BreakpointFirst>();
             ShouldNotCompile<Breakpoint, BreakpointFirst>();
             ShouldNotCompile<BreakpointAuto, BreakpointFirst>();
-            ShouldNotCompile<Auto, BreakpointLast>();
+            ShouldNotCompile<AutoOption, BreakpointLast>();
             ShouldNotCompile<Breakpoint, BreakpointLast>();
             ShouldNotCompile<BreakpointAuto, BreakpointLast>();
 

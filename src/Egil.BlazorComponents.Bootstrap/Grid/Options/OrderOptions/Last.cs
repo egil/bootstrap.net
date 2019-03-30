@@ -1,8 +1,6 @@
-﻿using System;
-
-namespace Egil.BlazorComponents.Bootstrap.Grid.Options
+﻿namespace Egil.BlazorComponents.Bootstrap.Grid.Options
 {
-    public class Last : OrderOption
+    public class LastOption : OrderOption
     {
         private const string OptionText = "last";
         public override string Value => OptionText;

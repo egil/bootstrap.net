@@ -1,13 +1,11 @@
-﻿using System;
-
-namespace Egil.BlazorComponents.Bootstrap.Grid.Options
+﻿namespace Egil.BlazorComponents.Bootstrap.Grid.Options
 {
     public class BreakpointAuto : SpanOption
     {
         private Breakpoint breakpoint;
-        private Auto option;
+        private AutoOption option;
 
-        public BreakpointAuto(Breakpoint breakpoint, Auto option)
+        public BreakpointAuto(Breakpoint breakpoint, AutoOption option)
         {
             this.breakpoint = breakpoint;
             this.option = option;

@@ -1,9 +1,5 @@
 ﻿using Egil.BlazorComponents.Bootstrap.Grid.Options;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Egil.BlazorComponents.Bootstrap.Grid.Parameters
 {
@@ -19,27 +15,12 @@ namespace Egil.BlazorComponents.Bootstrap.Grid.Parameters
             return new OrderOptionParameter(new Number<IOrderOption>(number));
         }
 
-        public static implicit operator OrderParameter(First option)
+        public static implicit operator OrderParameter(SharedOption option)
         {
             return new OrderOptionParameter(option);
         }
 
-        public static implicit operator OrderParameter(Last option)
-        {
-            return new OrderOptionParameter(option);
-        }
-
-        public static implicit operator OrderParameter(BreakpointNumber bpw)
-        {
-            return new OrderOptionParameter(bpw);
-        }
-
-        public static implicit operator OrderParameter(BreakpointFirst option)
-        {
-            return new OrderOptionParameter(option);
-        }
-
-        public static implicit operator OrderParameter(BreakpointLast option)
+        public static implicit operator OrderParameter(OrderOption option)
         {
             return new OrderOptionParameter(option);
         }
@@ -69,8 +50,7 @@ namespace Egil.BlazorComponents.Bootstrap.Grid.Parameters
             }
         }
 
-        class OrderOptionSetParameter<T> : OrderParameter
-            where T : IOption<T>
+        class OrderOptionSetParameter<T> : OrderParameter where T : IOption<T>
         {
             private readonly BaseOptionSet<T> set;
 

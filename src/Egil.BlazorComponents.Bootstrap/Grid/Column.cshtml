@@ -1,4 +1,6 @@
-﻿<div class=@Span>
+﻿@using Egil.BlazorComponents.Bootstrap.Grid.Parameters
+
+<div class=@CssClass>
     @ChildContent
 </div>
 
@@ -7,5 +9,10 @@
     RenderFragment ChildContent { get; set; }
 
     [Parameter]
-    string Span { get; set; } = string.Empty;
+    SpanParameter Span { get; set; } = SpanParameter.Default;
+
+    [Parameter]
+    OrderParameter Order { get; set; } = OrderParameter.None;
+
+    private string CssClass => string.Join(" ", Enumerable.Concat(Span, Order));
 }

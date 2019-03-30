@@ -1,17 +1,12 @@
-﻿using System;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Egil.BlazorComponents.Bootstrap.Grid.Options
+﻿namespace Egil.BlazorComponents.Bootstrap.Grid.Options
 {
 
     public class BreakpointLast : OrderOption
     {
         private Breakpoint breakpoint;
-        private Last option;
+        private LastOption option;
 
-        public BreakpointLast(Breakpoint breakpoint, Last option)
+        public BreakpointLast(Breakpoint breakpoint, LastOption option)
         {
             this.breakpoint = breakpoint;
             this.option = option;

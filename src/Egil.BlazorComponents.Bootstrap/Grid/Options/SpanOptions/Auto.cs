@@ -1,8 +1,6 @@
-﻿using System;
-
-namespace Egil.BlazorComponents.Bootstrap.Grid.Options
+﻿namespace Egil.BlazorComponents.Bootstrap.Grid.Options
 {
-    public class Auto : SpanOption
+    public class AutoOption : SpanOption
     {
         private const string OptionText = "auto";
 

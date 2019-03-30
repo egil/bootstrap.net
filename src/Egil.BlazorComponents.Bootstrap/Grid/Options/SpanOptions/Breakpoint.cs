@@ -25,17 +25,17 @@ namespace Egil.BlazorComponents.Bootstrap.Grid.Options
             return new BreakpointNumber(breakpoint, width);
         }
 
-        public static BreakpointFirst operator -(Breakpoint breakpoint, First option)
+        public static BreakpointFirst operator -(Breakpoint breakpoint, FirstOption option)
         {
             return new BreakpointFirst(breakpoint, option);
         }
 
-        public static BreakpointLast operator -(Breakpoint breakpoint, Last option)
+        public static BreakpointLast operator -(Breakpoint breakpoint, LastOption option)
         {
             return new BreakpointLast(breakpoint, option);
         }
 
-        public static BreakpointAuto operator -(Breakpoint breakpoint, Auto option)
+        public static BreakpointAuto operator -(Breakpoint breakpoint, AutoOption option)
         {
             return new BreakpointAuto(breakpoint, option);
         }

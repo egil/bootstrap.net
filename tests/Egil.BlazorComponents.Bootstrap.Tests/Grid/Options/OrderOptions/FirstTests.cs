@@ -14,7 +14,7 @@ namespace Egil.BlazorComponents.Bootstrap.Tests.Grid.Options.OrderOptions
         [Fact(DisplayName = "First returns 'first' as value")]
         public void FirstOptionReturnsCorrectCssClass()
         {
-            new First().Value.ShouldBe("first");
+            new FirstOption().Value.ShouldBe("first");
         }
     }
 }

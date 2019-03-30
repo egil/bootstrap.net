@@ -34,7 +34,7 @@ namespace Egil.BlazorComponents.Bootstrap.Tests.Grid.Options
         public void BreakpoingWithFirst()
         {
             var bp = new Breakpoint(BreakpointType.Large);
-            var first = new First();
+            var first = new FirstOption();
             var bpf = bp - first;
             bpf.Value.ShouldBe($"{bp.Value}-{first.Value}");
             bpf.ShouldBeOfType<BreakpointFirst>();
@@ -44,7 +44,7 @@ namespace Egil.BlazorComponents.Bootstrap.Tests.Grid.Options
         public void BreakpoingWithLast()
         {
             var bp = new Breakpoint(BreakpointType.Large);
-            var last = new Last();
+            var last = new LastOption();
             var bpl = bp - last;
             bpl.Value.ShouldBe($"{bp.Value}-{last.Value}");
             bpl.ShouldBeOfType<BreakpointLast>();
@@ -54,7 +54,7 @@ namespace Egil.BlazorComponents.Bootstrap.Tests.Grid.Options
         public void BreakpointWithAutoOption()
         {
             var bp = new Breakpoint(BreakpointType.Large);
-            var auto = new Auto();
+            var auto = new AutoOption();
             var bpl = bp - auto;
             bpl.Value.ShouldBe($"{bp.Value}-{auto.Value}");
             bpl.ShouldBeOfType<BreakpointAuto>();

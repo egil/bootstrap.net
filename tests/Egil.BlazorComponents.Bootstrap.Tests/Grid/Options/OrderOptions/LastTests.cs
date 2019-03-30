@@ -14,7 +14,7 @@ namespace Egil.BlazorComponents.Bootstrap.Tests.Grid.Options.OrderOptions
         [Fact(DisplayName = "Last returns 'last' as value")]
         public void LastOptionReturnsCorrectCssClass()
         {
-            new Last().Value.ShouldBe("last");
+            new LastOption().Value.ShouldBe("last");
         }
     }
 }
