@@ -18,6 +18,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Egil.BlazorComponents.Bootstrap.RazorTestClient", "tests\Egil.BlazorComponents.Bootstrap.RazorTestClient\Egil.BlazorComponents.Bootstrap.RazorTestClient.csproj", "{934B75D1-D49B-4389-A23F-310C98DC338E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,6 +38,10 @@ Global
 		{A321D207-3632-4BC5-9FA8-BD9CCB6CCE79}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A321D207-3632-4BC5-9FA8-BD9CCB6CCE79}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A321D207-3632-4BC5-9FA8-BD9CCB6CCE79}.Release|Any CPU.Build.0 = Release|Any CPU
+		{934B75D1-D49B-4389-A23F-310C98DC338E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{934B75D1-D49B-4389-A23F-310C98DC338E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{934B75D1-D49B-4389-A23F-310C98DC338E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{934B75D1-D49B-4389-A23F-310C98DC338E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -44,6 +50,7 @@ Global
 		{D819E5BE-70F3-4571-98DE-BFEF2F822969} = {96D02C7A-1D40-4A88-BE5E-7BBF6E2FBC92}
 		{E2D573BF-0EA4-46C8-BA82-9C18E8689FDE} = {BB5BC974-8940-4DD0-AA0B-EAAA981AEE5E}
 		{A321D207-3632-4BC5-9FA8-BD9CCB6CCE79} = {BB5BC974-8940-4DD0-AA0B-EAAA981AEE5E}
+		{934B75D1-D49B-4389-A23F-310C98DC338E} = {BB5BC974-8940-4DD0-AA0B-EAAA981AEE5E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2BB71BBE-C97E-45E8-9422-E29CB3EBF4F4}

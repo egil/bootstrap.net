@@ -12,7 +12,7 @@ namespace Egil.BlazorComponents.Bootstrap.Grid.Parameters
 
         public static implicit operator OrderParameter(int number)
         {
-            return new OrderOptionParameter(new Number<IOrderOption>(number));
+            return new OrderOptionParameter(new GridNumber<IOrderOption>(number));
         }
 
         public static implicit operator OrderParameter(SharedOption option)

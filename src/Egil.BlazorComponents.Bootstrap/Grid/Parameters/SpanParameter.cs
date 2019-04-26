@@ -16,7 +16,7 @@ namespace Egil.BlazorComponents.Bootstrap.Grid.Parameters
 
         public static implicit operator SpanParameter(int number)
         {
-            return new SpanOptionParameter(new Number<ISpanOption>(number));
+            return new SpanOptionParameter(new GridNumber<ISpanOption>(number));
         }
 
         public static implicit operator SpanParameter(SharedOption option)

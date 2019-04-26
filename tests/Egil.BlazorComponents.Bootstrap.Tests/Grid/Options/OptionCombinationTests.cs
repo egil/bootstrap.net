@@ -10,6 +10,7 @@ using Microsoft.CodeAnalysis.Scripting;
 using Microsoft.CodeAnalysis.CSharp.Scripting;
 using Egil.BlazorComponents.Bootstrap.Grid.Options;
 using static Egil.BlazorComponents.Bootstrap.Grid.Options.OptionFactory.LowerCase.Abbr;
+using Egil.BlazorComponents.Bootstrap.Grid.Options.AlignmentOptions;
 
 namespace Egil.BlazorComponents.Bootstrap.Tests.Grid.Options
 {
@@ -21,10 +22,14 @@ namespace Egil.BlazorComponents.Bootstrap.Tests.Grid.Options
     /// SharedOptionSet:         Number, BreakpointNumber.
     /// OptionSet<ISpanOption> : Number, Auto, Breakpoint, BreakpointNumber, BreakpointAuto.
     /// OptionSet<IOrderOption>: Number, First, Last, BreakpointNumber, BreakpointFirst, BreakpointLast.
+    /// Margin                 : {property}{sides}-{size} - {property}{sides}-{breakpoint}-{size} 
+    /// Padding                : {property}{sides}-{size} - {property}{sides}-{breakpoint}-{size}
+    /// Offset                 : number 0-11, BreakpointNumber
+    /// Align
     /// </summary>
     public class OptionCombinationTests
     {
-        private readonly ITestOutputHelper output;
+        public ITestOutputHelper Output { get; }
         private int num = 2;
         private BreakpointNumber bpn = md - 4;
         private SharedOptionsSet optSet = new SharedOptionsSet();
@@ -35,7 +40,7 @@ namespace Egil.BlazorComponents.Bootstrap.Tests.Grid.Options
 
         public OptionCombinationTests(ITestOutputHelper output)
         {
-            this.output = output;
+            Output = output;
         }
 
         #region Generators
@@ -61,7 +66,7 @@ namespace Egil.BlazorComponents.Bootstrap.Tests.Grid.Options
             var permutations = Get(options).Select(x => string.Join(" | ", x));
             foreach (var item in permutations)
             {
-                output.WriteLine($"({item}).ShouldBeOfType<OptionSet>();");
+                Output.WriteLine($"({item}).ShouldBeOfType<OptionSet>();");
             }
         }
 
@@ -73,7 +78,7 @@ namespace Egil.BlazorComponents.Bootstrap.Tests.Grid.Options
             var permutations = Get(options).Select(x => string.Join(" | ", x));
             foreach (var item in permutations)
             {
-                output.WriteLine($"({item}).ShouldBeOfType<OptionSet<ISpanOption>>();");
+                Output.WriteLine($"({item}).ShouldBeOfType<OptionSet<ISpanOption>>();");
             }
         }
 
@@ -85,7 +90,7 @@ namespace Egil.BlazorComponents.Bootstrap.Tests.Grid.Options
             var permutations = Get(options).Select(x => string.Join(" | ", x));
             foreach (var item in permutations)
             {
-                output.WriteLine($"({item}).ShouldBeOfType<OptionSet<IOrderOption>>();");
+                Output.WriteLine($"({item}).ShouldBeOfType<OptionSet<IOrderOption>>();");
             }
         }
         #endregion
@@ -985,53 +990,43 @@ namespace Egil.BlazorComponents.Bootstrap.Tests.Grid.Options
             #endregion
         }
 
-        [Fact(DisplayName = "OrderOptions and SpanOptions cannot be combined - fail to compile")]
-        public void OrderOptionsAndSpanOptionsCannotCombine()
-        {
-            ShouldNotCompile<OptionSet<IOrderOption>, AutoOption>();
-            ShouldNotCompile<OptionSet<IOrderOption>, Breakpoint>();
-            ShouldNotCompile<OptionSet<IOrderOption>, BreakpointAuto>();
-            ShouldNotCompile<FirstOption, AutoOption>();
-            ShouldNotCompile<LastOption, AutoOption>();
-            ShouldNotCompile<BreakpointFirst, AutoOption>();
-            ShouldNotCompile<BreakpointLast, AutoOption>();
-            ShouldNotCompile<FirstOption, Breakpoint>();
-            ShouldNotCompile<LastOption, Breakpoint>();
-            ShouldNotCompile<BreakpointFirst, Breakpoint>();
-            ShouldNotCompile<BreakpointLast, Breakpoint>();
-            ShouldNotCompile<FirstOption, BreakpointAuto>();
-            ShouldNotCompile<LastOption, BreakpointAuto>();
-            ShouldNotCompile<BreakpointFirst, BreakpointAuto>();
-            ShouldNotCompile<BreakpointLast, BreakpointAuto>();
+        //[Fact(DisplayName = "OrderOptions and SpanOptions cannot be combined - fail to compile")]
+        //public void OrderOptionsAndSpanOptionsCannotCombine()
+        //{
+        //    ShouldNotBeCombinable<OptionSet<IOrderOption>, AutoOption>();
+        //    ShouldNotBeCombinable<OptionSet<IOrderOption>, Breakpoint>();
+        //    ShouldNotBeCombinable<OptionSet<IOrderOption>, BreakpointAuto>();
+        //    ShouldNotBeCombinable<FirstOption, AutoOption>();
+        //    ShouldNotBeCombinable<LastOption, AutoOption>();
+        //    ShouldNotBeCombinable<BreakpointFirst, AutoOption>();
+        //    ShouldNotBeCombinable<BreakpointLast, AutoOption>();
+        //    ShouldNotBeCombinable<FirstOption, Breakpoint>();
+        //    ShouldNotBeCombinable<LastOption, Breakpoint>();
+        //    ShouldNotBeCombinable<BreakpointFirst, Breakpoint>();
+        //    ShouldNotBeCombinable<BreakpointLast, Breakpoint>();
+        //    ShouldNotBeCombinable<FirstOption, BreakpointAuto>();
+        //    ShouldNotBeCombinable<LastOption, BreakpointAuto>();
+        //    ShouldNotBeCombinable<BreakpointFirst, BreakpointAuto>();
+        //    ShouldNotBeCombinable<BreakpointLast, BreakpointAuto>();
 
-            ShouldNotCompile<OptionSet<ISpanOption>, FirstOption>();
-            ShouldNotCompile<OptionSet<ISpanOption>, LastOption>();
-            ShouldNotCompile<OptionSet<ISpanOption>, BreakpointFirst>();
-            ShouldNotCompile<OptionSet<ISpanOption>, BreakpointLast>();
-            ShouldNotCompile<AutoOption, FirstOption>();
-            ShouldNotCompile<Breakpoint, FirstOption>();
-            ShouldNotCompile<BreakpointAuto, FirstOption>();
-            ShouldNotCompile<AutoOption, LastOption>();
-            ShouldNotCompile<Breakpoint, LastOption>();
-            ShouldNotCompile<BreakpointAuto, LastOption>();
-            ShouldNotCompile<AutoOption, BreakpointFirst>();
-            ShouldNotCompile<Breakpoint, BreakpointFirst>();
-            ShouldNotCompile<BreakpointAuto, BreakpointFirst>();
-            ShouldNotCompile<AutoOption, BreakpointLast>();
-            ShouldNotCompile<Breakpoint, BreakpointLast>();
-            ShouldNotCompile<BreakpointAuto, BreakpointLast>();
+        //    ShouldNotBeCombinable<OptionSet<ISpanOption>, FirstOption>();
+        //    ShouldNotBeCombinable<OptionSet<ISpanOption>, LastOption>();
+        //    ShouldNotBeCombinable<OptionSet<ISpanOption>, BreakpointFirst>();
+        //    ShouldNotBeCombinable<OptionSet<ISpanOption>, BreakpointLast>();
+        //    ShouldNotBeCombinable<AutoOption, FirstOption>();
+        //    ShouldNotBeCombinable<Breakpoint, FirstOption>();
+        //    ShouldNotBeCombinable<BreakpointAuto, FirstOption>();
+        //    ShouldNotBeCombinable<AutoOption, LastOption>();
+        //    ShouldNotBeCombinable<Breakpoint, LastOption>();
+        //    ShouldNotBeCombinable<BreakpointAuto, LastOption>();
+        //    ShouldNotBeCombinable<AutoOption, BreakpointFirst>();
+        //    ShouldNotBeCombinable<Breakpoint, BreakpointFirst>();
+        //    ShouldNotBeCombinable<BreakpointAuto, BreakpointFirst>();
+        //    ShouldNotBeCombinable<AutoOption, BreakpointLast>();
+        //    ShouldNotBeCombinable<Breakpoint, BreakpointLast>();
+        //    ShouldNotBeCombinable<BreakpointAuto, BreakpointLast>();
 
-            void ShouldNotCompile<TOption1, TOption2>()
-            {
-                var combinationExpression = "(option1, option2) => { var dummy = option1 | option2; }";
-                var options = ScriptOptions.Default.AddReferences(typeof(OptionCombinationTests).Assembly);
-                var actual = Should.Throw<CompilationErrorException>(() =>
-                {
-                    return CSharpScript.EvaluateAsync<Action<TOption1, TOption2>>(combinationExpression, options);
-                });
-                actual.Message.ShouldContain("error CS0019: Operator '|' cannot be applied to operands of type");
-            }
-        }
+        //}
     }
 }
 

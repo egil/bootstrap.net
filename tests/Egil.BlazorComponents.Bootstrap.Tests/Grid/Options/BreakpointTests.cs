@@ -1,4 +1,5 @@
 ﻿using Egil.BlazorComponents.Bootstrap.Grid.Options;
+using Egil.BlazorComponents.Bootstrap.Grid.Options.AlignmentOptions;
 using Shouldly;
 using System;
 using System.Collections.Generic;

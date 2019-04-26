@@ -2,23 +2,22 @@
 
 namespace Egil.BlazorComponents.Bootstrap.Grid.Options
 {
-    public class Number<T> : IOption<T>
+    public class GridNumber<T> : Option, IOption<T>
     {
         private readonly int number;
 
-        public Number(int number)
+        public GridNumber(int number)
         {
             ValidateGridNumberInRange(number);
             this.number = number;
         }
 
-        public string Value => number.ToString();
+        public override string Value => number.ToString();
 
-        public static implicit operator Number<T>(int number)
+        public static implicit operator GridNumber<T>(int number)
         {
-            return new Number<T>(number);
+            return new GridNumber<T>(number);
         }
-
 
         /// <summary>
         /// Checks if the provided number is between 1 and 12. The valid

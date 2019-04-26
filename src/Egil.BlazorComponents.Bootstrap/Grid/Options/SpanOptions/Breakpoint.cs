@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Egil.BlazorComponents.Bootstrap.Grid.Options.AlignmentOptions;
+using System;
 
 namespace Egil.BlazorComponents.Bootstrap.Grid.Options
 {
@@ -40,5 +41,4 @@ namespace Egil.BlazorComponents.Bootstrap.Grid.Options
             return new BreakpointAuto(breakpoint, option);
         }
     }
-
 }

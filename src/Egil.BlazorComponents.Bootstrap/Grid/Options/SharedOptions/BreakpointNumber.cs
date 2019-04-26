@@ -3,9 +3,9 @@
     public class BreakpointNumber : SharedOption
     {
         private Breakpoint breakpoint;
-        private Number<ISharedOption> width;
+        private GridNumber<ISharedOption> width;
 
-        public BreakpointNumber(Breakpoint breakpoint, Number<ISharedOption> width)
+        public BreakpointNumber(Breakpoint breakpoint, GridNumber<ISharedOption> width)
         {
             this.breakpoint = breakpoint;
             this.width = width;

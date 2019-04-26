@@ -4,7 +4,7 @@
     {
         public static SharedOptionsSet operator |(SharedOptionsSet set, int number)
         {
-            set.Add(new Number<ISharedOption>(number));
+            set.Add(new GridNumber<ISharedOption>(number));
             return set;
         }
         public static SharedOptionsSet operator |(SharedOptionsSet set, ISharedOption option)

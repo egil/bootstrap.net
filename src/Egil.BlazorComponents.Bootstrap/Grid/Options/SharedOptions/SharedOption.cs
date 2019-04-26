@@ -8,11 +8,11 @@
 
         public static SharedOptionsSet operator |(int number, SharedOption option)
         {
-            return new SharedOptionsSet { new Number<ISharedOption>(number), option };
+            return new SharedOptionsSet { new GridNumber<ISharedOption>(number), option };
         }
         public static SharedOptionsSet operator |(SharedOption option, int number)
         {
-            return new SharedOptionsSet { new Number<ISharedOption>(number), option };
+            return new SharedOptionsSet { new GridNumber<ISharedOption>(number), option };
         }
         public static SharedOptionsSet operator |(SharedOption option1, ISharedOption option2)
         {
