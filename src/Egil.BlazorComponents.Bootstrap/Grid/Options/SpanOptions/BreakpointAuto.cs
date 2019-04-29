@@ -1,17 +1,17 @@
-﻿namespace Egil.BlazorComponents.Bootstrap.Grid.Options
+﻿using Egil.BlazorComponents.Bootstrap.Grid.Options.AlignmentOptions;
+
+namespace Egil.BlazorComponents.Bootstrap.Grid.Options
 {
-    public class BreakpointAuto : SpanOption
+    public class BreakpointAuto : OptionPair<Breakpoint, AutoOption>, ISpanOption
     {
-        private Breakpoint breakpoint;
-        private AutoOption option;
-
-        public BreakpointAuto(Breakpoint breakpoint, AutoOption option)
+        public BreakpointAuto(Breakpoint leftOption, AutoOption rightOption) : base(leftOption, rightOption)
         {
-            this.breakpoint = breakpoint;
-            this.option = option;
         }
-
-        public override string Value => string.Concat(breakpoint.Value, OptionSeparator, option.Value);
+        
+        public static OptionSet<ISpanOption> operator |(OptionSet<ISpanOption> set, BreakpointAuto option)
+        {
+            set.Add(option);
+            return set;
+        }
     }
-
 }

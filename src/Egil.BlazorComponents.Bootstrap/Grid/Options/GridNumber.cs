@@ -2,7 +2,7 @@
 
 namespace Egil.BlazorComponents.Bootstrap.Grid.Options
 {
-    public class GridNumber<T> : Option, IOption<T>
+    public class GridNumber : IGridBreakpoint, ISpanOption, IOrderOption, IOffsetOption
     {
         private readonly int number;
 
@@ -12,11 +12,11 @@ namespace Egil.BlazorComponents.Bootstrap.Grid.Options
             this.number = number;
         }
 
-        public override string Value => number.ToString();
+        public string Value => number.ToString();
 
-        public static implicit operator GridNumber<T>(int number)
+        public static implicit operator GridNumber(int number)
         {
-            return new GridNumber<T>(number);
+            return new GridNumber(number);
         }
 
         /// <summary>
@@ -30,6 +30,12 @@ namespace Egil.BlazorComponents.Bootstrap.Grid.Options
             if (number < 1 || number > 12)
                 throw new ArgumentOutOfRangeException(nameof(number),
                     "Bootstrap grid has 12 columns. Numbers referring to it must be between 1 and 12.");
+        }
+
+        public static OptionSet<IOrderOption> operator |(GridNumber option1, IOrderOption option2)
+        {
+            var set = new OptionSet<IOrderOption>() { option1, option2 };
+            return set;
         }
     }
 }

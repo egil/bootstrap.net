@@ -1,18 +1,24 @@
-﻿namespace Egil.BlazorComponents.Bootstrap.Grid.Options
+﻿using Egil.BlazorComponents.Bootstrap.Grid.Options.AlignmentOptions;
+
+namespace Egil.BlazorComponents.Bootstrap.Grid.Options
 {
 
-    public class BreakpointLast : OrderOption
+    public class BreakpointLast : OptionPair<Breakpoint, LastOption>, IOrderOption
     {
-        private Breakpoint breakpoint;
-        private LastOption option;
-
-        public BreakpointLast(Breakpoint breakpoint, LastOption option)
+        public BreakpointLast(Breakpoint leftOption, LastOption rightOption) : base(leftOption, rightOption)
         {
-            this.breakpoint = breakpoint;
-            this.option = option;
         }
 
-        public override string Value => string.Concat(breakpoint.Value, OptionSeparator, option.Value);
-    }
+        public static OptionSet<IOrderOption> operator |(BreakpointLast option1, IOrderOption option2)
+        {
+            var set = new OptionSet<IOrderOption>() { option1, option2 };
+            return set;
+        }
 
+        public static OptionSet<IOrderOption> operator |(OptionSet<IOrderOption> set, BreakpointLast option)
+        {
+            set.Add(option);
+            return set;
+        }
+    }
 }

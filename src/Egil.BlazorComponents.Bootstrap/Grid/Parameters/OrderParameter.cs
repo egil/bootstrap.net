@@ -12,34 +12,49 @@ namespace Egil.BlazorComponents.Bootstrap.Grid.Parameters
 
         public static implicit operator OrderParameter(int number)
         {
-            return new OrderOptionParameter(new GridNumber<IOrderOption>(number));
+            return new OrderOptionParameter(new GridNumber(number));
         }
 
-        public static implicit operator OrderParameter(SharedOption option)
+        public static implicit operator OrderParameter(FirstOption option)
         {
             return new OrderOptionParameter(option);
         }
 
-        public static implicit operator OrderParameter(OrderOption option)
+        public static implicit operator OrderParameter(LastOption option)
         {
             return new OrderOptionParameter(option);
         }
 
-        public static implicit operator OrderParameter(SharedOptionsSet set)
+        public static implicit operator OrderParameter(GridBreakpoint option)
         {
-            return new OrderOptionSetParameter<ISharedOption>(set);
+            return new OrderOptionParameter(option);
+        }
+
+        public static implicit operator OrderParameter(BreakpointFirst option)
+        {
+            return new OrderOptionParameter(option);
+        }
+
+        public static implicit operator OrderParameter(BreakpointLast option)
+        {
+            return new OrderOptionParameter(option);
         }
 
         public static implicit operator OrderParameter(OptionSet<IOrderOption> set)
         {
-            return new OrderOptionSetParameter<IOrderOption>(set);
+            return new OrderOptionSetParameter(set);
+        }
+
+        public static implicit operator OrderParameter(OptionSet<IGridBreakpoint> set)
+        {
+            return new OrderOptionSetParameter(set);
         }
 
         class OrderOptionParameter : OrderParameter
         {
-            private readonly IOption<IOrderOption> option;
+            private readonly IOrderOption option;
 
-            public OrderOptionParameter(IOption<IOrderOption> option)
+            public OrderOptionParameter(IOrderOption option)
             {
                 this.option = option;
             }
@@ -50,20 +65,20 @@ namespace Egil.BlazorComponents.Bootstrap.Grid.Parameters
             }
         }
 
-        class OrderOptionSetParameter<T> : OrderParameter where T : IOption<T>
+        class OrderOptionSetParameter : OrderParameter
         {
-            private readonly BaseOptionSet<T> set;
+            private readonly IOptionSet<IOption> set;
 
-            public OrderOptionSetParameter(BaseOptionSet<T> set)
+            public OrderOptionSetParameter(IOptionSet<IOption> set)
             {
                 this.set = set;
             }
-
+            
             public override IEnumerator<string> GetEnumerator()
             {
                 foreach (var option in set)
                 {
-                    yield return string.Concat(OptionPrefix, OptionSeparator, option.Value);
+                    yield return string.Concat(OptionPrefix, Option.OptionSeparator, option.Value);
                 }
             }
         }

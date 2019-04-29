@@ -3,7 +3,7 @@ using System;
 
 namespace Egil.BlazorComponents.Bootstrap.Grid.Options
 {
-    public class Breakpoint : SpanOption
+    public class Breakpoint : ISpanOption
     {
         private BreakpointType type;
 
@@ -12,7 +12,7 @@ namespace Egil.BlazorComponents.Bootstrap.Grid.Options
             this.type = type;
         }
 
-        public override string Value => type switch
+        public string Value => type switch
         {
             BreakpointType.Small => "sm",
             BreakpointType.Medium => "md",
@@ -21,9 +21,9 @@ namespace Egil.BlazorComponents.Bootstrap.Grid.Options
             _ => throw new InvalidOperationException($"Unknown {nameof(BreakpointType)} specified in {nameof(Breakpoint)}.")
         };
 
-        public static BreakpointNumber operator -(Breakpoint breakpoint, int width)
+        public static GridBreakpoint operator -(Breakpoint breakpoint, int width)
         {
-            return new BreakpointNumber(breakpoint, width);
+            return new GridBreakpoint(breakpoint, width);
         }
 
         public static BreakpointFirst operator -(Breakpoint breakpoint, FirstOption option)
@@ -39,6 +39,16 @@ namespace Egil.BlazorComponents.Bootstrap.Grid.Options
         public static BreakpointAuto operator -(Breakpoint breakpoint, AutoOption option)
         {
             return new BreakpointAuto(breakpoint, option);
+        }
+
+        public static OptionSet<ISpanOption> operator |(Breakpoint option1, ISpanOption option2)
+        {
+            return new OptionSet<ISpanOption> { option1, option2 };
+        }
+
+        public static OptionSet<ISpanOption> operator |(ISpanOption option1, Breakpoint option2)
+        {
+            return new OptionSet<ISpanOption> { option2, option1 };
         }
     }
 }

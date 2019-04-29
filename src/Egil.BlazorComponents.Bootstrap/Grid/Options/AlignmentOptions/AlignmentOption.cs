@@ -29,12 +29,12 @@ namespace Egil.BlazorComponents.Bootstrap.Grid.Options.AlignmentOptions
             return new BreakpointAlignmentOption(breakpoint, option);
         }
 
-        public static IOptionSet<IAlignmentOption> operator |(AlignmentOption option1, IAlignmentOption option2)
+        public static OptionSet<IAlignmentOption> operator |(AlignmentOption option1, IAlignmentOption option2)
         {
-            return new OptionSet2<IAlignmentOption> { option1, option2 };
+            return new OptionSet<IAlignmentOption> { option1, option2 };
         }
 
-        public static IOptionSet<IAlignmentOption> operator |(IOptionSet<IAlignmentOption> set, AlignmentOption option2)
+        public static OptionSet<IAlignmentOption> operator |(OptionSet<IAlignmentOption> set, AlignmentOption option2)
         {
             set.Add(option2);
             return set;

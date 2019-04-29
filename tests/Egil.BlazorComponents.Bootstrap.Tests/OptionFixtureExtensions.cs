@@ -10,31 +10,58 @@ namespace Egil.BlazorComponents.Bootstrap.Tests
 {
     public static class OptionFixtureExtensions
     {
-        public static object CombinedWith<TOption1, TOption2>(this TOption1 first, TOption2 second)
+        public static CombineAttemptResult CombinedWith<TOption1, TOption2>(this TOption1 first, TOption2 second)
             where TOption1 : IOption
             where TOption2 : IOption
         {
-            return TryCombine(first, second);
+            try
+            {
+                return TryCombine(first, second);
+            }
+            catch (RuntimeBinderException ex)
+            {
+                return new CombineAttemptResult(ex);
+            }
 
-            object TryCombine(dynamic o1, dynamic o2) => o1 | o2;
+            CombineAttemptResult TryCombine(dynamic o1, dynamic o2) =>
+                new CombineAttemptResult(o1 | o2);
         }
 
-        public static object CombinedWith<TOption1>(this IOptionSet<TOption1> first, TOption1 second)
+        public static CombineAttemptResult CombinedWith<TOption1>(this IOptionSet<TOption1> first, TOption1 second)
             where TOption1 : IOption
         {
-            return TryCombine(first, second);
+            try
+            {
+                return TryCombine(first, second);
+            }
+            catch (RuntimeBinderException ex)
+            {
+                return new CombineAttemptResult(ex);
+            }
 
-            object TryCombine(dynamic o1, dynamic o2) => o1 | o2;
+            CombineAttemptResult TryCombine(dynamic o1, dynamic o2) =>
+                new CombineAttemptResult(o1 | o2);
         }
 
-        public static void ShouldNotBeCombineableWith<TOption1, TOption2>(this TOption1 first, TOption2 second)
-            where TOption1 : IOption
-            where TOption2 : IOption
+        public static CombineAttemptResult ShouldResultInSetOf<TOptionSet>(this CombineAttemptResult combineAttempt)
         {
-            Should.Throw<RuntimeBinderException>(() => TryCombine(first, second))
-                .Message.ShouldStartWith("Operator '|' cannot be applied to operands of");
+            combineAttempt.ResultSet.ShouldBeAssignableTo<TOptionSet>();
+            return combineAttempt;
+        }
 
-            void TryCombine(dynamic o1, dynamic o2) { var _ = o1 | o2; }
+        public static CombineAttemptResult ShouldNotResultInSetOf<TOptionSet>(this CombineAttemptResult combineAttempt)
+        {
+            combineAttempt.ResultSet.ShouldNotBeAssignableTo<TOptionSet>();
+            return combineAttempt;
+        }
+
+        public static void ShouldStartWithOneOf(this string text, params string[] matches)
+        {
+            matches.Any(match => text.StartsWith(match))
+                .ShouldBeTrue($"The text: {text}{Environment.NewLine}" +
+                $"  should start with one of{Environment.NewLine}" +
+                $"\"{string.Join("\", \"", matches)}\"{Environment.NewLine}" +
+                $"  but did not.");
         }
 
         public static IEnumerable<(T first, T second)> AllPairs<T>(this IEnumerable<T> optionSource)
@@ -50,7 +77,7 @@ namespace Egil.BlazorComponents.Bootstrap.Tests
                 }
             }
         }
-        
+
         public static IEnumerable<(T1 first, T2 second)> AllPairsWith<T1, T2>(this IEnumerable<T1> firstOptionSource, IEnumerable<T2> secondOptionSource)
         {
             var secondSource = secondOptionSource.ToArray();
@@ -71,6 +98,6 @@ namespace Egil.BlazorComponents.Bootstrap.Tests
             Func<T, object[]> defaultConverter = x => new[] { (object)x };
             converter = converter ?? defaultConverter;
             return fixtureData.Select(converter);
-        }        
+        }
     }
 }

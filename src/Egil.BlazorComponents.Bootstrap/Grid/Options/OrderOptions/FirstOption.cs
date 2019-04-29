@@ -1,9 +1,13 @@
 ﻿namespace Egil.BlazorComponents.Bootstrap.Grid.Options
 {
-    public class FirstOption : OrderOption
+    public class FirstOption : IOrderOption
     {
         private const string OptionText = "first";
-        public override string Value => OptionText;
-    }
+        public string Value => OptionText;
 
+        public static OptionSet<IOrderOption> operator |(FirstOption option1, IOrderOption option2)
+        {
+            return new OptionSet<IOrderOption>() { option1, option2 };
+        }
+    }
 }

@@ -1,9 +1,9 @@
 ﻿namespace Egil.BlazorComponents.Bootstrap.Grid.Options
 {
-    public class AutoOption : SpanOption
+    public class AutoOption : ISpanOption
     {
         private const string OptionText = "auto";
 
-        public override string Value => OptionText;
+        public string Value => OptionText;
     }
 }
