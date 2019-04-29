@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Egil.BlazorComponents.Bootstrap.Grid
 {
-    public abstract class ParameterTests
+    public abstract class ParameterFixture
     {
         public static readonly IEnumerable<object[]> BreakpointTypes = new EnumEnumerator<BreakpointType>();
 
@@ -13,7 +13,8 @@ namespace Egil.BlazorComponents.Bootstrap.Grid
         public class TestComponent
         {
             public OrderParameter Order { get; set; } = OrderParameter.None;
-            public SpanParameter Span { get; set; } = new SpanParameter();
+            public SpanParameter Span { get; set; } = SpanParameter.Default;
+            public OffsetParameter Offset { get; set; } = OffsetParameter.None;
         }
     }
 }

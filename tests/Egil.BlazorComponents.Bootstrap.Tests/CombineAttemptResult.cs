@@ -8,12 +8,12 @@ namespace Egil.BlazorComponents.Bootstrap.Tests
     {
         public IOptionSet<IOption> ResultSet { get; }
 
-        public CombineAttemptResult(IOptionSet<IOption> resultSet)
+        private CombineAttemptResult(IOptionSet<IOption> resultSet)
         {
             ResultSet = resultSet;
         }
 
-        public CombineAttemptResult(RuntimeBinderException ex)
+        private CombineAttemptResult(RuntimeBinderException ex)
         {
             ResultSet = OptionSet<IOption>.Empty;
         }
@@ -25,6 +25,18 @@ namespace Egil.BlazorComponents.Bootstrap.Tests
                 ResultSet.ShouldContain(option);
             }
             return this;
+        }
+
+        public static CombineAttemptResult TryCombine(dynamic first, dynamic second)
+        {
+            try
+            {
+                return new CombineAttemptResult(first | second);
+            }
+            catch (RuntimeBinderException ex)
+            {
+                return new CombineAttemptResult(ex);
+            }
         }
     }
 }

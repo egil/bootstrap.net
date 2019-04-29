@@ -9,7 +9,7 @@ using static Egil.BlazorComponents.Bootstrap.Grid.Options.OptionFactory.LowerCas
 
 namespace Egil.BlazorComponents.Bootstrap.Grid
 {
-    public class SpanOptionTests : ParameterTests
+    public class SpanOptionTests : ParameterFixture
     {
         void AssertCorrectCssClass(ISpanOption appliedOption)
         {

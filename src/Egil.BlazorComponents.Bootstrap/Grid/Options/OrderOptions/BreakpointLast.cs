@@ -1,12 +1,23 @@
-﻿using Egil.BlazorComponents.Bootstrap.Grid.Options.AlignmentOptions;
+﻿using System.Diagnostics;
+using Egil.BlazorComponents.Bootstrap.Grid.Options.AlignmentOptions;
 
 namespace Egil.BlazorComponents.Bootstrap.Grid.Options
 {
-
+    [DebuggerDisplay("Last: {Value}")]
     public class BreakpointLast : OptionPair<Breakpoint, LastOption>, IOrderOption
     {
         public BreakpointLast(Breakpoint leftOption, LastOption rightOption) : base(leftOption, rightOption)
         {
+        }
+
+        public static OptionSet<IOrderOption> operator |(BreakpointLast option1, int gridNumber)
+        {
+            return new OptionSet<IOrderOption>() { option1, (GridNumber)gridNumber };
+        }
+
+        public static OptionSet<IOrderOption> operator |(int gridNumber, BreakpointLast option1)
+        {
+            return new OptionSet<IOrderOption>() { option1, (GridNumber)gridNumber };
         }
 
         public static OptionSet<IOrderOption> operator |(BreakpointLast option1, IOrderOption option2)
@@ -19,6 +30,13 @@ namespace Egil.BlazorComponents.Bootstrap.Grid.Options
         {
             set.Add(option);
             return set;
+        }
+
+        public static OptionSet<IOrderOption> operator |(OptionSet<IGridBreakpoint> set, BreakpointLast option)
+        {
+            OptionSet<IOrderOption> spanSet = new OptionSet<IOrderOption>(set);
+            spanSet.Add(option);
+            return spanSet;
         }
     }
 }

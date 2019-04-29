@@ -10,14 +10,26 @@ namespace Egil.BlazorComponents.Bootstrap.Grid.Options
 
         public int Count => options.Count;
 
-        public IEnumerator<TOption> GetEnumerator() => options.GetEnumerator();
+        public OptionSet()
+        {
+        }
 
-        IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
+        public OptionSet(IEnumerable<TOption> options)
+        {
+            foreach(var option in options)
+            {
+                Add(option);
+            }            
+        }
 
         public void Add(TOption option)
         {
             options.Add(option);
         }
+
+        public IEnumerator<TOption> GetEnumerator() => options.GetEnumerator();
+
+        IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
 
         public static readonly IOptionSet<TOption> Empty = new EmptyOptionSet();
 
@@ -36,7 +48,4 @@ namespace Egil.BlazorComponents.Bootstrap.Grid.Options
             }
         }
     }
-
-
-
 }

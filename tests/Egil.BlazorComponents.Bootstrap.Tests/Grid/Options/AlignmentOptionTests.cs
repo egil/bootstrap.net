@@ -1,37 +1,12 @@
 ﻿using Egil.BlazorComponents.Bootstrap.Grid.Options;
 using Egil.BlazorComponents.Bootstrap.Grid.Options.AlignmentOptions;
 using Shouldly;
-using System.Collections.Generic;
-using System.Linq;
 using Xunit;
 
 namespace Egil.BlazorComponents.Bootstrap.Tests.Grid.Options.AlignmentOptions
 {
     public class AlignmentOptionTests : OptionFixture<IAlignmentOption>
     {
-        //public static IEnumerable<object[]> SutOptionsFixtureData => SutOptions.ToFixtureData();
-
-        //public static IEnumerable<object[]> SutOptionsPairsFixtureData
-        //{
-        //    get
-        //    {
-        //        var pairs = SutOptions.AllPairs().ToArray();
-        //        var reversePairs = pairs.ReversePairs().Where(x => x.first != x.second);
-        //        return pairs.Concat(reversePairs).ToFixtureData(x => new object[] { x.Item1, x.Item2 });
-        //    }
-        //}
-
-        //public static IEnumerable<object[]> SutOptionsPairedWithIncompatibleOptionsFixtureData
-        //{
-        //    get
-        //    {
-        //        var incompatibleOptions = AllOptions.Except(SutOptions);
-        //        var pairs = SutOptions.AllPairsWith<IOption, IOption>(incompatibleOptions);
-        //        var reversePairs = pairs.ReversePairs();
-        //        return pairs.Concat(reversePairs).ToFixtureData(x => new[] { x.Item1, x.Item2 });
-        //    }
-        //}
-
         [Fact(DisplayName = "Alignment option returns correct css class")]
         public void AlignOptionReturnsCorrectCssClass()
         {
@@ -69,6 +44,7 @@ namespace Egil.BlazorComponents.Bootstrap.Tests.Grid.Options.AlignmentOptions
         public void AlignmentOptionShouldBeCombineableWithOptionSet(IAlignmentOption sutOption)
         {
             IOptionSet<IAlignmentOption> set = new OptionSet<IAlignmentOption>();
+
             set.CombinedWith(sutOption)
                 .ShouldResultInSetOf<IOptionSet<IAlignmentOption>>()
                 .ThatContains(sutOption);

@@ -4,21 +4,20 @@ using System.Linq;
 using Egil.BlazorComponents.Bootstrap.Grid.Options;
 using static Egil.BlazorComponents.Bootstrap.Grid.Options.OptionFactory.LowerCase.Abbr;
 
-namespace Egil.BlazorComponents.Bootstrap.Tests
+namespace Egil.BlazorComponents.Bootstrap.Tests.Grid.Options
 {
     public abstract class OptionFixture<TSutOption> where TSutOption : class, IOption
     {
         public static readonly IReadOnlyList<IOption> AllOptions = new List<IOption>
         {
             center, sm-start, // alignment
-            sm, sm-1, // breakpoint
-            auto, sm-auto, // span
+            sm, auto, sm-auto, // span
             first, last, lg-first, md-last, // order
-            new GridNumber(12),
+            (GridNumber)12, sm-1, // grid breakpoint 
         };
 
         public static readonly IReadOnlyList<TSutOption> SutOptions = AllOptions.OfType<TSutOption>().ToList();
-        
+
         public static IEnumerable<object[]> SutOptionsFixtureData => SutOptions.ToFixtureData();
 
         public static IEnumerable<object[]> SutOptionsPairsFixtureData

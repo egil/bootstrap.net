@@ -11,7 +11,7 @@ using static Egil.BlazorComponents.Bootstrap.Grid.Options.OptionFactory.LowerCas
 namespace Egil.BlazorComponents.Bootstrap.Grid
 {
 
-    public class OrderParameterTests : ParameterTests
+    public class OrderParameterTests : ParameterFixture
     {
         void AssertCorrectCssClass(IOrderOption appliedOption)
         {
@@ -85,34 +85,12 @@ namespace Egil.BlazorComponents.Bootstrap.Grid
             sut.Order.Count().ShouldBe(4);
         }
 
-        [Fact(DisplayName = "Order can have multiple combined 'breakpoint-number' options specified")]
-        public void OrderCanHaveOptionsSpecifiedViaSharedOptionSet()
-        {
-            sut.Order = md - 4 | lg - 8;
-            sut.Order.Count().ShouldBe(2);
-            sut.Order.ShouldAllBe(x => x.StartsWith("order-"));
-        }
-
-        // TODO
-        //[Fact(DisplayName = "It should not be possible to assign a ISpanOption or a OptionSet<ISpanOption> - fails to compile")]
-
-        //public void AssignOptionSetOfISpanOptionFailsToCompile()
+        //[Fact(DisplayName = "Order can have multiple combined grid-breakpoints options specified")]
+        //public void OrderCanHaveOptionsSpecifiedViaSharedOptionSet()
         //{
-        //    ShouldNotCompile<TestComponent, OptionSet<ISpanOption>>();
-        //    ShouldNotCompile<TestComponent, AutoOption>();
-        //    ShouldNotCompile<TestComponent, Breakpoint>();
-        //    ShouldNotCompile<TestComponent, BreakpointAuto>();
-
-        //    void ShouldNotCompile<TOption1, TOption2>()
-        //    {
-        //        var combinationExpression = "(component, set) => { component.Order = set; }";
-        //        var options = ScriptOptions.Default.AddReferences(typeof(OrderParameterTests).Assembly);
-        //        var actual = Should.Throw<CompilationErrorException>(() =>
-        //        {
-        //            return CSharpScript.EvaluateAsync<Action<TOption1, TOption2>>(combinationExpression, options);
-        //        });
-        //        actual.Message.ShouldContain("error CS0029: Cannot implicitly convert type");
-        //    }
+        //    sut.Order = 2 | md - 4 | lg - 8;
+        //    sut.Order.Count().ShouldBe(2);
+        //    sut.Order.ShouldAllBe(x => x.StartsWith("order-"));
         //}
     }
 }

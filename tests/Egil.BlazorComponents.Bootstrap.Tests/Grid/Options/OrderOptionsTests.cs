@@ -57,5 +57,41 @@ namespace Egil.BlazorComponents.Bootstrap.Tests.Grid.Options.OrderOptions
             first.CombinedWith(second).ShouldNotResultInSetOf<IOptionSet<IOrderOption>>();
         }
 
+        [Theory(DisplayName = "Order options should be combineable with number")]
+        [MemberData(nameof(SutOptionsFixtureData))]
+        public void OrderOptionShouldBeCombineableWithNumber(IOrderOption sutOption)
+        {
+            int num = 5;
+
+            num.CombinedWith(sutOption)
+                .ShouldResultInSetOf<IOptionSet<IOrderOption>>()
+                .ThatContains(sutOption, (GridNumber)5);
+
+            sutOption.CombinedWith(num)
+                .ShouldResultInSetOf<IOptionSet<IOrderOption>>()
+                .ThatContains((GridNumber)5, sutOption);
+        }
+
+        [Theory(DisplayName = "Order options should be combineable with OptionSet of IOrderOption types")]
+        [MemberData(nameof(SutOptionsFixtureData))]
+        public void OrderOptionShouldBeCombineableWithOptionSet(IOrderOption sutOption)
+        {
+            IOptionSet<IOrderOption> set = new OptionSet<IOrderOption>();
+
+            set.CombinedWith(sutOption)
+                .ShouldResultInSetOf<IOptionSet<IOrderOption>>()
+                .ThatContains(sutOption);
+        }
+
+        [Theory(DisplayName = "Order options should be combineable with OptionSet of IGridBreakpoint types")]
+        [MemberData(nameof(SutOptionsFixtureData))]
+        public void OrderOptionShouldBeCombineableWithIGridBreakpointOptionSet(IOrderOption sutOption)
+        {
+            IOptionSet<IGridBreakpoint> set = new OptionSet<IGridBreakpoint>();
+
+            set.CombinedWith(sutOption)
+                .ShouldResultInSetOf<IOptionSet<IOrderOption>>()
+                .ThatContains(sutOption);
+        }
     }
 }

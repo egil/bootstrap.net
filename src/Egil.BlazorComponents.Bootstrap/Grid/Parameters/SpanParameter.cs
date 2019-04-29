@@ -7,7 +7,7 @@ namespace Egil.BlazorComponents.Bootstrap.Grid.Parameters
     {
         protected const string OptionPrefix = "col";
 
-        public static readonly SpanParameter Default = new SpanParameter();
+        public override int Count => 1;
 
         public override IEnumerator<string> GetEnumerator()
         {
@@ -16,7 +16,7 @@ namespace Egil.BlazorComponents.Bootstrap.Grid.Parameters
 
         public static implicit operator SpanParameter(int number)
         {
-            return new SpanOptionParameter(new GridNumber(number));
+            return new SpanOptionParameter((GridNumber)number);
         }
 
         public static implicit operator SpanParameter(Breakpoint option)
@@ -49,6 +49,8 @@ namespace Egil.BlazorComponents.Bootstrap.Grid.Parameters
             return new SpanOptionSetParameter(set);
         }
 
+        public static readonly SpanParameter Default = new SpanParameter();
+
         class SpanOptionParameter : SpanParameter
         {
             private readonly ISpanOption option;
@@ -72,6 +74,8 @@ namespace Egil.BlazorComponents.Bootstrap.Grid.Parameters
             {
                 this.set = set;
             }
+
+            public override int Count => set.Count;
 
             public override IEnumerator<string> GetEnumerator()
             {

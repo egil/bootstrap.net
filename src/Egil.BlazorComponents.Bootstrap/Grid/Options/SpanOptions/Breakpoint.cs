@@ -1,8 +1,10 @@
 ﻿using Egil.BlazorComponents.Bootstrap.Grid.Options.AlignmentOptions;
 using System;
+using System.Diagnostics;
 
 namespace Egil.BlazorComponents.Bootstrap.Grid.Options
 {
+    [DebuggerDisplay("Breakpoint: {Value}")]
     public class Breakpoint : ISpanOption
     {
         private BreakpointType type;
@@ -26,19 +28,14 @@ namespace Egil.BlazorComponents.Bootstrap.Grid.Options
             return new GridBreakpoint(breakpoint, width);
         }
 
-        public static BreakpointFirst operator -(Breakpoint breakpoint, FirstOption option)
+        public static OptionSet<ISpanOption> operator |(Breakpoint option1, int width)
         {
-            return new BreakpointFirst(breakpoint, option);
+            return new OptionSet<ISpanOption>() { option1, (GridNumber)width };
         }
 
-        public static BreakpointLast operator -(Breakpoint breakpoint, LastOption option)
+        public static OptionSet<ISpanOption> operator |(int width, Breakpoint option1)
         {
-            return new BreakpointLast(breakpoint, option);
-        }
-
-        public static BreakpointAuto operator -(Breakpoint breakpoint, AutoOption option)
-        {
-            return new BreakpointAuto(breakpoint, option);
+            return new OptionSet<ISpanOption>() { option1, (GridNumber)width };
         }
 
         public static OptionSet<ISpanOption> operator |(Breakpoint option1, ISpanOption option2)
@@ -46,9 +43,17 @@ namespace Egil.BlazorComponents.Bootstrap.Grid.Options
             return new OptionSet<ISpanOption> { option1, option2 };
         }
 
-        public static OptionSet<ISpanOption> operator |(ISpanOption option1, Breakpoint option2)
+        public static OptionSet<ISpanOption> operator |(OptionSet<ISpanOption> set, Breakpoint option)
         {
-            return new OptionSet<ISpanOption> { option2, option1 };
+            set.Add(option);
+            return set;
+        }
+        
+        public static OptionSet<ISpanOption> operator |(OptionSet<IGridBreakpoint> set, Breakpoint option)
+        {
+            OptionSet<ISpanOption> spanSet = new OptionSet<ISpanOption>(set);
+            spanSet.Add(option);
+            return spanSet;
         }
     }
 }

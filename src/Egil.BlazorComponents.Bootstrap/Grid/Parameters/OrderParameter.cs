@@ -8,11 +8,9 @@ namespace Egil.BlazorComponents.Bootstrap.Grid.Parameters
     {
         protected const string OptionPrefix = "order";
 
-        public static readonly OrderParameter None = new NoneOrderParameter();
-
         public static implicit operator OrderParameter(int number)
         {
-            return new OrderOptionParameter(new GridNumber(number));
+            return new OrderOptionParameter((GridNumber)number);
         }
 
         public static implicit operator OrderParameter(FirstOption option)
@@ -50,6 +48,8 @@ namespace Egil.BlazorComponents.Bootstrap.Grid.Parameters
             return new OrderOptionSetParameter(set);
         }
 
+        public static readonly OrderParameter None = new NoneOrderParameter();
+
         class OrderOptionParameter : OrderParameter
         {
             private readonly IOrderOption option;
@@ -58,6 +58,8 @@ namespace Egil.BlazorComponents.Bootstrap.Grid.Parameters
             {
                 this.option = option;
             }
+
+            public override int Count => 1;
 
             public override IEnumerator<string> GetEnumerator()
             {
@@ -73,7 +75,9 @@ namespace Egil.BlazorComponents.Bootstrap.Grid.Parameters
             {
                 this.set = set;
             }
-            
+
+            public override int Count => set.Count;
+
             public override IEnumerator<string> GetEnumerator()
             {
                 foreach (var option in set)
@@ -85,6 +89,8 @@ namespace Egil.BlazorComponents.Bootstrap.Grid.Parameters
 
         class NoneOrderParameter : OrderParameter
         {
+            public override int Count => 0;
+
             public override IEnumerator<string> GetEnumerator()
             {
                 yield break;

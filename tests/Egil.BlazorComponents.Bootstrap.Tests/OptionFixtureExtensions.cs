@@ -10,39 +10,17 @@ namespace Egil.BlazorComponents.Bootstrap.Tests
 {
     public static class OptionFixtureExtensions
     {
-        public static CombineAttemptResult CombinedWith<TOption1, TOption2>(this TOption1 first, TOption2 second)
-            where TOption1 : IOption
-            where TOption2 : IOption
+        /// <summary>
+        /// Emulate the expresseion var x = first | second;
+        /// </summary>
+        /// <param name="first">first option in combination expression</param>
+        /// <param name="second">second option in combination expression</param>
+        /// <returns>An object that represents the result of the attempt of running the expression</returns>
+        public static CombineAttemptResult CombinedWith(this object first, object second)
         {
-            try
-            {
-                return TryCombine(first, second);
-            }
-            catch (RuntimeBinderException ex)
-            {
-                return new CombineAttemptResult(ex);
-            }
-
-            CombineAttemptResult TryCombine(dynamic o1, dynamic o2) =>
-                new CombineAttemptResult(o1 | o2);
+            return CombineAttemptResult.TryCombine(first, second);
         }
-
-        public static CombineAttemptResult CombinedWith<TOption1>(this IOptionSet<TOption1> first, TOption1 second)
-            where TOption1 : IOption
-        {
-            try
-            {
-                return TryCombine(first, second);
-            }
-            catch (RuntimeBinderException ex)
-            {
-                return new CombineAttemptResult(ex);
-            }
-
-            CombineAttemptResult TryCombine(dynamic o1, dynamic o2) =>
-                new CombineAttemptResult(o1 | o2);
-        }
-
+        
         public static CombineAttemptResult ShouldResultInSetOf<TOptionSet>(this CombineAttemptResult combineAttempt)
         {
             combineAttempt.ResultSet.ShouldBeAssignableTo<TOptionSet>();
