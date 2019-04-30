@@ -24,30 +24,5 @@ namespace Egil.BlazorComponents.Bootstrap.Tests.Grid.Options.AlignmentOptions
             var bpa = bp - align;
             bpa.Value.ShouldBe($"{bp.Value}-{align.Value}");
         }
-
-        [Theory(DisplayName = "Alignment options should be combineable with other alignment options")]
-        [MemberData(nameof(SutOptionsPairsFixtureData))]
-        public void AlignmentOptionsCombineable(IAlignmentOption first, IAlignmentOption second)
-        {
-            first.CombinedWith(second).ShouldResultInSetOf<IOptionSet<IAlignmentOption>>().ThatContains(first, second);
-        }
-
-        [Theory(DisplayName = "Alignment options should NOT be combineable with non-alignment options")]
-        [MemberData(nameof(SutOptionsPairedWithIncompatibleOptionsFixtureData))]
-        public void AlignmentOptionsNotCombineableWithOtherOptions(IOption first, IOption second)
-        {
-            first.CombinedWith(second).ShouldNotResultInSetOf<IOptionSet<IAlignmentOption>>();
-        }
-
-        [Theory(DisplayName = "Alignment options should be combineable with OptionSet of IAlignmentOption types")]
-        [MemberData(nameof(SutOptionsFixtureData))]
-        public void AlignmentOptionShouldBeCombineableWithOptionSet(IAlignmentOption sutOption)
-        {
-            IOptionSet<IAlignmentOption> set = new OptionSet<IAlignmentOption>();
-
-            set.CombinedWith(sutOption)
-                .ShouldResultInSetOf<IOptionSet<IAlignmentOption>>()
-                .ThatContains(sutOption);
-        }
     }
 }

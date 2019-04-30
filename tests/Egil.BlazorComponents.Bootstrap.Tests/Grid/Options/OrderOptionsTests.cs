@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Egil.BlazorComponents.Bootstrap.Grid.Options;
@@ -41,57 +39,6 @@ namespace Egil.BlazorComponents.Bootstrap.Tests.Grid.Options.OrderOptions
             var bpl = bp - last;
             bpl.Value.ShouldBe($"{bp.Value}-{last.Value}");
             bpl.ShouldBeOfType<BreakpointLast>();
-        }
-
-        [Theory(DisplayName = "Order options should be combineable with other order options")]
-        [MemberData(nameof(SutOptionsPairsFixtureData))]
-        public void OrderOptionsCombineable(IOrderOption first, IOrderOption second)
-        {
-            first.CombinedWith(second).ShouldResultInSetOf<IOptionSet<IOrderOption>>().ThatContains(first, second);
-        }
-
-        [Theory(DisplayName = "Order options should NOT be combineable with non-order options")]
-        [MemberData(nameof(SutOptionsPairedWithIncompatibleOptionsFixtureData))]
-        public void OrderOptionsNotCombineableWithOtherOptions(IOption first, IOption second)
-        {
-            first.CombinedWith(second).ShouldNotResultInSetOf<IOptionSet<IOrderOption>>();
-        }
-
-        [Theory(DisplayName = "Order options should be combineable with number")]
-        [MemberData(nameof(SutOptionsFixtureData))]
-        public void OrderOptionShouldBeCombineableWithNumber(IOrderOption sutOption)
-        {
-            int num = 5;
-
-            num.CombinedWith(sutOption)
-                .ShouldResultInSetOf<IOptionSet<IOrderOption>>()
-                .ThatContains(sutOption, (GridNumber)5);
-
-            sutOption.CombinedWith(num)
-                .ShouldResultInSetOf<IOptionSet<IOrderOption>>()
-                .ThatContains((GridNumber)5, sutOption);
-        }
-
-        [Theory(DisplayName = "Order options should be combineable with OptionSet of IOrderOption types")]
-        [MemberData(nameof(SutOptionsFixtureData))]
-        public void OrderOptionShouldBeCombineableWithOptionSet(IOrderOption sutOption)
-        {
-            IOptionSet<IOrderOption> set = new OptionSet<IOrderOption>();
-
-            set.CombinedWith(sutOption)
-                .ShouldResultInSetOf<IOptionSet<IOrderOption>>()
-                .ThatContains(sutOption);
-        }
-
-        [Theory(DisplayName = "Order options should be combineable with OptionSet of IGridBreakpoint types")]
-        [MemberData(nameof(SutOptionsFixtureData))]
-        public void OrderOptionShouldBeCombineableWithIGridBreakpointOptionSet(IOrderOption sutOption)
-        {
-            IOptionSet<IGridBreakpoint> set = new OptionSet<IGridBreakpoint>();
-
-            set.CombinedWith(sutOption)
-                .ShouldResultInSetOf<IOptionSet<IOrderOption>>()
-                .ThatContains(sutOption);
         }
     }
 }

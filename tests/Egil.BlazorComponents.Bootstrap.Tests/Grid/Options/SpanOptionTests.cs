@@ -35,56 +35,5 @@ namespace Egil.BlazorComponents.Bootstrap.Tests.Grid.Options
             var bpl = bp - auto;
             bpl.Value.ShouldBe($"{bp.Value}-{auto.Value}");
         }
-
-        [Theory(DisplayName = "Span options should be combineable with other span options")]
-        [MemberData(nameof(SutOptionsPairsFixtureData))]
-        public void SpanOptionsCombineable(ISpanOption first, ISpanOption second)
-        {
-            first.CombinedWith(second).ShouldResultInSetOf<IOptionSet<ISpanOption>>().ThatContains(first, second);
-        }
-
-        [Theory(DisplayName = "Span options should NOT be combineable with non-span options")]
-        [MemberData(nameof(SutOptionsPairedWithIncompatibleOptionsFixtureData))]
-        public void SpanOptionsNotCombineableWithOtherOptions(IOption first, IOption second)
-        {
-            first.CombinedWith(second).ShouldNotResultInSetOf<IOptionSet<ISpanOption>>();
-        }
-
-        [Theory(DisplayName = "Span options should be combineable with number")]
-        [MemberData(nameof(SutOptionsFixtureData))]
-        public void SpanOptionShouldBeCombineableWithNumber(ISpanOption sutOption)
-        {
-            int num = 5;
-
-            num.CombinedWith(sutOption)
-                .ShouldResultInSetOf<IOptionSet<ISpanOption>>()
-                .ThatContains(sutOption, (GridNumber)5);
-
-            sutOption.CombinedWith(num)
-                .ShouldResultInSetOf<IOptionSet<ISpanOption>>()
-                .ThatContains((GridNumber)5, sutOption);
-        }
-
-        [Theory(DisplayName = "Span options should be combineable with OptionSet of ISpanOption types")]
-        [MemberData(nameof(SutOptionsFixtureData))]
-        public void SpanOptionShouldBeCombineableWithOptionSet(ISpanOption sutOption)
-        {
-            IOptionSet<ISpanOption> set = new OptionSet<ISpanOption>();
-
-            set.CombinedWith(sutOption)
-                .ShouldResultInSetOf<IOptionSet<ISpanOption>>()
-                .ThatContains(sutOption);
-        }
-
-        [Theory(DisplayName = "Span options should be combineable with OptionSet of IGridBreakpoint types")]
-        [MemberData(nameof(SutOptionsFixtureData))]
-        public void SpanOptionShouldBeCombineableWithIGridBreakpointOptionSet(ISpanOption sutOption)
-        {
-            IOptionSet<IGridBreakpoint> set = new OptionSet<IGridBreakpoint>();
-
-            set.CombinedWith(sutOption)
-                .ShouldResultInSetOf<IOptionSet<ISpanOption>>()
-                .ThatContains(sutOption);
-        }
     }
 }

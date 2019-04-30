@@ -7,6 +7,7 @@ namespace Egil.BlazorComponents.Bootstrap.Grid.Options
     {
         string Value { get; }
     }
+
     public interface IOrderOption : IOption { }
     public interface ISpanOption : IOption { }
     public interface IAlignmentOption : IOption { }
