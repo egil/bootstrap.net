@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Egil.BlazorComponents.Bootstrap.Tests.Grid.Options.AlignmentOptions
 {
-    public class AlignmentOptionTests : OptionFixture<IAlignmentOption>
+    public class AlignmentOptionTests
     {
         [Fact(DisplayName = "Alignment option returns correct css class")]
         public void AlignOptionReturnsCorrectCssClass()
@@ -17,7 +17,7 @@ namespace Egil.BlazorComponents.Bootstrap.Tests.Grid.Options.AlignmentOptions
         }
 
         [Fact(DisplayName = "Breakpoint can be combined with alignment option using - operator")]
-        public void BreakpointWithÁlignOption()
+        public void BreakpointWithAlignOption()
         {
             var bp = new Breakpoint(BreakpointType.Large);
             var align = new AlignmentOption(AlignmentType.Center);

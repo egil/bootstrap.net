@@ -69,27 +69,5 @@ namespace Egil.BlazorComponents.Bootstrap.Grid
             sut.Span.Count().ShouldBe(2);
             sut.Span.ShouldAllBe(x => x.StartsWith("col-"));
         }
-
-        // TODO
-        //[Fact(DisplayName = "It should not be possible to assign a IOrderOption or a OptionSet<IOrderOption> - fails to compile")]
-        //public void AssignOptionSetOfISpanOptionFailsToCompile()
-        //{
-        //    ShouldNotCompile<TestComponent, OptionSet<IOrderOption>>();
-        //    ShouldNotCompile<TestComponent, FirstOption>();
-        //    ShouldNotCompile<TestComponent, LastOption>();
-        //    ShouldNotCompile<TestComponent, BreakpointFirst>();
-        //    ShouldNotCompile<TestComponent, BreakpointLast>();
-
-        //    void ShouldNotCompile<TOption1, TOption2>()
-        //    {
-        //        var combinationExpression = "(component, set) => { component.Span = set; }";
-        //        var options = ScriptOptions.Default.AddReferences(typeof(OrderParameterTests).Assembly);
-        //        var actual = Should.Throw<CompilationErrorException>(() =>
-        //        {
-        //            return CSharpScript.EvaluateAsync<Action<TOption1, TOption2>>(combinationExpression, options);
-        //        });
-        //        actual.Message.ShouldContain("error CS0029: Cannot implicitly convert type");
-        //    }
-        //}
     }
 }

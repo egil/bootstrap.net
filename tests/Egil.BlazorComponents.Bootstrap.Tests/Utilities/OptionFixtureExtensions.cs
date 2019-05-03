@@ -1,12 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Egil.BlazorComponents.Bootstrap.Grid.Options;
 using Shouldly;
-using Microsoft.CSharp.RuntimeBinder;
 using System;
-using System.Collections;
 
-namespace Egil.BlazorComponents.Bootstrap.Tests
+namespace Egil.BlazorComponents.Bootstrap.Tests.Utilities
 {
     public static class OptionFixtureExtensions
     {
@@ -20,7 +17,7 @@ namespace Egil.BlazorComponents.Bootstrap.Tests
         {
             return CombineAttemptResult.TryCombine(first, second);
         }
-        
+
         public static CombineAttemptResult ShouldResultInSetOf<TOptionSet>(this CombineAttemptResult combineAttempt)
         {
             combineAttempt.ResultSet.ShouldBeAssignableTo<TOptionSet>();
@@ -31,15 +28,6 @@ namespace Egil.BlazorComponents.Bootstrap.Tests
         {
             combineAttempt.ResultSet.ShouldNotBeAssignableTo<TOptionSet>();
             return combineAttempt;
-        }
-
-        public static void ShouldStartWithOneOf(this string text, params string[] matches)
-        {
-            matches.Any(match => text.StartsWith(match))
-                .ShouldBeTrue($"The text: {text}{Environment.NewLine}" +
-                $"  should start with one of{Environment.NewLine}" +
-                $"\"{string.Join("\", \"", matches)}\"{Environment.NewLine}" +
-                $"  but did not.");
         }
 
         public static IEnumerable<(T first, T second)> AllPairs<T>(this IEnumerable<T> optionSource)

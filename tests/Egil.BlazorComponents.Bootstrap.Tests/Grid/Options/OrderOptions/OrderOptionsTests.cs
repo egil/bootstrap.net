@@ -7,7 +7,7 @@ using Xunit;
 
 namespace Egil.BlazorComponents.Bootstrap.Tests.Grid.Options.OrderOptions
 {
-    public class OrderOptionsTests : OptionFixture<IOrderOption>
+    public class OrderOptionsTests
     {
         [Fact(DisplayName = "First returns 'first' as value")]
         public void FirstOptionReturnsCorrectCssClass()

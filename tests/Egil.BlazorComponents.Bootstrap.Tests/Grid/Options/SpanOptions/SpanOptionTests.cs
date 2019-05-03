@@ -10,7 +10,7 @@ using Xunit;
 
 namespace Egil.BlazorComponents.Bootstrap.Tests.Grid.Options
 {
-    public class SpanOptionTests : OptionFixture<ISpanOption>
+    public class SpanOptionTests
     {
         [Fact(DisplayName = "Breakpoint returns correct value based on breakpoint type")]
         public void CssClassReturnsCorrectBootstrapBreakpoint()

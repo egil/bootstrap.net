@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Egil.BlazorComponents.Bootstrap.Grid.Options;
+using Egil.BlazorComponents.Bootstrap.Tests.Utilities;
 using Xunit;
 using static Egil.BlazorComponents.Bootstrap.Grid.Options.OptionFactory.LowerCase.Abbr;
 
 namespace Egil.BlazorComponents.Bootstrap.Tests.Grid.Options
 {
-    public abstract class OptionCombineFixture<TSutOption>
-        where TSutOption : class, IOption
+    public abstract class OptionFixture
     {
         public static readonly IReadOnlyList<IOption> AllOptions = new List<IOption>
         {
@@ -17,6 +17,12 @@ namespace Egil.BlazorComponents.Bootstrap.Tests.Grid.Options
             (GridNumber)12, sm-1, // grid breakpoint 
         };
 
+        public static IEnumerable<object[]> AllOptionsFixtureData => AllOptions.ToFixtureData();
+    }
+
+    public abstract class OptionCombineFixture<TSutOption> : OptionFixture
+        where TSutOption : class, IOption
+    {
         public static readonly IReadOnlyList<TSutOption> SutOptions = AllOptions.OfType<TSutOption>().ToList();
 
         public static IEnumerable<object[]> SutOptionsFixtureData => SutOptions.ToFixtureData();

@@ -85,12 +85,12 @@ namespace Egil.BlazorComponents.Bootstrap.Grid
             sut.Order.Count().ShouldBe(4);
         }
 
-        //[Fact(DisplayName = "Order can have multiple combined grid-breakpoints options specified")]
-        //public void OrderCanHaveOptionsSpecifiedViaSharedOptionSet()
-        //{
-        //    sut.Order = 2 | md - 4 | lg - 8;
-        //    sut.Order.Count().ShouldBe(2);
-        //    sut.Order.ShouldAllBe(x => x.StartsWith("order-"));
-        //}
+        [Fact(DisplayName = "Order can have multiple combined grid-breakpoints options specified")]
+        public void OrderCanHaveOptionsSpecifiedViaSharedOptionSet()
+        {
+            sut.Order = 2 | md - 4 | lg - 8;
+            sut.Order.Count().ShouldBe(3);
+            sut.Order.ShouldAllBe(x => x.StartsWith("order-"));
+        }
     }
 }

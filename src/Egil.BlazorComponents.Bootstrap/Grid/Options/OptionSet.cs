@@ -6,20 +6,18 @@ namespace Egil.BlazorComponents.Bootstrap.Grid.Options
 {
     public class OptionSet<TOption> : IOptionSet<TOption> where TOption : IOption
     {
-        private readonly HashSet<TOption> options = new HashSet<TOption>();
+        private readonly HashSet<TOption> options = new HashSet<TOption>(OptionEqualityComparer<TOption>.Instance);
 
         public int Count => options.Count;
 
-        public OptionSet()
-        {
-        }
+        public OptionSet() { }
 
         public OptionSet(IEnumerable<TOption> options)
         {
-            foreach(var option in options)
+            foreach (var option in options)
             {
                 Add(option);
-            }            
+            }
         }
 
         public void Add(TOption option)
