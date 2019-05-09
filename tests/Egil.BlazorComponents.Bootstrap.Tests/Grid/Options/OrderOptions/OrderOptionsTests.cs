@@ -1,7 +1,5 @@
-﻿using System;
-using System.Text;
-using System.Threading.Tasks;
-using Egil.BlazorComponents.Bootstrap.Grid.Options;
+﻿using Egil.BlazorComponents.Bootstrap.Grid.Options;
+using Egil.BlazorComponents.Bootstrap.Tests.Utilities;
 using Shouldly;
 using Xunit;
 
@@ -27,8 +25,7 @@ namespace Egil.BlazorComponents.Bootstrap.Tests.Grid.Options.OrderOptions
             var bp = new Breakpoint(BreakpointType.Large);
             var first = new FirstOption();
             var bpf = bp - first;
-            bpf.Value.ShouldBe($"{bp.Value}-{first.Value}");
-            bpf.ShouldBeOfType<BreakpointFirst>();
+            bpf.Value.ShouldBeCombinationOf(bp, first);
         }
 
         [Fact(DisplayName = "Breakpoint can be combined with last option via - operator")]
@@ -37,8 +34,7 @@ namespace Egil.BlazorComponents.Bootstrap.Tests.Grid.Options.OrderOptions
             var bp = new Breakpoint(BreakpointType.Large);
             var last = new LastOption();
             var bpl = bp - last;
-            bpl.Value.ShouldBe($"{bp.Value}-{last.Value}");
-            bpl.ShouldBeOfType<BreakpointLast>();
+            bpl.Value.ShouldBeCombinationOf(bp, last);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Egil.BlazorComponents.Bootstrap.Grid.Options;
-using Microsoft.CodeAnalysis.CSharp.Scripting;
-using Microsoft.CodeAnalysis.Scripting;
+using Egil.BlazorComponents.Bootstrap.Grid.Parameters;
+using Egil.BlazorComponents.Bootstrap.Tests.Utilities;
+using Microsoft.CSharp.RuntimeBinder;
 using Shouldly;
 using System;
 using System.Linq;
@@ -9,65 +10,78 @@ using static Egil.BlazorComponents.Bootstrap.Grid.Options.OptionFactory.LowerCas
 
 namespace Egil.BlazorComponents.Bootstrap.Grid
 {
-    public class SpanOptionTests : ParameterFixture
+    public class SpanOptionTests : ParameterFixture<ISpanOption>
     {
-        void AssertCorrectCssClass(ISpanOption appliedOption)
-        {
-            sut.Span.Single().ShouldBe($"col-{appliedOption.Value}");
-        }
+        private static readonly string ParamPrefix = "col";
+        private SpanParameter? sut;
 
         [Fact(DisplayName = "Value returns 'col' by default")]
         public void CssClassReturnsColByDefault()
         {
-            sut.Span.Single().ShouldBe("col");
+            SpanParameter.Default.Single().ShouldBe("col");
+            SpanParameter.Default.Count.ShouldBe(1);
         }
 
-        [Fact(DisplayName = "Span can have a width specified by assignment")]
-        public void SpanCanHaveWidthSpecifiedByAssignment()
+        [Theory(DisplayName = "Span can have a width specified by assignment")]
+        [NumberRangeData(1, 12)]
+        public void SpanCanHaveWidthSpecifiedByAssignment(int width)
         {
-            var width = 4;
-            sut.Span = width;
-            sut.Span.Single().ShouldBe($"col-{width}");
+            sut = width;
+            sut.ShouldContainOptionsWithPrefix(ParamPrefix, width);
+        }
+
+        [Fact(DisplayName = "Specifying an invalid index number throws")]
+        public void SpecifyinInvalidIndexNumberThrows()
+        {
+            Should.Throw<ArgumentOutOfRangeException>(() => sut = 0);
+            Should.Throw<ArgumentOutOfRangeException>(() => sut = 13);
         }
 
         [Fact(DisplayName = "Span can have a breakpoint specified by assignment")]
         public void SpanCanHaveBreakpointSpecifiedByAssignment()
         {
-            var bp = lg;
-            sut.Span = bp;
-            AssertCorrectCssClass(bp);
+            var option = lg;
+            sut = option;
+            sut.ShouldContainOptionsWithPrefix(ParamPrefix, option);
+        }
+
+        [Fact(DisplayName = "Span can have a auto specified by assignment")]
+        public void SpanCanHaveAutoSpecifiedByAssignment()
+        {
+            var option = auto;
+            sut = option;
+            sut.ShouldContainOptionsWithPrefix(ParamPrefix, option);
         }
 
         [Fact(DisplayName = "Span can have a breakpoint with width specified by assignment")]
         public void SpanCanHaveBreakpointWithWidthSpecifiedByAssignment()
         {
-            var bp = lg - 4;
-            sut.Span = bp;
-            AssertCorrectCssClass(bp);
+            var option = lg - 4;
+            sut = option;
+            sut.ShouldContainOptionsWithPrefix(ParamPrefix, option);
         }
 
         [Fact(DisplayName = "Span can have a breakpoint with auto option specified by assignment")]
         public void SpanCanHaveBreakpointWithAutoOptionSpecifiedByAssignment()
         {
-            var bp = lg - auto;
-            sut.Span = bp;
-            AssertCorrectCssClass(bp);
+            var option = lg - auto;
+            sut = option;
+            sut.ShouldContainOptionsWithPrefix(ParamPrefix, option);
         }
 
-        [Fact(DisplayName = "Span can have multiple combined span-only options specified ")]
-        public void SpanCanHaveOptionsSpecifiedViaOptionSetOfISpanOption()
+        [Theory(DisplayName = "Span can have option sets of span-options assigned")]
+        [MemberData(nameof(SutOptionSetsFixtureData))]
+        public void CanHaveOptionSetOfOffsetOptionsSpecified(dynamic set)
         {
-            sut.Span = md | auto | lg-auto;
-            sut.Span.ShouldAllBe(x => x.StartsWith("col-"));
-            sut.Span.Count().ShouldBe(3);
+            sut = set;
+            sut.ShouldContainOptionsWithPrefix(ParamPrefix, (IOptionSet<IOption>)set);
         }
 
-        [Fact(DisplayName = "Span can have multiple combined 'breakpoint-number' options specified")]
-        public void SpanCanHaveOptionsSpecifiedViaSharedOptionSet()
+        [Theory(DisplayName = "Span can NOT have option sets of none-span-options assigned")]
+        [MemberData(nameof(IncompatibleOptionSetsFixtureData))]
+        public void CanNOTHaveOptionSetOfOffsetOptionsSpecified(dynamic set)
         {
-            sut.Span = md - 4 | lg - 8;
-            sut.Span.Count().ShouldBe(2);
-            sut.Span.ShouldAllBe(x => x.StartsWith("col-"));
+            Assert.Throws<RuntimeBinderException>(() => sut = set);
         }
     }
 }

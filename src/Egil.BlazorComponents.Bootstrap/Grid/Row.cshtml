@@ -1,4 +1,6 @@
-﻿<div class=@CssClasses>
+﻿@using Egil.BlazorComponents.Bootstrap.Grid.Parameters
+
+<div class=@CssClasses>
     @ChildContent
 </div>
 
@@ -8,6 +10,9 @@
 
     [Parameter]
     bool NoGutter { get; set; } = false;
+
+    [Parameter]
+    RowAlignmentParameter Align { get; set; } = RowAlignmentParameter.None;
 
     string CssClasses
     {

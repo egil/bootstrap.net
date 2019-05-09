@@ -53,9 +53,9 @@ namespace Egil.BlazorComponents.Bootstrap.Grid.Parameters
 
         class SpanOptionParameter : SpanParameter
         {
-            private readonly ISpanOption option;
+            private readonly IOption option;
 
-            public SpanOptionParameter(ISpanOption option)
+            public SpanOptionParameter(IOption option)
             {
                 this.option = option;
             }

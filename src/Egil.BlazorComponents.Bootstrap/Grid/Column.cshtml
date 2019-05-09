@@ -14,5 +14,12 @@
     [Parameter]
     OrderParameter Order { get; set; } = OrderParameter.None;
 
+    [Parameter]
+    OffsetParameter Offset { get; set; } = OffsetParameter.None;
+
+    [Parameter]
+    ColAlignmentParameter Align { get; set; } = ColAlignmentParameter.None;
+
+
     private string CssClass => string.Join(" ", Enumerable.Concat(Span, Order));
 }

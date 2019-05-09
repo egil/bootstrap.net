@@ -4,7 +4,12 @@
     {
         Start,
         End,
-        Center,
-        Stretch
+        Center
+    }
+
+    public enum JustifyType
+    {
+        Between,
+        Around
     }
 }

@@ -4,40 +4,32 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Egil.BlazorComponents.Bootstrap.Grid.Options;
+using Egil.BlazorComponents.Bootstrap.Grid.Options.AlignmentOptions;
 
 namespace Egil.BlazorComponents.Bootstrap.Grid.Parameters
 {
-    public abstract class OffsetParameter : Parameter
+
+    public abstract class RowAlignmentParameter : Parameter
     {
-        protected const string OptionPrefix = "offset";
+        protected const string OptionPrefix = "align-items";
 
-        public static implicit operator OffsetParameter(int number)
+        public static implicit operator RowAlignmentParameter(AlignmentOption option)
         {
-            return new OffsetOptionParameter((GridNumber)number);
+            return new OptionParameter(option);
         }
 
-        public static implicit operator OffsetParameter(GridBreakpoint option)
+        public static implicit operator RowAlignmentParameter(OptionSet<IAlignmentOption> set)
         {
-            return new OffsetOptionParameter(option);
+            return new OptionSetParameter(set);
         }
 
-        public static implicit operator OffsetParameter(OptionSet<IOffsetOption> set)
-        {
-            return new OffsetOptionSetParameter(set);
-        }
+        public static readonly RowAlignmentParameter None = new NoneParameter();
 
-        public static implicit operator OffsetParameter(OptionSet<IGridBreakpoint> set)
-        {
-            return new OffsetOptionSetParameter(set);
-        }
-        
-        public static readonly OffsetParameter None = new NoneOffsetParameter();
-
-        class OffsetOptionParameter : OffsetParameter
+        class OptionParameter : RowAlignmentParameter
         {
             private readonly IOption option;
 
-            public OffsetOptionParameter(IOption option)
+            public OptionParameter(IOption option)
             {
                 this.option = option;
             }
@@ -50,11 +42,11 @@ namespace Egil.BlazorComponents.Bootstrap.Grid.Parameters
             }
         }
 
-        class OffsetOptionSetParameter : OffsetParameter
+        class OptionSetParameter : RowAlignmentParameter
         {
             private readonly IOptionSet<IOption> set;
 
-            public OffsetOptionSetParameter(IOptionSet<IOption> set)
+            public OptionSetParameter(IOptionSet<IOption> set)
             {
                 this.set = set;
             }
@@ -70,7 +62,7 @@ namespace Egil.BlazorComponents.Bootstrap.Grid.Parameters
             }
         }
 
-        class NoneOffsetParameter : OffsetParameter
+        class NoneParameter : RowAlignmentParameter
         {
             public override int Count => 0;
 

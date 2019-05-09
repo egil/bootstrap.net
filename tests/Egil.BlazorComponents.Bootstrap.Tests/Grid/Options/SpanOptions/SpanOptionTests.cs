@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Egil.BlazorComponents.Bootstrap.Grid.Options;
-using static Egil.BlazorComponents.Bootstrap.Grid.Options.OptionFactory.LowerCase.Abbr;
+﻿using Egil.BlazorComponents.Bootstrap.Grid.Options;
+using Egil.BlazorComponents.Bootstrap.Tests.Utilities;
 using Shouldly;
 using Xunit;
 
-namespace Egil.BlazorComponents.Bootstrap.Tests.Grid.Options
+namespace Egil.BlazorComponents.Bootstrap.Tests.Grid.Options.SpanOptions
 {
     public class SpanOptionTests
     {
@@ -33,7 +28,7 @@ namespace Egil.BlazorComponents.Bootstrap.Tests.Grid.Options
             var bp = new Breakpoint(BreakpointType.Large);
             var auto = new AutoOption();
             var bpl = bp - auto;
-            bpl.Value.ShouldBe($"{bp.Value}-{auto.Value}");
+            bpl.Value.ShouldBeCombinationOf(bp, auto);
         }
     }
 }

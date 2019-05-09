@@ -3,7 +3,8 @@
 namespace Egil.BlazorComponents.Bootstrap.Grid.Options.AlignmentOptions
 {
     [DebuggerDisplay("AlignmentOption: {Value}")]
-    public sealed class BreakpointAlignmentOption : OptionPair<Breakpoint, AlignmentOption>, IAlignmentOption
+    public sealed class BreakpointAlignmentOption : OptionPair<Breakpoint, AlignmentOption>,
+        IAlignmentOption, IJustifyOption
     {
         public BreakpointAlignmentOption(Breakpoint leftOption, AlignmentOption rightOption) : base(leftOption, rightOption)
         {
@@ -15,6 +16,12 @@ namespace Egil.BlazorComponents.Bootstrap.Grid.Options.AlignmentOptions
         }
 
         public static IOptionSet<IAlignmentOption> operator |(OptionSet<IAlignmentOption> set, BreakpointAlignmentOption option2)
+        {
+            set.Add(option2);
+            return set;
+        }
+
+        public static IOptionSet<IJustifyOption> operator |(OptionSet<IJustifyOption> set, BreakpointAlignmentOption option2)
         {
             set.Add(option2);
             return set;

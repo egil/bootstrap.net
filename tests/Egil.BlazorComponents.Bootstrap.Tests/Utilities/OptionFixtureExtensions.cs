@@ -2,11 +2,23 @@
 using System.Linq;
 using Shouldly;
 using System;
+using Egil.BlazorComponents.Bootstrap.Grid.Options;
 
 namespace Egil.BlazorComponents.Bootstrap.Tests.Utilities
 {
+
     public static class OptionFixtureExtensions
     {
+        public static void ShouldBeCombinationOf(this string value, IOption option1, IOption option2)
+        {
+            value.ShouldBe($"{option1.Value}{Option.OptionSeparator}{option2.Value}");
+        }
+
+        public static void ShouldBeCombinationOf(this string value, IOption option1, int number)
+        {
+            value.ShouldBe($"{option1.Value}{Option.OptionSeparator}{number}");
+        }
+
         /// <summary>
         /// Emulate the expresseion var x = first | second;
         /// </summary>
@@ -18,15 +30,18 @@ namespace Egil.BlazorComponents.Bootstrap.Tests.Utilities
             return CombineAttemptResult.TryCombine(first, second);
         }
 
-        public static CombineAttemptResult ShouldResultInSetOf<TOptionSet>(this CombineAttemptResult combineAttempt)
+        public static CombineAttemptResult ShouldResultInSetOf<TOption>(this CombineAttemptResult combineAttempt)
+            where TOption : IOption
         {
-            combineAttempt.ResultSet.ShouldBeAssignableTo<TOptionSet>();
+            combineAttempt.CompilerError.ShouldBeEmpty();
+            combineAttempt.ResultSet.ShouldBeAssignableTo<IOptionSet<TOption>>();
             return combineAttempt;
         }
 
-        public static CombineAttemptResult ShouldNotResultInSetOf<TOptionSet>(this CombineAttemptResult combineAttempt)
+        public static CombineAttemptResult ShouldNotResultInSetOf<TOption>(this CombineAttemptResult combineAttempt)
+            where TOption : IOption
         {
-            combineAttempt.ResultSet.ShouldNotBeAssignableTo<TOptionSet>();
+            combineAttempt.ResultSet.ShouldNotBeAssignableTo<IOptionSet<TOption>>();
             return combineAttempt;
         }
 

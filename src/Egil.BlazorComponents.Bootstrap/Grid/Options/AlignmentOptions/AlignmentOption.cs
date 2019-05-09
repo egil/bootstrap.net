@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text;
 
 namespace Egil.BlazorComponents.Bootstrap.Grid.Options.AlignmentOptions
 {
     [DebuggerDisplay("AlignmentOption: {Value}")]
-    public sealed class AlignmentOption : IAlignmentOption
+    public sealed class AlignmentOption : IAlignmentOption, IJustifyOption
     {
         private readonly AlignmentType type;
 
@@ -20,7 +18,6 @@ namespace Egil.BlazorComponents.Bootstrap.Grid.Options.AlignmentOptions
             AlignmentType.Start => "start",
             AlignmentType.End => "end",
             AlignmentType.Center => "center",
-            AlignmentType.Stretch => "stretch",
             _ => throw new InvalidOperationException($"Unknown {nameof(AlignmentType)} specified in {nameof(AlignmentOption)}.")
         };
 
@@ -35,6 +32,12 @@ namespace Egil.BlazorComponents.Bootstrap.Grid.Options.AlignmentOptions
         }
 
         public static OptionSet<IAlignmentOption> operator |(OptionSet<IAlignmentOption> set, AlignmentOption option2)
+        {
+            set.Add(option2);
+            return set;
+        }
+
+        public static OptionSet<IJustifyOption> operator |(OptionSet<IJustifyOption> set, AlignmentOption option2)
         {
             set.Add(option2);
             return set;

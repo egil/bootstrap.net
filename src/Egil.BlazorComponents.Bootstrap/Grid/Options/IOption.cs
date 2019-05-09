@@ -11,6 +11,7 @@ namespace Egil.BlazorComponents.Bootstrap.Grid.Options
     public interface IOrderOption : IOption { }
     public interface ISpanOption : IOption { }
     public interface IAlignmentOption : IOption { }
+    public interface IJustifyOption : IOption { }
     public interface IOffsetOption : IOption { }
     public interface IGridBreakpoint : ISpanOption, IOrderOption, IOffsetOption { }
 

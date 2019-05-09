@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Egil.BlazorComponents.Bootstrap.Grid.Options;
+﻿using Egil.BlazorComponents.Bootstrap.Grid.Options;
 using Shouldly;
 using Xunit;
-using static Egil.BlazorComponents.Bootstrap.Grid.Options.OptionFactory.LowerCase.Abbr;
 
 namespace Egil.BlazorComponents.Bootstrap.Tests.Grid.Options
 {
@@ -27,15 +21,15 @@ namespace Egil.BlazorComponents.Bootstrap.Tests.Grid.Options
         public void OptionSetDoesNotAllowDuplicatedOptions(IOption option)
         {
             var set = new OptionSet<IOption>();
-            var copy = new OptionValueCopy(option);
+            var optionCopy = new OptionValueCopy(option);
 
             set.Add(option);
-            set.Add(copy);
+            set.Add(optionCopy);
 
-            option.Value.ShouldBe(copy.Value);
+            option.Value.ShouldBe(optionCopy.Value);
             set.Count.ShouldBe(1);
             set.ShouldContain(option);
-            set.ShouldNotContain(copy);
+            set.ShouldNotContain(optionCopy);
         }
     }
 }

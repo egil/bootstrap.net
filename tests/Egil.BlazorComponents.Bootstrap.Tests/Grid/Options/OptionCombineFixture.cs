@@ -2,6 +2,7 @@
 using System.Linq;
 using Egil.BlazorComponents.Bootstrap.Grid.Options;
 using Egil.BlazorComponents.Bootstrap.Tests.Utilities;
+using Shouldly;
 using Xunit;
 using static Egil.BlazorComponents.Bootstrap.Grid.Options.OptionFactory.LowerCase.Abbr;
 
@@ -12,6 +13,7 @@ namespace Egil.BlazorComponents.Bootstrap.Tests.Grid.Options
         public static readonly IReadOnlyList<IOption> AllOptions = new List<IOption>
         {
             center, sm-start, // alignment
+            between, md-between, // justify
             sm, auto, sm-auto, // span
             first, last, lg-first, md-last, // order
             (GridNumber)12, sm-1, // grid breakpoint 
@@ -37,6 +39,8 @@ namespace Egil.BlazorComponents.Bootstrap.Tests.Grid.Options
             }
         }
 
+        public static IEnumerable<object[]> IncompatibleOptionsFixtureData => AllOptions.Except(SutOptions).ToFixtureData();
+
         public static IEnumerable<object[]> SutOptionsPairedWithIncompatibleOptionsFixtureData
         {
             get
@@ -50,16 +54,16 @@ namespace Egil.BlazorComponents.Bootstrap.Tests.Grid.Options
 
         [Theory(DisplayName = "Options should be combineable with other options of same type")]
         [MemberData(nameof(SutOptionsPairsFixtureData))]
-        public void OptionsCombineable(TSutOption first, TSutOption second)
+        public virtual void OptionsCombineable(TSutOption first, TSutOption second)
         {
-            first.CombinedWith(second).ShouldResultInSetOf<IOptionSet<TSutOption>>().ThatContains(first, second);
+            first.CombinedWith(second).ShouldResultInSetOf<TSutOption>().ThatContains(first, second);
         }
 
         [Theory(DisplayName = "Options should NOT be combineable with options of other types")]
         [MemberData(nameof(SutOptionsPairedWithIncompatibleOptionsFixtureData))]
         public void OptionsNotCombineableWithOtherOptions(IOption first, IOption second)
         {
-            first.CombinedWith(second).ShouldNotResultInSetOf<IOptionSet<TSutOption>>();
+            first.CombinedWith(second).ShouldNotResultInSetOf<TSutOption>();
         }
 
         [Theory(DisplayName = "Options should be combineable with OptionSet containing the option type")]
@@ -69,8 +73,17 @@ namespace Egil.BlazorComponents.Bootstrap.Tests.Grid.Options
             IOptionSet<TSutOption> set = new OptionSet<TSutOption>();
 
             set.CombinedWith(sutOption)
-                .ShouldResultInSetOf<IOptionSet<TSutOption>>()
+                .ShouldResultInSetOf<TSutOption>()
                 .ThatContains(sutOption);
+        }
+
+        [Theory(DisplayName = "Incompatible options should NOT be combineable with OptionSet containing the option type")]
+        [MemberData(nameof(IncompatibleOptionsFixtureData))]
+        public void IncompatibleOptionsNotCombineableWithOptionSet(IOption sutOption)
+        {
+            IOptionSet<TSutOption> set = new OptionSet<TSutOption>();
+
+            set.CombinedWith(sutOption).ShouldNotResultInSetOf<TSutOption>();
         }
     }
 
@@ -84,11 +97,11 @@ namespace Egil.BlazorComponents.Bootstrap.Tests.Grid.Options
             int num = 5;
 
             num.CombinedWith(sutOption)
-                .ShouldResultInSetOf<IOptionSet<TSutOption>>()
+                .ShouldResultInSetOf<TSutOption>()
                 .ThatContains(sutOption, (GridNumber)5);
 
             sutOption.CombinedWith(num)
-                .ShouldResultInSetOf<IOptionSet<TSutOption>>()
+                .ShouldResultInSetOf<TSutOption>()
                 .ThatContains((GridNumber)5, sutOption);
         }
 
@@ -99,7 +112,7 @@ namespace Egil.BlazorComponents.Bootstrap.Tests.Grid.Options
             IOptionSet<IGridBreakpoint> set = new OptionSet<IGridBreakpoint>();
 
             set.CombinedWith(sutOption)
-                .ShouldResultInSetOf<IOptionSet<TSutOption>>()
+                .ShouldResultInSetOf<TSutOption>()
                 .ThatContains(sutOption);
         }
     }

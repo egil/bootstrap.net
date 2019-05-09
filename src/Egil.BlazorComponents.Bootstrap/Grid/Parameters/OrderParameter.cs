@@ -1,9 +1,9 @@
 ﻿using Egil.BlazorComponents.Bootstrap.Grid.Options;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace Egil.BlazorComponents.Bootstrap.Grid.Parameters
 {
-
     public abstract class OrderParameter : Parameter
     {
         protected const string OptionPrefix = "order";
@@ -52,9 +52,9 @@ namespace Egil.BlazorComponents.Bootstrap.Grid.Parameters
 
         class OrderOptionParameter : OrderParameter
         {
-            private readonly IOrderOption option;
+            private readonly IOption option;
 
-            public OrderOptionParameter(IOrderOption option)
+            public OrderOptionParameter(IOption option)
             {
                 this.option = option;
             }
@@ -63,7 +63,7 @@ namespace Egil.BlazorComponents.Bootstrap.Grid.Parameters
 
             public override IEnumerator<string> GetEnumerator()
             {
-                yield return string.Concat(OptionPrefix, OptionSeparator, option.Value);
+                yield return string.Concat(OptionPrefix, Option.OptionSeparator, option.Value);
             }
         }
 
@@ -91,10 +91,7 @@ namespace Egil.BlazorComponents.Bootstrap.Grid.Parameters
         {
             public override int Count => 0;
 
-            public override IEnumerator<string> GetEnumerator()
-            {
-                yield break;
-            }
+            public override IEnumerator<string> GetEnumerator() { yield break; }
         }
     }
 }

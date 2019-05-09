@@ -1,11 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Egil.BlazorComponents.Bootstrap.Grid.Options
 {
+    [DebuggerDisplay("OptionSet with {Count} options of {OptionTypeName}")]
     public class OptionSet<TOption> : IOptionSet<TOption> where TOption : IOption
     {
+        private static string OptionTypeName => typeof(TOption).Name;
         private readonly HashSet<TOption> options = new HashSet<TOption>(OptionEqualityComparer<TOption>.Instance);
 
         public int Count => options.Count;

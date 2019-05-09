@@ -7,15 +7,18 @@ namespace Egil.BlazorComponents.Bootstrap.Tests
     public sealed class CombineAttemptResult
     {
         public IOptionSet<IOption> ResultSet { get; }
+        public string CompilerError { get; }
 
         private CombineAttemptResult(IOptionSet<IOption> resultSet)
         {
             ResultSet = resultSet;
+            CompilerError = string.Empty;
         }
 
         private CombineAttemptResult(RuntimeBinderException ex)
         {
             ResultSet = OptionSet<IOption>.Empty;
+            CompilerError = ex.Message;
         }
 
         public CombineAttemptResult ThatContains(params IOption[] options)
