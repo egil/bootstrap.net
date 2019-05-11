@@ -12,7 +12,13 @@
     bool NoGutter { get; set; } = false;
 
     [Parameter]
-    RowAlignmentParameter Align { get; set; } = RowAlignmentParameter.None;
+    AlignmentParameter<RowAlignment> Align { get; set; } = AlignmentParameter<RowAlignment>.None;
+
+    [Parameter]
+    SpacingParameter<PaddingSpacing> Padding { get; set; } = SpacingParameter<PaddingSpacing>.None;
+
+    [Parameter]
+    SpacingParameter<MarginSpacing> Margin { get; set; } = SpacingParameter<MarginSpacing>.None;
 
     string CssClasses
     {

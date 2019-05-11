@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Egil.BlazorComponents.Bootstrap.Grid.Options;
+using Egil.BlazorComponents.Bootstrap.Grid.Options.CommonOptions;
 using Egil.BlazorComponents.Bootstrap.Tests.Utilities;
 using Shouldly;
 using Xunit;
-using static Egil.BlazorComponents.Bootstrap.Grid.Options.OptionFactory.LowerCase.Abbr;
+using static Egil.BlazorComponents.Bootstrap.Grid.Options.Factory.LowerCase.Abbr;
+using static Egil.BlazorComponents.Bootstrap.Grid.Options.SpacingOptions.Factory.LowerCase;
 
 namespace Egil.BlazorComponents.Bootstrap.Tests.Grid.Options
 {
@@ -16,7 +18,8 @@ namespace Egil.BlazorComponents.Bootstrap.Tests.Grid.Options
             between, md-between, // justify
             sm, auto, sm-auto, // span
             first, last, lg-first, md-last, // order
-            (GridNumber)12, sm-1, // grid breakpoint 
+            sm-1, // common TODO NUMBER
+            left-(-4), left-lg-3 // spacing
         };
 
         public static IEnumerable<object[]> AllOptionsFixtureData => AllOptions.ToFixtureData();
@@ -34,7 +37,9 @@ namespace Egil.BlazorComponents.Bootstrap.Tests.Grid.Options
             get
             {
                 var pairs = SutOptions.AllPairs().ToArray();
-                var reversePairs = pairs.ReversePairs().Where(x => x.first != x.second);
+                var reversePairs = pairs.ReversePairs();
+                // when a reversed pair contain the same two options, the pair is already in 'pairs' array
+                //.Where(x => x.first != x.second); 
                 return pairs.Concat(reversePairs).ToFixtureData(x => new object[] { x.Item1, x.Item2 });
             }
         }
@@ -87,7 +92,7 @@ namespace Egil.BlazorComponents.Bootstrap.Tests.Grid.Options
         }
     }
 
-    public abstract class GridOptionCombineFixture<TSutOption> : OptionCombineFixture<TSutOption>
+    public abstract class NumberOptionCombineFixture<TSutOption> : OptionCombineFixture<TSutOption>
         where TSutOption : class, IOption
     {
         [Theory(DisplayName = "Options should be combineable with number")]
@@ -98,18 +103,22 @@ namespace Egil.BlazorComponents.Bootstrap.Tests.Grid.Options
 
             num.CombinedWith(sutOption)
                 .ShouldResultInSetOf<TSutOption>()
-                .ThatContains(sutOption, (GridNumber)5);
+                .ThatContains(sutOption, (Number)5);
 
             sutOption.CombinedWith(num)
                 .ShouldResultInSetOf<TSutOption>()
-                .ThatContains((GridNumber)5, sutOption);
+                .ThatContains((Number)5, sutOption);
         }
+    }
 
-        [Theory(DisplayName = "Options should be combineable with OptionSet of IGridBreakpoint types")]
+    public abstract class GridOptionCombineFixture<TSutOption> : NumberOptionCombineFixture<TSutOption>
+        where TSutOption : class, IOption
+    {
+        [Theory(DisplayName = "Options should be combineable with OptionSet of IBreakpointWithNumber types")]
         [MemberData(nameof(SutOptionsFixtureData))]
         public void OptionShouldBeCombineableWithIGridBreakpointOptionSet(TSutOption sutOption)
         {
-            IOptionSet<IGridBreakpoint> set = new OptionSet<IGridBreakpoint>();
+            IOptionSet<IBreakpointWithNumber> set = new OptionSet<IBreakpointWithNumber>();
 
             set.CombinedWith(sutOption)
                 .ShouldResultInSetOf<TSutOption>()

@@ -1,8 +1,9 @@
 ﻿using Egil.BlazorComponents.Bootstrap.Grid.Options.AlignmentOptions;
+using Egil.BlazorComponents.Bootstrap.Grid.Options.CommonOptions;
 
 namespace Egil.BlazorComponents.Bootstrap.Grid.Options
 {
-    public static class OptionFactory
+    public static class Factory
     {
         public static readonly Breakpoint Small = new Breakpoint(BreakpointType.Small);
         public static readonly Breakpoint Medium = new Breakpoint(BreakpointType.Medium);

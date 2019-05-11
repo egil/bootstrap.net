@@ -1,9 +1,10 @@
 ﻿using System.Diagnostics;
+using Egil.BlazorComponents.Bootstrap.Grid.Options.CommonOptions;
 
 namespace Egil.BlazorComponents.Bootstrap.Grid.Options
 {
     [DebuggerDisplay("Auto: {Value}")]
-    public class AutoOption : ISpanOption
+    public class AutoOption : IAutoOption, ISpanOption, ISpacingOption
     {
         private const string OptionText = "auto";
 
@@ -14,14 +15,19 @@ namespace Egil.BlazorComponents.Bootstrap.Grid.Options
             return new BreakpointAuto(breakpoint, option);
         }
 
-        public static OptionSet<ISpanOption> operator |(AutoOption option1, int gridNumber)
+        public static OptionSet<IAutoOption> operator |(AutoOption option1, int number)
         {
-            return new OptionSet<ISpanOption>() { option1, (GridNumber)gridNumber };
+            return new OptionSet<IAutoOption>() { option1, (Number)number };
         }
 
-        public static OptionSet<ISpanOption> operator |(int gridNumber, AutoOption option1)
+        public static OptionSet<IAutoOption> operator |(int number, AutoOption option1)
         {
-            return new OptionSet<ISpanOption>() { option1, (GridNumber)gridNumber };
+            return new OptionSet<IAutoOption>() { option1, (Number)number };
+        }
+
+        public static OptionSet<IAutoOption> operator |(AutoOption option1, IAutoOption option2)
+        {
+            return new OptionSet<IAutoOption>() { option1, option2 };
         }
 
         public static OptionSet<ISpanOption> operator |(AutoOption option1, ISpanOption option2)
@@ -29,17 +35,34 @@ namespace Egil.BlazorComponents.Bootstrap.Grid.Options
             return new OptionSet<ISpanOption>() { option1, option2 };
         }
 
-        public static OptionSet<ISpanOption> operator |(OptionSet<IGridBreakpoint> set, AutoOption option)
+        public static OptionSet<ISpacingOption> operator |(AutoOption option1, ISpacingOption option2)
         {
-            OptionSet<ISpanOption> spanSet = new OptionSet<ISpanOption>(set);
-            spanSet.Add(option);
-            return spanSet;
+            return new OptionSet<ISpacingOption>() { option1, option2 };
+        }
+
+        public static OptionSet<IAutoOption> operator |(OptionSet<IAutoOption> set, AutoOption option)
+        {
+            set.Add(option);
+            return set;
         }
 
         public static OptionSet<ISpanOption> operator |(OptionSet<ISpanOption> set, AutoOption option)
         {
             set.Add(option);
             return set;
+        }
+
+        public static OptionSet<ISpacingOption> operator |(OptionSet<ISpacingOption> set, AutoOption option)
+        {
+            set.Add(option);
+            return set;
+        }
+
+        public static OptionSet<ISpanOption> operator |(OptionSet<IBreakpointWithNumber> set, AutoOption option)
+        {
+            OptionSet<ISpanOption> spanSet = new OptionSet<ISpanOption>(set);
+            spanSet.Add(option);
+            return spanSet;
         }
     }
 }

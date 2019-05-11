@@ -10,17 +10,17 @@ namespace Egil.BlazorComponents.Bootstrap.Grid
     public class NumberRangeData : DataAttribute
     {
         private readonly int start;
-        private readonly int end;
+        private readonly int count;
 
         public NumberRangeData(int start, int end)
         {
             this.start = start;
-            this.end = end;
+            this.count = end - start + 1;
         }
 
         public override IEnumerable<object[]> GetData(MethodInfo testMethod)
         {
-            return Enumerable.Range(start, end).Select(x => new object[] { x });
+            return Enumerable.Range(start, count).Select(x => new object[] { x });
         }
     }
 }

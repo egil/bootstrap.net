@@ -2,7 +2,7 @@
 using Egil.BlazorComponents.Bootstrap.Tests.Utilities;
 using Shouldly;
 using Xunit;
-using static Egil.BlazorComponents.Bootstrap.Grid.Options.OptionFactory.LowerCase.Abbr;
+using static Egil.BlazorComponents.Bootstrap.Grid.Options.Factory.LowerCase.Abbr;
 
 namespace Egil.BlazorComponents.Bootstrap.Tests.Grid.Options.AlignmentOptions
 {

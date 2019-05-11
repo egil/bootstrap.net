@@ -1,4 +1,5 @@
 ﻿using Egil.BlazorComponents.Bootstrap.Grid.Options;
+using Egil.BlazorComponents.Bootstrap.Grid.Options.CommonOptions;
 using Egil.BlazorComponents.Bootstrap.Tests.Utilities;
 using Shouldly;
 using Xunit;

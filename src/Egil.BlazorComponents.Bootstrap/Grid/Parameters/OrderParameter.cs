@@ -1,4 +1,5 @@
 ﻿using Egil.BlazorComponents.Bootstrap.Grid.Options;
+using Egil.BlazorComponents.Bootstrap.Grid.Options.CommonOptions;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -10,7 +11,7 @@ namespace Egil.BlazorComponents.Bootstrap.Grid.Parameters
 
         public static implicit operator OrderParameter(int number)
         {
-            return new OrderOptionParameter((GridNumber)number);
+            return new OrderOptionParameter(Number.ToGridNumber(number));
         }
 
         public static implicit operator OrderParameter(FirstOption option)
@@ -23,7 +24,7 @@ namespace Egil.BlazorComponents.Bootstrap.Grid.Parameters
             return new OrderOptionParameter(option);
         }
 
-        public static implicit operator OrderParameter(GridBreakpoint option)
+        public static implicit operator OrderParameter(BreakpointWithNumber option)
         {
             return new OrderOptionParameter(option);
         }
@@ -43,7 +44,7 @@ namespace Egil.BlazorComponents.Bootstrap.Grid.Parameters
             return new OrderOptionSetParameter(set);
         }
 
-        public static implicit operator OrderParameter(OptionSet<IGridBreakpoint> set)
+        public static implicit operator OrderParameter(OptionSet<IBreakpointWithNumber> set)
         {
             return new OrderOptionSetParameter(set);
         }

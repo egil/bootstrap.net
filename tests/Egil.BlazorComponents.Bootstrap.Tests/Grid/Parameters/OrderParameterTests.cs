@@ -5,7 +5,7 @@ using Microsoft.CSharp.RuntimeBinder;
 using Shouldly;
 using System;
 using Xunit;
-using static Egil.BlazorComponents.Bootstrap.Grid.Options.OptionFactory.LowerCase.Abbr;
+using static Egil.BlazorComponents.Bootstrap.Grid.Options.Factory.LowerCase.Abbr;
 
 namespace Egil.BlazorComponents.Bootstrap.Grid
 {

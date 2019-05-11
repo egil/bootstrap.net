@@ -9,14 +9,10 @@ namespace Egil.BlazorComponents.Bootstrap.Tests.Utilities
 
     public static class OptionFixtureExtensions
     {
-        public static void ShouldBeCombinationOf(this string value, IOption option1, IOption option2)
+        public static void ShouldBeCombinationOf(this string value, params IOption[] options)
         {
-            value.ShouldBe($"{option1.Value}{Option.OptionSeparator}{option2.Value}");
-        }
-
-        public static void ShouldBeCombinationOf(this string value, IOption option1, int number)
-        {
-            value.ShouldBe($"{option1.Value}{Option.OptionSeparator}{number}");
+            var expected = string.Join(Option.OptionSeparator, options.Select(option => option.Value));
+            value.ShouldBe(expected);
         }
 
         /// <summary>

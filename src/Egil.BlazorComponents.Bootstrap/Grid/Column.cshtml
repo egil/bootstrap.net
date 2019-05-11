@@ -18,8 +18,13 @@
     OffsetParameter Offset { get; set; } = OffsetParameter.None;
 
     [Parameter]
-    ColAlignmentParameter Align { get; set; } = ColAlignmentParameter.None;
+    AlignmentParameter<ColumnAlignment> Align { get; set; } = AlignmentParameter<ColumnAlignment>.None;
+    
+    [Parameter]
+    SpacingParameter<PaddingSpacing> Padding { get; set; } = SpacingParameter<PaddingSpacing>.None;
 
+    [Parameter]
+    SpacingParameter<MarginSpacing> Margin { get; set; } = SpacingParameter<MarginSpacing>.None;
 
     private string CssClass => string.Join(" ", Enumerable.Concat(Span, Order));
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using Egil.BlazorComponents.Bootstrap.Grid.Options.CommonOptions;
 
 namespace Egil.BlazorComponents.Bootstrap.Grid.Options.AlignmentOptions
 {

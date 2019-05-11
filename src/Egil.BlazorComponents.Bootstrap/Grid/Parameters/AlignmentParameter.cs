@@ -1,31 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Egil.BlazorComponents.Bootstrap.Grid.Options;
 using Egil.BlazorComponents.Bootstrap.Grid.Options.AlignmentOptions;
 
 namespace Egil.BlazorComponents.Bootstrap.Grid.Parameters
 {
-
-    public abstract class RowAlignmentParameter : Parameter
+    public sealed class ColumnAlignment : IParameterPrefix
     {
-        protected const string OptionPrefix = "align-items";
+        public string Prefix => "align-self";
+    }
 
-        public static implicit operator RowAlignmentParameter(AlignmentOption option)
+    public sealed class RowAlignment : IParameterPrefix
+    {
+        public string Prefix => "align-items";
+    }
+
+    public abstract class AlignmentParameter<TParamPrefix> : Parameter
+        where TParamPrefix : IParameterPrefix, new()
+    {
+        protected static readonly TParamPrefix SpacingType = new TParamPrefix();
+
+        public static implicit operator AlignmentParameter<TParamPrefix>(AlignmentOption option)
         {
             return new OptionParameter(option);
         }
 
-        public static implicit operator RowAlignmentParameter(OptionSet<IAlignmentOption> set)
+        public static implicit operator AlignmentParameter<TParamPrefix>(OptionSet<IAlignmentOption> set)
         {
             return new OptionSetParameter(set);
         }
 
-        public static readonly RowAlignmentParameter None = new NoneParameter();
+        public static readonly AlignmentParameter<TParamPrefix> None = new NoneParameter();
 
-        class OptionParameter : RowAlignmentParameter
+        class OptionParameter : AlignmentParameter<TParamPrefix>
         {
             private readonly IOption option;
 
@@ -38,11 +44,11 @@ namespace Egil.BlazorComponents.Bootstrap.Grid.Parameters
 
             public override IEnumerator<string> GetEnumerator()
             {
-                yield return string.Concat(OptionPrefix, Option.OptionSeparator, option.Value);
+                yield return string.Concat(SpacingType.Prefix, Option.OptionSeparator, option.Value);
             }
         }
 
-        class OptionSetParameter : RowAlignmentParameter
+        class OptionSetParameter : AlignmentParameter<TParamPrefix>
         {
             private readonly IOptionSet<IOption> set;
 
@@ -57,12 +63,12 @@ namespace Egil.BlazorComponents.Bootstrap.Grid.Parameters
             {
                 foreach (var option in set)
                 {
-                    yield return string.Concat(OptionPrefix, Option.OptionSeparator, option.Value);
+                    yield return string.Concat(SpacingType.Prefix, Option.OptionSeparator, option.Value);
                 }
             }
         }
 
-        class NoneParameter : RowAlignmentParameter
+        class NoneParameter : AlignmentParameter<TParamPrefix>
         {
             public override int Count => 0;
 

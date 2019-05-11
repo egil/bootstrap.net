@@ -2,6 +2,7 @@
 using Egil.BlazorComponents.Bootstrap.Grid.Options;
 using Egil.BlazorComponents.Bootstrap.Grid.Parameters;
 using System.Linq;
+using Egil.BlazorComponents.Bootstrap.Grid.Options.CommonOptions;
 
 namespace Egil.BlazorComponents.Bootstrap.Tests.Utilities
 {
@@ -9,8 +10,7 @@ namespace Egil.BlazorComponents.Bootstrap.Tests.Utilities
     {
         public static void ShouldContainOptionsWithPrefix(this Parameter parameter, string prefix, int number)
         {
-            parameter.Single().ShouldBe($"{prefix}{Option.OptionSeparator}{number}");
-            parameter.Count.ShouldBe(1);
+            parameter.ShouldContainOptionsWithPrefix(prefix, (Number)number);
         }
 
         public static void ShouldContainOptionsWithPrefix(this Parameter parameter, string prefix, IOption option)

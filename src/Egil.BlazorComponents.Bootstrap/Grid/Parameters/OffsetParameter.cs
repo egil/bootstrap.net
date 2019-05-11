@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Egil.BlazorComponents.Bootstrap.Grid.Options;
+using Egil.BlazorComponents.Bootstrap.Grid.Options.CommonOptions;
 
 namespace Egil.BlazorComponents.Bootstrap.Grid.Parameters
 {
@@ -13,10 +14,10 @@ namespace Egil.BlazorComponents.Bootstrap.Grid.Parameters
 
         public static implicit operator OffsetParameter(int number)
         {
-            return new OffsetOptionParameter((GridNumber)number);
+            return new OffsetOptionParameter(Number.ToGridNumber(number));
         }
 
-        public static implicit operator OffsetParameter(GridBreakpoint option)
+        public static implicit operator OffsetParameter(BreakpointWithNumber option)
         {
             return new OffsetOptionParameter(option);
         }
@@ -26,7 +27,7 @@ namespace Egil.BlazorComponents.Bootstrap.Grid.Parameters
             return new OffsetOptionSetParameter(set);
         }
 
-        public static implicit operator OffsetParameter(OptionSet<IGridBreakpoint> set)
+        public static implicit operator OffsetParameter(OptionSet<IBreakpointWithNumber> set)
         {
             return new OffsetOptionSetParameter(set);
         }

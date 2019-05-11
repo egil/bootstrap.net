@@ -24,9 +24,8 @@ namespace Egil.BlazorComponents.Bootstrap.Tests
         public CombineAttemptResult ThatContains(params IOption[] options)
         {
             foreach (var option in options)
-            {
-                ResultSet.ShouldContain(option);
-            }
+                ResultSet.ShouldContain(x => x.Value == option.Value);
+
             return this;
         }
 

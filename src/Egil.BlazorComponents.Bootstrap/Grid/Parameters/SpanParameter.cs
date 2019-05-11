@@ -1,4 +1,5 @@
 ﻿using Egil.BlazorComponents.Bootstrap.Grid.Options;
+using Egil.BlazorComponents.Bootstrap.Grid.Options.CommonOptions;
 using System.Collections.Generic;
 
 namespace Egil.BlazorComponents.Bootstrap.Grid.Parameters
@@ -16,7 +17,7 @@ namespace Egil.BlazorComponents.Bootstrap.Grid.Parameters
 
         public static implicit operator SpanParameter(int number)
         {
-            return new SpanOptionParameter((GridNumber)number);
+            return new SpanOptionParameter(Number.ToGridNumber(number));
         }
 
         public static implicit operator SpanParameter(Breakpoint option)
@@ -24,7 +25,7 @@ namespace Egil.BlazorComponents.Bootstrap.Grid.Parameters
             return new SpanOptionParameter(option);
         }
 
-        public static implicit operator SpanParameter(GridBreakpoint option)
+        public static implicit operator SpanParameter(BreakpointWithNumber option)
         {
             return new SpanOptionParameter(option);
         }
@@ -44,7 +45,7 @@ namespace Egil.BlazorComponents.Bootstrap.Grid.Parameters
             return new SpanOptionSetParameter(set);
         }
 
-        public static implicit operator SpanParameter(OptionSet<IGridBreakpoint> set)
+        public static implicit operator SpanParameter(OptionSet<IBreakpointWithNumber> set)
         {
             return new SpanOptionSetParameter(set);
         }

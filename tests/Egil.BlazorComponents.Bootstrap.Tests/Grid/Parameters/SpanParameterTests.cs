@@ -6,11 +6,11 @@ using Shouldly;
 using System;
 using System.Linq;
 using Xunit;
-using static Egil.BlazorComponents.Bootstrap.Grid.Options.OptionFactory.LowerCase.Abbr;
+using static Egil.BlazorComponents.Bootstrap.Grid.Options.Factory.LowerCase.Abbr;
 
 namespace Egil.BlazorComponents.Bootstrap.Grid
 {
-    public class SpanOptionTests : ParameterFixture<ISpanOption>
+    public class SpanParameterTests : ParameterFixture<ISpanOption>
     {
         private static readonly string ParamPrefix = "col";
         private SpanParameter? sut;

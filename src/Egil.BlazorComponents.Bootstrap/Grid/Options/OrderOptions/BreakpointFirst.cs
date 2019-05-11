@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using Egil.BlazorComponents.Bootstrap.Grid.Options.AlignmentOptions;
+using Egil.BlazorComponents.Bootstrap.Grid.Options.CommonOptions;
 
 namespace Egil.BlazorComponents.Bootstrap.Grid.Options
 {
@@ -12,12 +13,12 @@ namespace Egil.BlazorComponents.Bootstrap.Grid.Options
 
         public static OptionSet<IOrderOption> operator |(BreakpointFirst option1, int gridNumber)
         {
-            return new OptionSet<IOrderOption>() { option1, (GridNumber)gridNumber };
+            return new OptionSet<IOrderOption>() { option1, (Number)gridNumber };
         }
 
         public static OptionSet<IOrderOption> operator |(int gridNumber, BreakpointFirst option1)
         {
-            return new OptionSet<IOrderOption>() { option1, (GridNumber)gridNumber };
+            return new OptionSet<IOrderOption>() { option1, (Number)gridNumber };
         }
 
 
@@ -33,7 +34,7 @@ namespace Egil.BlazorComponents.Bootstrap.Grid.Options
             return set;
         }
 
-        public static OptionSet<IOrderOption> operator |(OptionSet<IGridBreakpoint> set, BreakpointFirst option)
+        public static OptionSet<IOrderOption> operator |(OptionSet<IBreakpointWithNumber> set, BreakpointFirst option)
         {
             OptionSet<IOrderOption> spanSet = new OptionSet<IOrderOption>(set);
             spanSet.Add(option);
