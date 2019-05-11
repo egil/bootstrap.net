@@ -1,10 +1,13 @@
 ﻿using Egil.BlazorComponents.Bootstrap.Grid.Options.AlignmentOptions;
 using Egil.BlazorComponents.Bootstrap.Grid.Options.CommonOptions;
+using Egil.BlazorComponents.Bootstrap.Grid.Parameters;
 
 namespace Egil.BlazorComponents.Bootstrap.Grid.Options
 {
     public static class Factory
     {
+        public static readonly ContainerTypeParameter Fluid = ContainerTypeParameter.Fluid;
+
         public static readonly Breakpoint Small = new Breakpoint(BreakpointType.Small);
         public static readonly Breakpoint Medium = new Breakpoint(BreakpointType.Medium);
         public static readonly Breakpoint Large = new Breakpoint(BreakpointType.Large);
@@ -22,6 +25,8 @@ namespace Egil.BlazorComponents.Bootstrap.Grid.Options
 
         public static class LowerCase
         {
+            public static readonly ContainerTypeParameter fluid = Fluid;
+
             public static readonly Breakpoint small = Small;
             public static readonly Breakpoint medium = Medium;
             public static readonly Breakpoint large = Large;
@@ -39,6 +44,8 @@ namespace Egil.BlazorComponents.Bootstrap.Grid.Options
 
             public class Abbr
             {
+                public static readonly ContainerTypeParameter fluid = Fluid;
+
                 public static readonly Breakpoint sm = Small;
                 public static readonly Breakpoint md = Medium;
                 public static readonly Breakpoint lg = Large;

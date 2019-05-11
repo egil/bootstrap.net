@@ -40,4 +40,8 @@
     <ProjectReference Include="..\..\src\Egil.BlazorComponents.Bootstrap\Egil.BlazorComponents.Bootstrap.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Grid\Options\ContainerOptions\" />
+  </ItemGroup>
+
 </Project>

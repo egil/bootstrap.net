@@ -4,12 +4,12 @@ using Egil.BlazorComponents.Bootstrap.Grid.Options.AlignmentOptions;
 
 namespace Egil.BlazorComponents.Bootstrap.Grid.Parameters
 {
-    public sealed class ColumnAlignment : IParameterPrefix
+    public sealed class VerticalColumnAlignment : IParameterPrefix
     {
         public string Prefix => "align-self";
     }
 
-    public sealed class RowAlignment : IParameterPrefix
+    public sealed class VerticalRowAlignment : IParameterPrefix
     {
         public string Prefix => "align-items";
     }
@@ -20,6 +20,11 @@ namespace Egil.BlazorComponents.Bootstrap.Grid.Parameters
         protected static readonly TParamPrefix SpacingType = new TParamPrefix();
 
         public static implicit operator AlignmentParameter<TParamPrefix>(AlignmentOption option)
+        {
+            return new OptionParameter(option);
+        }
+
+        public static implicit operator AlignmentParameter<TParamPrefix>(BreakpointAlignmentOption option)
         {
             return new OptionParameter(option);
         }

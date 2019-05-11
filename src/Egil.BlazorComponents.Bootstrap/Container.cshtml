@@ -1,10 +1,12 @@
-﻿<div class="container@(Type==ContainerType.Fluid ? "-fluid" : string.Empty)">
+﻿@using Egil.BlazorComponents.Bootstrap.Grid.Parameters
+
+<div class="@(Type.Single())">
     @ChildContent
 </div>
 
 @functions {
     [Parameter]
-    ContainerType Type { get; set; } = ContainerType.Responive;
+    ContainerTypeParameter Type { get; set; } = ContainerTypeParameter.Default;
 
     [Parameter]
     RenderFragment ChildContent { get; set; }

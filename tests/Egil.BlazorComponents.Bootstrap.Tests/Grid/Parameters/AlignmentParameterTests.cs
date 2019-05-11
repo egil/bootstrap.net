@@ -10,12 +10,12 @@ using static Egil.BlazorComponents.Bootstrap.Grid.Options.Factory.LowerCase.Abbr
 
 namespace Egil.BlazorComponents.Bootstrap.Tests.Grid.Parameters
 {
-    public class RowAlignmentParameterTests : AlignmentParameterTests<RowAlignment>
+    public class RowAlignmentParameterTests : AlignmentParameterTests<VerticalRowAlignment>
     {
         protected override string ParamPrefix => "align-items";
     }
 
-    public class ColumnAlignmentParameterTests : AlignmentParameterTests<ColumnAlignment>
+    public class ColumnAlignmentParameterTests : AlignmentParameterTests<VerticalColumnAlignment>
     {
         protected override string ParamPrefix => "align-self";
     }
@@ -43,6 +43,14 @@ namespace Egil.BlazorComponents.Bootstrap.Tests.Grid.Parameters
         public void CanHaveAlignmentWithIndexSpecifiedByAssignment()
         {
             var option = start;
+            sut = option;
+            sut.ShouldContainOptionsWithPrefix(ParamPrefix, option);
+        }
+
+        [Fact(DisplayName = "Alignment can have a breakpoint-alignment-options assigned")]
+        public void CanHaveBreakpointAlignmentWithIndexSpecifiedByAssignment()
+        {
+            var option = lg - start;
             sut = option;
             sut.ShouldContainOptionsWithPrefix(ParamPrefix, option);
         }

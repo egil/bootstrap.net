@@ -14,13 +14,13 @@ namespace Egil.BlazorComponents.Bootstrap.Tests.Grid.Parameters
     public class JustifyParameterTests : ParameterFixture<IJustifyOption, IAlignmentOption>
     {
         private static readonly string ParamPrefix = "justify-content";
-        private JustifyParameter? sut;
+        private HorizontalAlignmentParameter? sut;
 
         [Fact(DisplayName = "JustifyParameter.None returns empty string")]
         public void NoOptionsResultsInEmptyValue()
         {
-            JustifyParameter.None.ShouldBeEmpty();
-            JustifyParameter.None.Count.ShouldBe(0);
+            HorizontalAlignmentParameter.None.ShouldBeEmpty();
+            HorizontalAlignmentParameter.None.Count.ShouldBe(0);
         }
 
         [Fact(DisplayName = "Justify can have a justify-options assigned")]

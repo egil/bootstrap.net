@@ -4,33 +4,33 @@ using Egil.BlazorComponents.Bootstrap.Grid.Options.AlignmentOptions;
 
 namespace Egil.BlazorComponents.Bootstrap.Grid.Parameters
 {
-    public abstract class JustifyParameter : Parameter
+    public abstract class HorizontalAlignmentParameter : Parameter
     {
         protected const string OptionPrefix = "justify-content";
 
-        public static implicit operator JustifyParameter(JustifyOption option)
+        public static implicit operator HorizontalAlignmentParameter(JustifyOption option)
         {
             return new OptionParameter(option);
         }
 
-        public static implicit operator JustifyParameter(AlignmentOption option)
+        public static implicit operator HorizontalAlignmentParameter(AlignmentOption option)
         {
             return new OptionParameter(option);
         }
 
-        public static implicit operator JustifyParameter(OptionSet<IAlignmentOption> set)
+        public static implicit operator HorizontalAlignmentParameter(OptionSet<IAlignmentOption> set)
         {
             return new OptionSetParameter(set);
         }
 
-        public static implicit operator JustifyParameter(OptionSet<IJustifyOption> set)
+        public static implicit operator HorizontalAlignmentParameter(OptionSet<IJustifyOption> set)
         {
             return new OptionSetParameter(set);
         }
 
-        public static readonly JustifyParameter None = new NoneParameter();
+        public static readonly HorizontalAlignmentParameter None = new NoneParameter();
 
-        class OptionParameter : JustifyParameter
+        class OptionParameter : HorizontalAlignmentParameter
         {
             private readonly IOption option;
 
@@ -47,7 +47,7 @@ namespace Egil.BlazorComponents.Bootstrap.Grid.Parameters
             }
         }
 
-        class OptionSetParameter : JustifyParameter
+        class OptionSetParameter : HorizontalAlignmentParameter
         {
             private readonly IOptionSet<IOption> set;
 
@@ -67,7 +67,7 @@ namespace Egil.BlazorComponents.Bootstrap.Grid.Parameters
             }
         }
 
-        class NoneParameter : JustifyParameter
+        class NoneParameter : HorizontalAlignmentParameter
         {
             public override int Count => 0;
 

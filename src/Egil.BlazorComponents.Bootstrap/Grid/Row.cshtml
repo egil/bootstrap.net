@@ -9,10 +9,10 @@
     RenderFragment ChildContent { get; set; }
 
     [Parameter]
-    bool NoGutter { get; set; } = false;
+    NoGutterParameter NoGutter { get; set; } = NoGutterParameter.Default;
 
     [Parameter]
-    AlignmentParameter<RowAlignment> Align { get; set; } = AlignmentParameter<RowAlignment>.None;
+    AlignmentParameter<VerticalRowAlignment> VerticalAlign { get; set; } = AlignmentParameter<VerticalRowAlignment>.None;
 
     [Parameter]
     SpacingParameter<PaddingSpacing> Padding { get; set; } = SpacingParameter<PaddingSpacing>.None;
@@ -20,14 +20,14 @@
     [Parameter]
     SpacingParameter<MarginSpacing> Margin { get; set; } = SpacingParameter<MarginSpacing>.None;
 
+    static readonly string[] DefaultCssClasses = new[] { "row" };
+
     string CssClasses
     {
         get
         {
-            var classes = "row";
-            classes = NoGutter ? $"{classes} no-gutters" : classes;
-
-            return classes;
+            var parameters = new IReadOnlyCollection<string>[] { DefaultCssClasses, NoGutter, VerticalAlign, Padding, Margin }.SelectMany(x => x);
+            return string.Join(" ", parameters);
         }
     }
 
