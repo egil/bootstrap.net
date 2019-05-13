@@ -1,0 +1,40 @@
+﻿@using Egil.RazorComponents.Bootstrap.Parameters
+
+<div class=@CssClasses>
+    @ChildContent
+</div>
+
+@functions {
+    [Parameter]
+    RenderFragment ChildContent { get; set; }
+
+    [Parameter]
+    SpanParameter Span { get; set; } = SpanParameter.Default;
+
+    [Parameter]
+    OrderParameter Order { get; set; } = OrderParameter.None;
+
+    [Parameter]
+    OffsetParameter Offset { get; set; } = OffsetParameter.None;
+
+    [Parameter]
+    AlignmentParameter<VerticalColumnAlignment> VerticalAlign { get; set; } = AlignmentParameter<VerticalColumnAlignment>.None;
+
+    [Parameter]
+    HorizontalAlignmentParameter Align { get; set; } = HorizontalAlignmentParameter.None;
+
+    [Parameter]
+    SpacingParameter<PaddingSpacing> Padding { get; set; } = SpacingParameter<PaddingSpacing>.None;
+
+    [Parameter]
+    SpacingParameter<MarginSpacing> Margin { get; set; } = SpacingParameter<MarginSpacing>.None;
+
+    string CssClasses
+    {
+        get
+        {
+            var parameters = new IReadOnlyCollection<string>[] { Span, Order, Offset, VerticalAlign, Align, Padding, Margin }.SelectMany(x => x);
+            return string.Join(" ", parameters);
+        }
+    }
+}

@@ -1,0 +1,13 @@
+﻿@using Egil.RazorComponents.Bootstrap.Parameters
+
+<div class="@(Type.Single())">
+    @ChildContent
+</div>
+
+@functions {
+    [Parameter]
+    ContainerTypeParameter Type { get; set; } = ContainerTypeParameter.Default;
+
+    [Parameter]
+    RenderFragment ChildContent { get; set; }
+}
