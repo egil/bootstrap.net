@@ -3,7 +3,8 @@ using System.Collections.Generic;
 
 namespace Egil.RazorComponents.Bootstrap.Parameters
 {
-    public abstract class Parameter : IReadOnlyCollection<string>
+
+    public abstract class ParameterBase : IParameter
     {
         public abstract int Count { get; }
 

@@ -1,6 +1,7 @@
 ﻿@using Egil.RazorComponents.Bootstrap.Parameters
+@inherits BootstrapComponent
 
-<div class="@(Type.Single())">
+<div class=@CssClassValue>
     @ChildContent
 </div>
 
@@ -10,4 +11,6 @@
 
     [Parameter]
     RenderFragment ChildContent { get; set; }
+
+    protected override IEnumerable<IParameter> CssClassSources => new IParameter[] { Type };
 }

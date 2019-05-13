@@ -14,7 +14,7 @@ namespace Egil.RazorComponents.Bootstrap.Parameters
         public string Prefix => "align-items";
     }
 
-    public abstract class AlignmentParameter<TParamPrefix> : Parameter
+    public abstract class AlignmentParameter<TParamPrefix> : ParameterBase, IParameter
         where TParamPrefix : IParameterPrefix, new()
     {
         protected static readonly TParamPrefix SpacingType = new TParamPrefix();

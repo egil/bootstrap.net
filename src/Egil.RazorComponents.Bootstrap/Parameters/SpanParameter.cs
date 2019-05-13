@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Egil.RazorComponents.Bootstrap.Parameters
 {
-    public class SpanParameter : Parameter
+    public class SpanParameter : ParameterBase, IParameter
     {
         protected const string OptionPrefix = "col";
 

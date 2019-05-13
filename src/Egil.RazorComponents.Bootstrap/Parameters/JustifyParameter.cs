@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Egil.RazorComponents.Bootstrap.Parameters
 {
-    public abstract class HorizontalAlignmentParameter : Parameter
+    public abstract class HorizontalAlignmentParameter : ParameterBase, IParameter
     {
         protected const string OptionPrefix = "justify-content";
 

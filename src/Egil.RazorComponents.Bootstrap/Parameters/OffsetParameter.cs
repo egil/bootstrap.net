@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Egil.RazorComponents.Bootstrap.Parameters
 {
-    public abstract class OffsetParameter : Parameter
+    public abstract class OffsetParameter : ParameterBase, IParameter
     {
         protected const string OptionPrefix = "offset";
 

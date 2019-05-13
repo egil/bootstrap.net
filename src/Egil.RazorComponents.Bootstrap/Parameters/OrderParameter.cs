@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Egil.RazorComponents.Bootstrap.Parameters
 {
-    public abstract class OrderParameter : Parameter
+    public abstract class OrderParameter : ParameterBase, IParameter
     {
         protected const string OptionPrefix = "order";
 

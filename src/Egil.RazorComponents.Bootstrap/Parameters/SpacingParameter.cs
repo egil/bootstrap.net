@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace Egil.RazorComponents.Bootstrap.Parameters
 {
-    public abstract class SpacingParameter<TParamPrefix> : Parameter
+    public abstract class SpacingParameter<TParamPrefix> : ParameterBase, IParameter
         where TParamPrefix : IParameterPrefix, new()
     {
         private static readonly TParamPrefix SpacingType = new TParamPrefix();

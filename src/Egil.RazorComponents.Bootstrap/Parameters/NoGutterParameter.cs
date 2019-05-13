@@ -2,7 +2,7 @@
 
 namespace Egil.RazorComponents.Bootstrap.Parameters
 {
-    public class NoGutterParameter : Parameter
+    public class NoGutterParameter : ParameterBase, IParameter
     {
         private const string Value = "no-gutter";
 

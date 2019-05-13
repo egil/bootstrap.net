@@ -1,6 +1,8 @@
 ﻿@using Egil.RazorComponents.Bootstrap.Parameters
 
-<div class=@CssClasses>
+@inherits BootstrapComponent
+
+<div class=@CssClassValue>
     @ChildContent
 </div>
 
@@ -20,19 +22,9 @@
     [Parameter]
     SpacingParameter<MarginSpacing> Margin { get; set; } = SpacingParameter<MarginSpacing>.None;
 
-    static readonly string[] DefaultCssClasses = new[] { "row" };
+    protected override IEnumerable<string> StaticCssClasses => new[] { "row" };
 
-    string CssClasses
-    {
-        get
-        {
-            var parameters = new IReadOnlyCollection<string>[] { DefaultCssClasses, NoGutter, VerticalAlign, Padding, Margin }.SelectMany(x => x);
-            return string.Join(" ", parameters);
-        }
-    }
-
-    protected override void OnInit()
-    {
-        Console.WriteLine(this);
-    }
+    protected override IEnumerable<IParameter> CssClassSources => new IParameter[]{
+        NoGutter, VerticalAlign, Padding, Margin
+    };
 }

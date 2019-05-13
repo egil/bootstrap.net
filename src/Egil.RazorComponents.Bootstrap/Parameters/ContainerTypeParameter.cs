@@ -2,7 +2,7 @@
 
 namespace Egil.RazorComponents.Bootstrap.Parameters
 {
-    public class ContainerTypeParameter : Parameter
+    public class ContainerTypeParameter : ParameterBase, IParameter
     {
         private string Value { get; }
 
