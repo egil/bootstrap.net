@@ -155,5 +155,7 @@ namespace Egil.RazorComponents.Bootstrap.Tests.Parameters
         {
             Assert.Throws<RuntimeBinderException>(() => sut = set);
         }
+
+        // TODO: ensure auto related sizes are not combinable with genera spacing options
     }
 }

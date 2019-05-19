@@ -7,7 +7,17 @@ namespace Egil.RazorComponents.Bootstrap.Parameters
 {
     public class SpanParameter : ParameterBase, IParameter
     {
-        protected const string OptionPrefix = "col";
+        private const string OptionPrefix = "col";
+
+        protected string ToOptionValue(IOption option)
+        {
+            if (option is BreakpointWithNumber bwn) bwn.Number.ValidateAsSpanNumber();
+            if (option is Number n) n.ValidateAsSpanNumber();
+
+            return option is DefaultBreakpoint
+                ? OptionPrefix
+                : string.Concat(OptionPrefix, Option.OptionSeparator, option.Value);
+        }
 
         public override int Count => 1;
 
@@ -19,6 +29,11 @@ namespace Egil.RazorComponents.Bootstrap.Parameters
         public static implicit operator SpanParameter(int number)
         {
             return new OptionParameter(Number.ToSpanNumber(number));
+        }
+
+        public static implicit operator SpanParameter(DefaultBreakpoint _)
+        {
+            return Default;
         }
 
         public static implicit operator SpanParameter(Breakpoint option)
@@ -56,16 +71,16 @@ namespace Egil.RazorComponents.Bootstrap.Parameters
 
         class OptionParameter : SpanParameter
         {
-            private readonly IOption option;
+            private readonly string option;
 
             public OptionParameter(IOption option)
             {
-                this.option = option;
+                this.option = ToOptionValue(option);
             }
 
             public override IEnumerator<string> GetEnumerator()
             {
-                yield return string.Concat(OptionPrefix, Option.OptionSeparator, option.Value);
+                yield return option;
             }
         }
 
@@ -75,18 +90,37 @@ namespace Egil.RazorComponents.Bootstrap.Parameters
 
             public OptionSetParameter(IOptionSet<IOption> set)
             {
-                this.set = set.Select(option =>
+                this.set = ToOptionValueSet(set);
+            }
+
+            private List<string> ToOptionValueSet(IOptionSet<IOption> set)
+            {
+                var res = new List<string>(set.Count);
+                var defaultAdded = false;
+                var numberAdded = false;
+
+                foreach (var option in set)
                 {
-                    if (option is BreakpointWithNumber bwn) bwn.Number.ValidateAsSpanNumber();
-                    if (option is Number n) n.ValidateAsSpanNumber();
-                    return string.Concat(OptionPrefix, Option.OptionSeparator, option.Value);
-                }).ToArray();
+                    if (option is DefaultBreakpoint)
+                    {
+                        if (numberAdded) continue;
+                        else defaultAdded = true;
+                    }
+                    else if (option is Number)
+                    {
+                        if (defaultAdded) res.Remove(OptionPrefix);
+                        numberAdded = true;
+                    }
+
+                    res.Add(ToOptionValue(option));
+                }
+
+                return res;
             }
 
             public override int Count => set.Count;
 
             public override IEnumerator<string> GetEnumerator() => set.GetEnumerator();
-
         }
     }
 }

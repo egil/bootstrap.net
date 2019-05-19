@@ -8,6 +8,7 @@ namespace Egil.RazorComponents.Bootstrap.Options
     {
         public static readonly ContainerTypeParameter Fluid = ContainerTypeParameter.Fluid;
 
+        public static readonly DefaultBreakpoint ExtraSmall = new DefaultBreakpoint();
         public static readonly Breakpoint Small = new Breakpoint(BreakpointType.Small);
         public static readonly Breakpoint Medium = new Breakpoint(BreakpointType.Medium);
         public static readonly Breakpoint Large = new Breakpoint(BreakpointType.Large);
@@ -27,6 +28,7 @@ namespace Egil.RazorComponents.Bootstrap.Options
         {
             public static readonly ContainerTypeParameter fluid = Fluid;
 
+            public static readonly DefaultBreakpoint extraSmall = ExtraSmall;
             public static readonly Breakpoint small = Small;
             public static readonly Breakpoint medium = Medium;
             public static readonly Breakpoint large = Large;
@@ -46,6 +48,7 @@ namespace Egil.RazorComponents.Bootstrap.Options
             {
                 public static readonly ContainerTypeParameter fluid = Fluid;
 
+                public static readonly DefaultBreakpoint xs = ExtraSmall;
                 public static readonly Breakpoint sm = Small;
                 public static readonly Breakpoint md = Medium;
                 public static readonly Breakpoint lg = Large;

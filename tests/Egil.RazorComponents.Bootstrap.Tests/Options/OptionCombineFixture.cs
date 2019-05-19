@@ -15,7 +15,7 @@ namespace Egil.RazorComponents.Bootstrap.Tests.Options
         {
             center, sm-start, // alignment
             between, md-between, // justify
-            sm, auto, sm-auto, // span
+            xs, lg, auto, sm-auto, // span
             first, last, lg-first, md-last, // order
             sm-1, // common TODO NUMBER
             left-(-4), left-lg-3 // spacing

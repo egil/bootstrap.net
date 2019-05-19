@@ -11,6 +11,7 @@ namespace Egil.RazorComponents.Bootstrap.Tests.Options.SpanOptions
         [Fact(DisplayName = "Breakpoint returns correct value based on breakpoint type")]
         public void CssClassReturnsCorrectBootstrapBreakpoint()
         {
+            new DefaultBreakpoint().Value.ShouldBe(string.Empty);
             new Breakpoint(BreakpointType.Small).Value.ShouldBe("sm");
             new Breakpoint(BreakpointType.Medium).Value.ShouldBe("md");
             new Breakpoint(BreakpointType.Large).Value.ShouldBe("lg");

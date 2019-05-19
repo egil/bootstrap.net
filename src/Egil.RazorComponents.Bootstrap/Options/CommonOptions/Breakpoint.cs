@@ -29,7 +29,7 @@ namespace Egil.RazorComponents.Bootstrap.Options.CommonOptions
 
         public static OptionSet<ISpanOption> operator |(Breakpoint option1, int width)
         {
-            return new OptionSet<ISpanOption>() { option1, (Number)width };
+            return new OptionSet<ISpanOption>() { option1, Number.ToSpanNumber(width) };
         }
 
         public static OptionSet<ISpanOption> operator |(int width, Breakpoint option1)
@@ -49,6 +49,38 @@ namespace Egil.RazorComponents.Bootstrap.Options.CommonOptions
         }
 
         public static OptionSet<ISpanOption> operator |(OptionSet<IBreakpointWithNumber> set, Breakpoint option)
+        {
+            OptionSet<ISpanOption> spanSet = new OptionSet<ISpanOption>(set);
+            spanSet.Add(option);
+            return spanSet;
+        }
+    }
+
+    public class DefaultBreakpoint : ISpanOption
+    {
+        public string Value => string.Empty;
+
+        public static OptionSet<ISpanOption> operator |(DefaultBreakpoint option1, int width)
+        {
+            return new OptionSet<ISpanOption>() { option1, Number.ToSpanNumber(width) };
+        }
+
+        public static OptionSet<ISpanOption> operator |(int width, DefaultBreakpoint option1)
+        {
+            return new OptionSet<ISpanOption>() { option1, Number.ToSpanNumber(width) };
+        }
+
+        public static OptionSet<ISpanOption> operator |(DefaultBreakpoint option1, ISpanOption option2)
+        {
+            return new OptionSet<ISpanOption> { option1, option2 };
+        }
+
+        public static OptionSet<ISpanOption> operator |(OptionSet<ISpanOption> set, DefaultBreakpoint option)
+        {
+            set.Add(option);
+            return set;
+        }
+        public static OptionSet<ISpanOption> operator |(OptionSet<IBreakpointWithNumber> set, DefaultBreakpoint option)
         {
             OptionSet<ISpanOption> spanSet = new OptionSet<ISpanOption>(set);
             spanSet.Add(option);

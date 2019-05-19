@@ -20,7 +20,7 @@ namespace Egil.RazorComponents.Bootstrap.Tests.Parameters
         [Fact(DisplayName = "Value returns 'col' by default")]
         public void CssClassReturnsColByDefault()
         {
-            SpanParameter.Default.Single().ShouldBe("col");
+            SpanParameter.Default.Single().ShouldBe(ParamPrefix);
             SpanParameter.Default.Count.ShouldBe(1);
         }
 
@@ -46,6 +46,14 @@ namespace Egil.RazorComponents.Bootstrap.Tests.Parameters
             var option = lg;
             sut = option;
             sut.ShouldContainOptionsWithPrefix(ParamPrefix, option);
+        }
+
+        [Fact(DisplayName = "Span can have a breakpoint of type extra small specified by assignment where value becomes 'col'")]
+        public void SpanCanHaveBreakpointXsSpecifiedByAssignment()
+        {
+            var option = xs;
+            sut = option;
+            sut.Single().ShouldBe(ParamPrefix);
         }
 
         [Fact(DisplayName = "Span can have a auto specified by assignment")]
@@ -87,6 +95,29 @@ namespace Egil.RazorComponents.Bootstrap.Tests.Parameters
         {
             sut = set;
             sut.ShouldContainOptionsWithPrefix(ParamPrefix, (IOptionSet<IOption>)set);
+        }
+
+        [Fact(DisplayName = "When xs (default breakpoint) is in a set, the resulting value produced is 'col'")]
+        public void DefaultBreakpointInSet()
+        {
+            var set = new OptionSet<ISpanOption>() | xs;
+            sut = set;
+            sut.Single().ShouldBe(ParamPrefix);
+        }
+
+        [Fact(DisplayName = "When a set contains both xs and a number, only 'col-number' is returned")]
+        public void DefaultBreakpointAndNumberInSet()
+        {
+            var width = 4;
+            var set = xs | width;
+            sut = set;
+            sut.ShouldContainOptionsWithPrefix(ParamPrefix, width);
+            sut.ShouldNotContain(ParamPrefix);
+
+            var reversedSet = width | xs;
+            sut = reversedSet;
+            sut.ShouldContainOptionsWithPrefix(ParamPrefix, width);
+            sut.ShouldNotContain(ParamPrefix);
         }
 
         [Theory(DisplayName = "Span breakpoint with span number in sets are validated on assignment")]
