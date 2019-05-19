@@ -42,7 +42,7 @@ that of using the library's syntax. That should make it possible for anyone fami
 ### Container
 | Container            | Boostrap syntax                     | Library syntax                       |
 |----------------------|-------------------------------------|--------------------------------------|
-| Responsive container | <div class="container"></div>       | <Container></Container>              |
+| Responsive container | `<div class="container"></div>`       | `<Container></Container>`              |
 | Fluid container      | <div class="container-fluid"></div> | <Container Type="fluid"></Container> |
 
 ### Row
