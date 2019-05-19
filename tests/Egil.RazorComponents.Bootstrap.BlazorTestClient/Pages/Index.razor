@@ -6,9 +6,8 @@
 
 <Container AdditionalCssClasses="some-additional-class">
     <Row VerticalAlign="start"></Row>
-    <Row VerticalAlign="center"></Row>
+    <Row VerticalAlign="md-center"></Row>
     <Row VerticalAlign="end">
-
         <Column Order="4"></Column>
         <Column Order="last"></Column>
         <Column Order="first"></Column>
@@ -18,7 +17,16 @@
         <Column Span="auto"></Column>
         <Column Span="lg-auto"></Column>
         <Column Span="3 | md-6 | xl-auto"></Column>
+        <Column Offset="4"></Column>
+        <Column Offset="md-4"></Column>
+        <Column Offset="2 | md-4 | xl-8"></Column>
     </Row>
+
+    <Row Align="start"></Row>
+    <Row Align="center"></Row>
+    <Row Align="end | md-end"></Row>
+    <Row Align="md-between"></Row>
+    <Row Align="around"></Row>
 </Container>
 
 <Container Type="fluid" AdditionalCssClasses="bla blum">

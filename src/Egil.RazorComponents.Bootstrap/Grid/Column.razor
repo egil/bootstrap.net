@@ -19,10 +19,7 @@
     OffsetParameter Offset { get; set; } = OffsetParameter.None;
 
     [Parameter]
-    AlignmentParameter<VerticalColumnAlignment> VerticalAlign { get; set; } = AlignmentParameter<VerticalColumnAlignment>.None;
-
-    [Parameter]
-    HorizontalAlignmentParameter Align { get; set; } = HorizontalAlignmentParameter.None;
+    AlignmentParameter<VerticalColumnAlignment> VerticalAlign { get; set; } = AlignmentParameter<VerticalColumnAlignment>.None;    
 
     [Parameter]
     SpacingParameter<PaddingSpacing> Padding { get; set; } = SpacingParameter<PaddingSpacing>.None;
@@ -31,6 +28,6 @@
     SpacingParameter<MarginSpacing> Margin { get; set; } = SpacingParameter<MarginSpacing>.None;
 
     protected override IEnumerable<IParameter> CssClassSources => new IParameter[]{
-        Span, Order, Offset, VerticalAlign, Align, Padding, Margin
+        Span, Order, Offset, VerticalAlign, Padding, Margin
     };
 }

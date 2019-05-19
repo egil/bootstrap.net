@@ -38,6 +38,15 @@ namespace Egil.RazorComponents.Bootstrap.Tests.Parameters
             sut.ShouldContainOptionsWithPrefix(ParamPrefix, option);
         }
 
+        [Fact(DisplayName = "Justify can have a justify-breakpoint-options assigned")]
+        public void CanHaveJustifyBreakpointOptionsSpecifiedAssignment()
+        {
+            var option = lg-between;
+            sut = option;
+            sut.ShouldContainOptionsWithPrefix(ParamPrefix, option);
+        }
+
+
         [Theory(DisplayName = "Justify can have option sets of justify-options assigned")]
         [MemberData(nameof(SutOptionSetsFixtureData))]
         public void CanHaveOptionSetOfJustifyOptionsSpecified(dynamic set)

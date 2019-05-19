@@ -13,6 +13,12 @@ namespace Egil.RazorComponents.Bootstrap.Parameters
             return new OptionParameter(option);
         }
 
+        public static implicit operator HorizontalAlignmentParameter(BreakpointJustifyOption option)
+        {
+            return new OptionParameter(option);
+        }
+
+
         public static implicit operator HorizontalAlignmentParameter(AlignmentOption option)
         {
             return new OptionParameter(option);

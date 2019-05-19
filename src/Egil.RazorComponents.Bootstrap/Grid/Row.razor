@@ -17,6 +17,9 @@
     AlignmentParameter<VerticalRowAlignment> VerticalAlign { get; set; } = AlignmentParameter<VerticalRowAlignment>.None;
 
     [Parameter]
+    HorizontalAlignmentParameter Align { get; set; } = HorizontalAlignmentParameter.None;
+
+    [Parameter]
     SpacingParameter<PaddingSpacing> Padding { get; set; } = SpacingParameter<PaddingSpacing>.None;
 
     [Parameter]
@@ -25,6 +28,6 @@
     protected override IEnumerable<string> StaticCssClasses => new[] { "row" };
 
     protected override IEnumerable<IParameter> CssClassSources => new IParameter[]{
-        NoGutters, VerticalAlign, Padding, Margin
+        NoGutters, VerticalAlign, Align, Padding, Margin
     };
 }
