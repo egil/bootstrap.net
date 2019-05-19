@@ -32,11 +32,12 @@ namespace Egil.RazorComponents.Bootstrap.Tests.Parameters
             sut.ShouldContainOptionsWithPrefix(ParamPrefix, width);
         }
 
-        [Fact(DisplayName = "Specifying an invalid index number throws")]
-        public void SpecifyinInvalidIndexNumberThrows()
+        [Theory(DisplayName = "Specifying an invalid index number throws")]
+        [InlineData(0)]
+        [InlineData(13)]
+        public void SpecifyinInvalidIndexNumberThrows(int index)
         {
-            Should.Throw<ArgumentOutOfRangeException>(() => sut = 0);
-            Should.Throw<ArgumentOutOfRangeException>(() => sut = 13);
+            Should.Throw<ArgumentOutOfRangeException>(() => sut = index);
         }
 
         [Fact(DisplayName = "Span can have a breakpoint specified by assignment")]
@@ -55,12 +56,21 @@ namespace Egil.RazorComponents.Bootstrap.Tests.Parameters
             sut.ShouldContainOptionsWithPrefix(ParamPrefix, option);
         }
 
-        [Fact(DisplayName = "Span can have a breakpoint with width specified by assignment")]
-        public void SpanCanHaveBreakpointWithWidthSpecifiedByAssignment()
+        [Theory(DisplayName = "Span can have a breakpoint with width specified by assignment")]
+        [NumberRangeData(1, 12)]
+        public void SpanCanHaveBreakpointWithWidthSpecifiedByAssignment(int number)
         {
-            var option = lg - 4;
+            var option = lg - number;
             sut = option;
             sut.ShouldContainOptionsWithPrefix(ParamPrefix, option);
+        }
+
+        [Theory(DisplayName = "Specifying an invalid size number with breakpoint throws")]
+        [InlineData(0)]
+        [InlineData(13)]
+        public void SpecifyinInvalidIndexNumberWithBreakpointThrows(int invalidSize)
+        {
+            Should.Throw<ArgumentOutOfRangeException>(() => sut = lg - invalidSize);
         }
 
         [Fact(DisplayName = "Span can have a breakpoint with auto option specified by assignment")]
@@ -77,6 +87,15 @@ namespace Egil.RazorComponents.Bootstrap.Tests.Parameters
         {
             sut = set;
             sut.ShouldContainOptionsWithPrefix(ParamPrefix, (IOptionSet<IOption>)set);
+        }
+
+        [Theory(DisplayName = "Span breakpoint with span number in sets are validated on assignment")]
+        [InlineData(0)]
+        [InlineData(13)]
+        public void InvalidNumberInSetThrows(int number)
+        {
+            Should.Throw<ArgumentOutOfRangeException>(() => sut = number | lg - 2);
+            Should.Throw<ArgumentOutOfRangeException>(() => sut = lg - number | 3);
         }
 
         [Theory(DisplayName = "Span can NOT have option sets of none-span-options assigned")]

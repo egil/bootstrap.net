@@ -120,10 +120,11 @@ namespace Egil.RazorComponents.Bootstrap.Tests.Parameters
         {
             var num = 1;
             var bpAuto = md - auto;
+            var bpn = md - num;
             var sideBpAuto = right - lg - auto;
             var spacing = left - num;
             var spacingBpNumber = left - md - 4;
-            var set = num | auto | bpAuto | sideBpAuto | spacing | spacingBpNumber;
+            var set = num | auto | bpAuto | bpn | sideBpAuto | spacing | spacingBpNumber;
 
             sut = set;
 
@@ -131,10 +132,21 @@ namespace Egil.RazorComponents.Bootstrap.Tests.Parameters
                 $"{ParamPrefix}-{num}",
                 $"{ParamPrefix}-{auto.Value}",
                 $"{ParamPrefix}-{bpAuto.Value}",
+                $"{ParamPrefix}-{bpn.Value}",
                 $"{ParamPrefix}{sideBpAuto.Value}",
                 $"{ParamPrefix}{spacing.Value}",
                 $"{ParamPrefix}{spacingBpNumber.Value}",
                 }.OrderBy(x => x));
+        }
+
+
+        [Theory(DisplayName = "Spacing number and breakpoint with spacing number in sets are validated on assignment")]
+        [InlineData(-6)]
+        [InlineData(6)]
+        public void InvalidSpacingInSetThrows(int number)
+        {
+            Should.Throw<ArgumentOutOfRangeException>(() => sut = number | lg - 2);
+            Should.Throw<ArgumentOutOfRangeException>(() => sut = lg - number | 3);
         }
 
         [Theory(DisplayName = "Spacing can NOT have option sets of none-spacing-options assigned")]

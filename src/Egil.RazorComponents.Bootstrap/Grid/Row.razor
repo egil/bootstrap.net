@@ -11,7 +11,7 @@
     RenderFragment ChildContent { get; set; }
 
     [Parameter]
-    NoGutterParameter NoGutter { get; set; } = NoGutterParameter.Default;
+    NoGuttersParameter NoGutters { get; set; } = NoGuttersParameter.Default;
 
     [Parameter]
     AlignmentParameter<VerticalRowAlignment> VerticalAlign { get; set; } = AlignmentParameter<VerticalRowAlignment>.None;
@@ -25,6 +25,6 @@
     protected override IEnumerable<string> StaticCssClasses => new[] { "row" };
 
     protected override IEnumerable<IParameter> CssClassSources => new IParameter[]{
-        NoGutter, VerticalAlign, Padding, Margin
+        NoGutters, VerticalAlign, Padding, Margin
     };
 }

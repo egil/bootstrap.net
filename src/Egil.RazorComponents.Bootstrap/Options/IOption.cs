@@ -14,7 +14,7 @@ namespace Egil.RazorComponents.Bootstrap.Options
     public interface IOffsetOption : IOption { }
     public interface ISpacingOption : IOption { }
     public interface IAutoOption : ISpacingOption, ISpanOption { }
-    public interface IBreakpointWithNumber : ISpanOption, IOrderOption, IOffsetOption { }
+    public interface IBreakpointWithNumber : IAutoOption, IOrderOption, IOffsetOption { }
 
     public interface IOptionSet<out TOption> : IReadOnlyCollection<TOption> where TOption : IOption
     { }

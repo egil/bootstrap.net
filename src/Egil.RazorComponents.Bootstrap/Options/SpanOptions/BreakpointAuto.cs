@@ -5,7 +5,7 @@ using System.Diagnostics;
 namespace Egil.RazorComponents.Bootstrap.Options
 {
     [DebuggerDisplay("Auto: {Value}")]
-    public class BreakpointAuto : OptionPair<Breakpoint, AutoOption>, IAutoOption, ISpanOption, ISpacingOption
+    public class BreakpointAuto : OptionPair<Breakpoint, AutoOption>, IAutoOption
     {
         public BreakpointAuto(Breakpoint leftOption, AutoOption rightOption) : base(leftOption, rightOption)
         {

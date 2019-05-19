@@ -1,5 +1,26 @@
 ﻿@page "/"
 
+<div class="row">
+    <div class="col-3 col-md-6 col-xl-auto"></div>
+</div>
+
+<Container AdditionalCssClasses="some-additional-class">
+    <Row VerticalAlign="start"></Row>
+    <Row VerticalAlign="center"></Row>
+    <Row VerticalAlign="end">
+
+        <Column Order="4"></Column>
+        <Column Order="last"></Column>
+        <Column Order="first"></Column>
+        <Column Order="sm-4"></Column>
+        <Column Span="md"></Column>
+        <Column Span="md-5"></Column>
+        <Column Span="auto"></Column>
+        <Column Span="lg-auto"></Column>
+        <Column Span="3 | md-6 | xl-auto"></Column>
+    </Row>
+</Container>
+
 <Container Type="fluid" AdditionalCssClasses="bla blum">
     <Row>
         <Column Span="2 | lg-8" Margin="2">SIDEBAR!</Column>

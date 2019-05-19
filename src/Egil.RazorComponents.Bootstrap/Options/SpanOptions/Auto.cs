@@ -4,7 +4,7 @@ using System.Diagnostics;
 namespace Egil.RazorComponents.Bootstrap.Options
 {
     [DebuggerDisplay("Auto: {Value}")]
-    public class AutoOption : IAutoOption, ISpanOption, ISpacingOption
+    public class AutoOption : IAutoOption
     {
         private const string OptionText = "auto";
 

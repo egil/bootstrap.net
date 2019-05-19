@@ -18,6 +18,7 @@ namespace Egil.RazorComponents.Bootstrap.Options.SpacingOptions
 
         public SpacingOption(SpacingSide side, BreakpointWithNumber breakpoint)
         {
+            breakpoint.Number.ValidateAsSpacingNumber();
             Value = string.Concat(side.Value, Option.OptionSeparator, breakpoint.Value);
         }
 

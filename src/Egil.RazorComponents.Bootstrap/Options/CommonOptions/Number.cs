@@ -4,13 +4,41 @@ using System.Diagnostics;
 namespace Egil.RazorComponents.Bootstrap.Options.CommonOptions
 {
     [DebuggerDisplay("Number: {Value}")]
-    public class Number : IBreakpointWithNumber, IAutoOption, ISpanOption, IOrderOption, IOffsetOption, ISpacingOption
+    public class Number : IBreakpointWithNumber
     {
         private readonly int number;
 
         public string Value { get; }
 
-        public bool IsValidSpacingNumber() => IsValidSpacingNumber(number);
+        public void ValidateAsSpanNumber()
+        {
+            if (!IsValidSpanNumber(number))
+                throw new ArgumentOutOfRangeException("Bootstrap grid has 12 columns. Numbers referring to it must be between 1 and 12.");
+        }
+
+        public void ValidateAsSpacingNumber()
+        {
+            if (!IsValidSpacingNumber(number))
+                throw new ArgumentOutOfRangeException("Bootstrap spacing numbers must be between -5 and 5.");
+        }
+
+        public void ValidateAsOrderNumber()
+        {
+            if (!IsValidOrderNumber(number))
+                throw new ArgumentOutOfRangeException("Order index can be between 0 and 12.");
+        }
+
+        public void ValidateAsOffsetNumber()
+        {
+            if (!IsValidOffsetNumber(number))
+                throw new ArgumentOutOfRangeException("When offset is specified without a breakpoint, the number can be between 1 and 11.");
+        }
+
+        public void ValidateAsOffsetBreakpointNumber()
+        {
+            if (!IsValidOffsetBreakpointNumber(number))
+                throw new ArgumentOutOfRangeException("When offset is specified with a breakpoint, the number can be between 0 and 11.");
+        }
 
         private Number(int number)
         {
@@ -18,27 +46,58 @@ namespace Egil.RazorComponents.Bootstrap.Options.CommonOptions
             this.number = number;
         }
 
-        public static Number ToGridNumber(int number)
+        public static Number ToSpanNumber(int number)
         {
-            if (number < 1 || number > 12)
-                throw new ArgumentOutOfRangeException(nameof(number),
-                    "Bootstrap grid has 12 columns. Numbers referring to it must be between 1 and 12.");
+            var res = (Number)number;
+            res.ValidateAsSpanNumber();
+            return res;
+        }
 
-            return number;
+        public static Number ToOrderNumber(int number)
+        {
+            var res = (Number)number;
+            res.ValidateAsOrderNumber();
+            return res;
+        }
+
+        public static Number ToOffsetNumber(int number)
+        {
+            var res = (Number)number;
+            res.ValidateAsOffsetNumber();
+            return res;
         }
 
         public static Number ToSpacingNumber(int number)
         {
-            if (!IsValidSpacingNumber(number))
-                throw new ArgumentOutOfRangeException(nameof(number),
-                    "Bootstrap spacing numbers must be between -5 and 5.");
-
-            return number;
+            var res = (Number)number;
+            res.ValidateAsSpacingNumber();
+            return res;
         }
+
+        public static bool IsValidSpanNumber(int number)
+        {
+            return number >= 1 && number <= 12;
+        }
+
 
         public static bool IsValidSpacingNumber(int number)
         {
             return number >= -5 && number <= 5;
+        }
+
+        public static bool IsValidOrderNumber(int number)
+        {
+            return number >= 0 && number <= 12;
+        }
+
+        public static bool IsValidOffsetNumber(int number)
+        {
+            return number >= 1 && number <= 11;
+        }
+
+        public static bool IsValidOffsetBreakpointNumber(int number)
+        {
+            return number >= 0 && number <= 11;
         }
 
         public static implicit operator Number(int number)

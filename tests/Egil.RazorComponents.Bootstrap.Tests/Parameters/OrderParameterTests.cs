@@ -25,26 +25,36 @@ namespace Egil.RazorComponents.Bootstrap.Tests.Parameters
         }
 
         [Theory(DisplayName = "Order can have valid index number specified by assignment")]
-        [NumberRangeData(1, 12)]
+        [NumberRangeData(0, 12)]
         public void OrderCanHaveValidIndexNumberSpecifiedByAssignment(int number)
         {
             sut = number;
             sut.ShouldContainOptionsWithPrefix(ParamPrefix, number);
         }
 
-        [Fact(DisplayName = "Specifying an invalid index number throws")]
-        public void SpecifyinInvalidIndexNumberThrows()
+        [Theory(DisplayName = "Specifying an invalid index number throws")]
+        [InlineData(-1)]
+        [InlineData(13)]
+        public void SpecifyinInvalidIndexNumberThrows(int number)
         {
-            Should.Throw<ArgumentOutOfRangeException>(() => sut = 0);
-            Should.Throw<ArgumentOutOfRangeException>(() => sut = 13);
+            Should.Throw<ArgumentOutOfRangeException>(() => sut = number);
         }
 
-        [Fact(DisplayName = "Order can have a breakpoint with index specified by assignment")]
-        public void OrderCanHaveBreakpointWithIndexSpecifiedByAssignment()
+        [Theory(DisplayName = "Order can have a breakpoint with index specified by assignment")]
+        [NumberRangeData(0, 12)]
+        public void OrderCanHaveBreakpointWithIndexSpecifiedByAssignment(int number)
         {
-            var option = lg - 4;
+            var option = lg - number;
             sut = option;
             sut.ShouldContainOptionsWithPrefix(ParamPrefix, option);
+        }
+
+        [Theory(DisplayName = "Specifying an invalid index number with breakpoint throws")]
+        [InlineData(-1)]
+        [InlineData(13)]
+        public void SpecifyinInvalidIndexNumberWithBreakpointThrows(int number)
+        {
+            Should.Throw<ArgumentOutOfRangeException>(() => sut = md - number);
         }
 
         [Fact(DisplayName = "Order can have a first option specified by assignment")]
@@ -85,6 +95,15 @@ namespace Egil.RazorComponents.Bootstrap.Tests.Parameters
         {
             sut = set;
             sut.ShouldContainOptionsWithPrefix(ParamPrefix, (IOptionSet<IOption>)set);
+        }
+
+        [Theory(DisplayName = "Index of number and brekapoint with number in sets are validated on assignment")]
+        [InlineData(-1)]
+        [InlineData(13)]
+        public void InvalidIndexInSetThrows(int number)
+        {
+            Should.Throw<ArgumentOutOfRangeException>(() => sut = number | lg - 3);
+            Should.Throw<ArgumentOutOfRangeException>(() => sut = lg - number | 3);
         }
 
         [Theory(DisplayName = "Order can NOT have option sets of none-order-options assigned")]

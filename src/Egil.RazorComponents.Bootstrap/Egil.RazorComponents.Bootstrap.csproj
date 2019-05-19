@@ -12,6 +12,13 @@
     <LangVersion>8.0</LangVersion>
     <RazorLangVersion>3.0</RazorLangVersion>
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+    <RepositoryUrl>https://github.com/egil/blazorcomponents-bootstrap</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/egil/blazorcomponents-bootstrap</PackageProjectUrl>
+    <PackageTags>blazor blazor-server-side razor-components bootstrap bootstrap4</PackageTags>
+    <Version>0.0.1-alpha</Version>
+    <Authors>Egil Hansen</Authors>
+    <Company />
+    <Product>Bootstrap Razor Components - Strongly typed</Product>
   </PropertyGroup>
 
   <ItemGroup>

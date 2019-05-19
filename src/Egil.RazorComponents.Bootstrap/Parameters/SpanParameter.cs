@@ -1,6 +1,7 @@
 ﻿using Egil.RazorComponents.Bootstrap.Options;
 using Egil.RazorComponents.Bootstrap.Options.CommonOptions;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Egil.RazorComponents.Bootstrap.Parameters
 {
@@ -17,46 +18,47 @@ namespace Egil.RazorComponents.Bootstrap.Parameters
 
         public static implicit operator SpanParameter(int number)
         {
-            return new SpanOptionParameter(Number.ToGridNumber(number));
+            return new OptionParameter(Number.ToSpanNumber(number));
         }
 
         public static implicit operator SpanParameter(Breakpoint option)
         {
-            return new SpanOptionParameter(option);
+            return new OptionParameter(option);
         }
 
         public static implicit operator SpanParameter(BreakpointWithNumber option)
         {
-            return new SpanOptionParameter(option);
+            option.Number.ValidateAsSpanNumber();
+            return new OptionParameter(option);
         }
 
         public static implicit operator SpanParameter(AutoOption option)
         {
-            return new SpanOptionParameter(option);
+            return new OptionParameter(option);
         }
 
         public static implicit operator SpanParameter(BreakpointAuto option)
         {
-            return new SpanOptionParameter(option);
+            return new OptionParameter(option);
         }
 
         public static implicit operator SpanParameter(OptionSet<ISpanOption> set)
         {
-            return new SpanOptionSetParameter(set);
+            return new OptionSetParameter(set);
         }
 
         public static implicit operator SpanParameter(OptionSet<IBreakpointWithNumber> set)
         {
-            return new SpanOptionSetParameter(set);
+            return new OptionSetParameter(set);
         }
 
         public static readonly SpanParameter Default = new SpanParameter();
 
-        class SpanOptionParameter : SpanParameter
+        class OptionParameter : SpanParameter
         {
             private readonly IOption option;
 
-            public SpanOptionParameter(IOption option)
+            public OptionParameter(IOption option)
             {
                 this.option = option;
             }
@@ -67,24 +69,24 @@ namespace Egil.RazorComponents.Bootstrap.Parameters
             }
         }
 
-        class SpanOptionSetParameter : SpanParameter
+        class OptionSetParameter : SpanParameter
         {
-            private readonly IOptionSet<IOption> set;
+            private readonly IReadOnlyCollection<string> set;
 
-            public SpanOptionSetParameter(IOptionSet<IOption> set)
+            public OptionSetParameter(IOptionSet<IOption> set)
             {
-                this.set = set;
+                this.set = set.Select(option =>
+                {
+                    if (option is BreakpointWithNumber bwn) bwn.Number.ValidateAsSpanNumber();
+                    if (option is Number n) n.ValidateAsSpanNumber();
+                    return string.Concat(OptionPrefix, Option.OptionSeparator, option.Value);
+                }).ToArray();
             }
 
             public override int Count => set.Count;
 
-            public override IEnumerator<string> GetEnumerator()
-            {
-                foreach (var option in set)
-                {
-                    yield return string.Concat(OptionPrefix, Option.OptionSeparator, option.Value);
-                }
-            }
+            public override IEnumerator<string> GetEnumerator() => set.GetEnumerator();
+
         }
     }
 }

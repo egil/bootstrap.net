@@ -30,7 +30,7 @@ namespace Egil.RazorComponents.Bootstrap.Tests.Options.CommonOptions
         [InlineData(13)]
         public void ConvertingInvalidNumberToGridNumberThrows(int invalidNumber)
         {
-            Should.Throw<ArgumentOutOfRangeException>(() => Number.ToGridNumber(invalidNumber));
+            Should.Throw<ArgumentOutOfRangeException>(() => Number.ToSpanNumber(invalidNumber));
         }
 
         [Theory(DisplayName = "Creating a spacing number throws if number value is out of range")]

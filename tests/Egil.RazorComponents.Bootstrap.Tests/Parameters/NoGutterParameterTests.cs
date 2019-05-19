@@ -5,28 +5,28 @@ using Xunit;
 
 namespace Egil.RazorComponents.Bootstrap.Tests.Parameters
 {
-    public class NoGutterParameterTests
+    public class NoGuttersParameterTests
     {
         [Fact(DisplayName = "Default no-gutter type returns no css class")]
         public void MyTestMethod()
         {
-            NoGutterParameter.Default.Count.ShouldBe(0);
+            NoGuttersParameter.Default.Count.ShouldBe(0);
         }
 
         [Fact(DisplayName = "NoGutter type returns correct css class")]
         public void MyTestMethod3()
         {
-            NoGutterParameter.NoGutter.Single().ShouldBe("no-gutter");
+            NoGuttersParameter.NoGutter.Single().ShouldBe("no-gutter");
         }
 
         [Fact(DisplayName = "NoGutterParameter parameter is convertable from boolean value")]
         public void MyTestMethod4()
         {
-            NoGutterParameter hasNoGutter = true;
-            hasNoGutter.ShouldBe(NoGutterParameter.NoGutter);
+            NoGuttersParameter hasNoGutter = true;
+            hasNoGutter.ShouldBe(NoGuttersParameter.NoGutter);
 
-            NoGutterParameter hasGutter = false;
-            hasGutter.ShouldBe(NoGutterParameter.Default);
+            NoGuttersParameter hasGutter = false;
+            hasGutter.ShouldBe(NoGuttersParameter.Default);
         }
     }
 }

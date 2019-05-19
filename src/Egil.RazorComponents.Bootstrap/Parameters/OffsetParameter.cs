@@ -1,5 +1,6 @@
 ﻿using Egil.RazorComponents.Bootstrap.Options;
 using Egil.RazorComponents.Bootstrap.Options.CommonOptions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -11,22 +12,23 @@ namespace Egil.RazorComponents.Bootstrap.Parameters
 
         public static implicit operator OffsetParameter(int number)
         {
-            return new OffsetOptionParameter(Number.ToGridNumber(number));
+            return new OffsetOptionParameter(Number.ToOffsetNumber(number));
         }
 
         public static implicit operator OffsetParameter(BreakpointWithNumber option)
         {
+            option.Number.ValidateAsOffsetBreakpointNumber();
             return new OffsetOptionParameter(option);
         }
 
         public static implicit operator OffsetParameter(OptionSet<IOffsetOption> set)
         {
-            return new OffsetOptionSetParameter(set);
+            return new OptionSetParameter(set);
         }
 
         public static implicit operator OffsetParameter(OptionSet<IBreakpointWithNumber> set)
         {
-            return new OffsetOptionSetParameter(set);
+            return new OptionSetParameter(set);
         }
 
         public static readonly OffsetParameter None = new NoneOffsetParameter();
@@ -48,24 +50,23 @@ namespace Egil.RazorComponents.Bootstrap.Parameters
             }
         }
 
-        class OffsetOptionSetParameter : OffsetParameter
+        class OptionSetParameter : OffsetParameter
         {
-            private readonly IOptionSet<IOption> set;
+            private readonly IReadOnlyCollection<string> set;
 
-            public OffsetOptionSetParameter(IOptionSet<IOption> set)
+            public OptionSetParameter(IOptionSet<IOption> set)
             {
-                this.set = set;
+                this.set = set.Select(option =>
+                {
+                    if (option is BreakpointWithNumber bwn) bwn.Number.ValidateAsOffsetNumber();
+                    if (option is Number n) n.ValidateAsOffsetNumber();
+                    return string.Concat(OptionPrefix, Option.OptionSeparator, option.Value);
+                }).ToArray();
             }
 
             public override int Count => set.Count;
 
-            public override IEnumerator<string> GetEnumerator()
-            {
-                foreach (var option in set)
-                {
-                    yield return string.Concat(OptionPrefix, Option.OptionSeparator, option.Value);
-                }
-            }
+            public override IEnumerator<string> GetEnumerator() => set.GetEnumerator();
         }
 
         class NoneOffsetParameter : OffsetParameter

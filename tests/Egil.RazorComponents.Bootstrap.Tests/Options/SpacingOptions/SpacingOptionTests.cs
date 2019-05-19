@@ -44,7 +44,7 @@ namespace Egil.RazorComponents.Bootstrap.Tests.Options.SpacingOptions
         [Theory(DisplayName = "Combining a side with an invalid size number throws")]
         [InlineData(-6)]
         [InlineData(6)]
-        public void CanHaveBreakpointWithSizeThrowsWithInvalidSize(int invalidSize)
+        public void CanHaveSideWithSizeThrowsWithInvalidSize(int invalidSize)
         {
             Should.Throw<ArgumentOutOfRangeException>(() => left - invalidSize);
         }
@@ -58,6 +58,15 @@ namespace Egil.RazorComponents.Bootstrap.Tests.Options.SpacingOptions
             var spacing = side - breakpoint - size;
             spacing.Value.ShouldBeCombinationOf(side, breakpoint, (Number)size);
         }
+
+        [Theory(DisplayName = "Combining a breakpoint, side with an invalid size number throws")]
+        [InlineData(-6)]
+        [InlineData(6)]
+        public void CanHaveBreakpointWithSizeThrowsWithInvalidSize(int invalidSize)
+        {
+            Should.Throw<ArgumentOutOfRangeException>(() => left - md - invalidSize);
+        }
+
     }
 }
 

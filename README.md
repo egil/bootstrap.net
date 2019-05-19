@@ -1,197 +1,40 @@
-# Strongly typed Bootstrap in Blazor/Razor Components #
-**NOTE:** Very experimental at the moment. Feedback is very welcome.  
+# Strongly Typed Bootstrap Razor Components #
+**NOTE:** Very experimental at the moment. Feedback is much appreciated.  
 
-**NOTE:** Documentation is far from complete. [TestClient](tests/Egil.BlazorComponents.Bootstrap.TestClient/) *may* contain a working examples of how to use this library.
+**NOTE:** Is based on Preview-5 of ASP.NET 3.
 
-## Strongly typed Bootstrap - options verified at compile time
+**NOTE:** Documentation is far from complete. [TestClient](tests/Egil.RazorComponents.Bootstrap.BlazorTestClient/) *may* contain a working examples of how to use this library.
+
+## Strongly Typed Bootstrap - options verified at compile time
 The idea is to make it less likely that somebody breaks the Bootstrap
 conventions and creates invalid "Bootstrap HTML". 
 
-At the moment, the basic functionality around Bootstraps grid system is done, i.e. the components `<Container>`, `<Row>` and `<Column>`. `<Container>` and `<Row>` are
-right now pretty basic. However, `<Column>` supports compile-time check of column options, e.g. `col-{breakpoint}-{width}` and `col-auto`.
+At the moment, the basic functionality around Bootstraps grid system is done, i.e. the components `<Container>`, `<Row>` and `<Column>`. Almost all properties 
+that can be passed to one of the grid components are implemented. E.g. with `<Column>`, there is support for compile-time check of column options, 
+e.g. `col-{breakpoint}-{width}` and `col-auto`.
 
-The compile time check works by having a strongly typed parameter in `Column.cshtml`, `[Parameter] SpanOptionBase Span { get; set; }`, and using static imports to make variants of `SpanOptionBase` available in the razor views. The last piece of the puzzle is utilizing C# implicit operator overloading to convert between the different subtypes of `SpanOptionBase` and `int`.
+The compile time check works by having a strongly typed parameter in `Column.cshtml`, `[Parameter] SpanParameter Span { get; set; }`, and using static 
+imports to make variants of `ISpanOption`'s available in the razor views. The last piece of the puzzle is utilizing C# implicit operator overloading 
+to convert between the different subtypes of `SpanParameter` and `int`.
 
-That makes it possible to specify complex column configurations such as `<div class="col-12 col-md-8 col-lg-4">` as `<Column Span="12 | Medium-8 | Large-4">`, which the compiler checks. If you e.g. by accident `Middle-8` instead of `Medium-8`, i.e. `<Column Span="12 | Middle-8 | Large-4">`, the compiler will complain that `Middle-8` is not a valid option.
+That makes it possible to specify complex column configurations such as `<div class="col-12 col-md-8 col-lg-4">` 
+as `<Column Span="12 | md-8 | lg-4">`, which the compiler checks. If you e.g. by accident `mx-8` instead 
+of `md-8`, i.e. `<Column Span="12 | mx-8 | lg-4">`, the compiler will complain that `mx-8` is not a valid option.
 
-## Usage
-Add the following to your `_ViewImports.cshtml`, e.g. in the root of your application.
+## Setup
+1. Install the nuget package in your Blazor-client or Blazor-server-side application.
+2. Add the following to your `_Imports.cshtml`, e.g. in the root of your application.
 
 ```cshtml
-@using Egil.BlazorComponents.Bootstrap
-@using Egil.BlazorComponents.Bootstrap.Grid
-@using Egil.BlazorComponents.Bootstrap.Grid.Columns
-@using static Egil.BlazorComponents.Bootstrap.Grid.Columns.SpanOption
-@addTagHelper *, Egil.BlazorComponents.Bootstrap
+@using Egil.RazorComponents.Bootstrap
+@using Egil.RazorComponents.Bootstrap.Grid
+@using static Egil.RazorComponents.Bootstrap.Options.Factory.LowerCase.Abbr
+@using static Egil.RazorComponents.Bootstrap.Options.SpacingOptions.Factory.LowerCase
 ```
 
-## Examples
-This section contains the basic examples from Bootstraps 
-[Grid system](https://getbootstrap.com/docs/4.3/layout/grid) documentation, as well as the produced HTML.
+**NOTE:** Currently only client-side apps can pull the embedded Bootstrap library. If you are building a server-side app, add the
+Bootstrap css and JavaScript files you need. This will probably change in future verions.
 
-### Equal-width
-```cshtml
-<Container>
-    <Row>
-        <Column>1 of 2</Column>
-        <Column>2 of 2</Column>
-    </Row>
-    <Row>
-        <Column>1 of 3</Column>
-        <Column>2 of 3</Column>
-        <Column>3 of 3</Column>
-    </Row>
-</Container>
-```
-Results in:
-```html
-<div class="container">
-  <div class="row">
-    <div class="col">
-      1 of 2
-    </div>
-    <div class="col">
-      2 of 2
-    </div>
-  </div>
-  <div class="row">
-    <div class="col">
-      1 of 3
-    </div>
-    <div class="col">
-      2 of 3
-    </div>
-    <div class="col">
-      3 of 3
-    </div>
-  </div>
-</div>
-```
-
-### Setting one column width
-Notice that both `Span="5"` and `Span=5` works.
-```cshtml
-<Container>
-    <Row>
-        <Column>1 of 3</Column>
-        <Column Span="6">2 of 3 (wider)</Column>
-        <Column>3 of 3</Column>
-    </Row>
-    <Row>
-        <Column>1 of 3</Column>
-        <Column Span=5>2 of 3</Column>
-        <Column>3 of 3</Column>
-    </Row>
-</Container>
-```
-Results in:
-```html
-<div class="container">
-  <div class="row">
-    <div class="col">
-      1 of 3
-    </div>
-    <div class="col-6">
-      2 of 3 (wider)
-    </div>
-    <div class="col">
-      3 of 3
-    </div>
-  </div>
-  <div class="row">
-    <div class="col">
-      1 of 3
-    </div>
-    <div class="col-5">
-      2 of 3 (wider)
-    </div>
-    <div class="col">
-      3 of 3
-    </div>
-  </div>
-</div>
-```
-
-### Mix and match
-```cshtml
-<h2>Mix and match</h2>
-<Container>
-    <Row>
-        <Column Span="12 | Medium-8 | Large-4">.col-12 .col-md-8 .col-lg-4</Column>
-        <Column Span="6 | Medium-4 | Large-2">.col-6 .col-md-4 .col-lg-2</Column>
-    </Row>
-    <Row>
-        <Column Span=@(6 | Medium-4)>.col-6 .col-md-4</Column>
-        <Column Span=@(6 | Medium-4)>.col-6 .col-md-4</Column>
-        <Column Span=@(6 | Medium-4)>.col-6 .col-md-4</Column>
-    </Row>
-    <Row>
-        <Column Span="6">.col-6</Column>
-        <Column Span="6">.col-6</Column>
-    </Row>
-</Container>
-```
-Results in:
-```html
-<div class="container">
-  <div class="row">
-    <div class="col-12 col-md-8 col-lg-4">.col-12 .col-md-8 .col-lg-4</div>
-    <div class="col-6 col-md-4 col-lg-2">.col-6 .col-md-4 .col-lg-2</div>
-  </div>
-
-  <div class="row">
-    <div class="col-6 col-md-4">.col-6 .col-md-4</div>
-    <div class="col-6 col-md-4">.col-6 .col-md-4</div>
-    <div class="col-6 col-md-4">.col-6 .col-md-4</div>
-  </div>
-
-  <div class="row">
-    <div class="col-6">.col-6</div>
-    <div class="col-6">.col-6</div>
-  </div>
-</div>
-```
-
-### Variable width content
-```cshtml
-<h2>Variable width content</h2>
-<Container>
-    <Row>
-        <Column Span="Default | Large-2">1 of 3</Column>
-        <Column Span="Medium-Auto">Variable width content</Column>
-        <Column Span="Default | Large-2">3 of 3</Column>
-    </Row>
-    <Row>
-        <Column>1 of 3</Column>
-        <Column Span=@(Medium-Auto)>Variable width content</Column>
-        <Column Span=@(Default | Large-2)>3 of 3</Column>
-    </Row>
-</Container>
-```
-Results in:
-```html
-<div class="container">
-  <div class="row">
-    <div class="col col-lg-2">
-      1 of 3
-    </div>
-    <div class="col-md-auto">
-      Variable width content
-    </div>
-    <div class="col col-lg-2">
-      3 of 3
-    </div>
-  </div>
-  <div class="row">
-    <div class="col">
-      1 of 3
-    </div>
-    <div class="col-md-auto">
-      Variable width content
-    </div>
-    <div class="col col-lg-2">
-      3 of 3
-    </div>
-  </div>
-</div>
-```
+## Specifying options
+The following table compares specifying Bootstraps options using normal [Bootstrap grid-syntax](https://getbootstrap.com/docs/4.3/layout/grid) and 
+that of using the library's syntax. That should make it possible for anyone familiar with Bootstraps syntax to quickly pick-up the library's syntax.

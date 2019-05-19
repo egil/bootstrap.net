@@ -2,11 +2,11 @@
 
 namespace Egil.RazorComponents.Bootstrap.Parameters
 {
-    public class NoGutterParameter : ParameterBase, IParameter
+    public class NoGuttersParameter : ParameterBase, IParameter
     {
         private const string Value = "no-gutter";
 
-        private NoGutterParameter() { }
+        private NoGuttersParameter() { }
 
         public override int Count => 1;
 
@@ -15,15 +15,15 @@ namespace Egil.RazorComponents.Bootstrap.Parameters
             yield return Value;
         }
 
-        public static implicit operator NoGutterParameter(bool hasNoGutter)
+        public static implicit operator NoGuttersParameter(bool hasNoGutter)
         {
             return hasNoGutter ? NoGutter : Default;
         }
 
-        public static readonly NoGutterParameter Default = new NoneParameter();
-        public static readonly NoGutterParameter NoGutter = new NoGutterParameter();
+        public static readonly NoGuttersParameter Default = new NoneParameter();
+        public static readonly NoGuttersParameter NoGutter = new NoGuttersParameter();
 
-        class NoneParameter : NoGutterParameter
+        class NoneParameter : NoGuttersParameter
         {
             public override int Count => 0;
 

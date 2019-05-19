@@ -34,14 +34,16 @@ namespace Egil.RazorComponents.Bootstrap.Parameters
 
         public static implicit operator SpacingParameter<TParamPrefix>(BreakpointWithNumber option)
         {
-            if (!option.Number.IsValidSpacingNumber())
-            {
-                throw new ArgumentOutOfRangeException(nameof(option), "The specified breakpoint and size is not valid. Size must be between -5 and 5.");
-            }
+            option.Number.ValidateAsSpacingNumber();
             return new OptionParameter(option);
         }
 
         public static implicit operator SpacingParameter<TParamPrefix>(OptionSet<ISpacingOption> set)
+        {
+            return new OptionSetParameter(set);
+        }
+
+        public static implicit operator SpacingParameter<TParamPrefix>(OptionSet<IBreakpointWithNumber> set)
         {
             return new OptionSetParameter(set);
         }
@@ -74,22 +76,21 @@ namespace Egil.RazorComponents.Bootstrap.Parameters
 
         class OptionSetParameter : SpacingParameter<TParamPrefix>
         {
-            private readonly IOptionSet<IOption> set;
+            private readonly IReadOnlyCollection<string> set;
 
             public OptionSetParameter(IOptionSet<IOption> set)
             {
-                this.set = set;
+                this.set = set.Select(option =>
+                {
+                    if (option is BreakpointWithNumber bwn) bwn.Number.ValidateAsSpacingNumber();
+                    if (option is Number n) n.ValidateAsSpacingNumber();
+                    return ToSpacingValue(option);
+                }).ToArray();
             }
 
             public override int Count => set.Count;
 
-            public override IEnumerator<string> GetEnumerator()
-            {
-                foreach (var option in set)
-                {
-                    yield return ToSpacingValue(option);
-                }
-            }
+            public override IEnumerator<string> GetEnumerator() => set.GetEnumerator();
         }
 
         class NoneParameter : SpacingParameter<TParamPrefix>
