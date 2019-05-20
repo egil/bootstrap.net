@@ -28,7 +28,7 @@ to runtime validation instead. Currently, this is done in the following cases:
 - When specifying a number in a parameter or in a combination with another option, then the number range is validated at runtime.
 
 ## Setup
-1. Install the nuget package in your Blazor-client or Blazor-server-side application.
+1. Install the [nuget package](https://www.nuget.org/packages/BootstrapDotNet/) in your Blazor-client or Blazor-server-side application.
 2. Add the following to your `_Imports.cshtml`, e.g. in the root of your application.
 
 ```cshtml
