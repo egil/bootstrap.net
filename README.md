@@ -48,65 +48,92 @@ that of using the library's syntax. That should make it possible for anyone fami
 ### Container
 Responsive container:
 
+| Bootstrap syntax  | BootstrapDotNet syntax |
+| ------------- | ------------- |
 | `<div class="container"></div>` | `<Container></Container>` |
 
 Fluid container:
 
+| Bootstrap syntax  | BootstrapDotNet syntax |
+| ------------- | ------------- |
 | `<div class="container-fluid"></div>` | `<Container Type="fluid"></Container>` |
 
 ### Row
 Row without options:
 
+| Bootstrap syntax  | BootstrapDotNet syntax |
+| ------------- | ------------- |
 | `<div class="row"></div>` | `<Row></Row>` |
 
 Row with no gutters:
 
+| Bootstrap syntax  | BootstrapDotNet syntax |
+| ------------- | ------------- |
 | `<div class="row no-gutters"></div>` | `<Row NoGutters="true"></Row>` |
 
 Vertical alignment:
 
+| Bootstrap syntax  | BootstrapDotNet syntax |
+| ------------- | ------------- |
 | `<div class="row align-items-start"></div>`                       | `<Row VerticalAlign="start"></Row>`             |
 | `<div class="row align-items-center"></div>`                      | `<Row VerticalAlign="center"></Row>`            |
 | `<div class="row align-items-end"></div>`                         | `<Row VerticalAlign="end"></Row>`               |
 | `<div class="row align-items-md-center"></div>`                   | `<Row VerticalAlign="md-center"></Row>`         |
-| `<div class="row align-items-start align-items-xl-center"></div>` | `<Row VerticalAlign="start | xl-center"></Row>` |
+| `<div class="row align-items-start align-items-xl-center"></div>` | `<Row VerticalAlign="start \| xl-center"></Row>` |
 
 Horizontal alignment:
+
+| Bootstrap syntax  | BootstrapDotNet syntax |
+| ------------- | ------------- |
 | `<div class="row justify-content-start">`                           | `<Row Align="start"></Row>`             |
 | `<div class="row justify-content-center">`                          | `<Row Align="center"></Row>`            |
 | `<div class="row justify-content-end">`                             | `<Row Align="end"></Row>`               |
 | `<div class="row justify-content-around">`                          | `<Row Align="around"></Row>`            |
 | `<div class="row justify-content-between">`                         | `<Row Align="between"></Row>`           |
 | `<div class="row justify-content-md-around">`                       | `<Row Align="md-around"></Row>`         |
-| `<div class="row justify-content-start justify-content-lg-center">` | `<Row Align="start | lg-center"></Row>` |
+| `<div class="row justify-content-start justify-content-lg-center">` | `<Row Align="start \| lg-center"></Row>` |
 
 ### Column
 Column without options:
 
+| Bootstrap syntax  | BootstrapDotNet syntax |
+| ------------- | ------------- |
 | `<div class="col"></div>` | `<Column></Column>` |
 
 Span with width (1-12) and breakpoints:
+
+| Bootstrap syntax  | BootstrapDotNet syntax |
+| ------------- | ------------- |
 | `<div class="col-5"></div>`                      | `<Column Span="5"></Column>`                  |
 | `<div class="col-md"></div>`                     | `<Column Span="md"></Column>`                 |
 | `<div class="col-md-5"></div>`                   | `<Column Span="md-5"></Column>`               |
 | `<div class="col-auto"></div>`                   | `<Column Span="auto"></Column>`               |
 | `<div class="col-lg-auto"></div>`                | `<Column Span="lg-auto"></Column>`            |
-| `<div class="col-3 col-md-6 col-xl-auto"></div>` | `<Column Span="3 | md-6 | xl-auto"></Column>` |
+| `<div class="col-3 col-md-6 col-xl-auto"></div>` | `<Column Span="3 \| md-6 \| xl-auto"></Column>` |
 
 Order with index (0-12), first, last, and breakpoints:
+
+| Bootstrap syntax  | BootstrapDotNet syntax |
+| ------------- | ------------- |
 | `<div class="col order-4"></div>`                                      | `<Column Order="4"></Column>`                          |
 | `<div class="col order-first"></div>`                                  | `<Column Order="first"></Column>`                      |
 | `<div class="col order-last"></div>`                                   | `<Column Order="last"></Column>`                       |
 | `<div class="col order-sm-4"></div>`                                   | `<Column Order="sm-4"></Column>`                       |
-| `<div class="col order-4 order-md-2 order-lg-0 order-xl-first"></div>` | `<Column Order="4 | md-2 | lg-0 | xl-first"></Column>` |
+| `<div class="col order-4 order-md-2 order-lg-0 order-xl-first"></div>` | `<Column Order="4 \| md-2 \| lg-0 \| xl-first"></Column>` |
 
 Offset with number (1-11) and breakpoint and number (0-11)
+
+| Bootstrap syntax  | BootstrapDotNet syntax |
+| ------------- | ------------- |
 | `<div class="col offset-4"></div>`                          | `<Column Offset="4"></Column>`               |
 | `<div class="col offset-sm-4"></div>`                       | `<Column Offset="sm-4"></Column>`            |
-| `<div class="col offset-2 offset-md-4 offset-xl-8"></div>`  | `<Column Offset="2 | md-4 | xl-8"></Column>` |
+| `<div class="col offset-2 offset-md-4 offset-xl-8"></div>`  | `<Column Offset="2 \| md-4 \| xl-8"></Column>` |
 
 ### Shared options that all components have
 All components have the following parameters:
+
+| Bootstrap syntax  | BootstrapDotNet syntax |
+| ------------- | ------------- |
 | `<div class="some-additional-class"></div>`  | `<Component AdditionalCssClasses="some-additional-class"></Component>` |
 
 ### Spacing utilities
@@ -141,10 +168,13 @@ And where *breakpoint* is one of:
 - `xl`
 
 Examples, compared to Bootstrap:
+
+| Bootstrap syntax  | BootstrapDotNet syntax |
+| ------------- | ------------- |
 | `<div class="row m-3 p-5"></div>`                      | `<Row Margin="3" Padding="5"></Row>`                        |
 | `<div class="row m-auto p-5"></div>`                   | `<Row Margin="auto" Padding="5"></Row>`                     |
 | `<div class="row mb-3 pt-5"></div>`                    | `<Row Margin="bottom-3" Padding="top-5"></Row>`             |
 | `<div class="row m-md-3 p-xl-auto"></div>`             | `<Row Margin="md-3" Padding="xl-5"></Row>`                  |
 | `<div class="row mr-md-3 px-xl-5"></div>`              | `<Row Margin="right-md-3" Padding="horizontal-xl-5"></Row>` |
 | `<div class="row mr-md-3 px-xl-5"></div>`              | `<Row Margin="right-md-3" Padding="horizontal-xl-5"></Row>` |
-| `<div class="row m-1 m-md-3 m-lg-5 p-2 p-md-3"></div>` | `<Row Margin="1 | md-3 | lg-5" Padding="2 | md-3"></Row>`   |
+| `<div class="row m-1 m-md-3 m-lg-5 p-2 p-md-3"></div>` | `<Row Margin="1 \| md-3 \| lg-5" Padding="2 \| md-3"></Row>`   |
