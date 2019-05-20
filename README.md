@@ -59,19 +59,19 @@ Fluid container:
 | `<div class="container-fluid"></div>` | `<Container Type="fluid"></Container>` |
 
 ### Row
-Row without options:
+**Row without options:**
 
 | Bootstrap syntax  | BootstrapDotNet syntax |
 | ------------- | ------------- |
 | `<div class="row"></div>` | `<Row></Row>` |
 
-Row with no gutters:
+**Row with no gutters:**
 
 | Bootstrap syntax  | BootstrapDotNet syntax |
 | ------------- | ------------- |
 | `<div class="row no-gutters"></div>` | `<Row NoGutters="true"></Row>` |
 
-Vertical alignment:
+**Vertical alignment:**
 
 | Bootstrap syntax  | BootstrapDotNet syntax |
 | ------------- | ------------- |
@@ -81,7 +81,7 @@ Vertical alignment:
 | `<div class="row align-items-md-center"></div>`                   | `<Row VerticalAlign="md-center"></Row>`         |
 | `<div class="row align-items-start align-items-xl-center"></div>` | `<Row VerticalAlign="start \| xl-center"></Row>` |
 
-Horizontal alignment:
+**Horizontal alignment:**
 
 | Bootstrap syntax  | BootstrapDotNet syntax |
 | ------------- | ------------- |
@@ -94,13 +94,13 @@ Horizontal alignment:
 | `<div class="row justify-content-start justify-content-lg-center">` | `<Row Align="start \| lg-center"></Row>` |
 
 ### Column
-Column without options:
+**Column without options:**
 
 | Bootstrap syntax  | BootstrapDotNet syntax |
 | ------------- | ------------- |
 | `<div class="col"></div>` | `<Column></Column>` |
 
-Span with width (1-12) and breakpoints:
+**Span with width (1-12) and breakpoints:**
 
 | Bootstrap syntax  | BootstrapDotNet syntax |
 | ------------- | ------------- |
@@ -111,7 +111,7 @@ Span with width (1-12) and breakpoints:
 | `<div class="col-lg-auto"></div>`                | `<Column Span="lg-auto"></Column>`            |
 | `<div class="col-3 col-md-6 col-xl-auto"></div>` | `<Column Span="3 \| md-6 \| xl-auto"></Column>` |
 
-Order with index (0-12), first, last, and breakpoints:
+**Order with index (0-12), first, last, and breakpoints:**
 
 | Bootstrap syntax  | BootstrapDotNet syntax |
 | ------------- | ------------- |
@@ -121,7 +121,7 @@ Order with index (0-12), first, last, and breakpoints:
 | `<div class="col order-sm-4"></div>`                                   | `<Column Order="sm-4"></Column>`                       |
 | `<div class="col order-4 order-md-2 order-lg-0 order-xl-first"></div>` | `<Column Order="4 \| md-2 \| lg-0 \| xl-first"></Column>` |
 
-Offset with number (1-11) and breakpoint and number (0-11)
+**Offset with number (1-11) and breakpoint and number (0-11):**
 
 | Bootstrap syntax  | BootstrapDotNet syntax |
 | ------------- | ------------- |
@@ -130,7 +130,7 @@ Offset with number (1-11) and breakpoint and number (0-11)
 | `<div class="col offset-2 offset-md-4 offset-xl-8"></div>`  | `<Column Offset="2 \| md-4 \| xl-8"></Column>` |
 
 ### Shared options that all components have
-All components have the following parameters:
+**All components have the following parameters:**
 
 | Bootstrap syntax  | BootstrapDotNet syntax |
 | ------------- | ------------- |
@@ -167,7 +167,7 @@ And where *breakpoint* is one of:
 - `lg`
 - `xl`
 
-Examples, compared to Bootstrap:
+**Examples, compared to Bootstrap:**
 
 | Bootstrap syntax  | BootstrapDotNet syntax |
 | ------------- | ------------- |
