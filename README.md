@@ -47,19 +47,24 @@ that of using the library's syntax. That should make it possible for anyone fami
 
 ### Container
 Responsive container:
+
 | `<div class="container"></div>` | `<Container></Container>` |
 
 Fluid container:
+
 | `<div class="container-fluid"></div>` | `<Container Type="fluid"></Container>` |
 
 ### Row
 Row without options:
+
 | `<div class="row"></div>` | `<Row></Row>` |
 
 Row with no gutters:
+
 | `<div class="row no-gutters"></div>` | `<Row NoGutters="true"></Row>` |
 
 Vertical alignment:
+
 | `<div class="row align-items-start"></div>`                       | `<Row VerticalAlign="start"></Row>`             |
 | `<div class="row align-items-center"></div>`                      | `<Row VerticalAlign="center"></Row>`            |
 | `<div class="row align-items-end"></div>`                         | `<Row VerticalAlign="end"></Row>`               |
@@ -77,6 +82,7 @@ Horizontal alignment:
 
 ### Column
 Column without options:
+
 | `<div class="col"></div>` | `<Column></Column>` |
 
 Span with width (1-12) and breakpoints:
