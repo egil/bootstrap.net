@@ -38,8 +38,7 @@ to runtime validation instead. Currently, this is done in the following cases:
 @using static Egil.RazorComponents.Bootstrap.Options.SpacingOptions.Factory.LowerCase
 ```
 
-**NOTE:** Currently only client-side apps can pull the embedded Bootstrap library. If you are building a server-side app, add the
-Bootstrap css and JavaScript files you need. This will probably change in future verions.
+3. If you are creating a Blazor client application based on the Blazor project template, you can delete the `wwwroot/css/bootstrap/bootstrap.min.css` file, since it is included in BootstrapDotNet. If you are creating a Blazor server-side project, then you should leave the file in place, and possible add Bootstrap 4.3's JavaScript files and jQuery, if you are using components that require JavaScript.
 
 ## Specifying options
 The following table compares specifying Bootstraps options using normal [Bootstrap grid-syntax](https://getbootstrap.com/docs/4.3/layout/grid) and 
