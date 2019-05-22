@@ -1,32 +1,34 @@
 # BootstrapDotNet - Strongly Typed Bootstrap Razor Components
 
-**NOTE:** Very experimental at the moment. Feedback is much appreciated.
-
-**NOTE:** Is based on Preview-5 of ASP.NET 3.
-
-**NOTE:** Documentation is far from complete. [TestClient](tests/Egil.RazorComponents.Bootstrap.BlazorTestClient/) _may_ contain a working examples of how to use this library.
+- **NOTE:** BootstrapDotnet is based on Preview-5 of ASP.NET 3.
+- **NOTE:** Documentation is far from complete. [TestClient](tests/Egil.RazorComponents.Bootstrap.BlazorTestClient/) _may_ contain a working examples of how to use this library.
 
 ## Strongly Typed Bootstrap - options verified at compile time
 
 The idea is to make it less likely that somebody breaks the Bootstrap
-conventions and creates invalid "Bootstrap HTML".
+conventions and creates invalid "Bootstrap HTML", and at the same time keep syntax simple
+and similar to Bootstraps own. This is done by using and abusing C# ability to overload operators
+such as `-` and `|` and by `using static` to import instances of options classes from a factory.
+
+This makes code like this compile:
+
+![No errors at compile time BootstrapDotNet](docs/correct-code.png "Correct code")
+
+And code like this fail at compile time:
+
+![Compile time errors in BootstrapDotNet](docs/compile-time-error.png "Compile time errors")
 
 At the moment, the functionality around Bootstraps grid system is done, i.e. the components `<Container>`, `<Row>` and `<Column>`. Almost all properties
 that can be set on one of the grid components are implemented. E.g. with `<Column>`, there is support for compile-time check of column options,
 e.g. `col-{breakpoint}-{width}` and `col-auto`.
 
 The compile time check works by having a strongly typed parameter in `Column`, `[Parameter] SpanParameter Span { get; set; }`, and using static
-imports to make variants of `ISpanOption`'s available in the razor views. The last piece of the puzzle is utilizing C# implicit operator overloading
+imports to make variants of "`ISpanOption`'s" available in the Razor views. The last piece of the puzzle is utilizing C# implicit operator overloading
 to convert between the different subtypes of `SpanParameter` and `int`.
 
 That makes it possible to specify complex column configurations such as `<div class="col-12 col-md-8 col-lg-4">`
 as `<Column Span="12 | md-8 | lg-4">`, which the compiler checks. If you e.g. by accident `mx-8` instead
 of `md-8`, i.e. `<Column Span="12 | mx-8 | lg-4">`, the compiler will complain.
-
-In the screenshot below, a invalid breakpoint has been specified in the `Span` property and the "auto" option is not
-valid for the `Order` property (it is in `Span`).
-
-![Compile time errors in BootstrapDotNet](docs/compile-time-error.png "Compile time erros")
 
 ### Runtime checks as fallback
 
