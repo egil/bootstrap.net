@@ -20,6 +20,8 @@
     <Company />
     <Product>BootstrapDotNet</Product>
     <Description>BootstrapDotNet is a strongly typed version of Bootstrap (https://getbootstrap.com) implemented in Razor Components. Note: Very experimental at the moment.</Description>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageId>BootstrapDotNet</PackageId>
   </PropertyGroup>
 
   <ItemGroup>
