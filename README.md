@@ -173,7 +173,7 @@ And where *breakpoint* is one of:
 | `<div class="row m-3 p-5"></div>`                      | `<Row Margin="3" Padding="5"></Row>`                        |
 | `<div class="row m-auto p-5"></div>`                   | `<Row Margin="auto" Padding="5"></Row>`                     |
 | `<div class="row mb-3 pt-5"></div>`                    | `<Row Margin="bottom-3" Padding="top-5"></Row>`             |
-| `<div class="row m-md-3 p-xl-auto"></div>`             | `<Row Margin="md-3" Padding="xl-5"></Row>`                  |
+| `<div class="row m-md-3 p-xl-auto"></div>`             | `<Row Margin="md-3" Padding="xl-auto"></Row>`               |
 | `<div class="row mr-md-3 px-xl-5"></div>`              | `<Row Margin="right-md-3" Padding="horizontal-xl-5"></Row>` |
 | `<div class="row mr-md-3 px-xl-5"></div>`              | `<Row Margin="right-md-3" Padding="horizontal-xl-5"></Row>` |
 | `<div class="row m-1 m-md-3 m-lg-5 p-2 p-md-3"></div>` | `<Row Margin="1 \| md-3 \| lg-5" Padding="2 \| md-3"></Row>`   |
