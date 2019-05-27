@@ -5,12 +5,20 @@
     @ChildContent
 </div>
 
-@functions {
+@functions {    
+    [Parameter]
+    RenderFragment ChildContent { get; set; }
+    
     [Parameter]
     ContainerTypeParameter Type { get; set; } = ContainerTypeParameter.Default;
 
     [Parameter]
-    RenderFragment ChildContent { get; set; }
+    SpacingParameter<PaddingSpacing> Padding { get; set; } = SpacingParameter<PaddingSpacing>.None;
 
-    protected override IEnumerable<IParameter> CssClassSources => new IParameter[] { Type };
+    [Parameter]
+    SpacingParameter<MarginSpacing> Margin { get; set; } = SpacingParameter<MarginSpacing>.None;
+    
+    protected override IEnumerable<IParameter> CssClassSources => new IParameter[]{
+        Type, Padding, Margin
+    };
 }

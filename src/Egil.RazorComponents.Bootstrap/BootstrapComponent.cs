@@ -31,8 +31,7 @@ namespace Egil.RazorComponents.Bootstrap
         {
             var acc = AdditionalCssClasses.Split(CssClassSplitChar, StringSplitOptions.RemoveEmptyEntries);
 
-            var classes = CssClassSources.SelectMany(x => x)
-                .Concat(StaticCssClasses)
+            var classes = StaticCssClasses.Concat(CssClassSources.SelectMany(x => x))
                 .Concat(acc)
                 .Distinct();
 
