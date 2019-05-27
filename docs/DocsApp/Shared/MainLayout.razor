@@ -1,0 +1,26 @@
+@inherits LayoutComponentBase
+
+<header>
+    BootstrapDotNet
+</header>
+
+<Container Type="fluid">
+    <Row AdditionalCssClasses="flex-xl-nowrap">
+        <Column Span="12 | md-3 | xl-2">
+            <nav>
+                <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                    <span class="oi oi-home" aria-hidden="true"></span> Home
+                </NavLink>
+
+                <NavLink class="nav-link" href="layout/grid">
+                    <span class="oi oi-home" aria-hidden="true"></span> Grid
+                </NavLink>
+            </nav>
+        </Column>
+        <Column Span="12 | md-9 | xl-8" Padding="vertical-md-3 | left-md-5">
+            <main>
+                @Body
+            </main>
+        </Column>
+    </Row>
+</Container>

@@ -1,0 +1,96 @@
+﻿@using Microsoft.JSInterop;
+@inject IJSRuntime jsRuntime;
+
+@using DocsApp.Pages.Layout.Examples
+@page "/Layout/Grid"
+
+@functions {
+    protected override async Task OnAfterRenderAsync()
+    {
+        await jsRuntime.InvokeAsync<string>("Prism.highlightAll");
+        await base.OnAfterRenderAsync();
+    }
+}
+
+<h1 class="display-1">Grid system</h1>
+<p class="lead">
+    All examples and quite a lot of the related text is copied from <a href="https://getbootstrap.com/docs/4.3/layout/grid/">Bootstrap's Grid system</a> documentation. More details about Bootstrap's grid system can be found on that page.
+</p>
+
+<Example File=@typeof(EqualWidthGrid1) />
+
+<p>The above example creates three equal-width columns on small, medium, large, and extra large devices using our predefined grid classes. Those columns are centered in the page with the parent <code class="highlighter-rouge">.container</code>.</p>
+
+<h3 id="equal-width">Equal-width</h3>
+
+<p>For example, here are two grid layouts that apply to every device and viewport, from <code class="highlighter-rouge">xs</code> to <code class="highlighter-rouge">xl</code>. Add any number of unit-less classes for each breakpoint you need and every column will be the same width.</p>
+
+<Example File=@typeof(EqualWidthGrid2) />
+
+<h3 id="setting-one-column-width">Setting one column width</h3>
+
+<p>Auto-layout for flexbox grid columns also means you can set the width of one column and have the sibling columns automatically resize around it. You may use predefined grid classes (as shown below), grid mixins, or inline widths. Note that the other columns will resize no matter the width of the center column.</p>
+
+<Example File=@typeof(SettingOneColumnWidth) />
+
+<h3 id="variable-width-content">Variable width content</h3>
+
+<p>Use <code class="highlighter-rouge">{breakpoint}-auto</code> classes to size columns based on the natural width of their content.</p>
+
+<Example File=@typeof(VariableWidthContent) />
+
+<h3 id="equal-width-multi-row">Equal-width multi-row</h3>
+
+<p>Create equal-width columns that span multiple rows by inserting a <code class="highlighter-rouge">.w-100</code> where you want the columns to break to a new line. Make the breaks responsive by mixing the <code class="highlighter-rouge">.w-100</code> with some <a href="/docs/4.3/utilities/display/">responsive display utilities</a>.</p>
+
+<Example File=@typeof(EqualWidthMultiRow) />
+
+<h2 id="responsive-classes">Responsive classes</h2>
+
+<p>Bootstrap’s grid includes five tiers of predefined classes for building complex responsive layouts. Customize the size of your columns on extra small, small, medium, large, or extra large devices however you see fit.</p>
+
+<h3 id="all-breakpoints">All breakpoints</h3>
+
+<p>For grids that are the same from the smallest of devices to the largest, use the <code class="highlighter-rouge">.col</code> and <code class="highlighter-rouge">.col-*</code> classes. Specify a numbered class when you need a particularly sized column; otherwise, feel free to stick to <code class="highlighter-rouge">.col</code>.</p>
+
+<Example File=@typeof(AllBreakpoints) />
+
+<h3 id="stacked-to-horizontal">Stacked to horizontal</h3>
+
+<p>Using a single set of <code class="highlighter-rouge">.col-sm-*</code> classes, you can create a basic grid system that starts out stacked and becomes horizontal at the small breakpoint (<code class="highlighter-rouge">sm</code>).</p>
+
+<Example File=@typeof(StackedToHorizontal) />
+
+<h3 id="mix-and-match">Mix and match</h3>
+
+<p>Don’t want your columns to simply stack in some grid tiers? Use a combination of different classes for each tier as needed. See the example below for a better idea of how it all works.</p>
+
+<Example File=@typeof(MixAndMatch) />
+
+<h3 id="gutters">Gutters</h3>
+
+<p>Gutters can be responsively adjusted by breakpoint-specific padding and negative margin utility classes. To change the gutters in a given row, pair a negative margin utility on the <code class="highlighter-rouge">.row</code> and matching padding utilities on the <code class="highlighter-rouge">.col</code>s. The <code class="highlighter-rouge">.container</code> or <code class="highlighter-rouge">.container-fluid</code> parent may need to be adjusted too to avoid unwanted overflow, using again matching padding utility.</p>
+
+<p>Here’s an example of customizing the Bootstrap grid at the large (<code class="highlighter-rouge">lg</code>) breakpoint and above. We’ve increased the <code class="highlighter-rouge">.col</code> padding with <code class="highlighter-rouge">.px-lg-5</code>, counteracted that with <code class="highlighter-rouge">.mx-lg-n5</code> on the parent <code class="highlighter-rouge">.row</code> and then adjusted the <code class="highlighter-rouge">.container</code> wrapper with <code class="highlighter-rouge">.px-lg-5</code>.</p>
+
+<Example File=@typeof(Gutters) />
+
+<h2 id="alignment">Alignment</h2>
+
+<p>Use flexbox alignment utilities to vertically and horizontally align columns.</p>
+
+<h3 id="vertical-alignment">Vertical alignment</h3>
+
+<Example File=@typeof(VerticalAlignment1) />
+
+<Example File=@typeof(VerticalAlignment2) />
+
+<h3 id="horizontal-alignment">Horizontal alignment</h3>
+
+<Example File=@typeof(HorizontalAlignment) />
+
+<h3 id="no-gutters">No gutters</h3>
+
+<p>The gutters between columns in our predefined grid classes can be removed with <code class="highlighter-rouge">.no-gutters</code>. This removes the negative <code class="highlighter-rouge">margin</code>s from <code class="highlighter-rouge">.row</code> and the horizontal <code class="highlighter-rouge">padding</code> from all immediate children columns.</p>
+
+<Example File=@typeof(NoGutters) />

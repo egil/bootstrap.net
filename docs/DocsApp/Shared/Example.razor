@@ -1,0 +1,62 @@
+﻿@using Microsoft.JSInterop;
+@inject IJSRuntime jsRuntime;
+
+<div class="example border rounded-sm" id=@Id>
+    <div class="example-output py-3 bg-light">@ExampleOutput</div>
+    <Container Type="fluid">
+        <Row NoGutters="true">
+            <Column Span="sm-12 | lg-6">
+                <div class="example-code-bootstrap-dotnet">
+                    <pre class=""><code class="language-html">@ExampleSource</code></pre>
+                </div>
+                <p class="example-code-name text-muted">
+                    <strong><em>BootstrapDotNet Razor</em></strong> code sample
+                </p>
+            </Column>
+            <Column Span="sm-12 | lg-6" AdditionalCssClasses="border-top-sm border-left-lg">
+                <div class="example-code-bootstrap">
+                    <pre class=""><code class="language-html"></code></pre>
+                </div>
+                <p class="example-code-name text-muted">
+                    <strong><em>Bootstrap HTML</em></strong> code sample
+                </p>
+            </Column>
+        </Row>
+    </Container>
+</div>
+
+@functions {
+    private RenderFragment ExampleOutput => (builder) =>
+    {
+        builder.OpenComponent(0, File);
+        builder.CloseComponent();
+    };
+
+    [Parameter]
+    private Type File { get; set; }
+
+    private string Id => File.FullName.Replace(".", "");
+
+    private string ExampleSource { get; set; }
+    private string BootstrapSource { get; set; }
+
+    protected override void OnInit()
+    {
+        base.OnInit();
+
+        var assm = System.Reflection.Assembly.GetExecutingAssembly();
+        using (var stream = assm.GetManifestResourceStream($"{File.FullName}.razor"))
+        {
+            using (var reader = new System.IO.StreamReader(stream))
+            {
+                ExampleSource = reader.ReadToEnd();
+            }
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync()
+    {
+        await jsRuntime.InvokeAsync<string>("setExampleBootstrapHtml", Id);
+        await base.OnAfterRenderAsync();
+    }
+}

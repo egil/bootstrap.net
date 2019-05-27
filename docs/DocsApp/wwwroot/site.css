@@ -1,0 +1,42 @@
+@import url('libs/open-iconic/font/css/open-iconic-bootstrap.min.css');
+@import url('libs//PrismJS-1.16.0//prism.css');
+
+.example pre,
+.example code {
+    background-color: #fff;
+}
+
+    .example pre[class*="language-"] {
+        padding: 0;
+    }
+
+.example {
+    margin-bottom: 1rem;
+}
+
+    .example .row + .row {
+        margin-top: 1rem;
+    }
+
+.example-output .row > [class^=col] {
+    background-color: #adb5bd;
+    border: 1px solid #a4a6a9;
+    color: #fff;
+    padding: 1rem;
+}
+
+.example-code-name {
+    font-size: 0.7rem;
+}
+
+@media (max-width: 991.98px) {
+    .example .border-top-sm {
+        border-top: 1px solid #dee2e6 !important;
+    }
+}
+
+@media (min-width: 992px) {
+    .example .border-left-lg {
+        border-left: 1px solid #dee2e6 !important;
+    }
+}
