@@ -41,6 +41,14 @@ namespace Egil.RazorComponents.Bootstrap.Tests.Options.SpacingOptions
             spacing.Value.ShouldBeCombinationOf(side, (Number)size);
         }
 
+        [Fact(DisplayName = "A side and auto option can be combined into a spacing option")]
+        public void SideAndAutoCombines()
+        {
+            var side = right;
+            var spacing = side - auto;
+            spacing.Value.ShouldBeCombinationOf(side, auto);
+        }
+
         [Theory(DisplayName = "Combining a side with an invalid size number throws")]
         [InlineData(-6)]
         [InlineData(6)]

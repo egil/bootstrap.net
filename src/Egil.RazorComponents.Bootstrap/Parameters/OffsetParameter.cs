@@ -58,7 +58,7 @@ namespace Egil.RazorComponents.Bootstrap.Parameters
             {
                 this.set = set.Select(option =>
                 {
-                    if (option is BreakpointWithNumber bwn) bwn.Number.ValidateAsOffsetNumber();
+                    if (option is BreakpointWithNumber bwn) bwn.Number.ValidateAsOffsetBreakpointNumber();
                     if (option is Number n) n.ValidateAsOffsetNumber();
                     return string.Concat(OptionPrefix, Option.OptionSeparator, option.Value);
                 }).ToArray();

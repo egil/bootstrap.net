@@ -94,3 +94,57 @@
 <p>The gutters between columns in our predefined grid classes can be removed with <code class="highlighter-rouge">.no-gutters</code>. This removes the negative <code class="highlighter-rouge">margin</code>s from <code class="highlighter-rouge">.row</code> and the horizontal <code class="highlighter-rouge">padding</code> from all immediate children columns.</p>
 
 <Example File=@typeof(NoGutters) />
+
+<h3 id="column-wrapping">Column wrapping</h3>
+
+<p>If more than 12 columns are placed within a single row, each group of extra columns will, as one unit, wrap onto a new line.</p>
+
+<Example File=@typeof(ColumnWrapping) />
+
+<h3 id="column-breaks">Column breaks</h3>
+
+<p>Breaking columns to a new line in flexbox requires a small hack: add an element with <code class="highlighter-rouge">width: 100%</code> wherever you want to wrap your columns to a new line. Normally this is accomplished with multiple <code class="highlighter-rouge">.row</code>s, but not every implementation method can account for this.</p>
+
+<Example File=@typeof(ColumnBreaks1) />
+
+<p>You may also apply this break at specific breakpoints with our <a href="/docs/4.3/utilities/display/">responsive display utilities</a>.</p>
+
+<Example File=@typeof(ColumnBreaks2) />
+
+<h2 id="reordering">Reordering</h2>
+
+<h3 id="order-classes">Order classes</h3>
+
+<p>Use <code class="highlighter-rouge">.order-</code> classes for controlling the <strong>visual order</strong> of your content. These classes are responsive, so you can set the <code class="highlighter-rouge">order</code> by breakpoint (e.g., <code class="highlighter-rouge">.order-1.order-md-2</code>). Includes support for <code class="highlighter-rouge">1</code> through <code class="highlighter-rouge">12</code> across all five grid tiers.</p>
+
+<Example File=@typeof(OrderClasses1) />
+
+<p>There are also responsive <code class="highlighter-rouge">.order-first</code> and <code class="highlighter-rouge">.order-last</code> classes that change the <code class="highlighter-rouge">order</code> of an element by applying <code class="highlighter-rouge">order: -1</code> and <code class="highlighter-rouge">order: 13</code> (<code class="highlighter-rouge">order: $columns + 1</code>), respectively. These classes can also be intermixed with the numbered <code class="highlighter-rouge">.order-*</code> classes as needed.</p>
+
+<Example File=@typeof(OrderClasses2) />
+
+<h3 id="offsetting-columns">Offsetting columns</h3>
+
+<p>You can offset grid columns in two ways: our responsive <code class="highlighter-rouge">.offset-</code> grid classes and our <a href="/docs/4.3/utilities/spacing/">margin utilities</a>. Grid classes are sized to match columns while margins are more useful for quick layouts where the width of the offset is variable.</p>
+
+<h4 id="offset-classes">Offset classes</h4>
+
+<p>Move columns to the right using <code class="highlighter-rouge">.offset-md-*</code> classes. These classes increase the left margin of a column by <code class="highlighter-rouge">*</code> columns. For example, <code class="highlighter-rouge">.offset-md-4</code> moves <code class="highlighter-rouge">.col-md-4</code> over four columns.</p>
+
+<Example File=@typeof(OffsetClasses1) />
+
+<p>In addition to column clearing at responsive breakpoints, you may need to reset offsets. See this in action in <a href="/docs/4.3/examples/grid/">the grid example</a>.</p>
+
+<Example File=@typeof(OffsetClasses2) />
+
+<h4 id="margin-utilities">Margin utilities</h4>
+
+<p>With the move to flexbox in v4, you can use margin utilities like <code class="highlighter-rouge">.mr-auto</code> to force sibling columns away from one another.</p>
+
+<Example File=@typeof(MarginUtilities) />
+
+<h2 id="nesting">Nesting</h2>
+
+<p>To nest your content with the default grid, add a new <code class="highlighter-rouge">.row</code> and set of <code class="highlighter-rouge">.col-sm-*</code> columns within an existing <code class="highlighter-rouge">.col-sm-*</code> column. Nested rows should include a set of columns that add up to 12 or fewer (it is not required that you use all 12 available columns).</p>
+
+<Example File=@typeof(Nesting) />

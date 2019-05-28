@@ -30,6 +30,11 @@ namespace Egil.RazorComponents.Bootstrap.Options.SpacingOptions
             return new SpacingOption(side, Number.ToSpacingNumber(size));
         }
 
+        public static SpacingOption operator -(SpacingSide side, AutoOption auto)
+        {
+            return new SpacingOption(side, auto);
+        }
+
         public static IntermediateSpacingOption operator -(SpacingSide side, Breakpoint breakpoint)
         {
             return new IntermediateSpacingOption(side, breakpoint);

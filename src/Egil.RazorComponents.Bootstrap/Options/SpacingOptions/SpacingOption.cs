@@ -22,6 +22,11 @@ namespace Egil.RazorComponents.Bootstrap.Options.SpacingOptions
             Value = string.Concat(side.Value, Option.OptionSeparator, breakpoint.Value);
         }
 
+        public SpacingOption(SpacingSide side, AutoOption auto)
+        {
+            Value = string.Concat(side.Value, Option.OptionSeparator, auto.Value);
+        }
+
         public SpacingOption(SpacingSide side, BreakpointAuto breakpointAuto)
         {
             Value = string.Concat(side.Value, Option.OptionSeparator, breakpointAuto.Value);
