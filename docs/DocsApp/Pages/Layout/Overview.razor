@@ -1,0 +1,68 @@
+﻿@using DocsApp.Pages.Layout.Examples
+@page "/layout"
+@page "/layout/overview"
+
+@inject IJSRuntime jsRuntime;
+@functions {
+    protected override async Task OnAfterRenderAsync()
+    {
+        await jsRuntime.InvokeAsync<string>("Prism.highlightAll");
+        await base.OnAfterRenderAsync();
+    }
+}
+
+<style>
+    .example-container .container {
+        min-width: 16rem;
+        max-width: 25rem;
+        margin-right: auto;
+        margin-left: auto;
+    }
+
+    .example-container .container-fluid {
+        max-width: none;
+    }
+
+    .example-container header {
+        height: 3rem;
+        margin-bottom: .5rem;
+        background-color: #ab3131;
+        border-radius: .25rem;
+    }
+
+    .example-container aside {
+        float: right;
+        width: 4rem;
+        height: 8rem;
+        background-color: #80bdff;
+        border-radius: .25rem;
+    }
+
+    .example-container main {
+        height: 8rem;
+        margin-right: 4.5rem;
+        background-color: #957bbe;
+        border-radius: .25rem;
+    }
+</style>
+
+<h1 class="display-1" id="content">Overview</h1>
+<p class="lead">
+    Components and options for laying out your Bootstrap project, including wrapping containers, a powerful grid system, a flexible media object, and responsive utility classes.
+</p>
+<p class="alert alert-info" role="alert">
+    <em>All relevant examples to Boostrap.NET</em> and related text is based off of <a href="https://getbootstrap.com/docs/4.3/layout/overview/">Bootstrap's own related documentation</a>.
+    Read Bootstrap's documentation for more details on the inner workings of Bootstrap and other none Boostrap.NET options related to this section.
+</p>
+
+<h2 id="containers">Containers</h2>
+
+<p>Containers are the most basic layout element in Bootstrap and are <strong>required when using our default grid system</strong>. Choose from a responsive, fixed-width container (meaning its <code class="highlighter-rouge">max-width</code> changes at each breakpoint) or fluid-width (meaning it’s <code class="highlighter-rouge">100%</code> wide all the time).</p>
+
+<p>While containers <em>can</em> be nested, most layouts do not require a nested container.</p>
+
+<Example File=@typeof(ContainerResponsive) class="example-container" />
+
+<p>Use <code class="highlighter-rouge">.container-fluid</code> for a full width container, spanning the entire width of the viewport.</p>
+
+<Example File=@typeof(ContainerFluid) class="example-container" />

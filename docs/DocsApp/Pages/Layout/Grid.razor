@@ -1,8 +1,7 @@
-﻿@using Microsoft.JSInterop;
-@inject IJSRuntime jsRuntime;
+﻿@using DocsApp.Pages.Layout.Examples
+@page "/layout/grid"
 
-@using DocsApp.Pages.Layout.Examples
-@page "/Layout/Grid"
+@inject IJSRuntime jsRuntime;
 
 @functions {
     protected override async Task OnAfterRenderAsync()
@@ -12,9 +11,13 @@
     }
 }
 
-<h1 class="display-1">Grid system</h1>
+<h1 class="display-1" id="content">Grid system</h1>
 <p class="lead">
-    All examples and quite a lot of the related text is copied from <a href="https://getbootstrap.com/docs/4.3/layout/grid/">Bootstrap's Grid system</a> documentation. More details about Bootstrap's grid system can be found on that page.
+    Use our powerful mobile-first flexbox grid to build layouts of all shapes and sizes thanks to a twelve column system, five default responsive tiers, Sass variables and mixins, and dozens of predefined classes/options.
+</p>
+<p class="alert alert-info" role="alert">
+    <em>All relevant examples to Boostrap.NET</em> and related text is based off of <a href="https://getbootstrap.com/docs/4.3/layout/grid/">Bootstrap's own related documentation</a>.
+    Read Bootstrap's documentation for more details on the inner workings of Bootstrap and other non Boostrap.NET options related to this section.
 </p>
 
 <Example File=@typeof(EqualWidthGrid1) />
@@ -51,13 +54,13 @@
 
 <h3 id="all-breakpoints">All breakpoints</h3>
 
-<p>For grids that are the same from the smallest of devices to the largest, use the <code class="highlighter-rouge">.col</code> and <code class="highlighter-rouge">.col-*</code> classes. Specify a numbered class when you need a particularly sized column; otherwise, feel free to stick to <code class="highlighter-rouge">.col</code>.</p>
+<p>For grids that are the same from the smallest of devices to the largest, use the <code class="highlighter-rouge">&lt;Column /&gt;</code> and <code class="highlighter-rouge">&lt;Column Span=&quot;*&quot; /&gt;</code> component with or without the Span options. Specify a numbered class when you need a particularly sized column; otherwise, feel free to stick to <code class="highlighter-rouge">&lt;Column /&gt;</code>.</p>
 
 <Example File=@typeof(AllBreakpoints) />
 
 <h3 id="stacked-to-horizontal">Stacked to horizontal</h3>
 
-<p>Using a single set of <code class="highlighter-rouge">.col-sm-*</code> classes, you can create a basic grid system that starts out stacked and becomes horizontal at the small breakpoint (<code class="highlighter-rouge">sm</code>).</p>
+<p>Using a single set of <code class="highlighter-rouge">&lt;Column Span=&quot;sm-*&quot; /&gt;</code> Span options, you can create a basic grid system that starts out stacked and becomes horizontal at the small breakpoint (<code class="highlighter-rouge">sm</code>).</p>
 
 <Example File=@typeof(StackedToHorizontal) />
 
@@ -69,9 +72,9 @@
 
 <h3 id="gutters">Gutters</h3>
 
-<p>Gutters can be responsively adjusted by breakpoint-specific padding and negative margin utility classes. To change the gutters in a given row, pair a negative margin utility on the <code class="highlighter-rouge">.row</code> and matching padding utilities on the <code class="highlighter-rouge">.col</code>s. The <code class="highlighter-rouge">.container</code> or <code class="highlighter-rouge">.container-fluid</code> parent may need to be adjusted too to avoid unwanted overflow, using again matching padding utility.</p>
+<p>Gutters can be responsively adjusted by breakpoint-specific padding and negative margin utility options. To change the gutters in a given row, pair a negative margin utility on the <code class="highlighter-rouge">&lt;Row /&gt;</code> and matching padding utilities on the <code class="highlighter-rouge">&lt;Column /&gt;</code>s. The <code class="highlighter-rouge">&lt;Container /&gt;</code> or <code class="highlighter-rouge">&lt;Container Type=&quot;fluid&quot; /&gt;</code> parent may need to be adjusted too to avoid unwanted overflow, using again matching padding utility.</p>
 
-<p>Here’s an example of customizing the Bootstrap grid at the large (<code class="highlighter-rouge">lg</code>) breakpoint and above. We’ve increased the <code class="highlighter-rouge">.col</code> padding with <code class="highlighter-rouge">.px-lg-5</code>, counteracted that with <code class="highlighter-rouge">.mx-lg-n5</code> on the parent <code class="highlighter-rouge">.row</code> and then adjusted the <code class="highlighter-rouge">.container</code> wrapper with <code class="highlighter-rouge">.px-lg-5</code>.</p>
+<p>Here’s an example of customizing the Bootstrap grid at the large (<code class="highlighter-rouge">lg</code>) breakpoint and above. We’ve increased the <code class="highlighter-rouge">&lt;Column /&gt;</code> padding with <code class="highlighter-rouge">Padding="horizontal-lg-5"</code> option, counteracted that with <code class="highlighter-rouge">Margin="horizontal-lg-n5"</code> on the parent <code class="highlighter-rouge">&lt;Row /&gt;</code> and then adjusted the <code class="highlighter-rouge">&lt;Container /&gt;</code> wrapper with <code class="highlighter-rouge">Padding="horizontal-lg-5"</code>.</p>
 
 <Example File=@typeof(Gutters) />
 
@@ -91,7 +94,7 @@
 
 <h3 id="no-gutters">No gutters</h3>
 
-<p>The gutters between columns in our predefined grid classes can be removed with <code class="highlighter-rouge">.no-gutters</code>. This removes the negative <code class="highlighter-rouge">margin</code>s from <code class="highlighter-rouge">.row</code> and the horizontal <code class="highlighter-rouge">padding</code> from all immediate children columns.</p>
+<p>The gutters between columns in our predefined grid components can be removed with <code class="highlighter-rouge">NoGutters=&quot;true&quot;</code> option. This removes the negative <code class="highlighter-rouge">margin</code>s from <code class="highlighter-rouge">&lt;Row /&gt;</code> and the horizontal <code class="highlighter-rouge">padding</code> from all immediate children columns.</p>
 
 <Example File=@typeof(NoGutters) />
 
@@ -103,7 +106,7 @@
 
 <h3 id="column-breaks">Column breaks</h3>
 
-<p>Breaking columns to a new line in flexbox requires a small hack: add an element with <code class="highlighter-rouge">width: 100%</code> wherever you want to wrap your columns to a new line. Normally this is accomplished with multiple <code class="highlighter-rouge">.row</code>s, but not every implementation method can account for this.</p>
+<p>Breaking columns to a new line in flexbox requires a small hack: add an element with <code class="highlighter-rouge">width: 100%</code> wherever you want to wrap your columns to a new line. Normally this is accomplished with multiple <code class="highlighter-rouge">&lt;Row /&gt;</code>s, but not every implementation method can account for this.</p>
 
 <Example File=@typeof(ColumnBreaks1) />
 
@@ -115,21 +118,21 @@
 
 <h3 id="order-classes">Order classes</h3>
 
-<p>Use <code class="highlighter-rouge">.order-</code> classes for controlling the <strong>visual order</strong> of your content. These classes are responsive, so you can set the <code class="highlighter-rouge">order</code> by breakpoint (e.g., <code class="highlighter-rouge">.order-1.order-md-2</code>). Includes support for <code class="highlighter-rouge">1</code> through <code class="highlighter-rouge">12</code> across all five grid tiers.</p>
+<p>Use <code class="highlighter-rouge">Order="*"</code> options for controlling the <strong>visual order</strong> of your content. These classes are responsive, so you can set the <code class="highlighter-rouge">order</code> by breakpoint (e.g., <code class="highlighter-rouge">Order="1 | md-2"</code>). Includes support for <code class="highlighter-rouge">1</code> through <code class="highlighter-rouge">12</code> across all five grid tiers.</p>
 
 <Example File=@typeof(OrderClasses1) />
 
-<p>There are also responsive <code class="highlighter-rouge">.order-first</code> and <code class="highlighter-rouge">.order-last</code> classes that change the <code class="highlighter-rouge">order</code> of an element by applying <code class="highlighter-rouge">order: -1</code> and <code class="highlighter-rouge">order: 13</code> (<code class="highlighter-rouge">order: $columns + 1</code>), respectively. These classes can also be intermixed with the numbered <code class="highlighter-rouge">.order-*</code> classes as needed.</p>
+<p>There are also responsive <code class="highlighter-rouge">Order="first"</code> and <code class="highlighter-rouge">Order="last"</code> classes that change the <code class="highlighter-rouge">order</code> of an element by applying <code class="highlighter-rouge">order: -1</code> and <code class="highlighter-rouge">order: 13</code> (<code class="highlighter-rouge">order: $columns + 1</code>), respectively. These options can also be intermixed with the numbered <code class="highlighter-rouge">Order="*"</code> options as needed.</p>
 
 <Example File=@typeof(OrderClasses2) />
 
 <h3 id="offsetting-columns">Offsetting columns</h3>
 
-<p>You can offset grid columns in two ways: our responsive <code class="highlighter-rouge">.offset-</code> grid classes and our <a href="/docs/4.3/utilities/spacing/">margin utilities</a>. Grid classes are sized to match columns while margins are more useful for quick layouts where the width of the offset is variable.</p>
+<p>You can offset grid columns in two ways: our responsive <code class="highlighter-rouge">Offset="*"</code> grid options and our <a href="/docs/4.3/utilities/spacing/">margin utilities</a>. Grid options are sized to match columns while margins are more useful for quick layouts where the width of the offset is variable.</p>
 
 <h4 id="offset-classes">Offset classes</h4>
 
-<p>Move columns to the right using <code class="highlighter-rouge">.offset-md-*</code> classes. These classes increase the left margin of a column by <code class="highlighter-rouge">*</code> columns. For example, <code class="highlighter-rouge">.offset-md-4</code> moves <code class="highlighter-rouge">.col-md-4</code> over four columns.</p>
+<p>Move columns to the right using <code class="highlighter-rouge">Offset="md-*"</code> options. These classes increase the left margin of a column by <code class="highlighter-rouge">*</code> columns. For example, <code class="highlighter-rouge">Offset="md-4"</code> moves <code class="highlighter-rouge">Span="md-4"</code> over four columns.</p>
 
 <Example File=@typeof(OffsetClasses1) />
 
@@ -139,12 +142,12 @@
 
 <h4 id="margin-utilities">Margin utilities</h4>
 
-<p>With the move to flexbox in v4, you can use margin utilities like <code class="highlighter-rouge">.mr-auto</code> to force sibling columns away from one another.</p>
+<p>With the move to flexbox in v4, you can use margin utilities like <code class="highlighter-rouge">Margin="right-auto"</code> to force sibling columns away from one another.</p>
 
 <Example File=@typeof(MarginUtilities) />
 
 <h2 id="nesting">Nesting</h2>
 
-<p>To nest your content with the default grid, add a new <code class="highlighter-rouge">.row</code> and set of <code class="highlighter-rouge">.col-sm-*</code> columns within an existing <code class="highlighter-rouge">.col-sm-*</code> column. Nested rows should include a set of columns that add up to 12 or fewer (it is not required that you use all 12 available columns).</p>
+<p>To nest your content with the default grid, add a new <code class="highlighter-rouge">&lt;Row /&gt;</code> and set of <code class="highlighter-rouge">Span="sm-*"</code> columns within an existing <code class="highlighter-rouge">Span="sm-*"</code> column. Nested rows should include a set of columns that add up to 12 or fewer (it is not required that you use all 12 available columns).</p>
 
 <Example File=@typeof(Nesting) />

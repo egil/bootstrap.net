@@ -18,6 +18,12 @@
         margin-top: 1rem;
     }
 
+
+    .example .row .row > [class^=col] {
+        background-color: #a1a5a9;
+        border: 1px solid #92959a;
+    }
+
 .example-output .row > [class^=col] {
     background-color: #adb5bd;
     border: 1px solid #a4a6a9;
@@ -40,3 +46,4 @@
         border-left: 1px solid #dee2e6 !important;
     }
 }
+

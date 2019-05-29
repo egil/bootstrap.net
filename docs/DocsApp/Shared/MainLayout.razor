@@ -1,19 +1,47 @@
 @inherits LayoutComponentBase
+@inject IJSRuntime jsRuntime;
+
+@functions {
+    protected override async Task OnAfterRenderAsync()
+    {
+        await jsRuntime.InvokeAsync<string>("Prism.highlightAll");
+        await base.OnAfterRenderAsync();
+    }
+}
 
 <header>
-    BootstrapDotNet
+    <nav class="navbar navbar-expand sticky-top navbar-dark bg-dark">
+        <NavLink class="navbar-brand mb-0 h1" href="/" Match="NavLinkMatch.All">
+            Bootstrap.NET
+        </NavLink>
+
+        <div class="navbar">
+            <div class="navbar-nav">
+                <NavLink class="nav-link" href="/" Match="NavLinkMatch.All">Home</NavLink>
+                <NavLink class="nav-link" href="/getting-started/introduction">Documentation</NavLink>
+            </div>
+        </div>
+    </nav>
 </header>
 
 <Container Type="fluid">
     <Row AdditionalCssClasses="flex-xl-nowrap">
         <Column Span="12 | md-3 | xl-2">
-            <nav>
-                <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                    <span class="oi oi-home" aria-hidden="true"></span> Home
+            <nav class="nav flex-column table-of-contents">
+                <NavLink class="navbar-brand mb-0 h1" href="/" Match="NavLinkMatch.All">
+                    Home
                 </NavLink>
 
-                <NavLink class="nav-link" href="layout/grid">
-                    <span class="oi oi-home" aria-hidden="true"></span> Grid
+                <NavLink class="nav-link" href="/getting-started" Match="NavLinkMatch.Prefix">
+                    Getting started
+                    <NavLink class="nav-link" href="/getting-started/introduction">Introduction</NavLink>
+                </NavLink>
+
+                <NavLink class="nav-link" href="/layout" Match="NavLinkMatch.Prefix">
+                    Layout
+                    <NavLink class="nav-link" href="/layout/overview">Overview</NavLink>
+                    <NavLink class="nav-link" href="/layout/grid">Grid</NavLink>
+                    <NavLink class="nav-link" href="/layout/utilities-for-layout">Utilities for layout</NavLink>
                 </NavLink>
             </nav>
         </Column>

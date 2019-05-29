@@ -24,4 +24,7 @@
     <EmbeddedResource Include="Pages\Layout\Examples\*.razor"></EmbeddedResource>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\images\" />
+  </ItemGroup>
 </Project>

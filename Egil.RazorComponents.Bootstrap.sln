@@ -9,6 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{BB5BC974
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6BAF6A40-B165-474F-93E4-B4D31729A9E2}"
 	ProjectSection(SolutionItems) = preProject
+		LICENS = LICENS
 		README.md = README.md
 	EndProjectSection
 EndProject

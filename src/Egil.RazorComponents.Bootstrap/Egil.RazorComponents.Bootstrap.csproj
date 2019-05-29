@@ -12,16 +12,18 @@
     <LangVersion>8.0</LangVersion>
     <RazorLangVersion>3.0</RazorLangVersion>
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
-    <RepositoryUrl>https://github.com/egil/bootstrap-dotnet</RepositoryUrl>
-    <PackageProjectUrl>https://github.com/egil/bootstrap-dotnet</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/egil/bootstrap.net</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/egil/bootstrap.net</PackageProjectUrl>
     <PackageTags>blazor blazor-server-side razor-components bootstrap bootstrap4</PackageTags>
-    <Version>0.0.1-alpha</Version>
+    <Version>0.0.2-alpha</Version>
     <Authors>Egil Hansen</Authors>
-    <Company />
-    <Product>BootstrapDotNet</Product>
-    <Description>BootstrapDotNet is a strongly typed version of Bootstrap (https://getbootstrap.com) implemented in Razor Components. Note: Very experimental at the moment.</Description>
+    <Company>Egil Hansen</Company>
+    <Product>Bootstrap.NET</Product>
+    <Description>Bootstrap.NET is a strongly typed version of Bootstrap implemented in Razor Components, with a nice Bootstrap-like syntax for specifying options on components. On top of that, you get compile-time errors if you try to assign invalid options to components.</Description>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageId>BootstrapDotNet</PackageId>
+    <PackageLicenseExpression></PackageLicenseExpression>
+    <PackageLicenseFile>LICENS</PackageLicenseFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -35,6 +37,10 @@
     <None Remove="content\css\bootstrap.min.css" />
     <None Remove="content\js\01_jquery-3.3.1.slim.min.js" />
     <None Remove="content\js\02_bootstrap.bundle.min.js" />
+    <None Include="..\..\LICENS">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
   <ItemGroup>

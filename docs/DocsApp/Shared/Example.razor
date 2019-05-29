@@ -1,7 +1,7 @@
 ﻿@using Microsoft.JSInterop;
 @inject IJSRuntime jsRuntime;
 
-<div class="example border rounded-sm" id=@Id>
+<div class="example border rounded-sm @Class" id=@Id>
     <div class="example-output py-3 bg-light">@ExampleOutput</div>
     <Container Type="fluid">
         <Row NoGutters="true">
@@ -18,7 +18,7 @@
                     <pre class=""><code class="language-html"></code></pre>
                 </div>
                 <p class="example-code-name text-muted">
-                    <strong><em>Generated HTML</em></strong> code 
+                    <strong><em>Generated HTML</em></strong> code
                 </p>
             </Column>
         </Row>
@@ -35,6 +35,9 @@
     [Parameter]
     private Type File { get; set; }
 
+    [Parameter]
+    private string Class { get; set; } = string.Empty;
+
     private string Id => File.FullName.Replace(".", "");
 
     private string ExampleSource { get; set; }
@@ -44,6 +47,7 @@
     {
         base.OnInit();
 
+        // TODO: Extract logic out in cachable service that is injectable
         var assm = System.Reflection.Assembly.GetExecutingAssembly();
         using (var stream = assm.GetManifestResourceStream($"{File.FullName}.razor"))
         {

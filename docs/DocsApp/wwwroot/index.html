@@ -3,19 +3,53 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
-    <title>DocsApp</title>
+    <title>Bootstrap.NET</title>
     <base href="/" />
+    <style>
+        .app-loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+            font-size: 1.3rem;
+            font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+            .app-loading span {
+                display: inline-block;
+                padding-left: .3rem;
+            }
+
+            .app-loading .spinner-grow {
+                display: inline-block;
+                width: 2rem;
+                height: 2rem;
+                vertical-align: text-bottom;
+                background-color: currentColor;
+                border-radius: 50%;
+                opacity: 0;
+                -webkit-animation: spinner-grow .75s linear infinite;
+                animation: spinner-grow .75s linear infinite;
+            }
+    </style>
+
     <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet" />
-    <link href="site.css" rel="stylesheet" />
+    <link href="css/site.css" rel="stylesheet" />
 </head>
 <body>
-    <app>Loading...</app>
+    <app>
+        <div class="app-loading">
+            <div>
+                <div class="spinner-grow" role="status"></div>
+                <span>Loading Boostrap.NET . . .</span>
+            </div>
+        </div>
+    </app>
 
     <script src="_framework/blazor.webassembly.js"></script>
     <script src="libs/js-beautify-1.10.0/beautify-html.js"></script>
     <script src="libs/PrismJS-1.16.0/prism.js"></script>
-
-    <script src="site.js"></script>
+    <script src="js/site.js"></script>
 
 </body>
 </html>
