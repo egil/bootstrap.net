@@ -13,15 +13,7 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-- task: UseDotNet@2
+- task: DotNetCoreInstaller@0
+  displayName: 'Installing .NET Core SDK...'
   inputs:
-    version: '3.0.0-preview5-19227-01'
-
-- script: dotnet build --configuration $(buildConfiguration) docs/DocsApp/DocsApp.csproj
-  displayName: 'dotnet build $(buildConfiguration) DocsApp'
-- script: dotnet publish --output $(Build.ArtifactStagingDirectory)/DocsApp docs/DocsApp/DocsApp.csproj
-  displayName: 'dotnet publish DocsApp'
-
-- task: PublishBuildArtifacts@1
-  inputs:
-    ArtifactName: 'DocsApp'  
+    version: 3.0.0-preview5-19227-01
