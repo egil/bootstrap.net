@@ -17,3 +17,17 @@ steps:
   displayName: 'Installing .NET Core SDK...'
   inputs:
     version: 3.0.100-preview5-011568
+
+- script: dotnet build --configuration $(buildConfiguration) docs/DocsApp/DocsApp.csproj
+  displayName: 'dotnet build $(buildConfiguration) DocsApp'
+
+- task: DotNetCoreCLI@2
+  displayName: 'Publishing App...'
+  inputs:
+    command: publish
+    publishWebProjects: true
+    arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+    zipAfterPublish: false
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publishing Build Artifacts...'        
