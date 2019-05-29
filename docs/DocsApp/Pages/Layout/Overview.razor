@@ -1,15 +1,6 @@
 ﻿@using DocsApp.Pages.Layout.Examples
-@page "/layout"
-@page "/layout/overview"
-
-@inject IJSRuntime jsRuntime;
-@functions {
-    protected override async Task OnAfterRenderAsync()
-    {
-        await jsRuntime.InvokeAsync<string>("Prism.highlightAll");
-        await base.OnAfterRenderAsync();
-    }
-}
+@page "/docs/layout"
+@page "/docs/layout/overview"
 
 <style>
     .example-container .container {

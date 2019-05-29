@@ -1,5 +1,5 @@
-@import url('libs/open-iconic/font/css/open-iconic-bootstrap.min.css');
-@import url('libs/PrismJS-1.16.0/prism.css');
+@import url('../libs/open-iconic/font/css/open-iconic-bootstrap.min.css');
+@import url('../libs/PrismJS-1.16.0/prism.css');
 @import url('examples.css');
 
 .table-of-contents {
@@ -8,8 +8,8 @@
     .table-of-contents .nav-link {
         color: #343a40;
         font-weight: 600;
-        padding-top: 13px;
-        padding-bottom: 13px;
+        padding-top: 10px;
+        padding-bottom: 10px;
     }
 
         .table-of-contents .nav-link .nav-link {

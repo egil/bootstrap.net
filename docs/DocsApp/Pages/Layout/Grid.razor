@@ -1,15 +1,5 @@
 ﻿@using DocsApp.Pages.Layout.Examples
-@page "/layout/grid"
-
-@inject IJSRuntime jsRuntime;
-
-@functions {
-    protected override async Task OnAfterRenderAsync()
-    {
-        await jsRuntime.InvokeAsync<string>("Prism.highlightAll");
-        await base.OnAfterRenderAsync();
-    }
-}
+@page "/docs/layout/grid"
 
 <h1 class="display-1" id="content">Grid system</h1>
 <p class="lead">

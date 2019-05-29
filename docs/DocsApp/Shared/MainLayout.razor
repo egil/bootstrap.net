@@ -1,10 +1,11 @@
 @inherits LayoutComponentBase
-@inject IJSRuntime jsRuntime;
+@inject IJSRuntime JsRuntime
+@inject IUriHelper UriHelper
 
 @functions {
     protected override async Task OnAfterRenderAsync()
     {
-        await jsRuntime.InvokeAsync<string>("Prism.highlightAll");
+        await JsRuntime.InvokeAsync<string>("Prism.highlightAll");
         await base.OnAfterRenderAsync();
     }
 }
@@ -18,7 +19,7 @@
         <div class="navbar">
             <div class="navbar-nav">
                 <NavLink class="nav-link" href="/" Match="NavLinkMatch.All">Home</NavLink>
-                <NavLink class="nav-link" href="/getting-started/introduction">Documentation</NavLink>
+                <NavLink class="nav-link" href="/docs" Match="NavLinkMatch.Prefix">Documentation</NavLink>
             </div>
         </div>
     </nav>
@@ -26,24 +27,22 @@
 
 <Container Type="fluid">
     <Row AdditionalCssClasses="flex-xl-nowrap">
-        <Column Span="12 | md-3 | xl-2">
+        <Column Span="12 | md-3 | xl-2">            
+            @if (UriHelper.GetAbsoluteUri() != @UriHelper.GetBaseUri()) {
             <nav class="nav flex-column table-of-contents">
-                <NavLink class="navbar-brand mb-0 h1" href="/" Match="NavLinkMatch.All">
-                    Home
-                </NavLink>
-
-                <NavLink class="nav-link" href="/getting-started" Match="NavLinkMatch.Prefix">
+                <NavLink class="nav-link" href="/docs/getting-started" Match="NavLinkMatch.Prefix">
                     Getting started
-                    <NavLink class="nav-link" href="/getting-started/introduction">Introduction</NavLink>
+                    <NavLink class="nav-link" href="/docs/getting-started/introduction">Introduction</NavLink>
                 </NavLink>
 
-                <NavLink class="nav-link" href="/layout" Match="NavLinkMatch.Prefix">
+                <NavLink class="nav-link" href="/docs/layout" Match="NavLinkMatch.Prefix">
                     Layout
-                    <NavLink class="nav-link" href="/layout/overview">Overview</NavLink>
-                    <NavLink class="nav-link" href="/layout/grid">Grid</NavLink>
-                    <NavLink class="nav-link" href="/layout/utilities-for-layout">Utilities for layout</NavLink>
+                    <NavLink class="nav-link" href="/docs/layout/overview">Overview</NavLink>
+                    <NavLink class="nav-link" href="/docs/layout/grid">Grid</NavLink>
+                    <NavLink class="nav-link" href="/docs/layout/utilities-for-layout">Utilities for layout</NavLink>
                 </NavLink>
             </nav>
+            }
         </Column>
         <Column Span="12 | md-9 | xl-8" Padding="vertical-md-3 | left-md-5">
             <main>
