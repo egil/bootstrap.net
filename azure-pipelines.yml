@@ -4,7 +4,7 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
 
 trigger:
-- master
+- documentation
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -18,7 +18,7 @@ steps:
   inputs:
     version: 3.0.100-preview5-011568
 
-- script: dotnet build --configuration $(buildConfiguration) docs/DocsApp/DocsApp.csproj
+- script: dotnet build --configuration $(buildConfiguration) src/Egil.RazorComponents.Bootstrap.Documentation/Egil.RazorComponents.Bootstrap.Documentation.csproj
   displayName: 'dotnet build $(buildConfiguration) DocsApp'
 
 - task: DotNetCoreCLI@2
@@ -26,7 +26,7 @@ steps:
   inputs:
     command: publish
     publishWebProjects: true
-    arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+    arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory) src/Egil.RazorComponents.Bootstrap.Documentation/Egil.RazorComponents.Bootstrap.Documentation.csproj'
     zipAfterPublish: false
 
 - task: PublishBuildArtifacts@1
