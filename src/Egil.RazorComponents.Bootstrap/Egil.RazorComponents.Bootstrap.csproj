@@ -23,7 +23,7 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageId>BootstrapDotNet</PackageId>
     <PackageLicenseExpression></PackageLicenseExpression>
-    <PackageLicenseFile>LICENS</PackageLicenseFile>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -34,7 +34,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\..\LICENS">
+    <None Include="..\..\LICENSE">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
