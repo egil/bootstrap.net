@@ -1,6 +1,6 @@
 ﻿namespace Egil.RazorComponents.Bootstrap.Parameters
 {
-    public interface IParameterPrefix
+    public interface ICssClassParameterPrefix
     {
         string Prefix { get; }
     }

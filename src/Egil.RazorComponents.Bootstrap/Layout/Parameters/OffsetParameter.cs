@@ -1,12 +1,13 @@
 ﻿using Egil.RazorComponents.Bootstrap.Options;
 using Egil.RazorComponents.Bootstrap.Options.CommonOptions;
+using Egil.RazorComponents.Bootstrap.Parameters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Egil.RazorComponents.Bootstrap.Parameters
+namespace Egil.RazorComponents.Bootstrap.Layout.Parameters
 {
-    public abstract class OffsetParameter : ParameterBase, IParameter
+    public abstract class OffsetParameter : CssClassParameterBase, ICssClassParameter
     {
         protected const string OptionPrefix = "offset";
 
@@ -35,28 +36,28 @@ namespace Egil.RazorComponents.Bootstrap.Parameters
 
         class OffsetOptionParameter : OffsetParameter
         {
-            private readonly IOption option;
+            private readonly IOption _option;
 
             public OffsetOptionParameter(IOption option)
             {
-                this.option = option;
+                this._option = option;
             }
 
             public override int Count => 1;
 
             public override IEnumerator<string> GetEnumerator()
             {
-                yield return string.Concat(OptionPrefix, Option.OptionSeparator, option.Value);
+                yield return string.Concat(OptionPrefix, Option.OptionSeparator, _option.Value);
             }
         }
 
         class OptionSetParameter : OffsetParameter
         {
-            private readonly IReadOnlyCollection<string> set;
+            private readonly IReadOnlyCollection<string> _set;
 
             public OptionSetParameter(IOptionSet<IOption> set)
             {
-                this.set = set.Select(option =>
+                this._set = set.Select(option =>
                 {
                     if (option is BreakpointWithNumber bwn) bwn.Number.ValidateAsOffsetBreakpointNumber();
                     if (option is Number n) n.ValidateAsOffsetNumber();
@@ -64,14 +65,14 @@ namespace Egil.RazorComponents.Bootstrap.Parameters
                 }).ToArray();
             }
 
-            public override int Count => set.Count;
+            public override int Count => _set.Count;
 
-            public override IEnumerator<string> GetEnumerator() => set.GetEnumerator();
+            public override IEnumerator<string> GetEnumerator() => _set.GetEnumerator();
         }
 
         class NoneOffsetParameter : OffsetParameter
         {
-            public override int Count => 0;
+            public override int Count { get; } = 0;
 
             public override IEnumerator<string> GetEnumerator()
             {

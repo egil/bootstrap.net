@@ -1,4 +1,4 @@
-﻿using Egil.RazorComponents.Bootstrap.Parameters;
+﻿using Egil.RazorComponents.Bootstrap.Utilities.Spacing;
 
 namespace Egil.RazorComponents.Bootstrap.Tests.Parameters
 {

@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using Egil.RazorComponents.Bootstrap.Parameters;
+using System.Collections.Generic;
 
-namespace Egil.RazorComponents.Bootstrap.Parameters
+namespace Egil.RazorComponents.Bootstrap.Layout.Parameters
 {
-    public class ContainerTypeParameter : ParameterBase, IParameter
+    public class ContainerTypeParameter : CssClassParameterBase, ICssClassParameter
     {
         private string Value { get; }
 
@@ -16,6 +17,11 @@ namespace Egil.RazorComponents.Bootstrap.Parameters
         public override IEnumerator<string> GetEnumerator()
         {
             yield return Value;
+        }
+
+        public static implicit operator ContainerTypeParameter(bool isFluid)
+        {
+            return isFluid ? Fluid : Default;
         }
 
         public static readonly ContainerTypeParameter Default = new ContainerTypeParameter("container");

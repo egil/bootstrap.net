@@ -1,4 +1,4 @@
-﻿using Egil.RazorComponents.Bootstrap.Grid;
+﻿using Egil.RazorComponents.Bootstrap.Layout.Parameters;
 using Egil.RazorComponents.Bootstrap.Options;
 using Egil.RazorComponents.Bootstrap.Parameters;
 using Egil.RazorComponents.Bootstrap.Tests.TestUtilities;
@@ -21,9 +21,9 @@ namespace Egil.RazorComponents.Bootstrap.Tests.Parameters
     }
 
     public abstract class AlignmentParameterTests<TParamPrefix> : ParameterFixture<IAlignmentOption>
-        where TParamPrefix : IParameterPrefix, new()
+        where TParamPrefix : ICssClassParameterPrefix, new()
     {
-        private AlignmentParameter<TParamPrefix>? sut;
+        private AlignmentParameter<TParamPrefix>? Sut { get; set; }
         protected abstract string ParamPrefix { get; }
 
         [Fact(DisplayName = "Parameter prefix returns correct value")]
@@ -43,31 +43,31 @@ namespace Egil.RazorComponents.Bootstrap.Tests.Parameters
         public void CanHaveAlignmentWithIndexSpecifiedByAssignment()
         {
             var option = start;
-            sut = option;
-            sut.ShouldContainOptionsWithPrefix(ParamPrefix, option);
+            Sut = option;
+            Sut.ShouldContainOptionsWithPrefix(ParamPrefix, option);
         }
 
         [Fact(DisplayName = "Alignment can have a breakpoint-alignment-options assigned")]
         public void CanHaveBreakpointAlignmentWithIndexSpecifiedByAssignment()
         {
             var option = lg - start;
-            sut = option;
-            sut.ShouldContainOptionsWithPrefix(ParamPrefix, option);
+            Sut = option;
+            Sut.ShouldContainOptionsWithPrefix(ParamPrefix, option);
         }
 
         [Theory(DisplayName = "Alignment can have option sets of alignment-options assigned")]
         [MemberData(nameof(SutOptionSetsFixtureData))]
         public void CanHaveOptionSetOfAlignmentOptionsSpecified(dynamic set)
         {
-            sut = set;
-            sut.ShouldContainOptionsWithPrefix(ParamPrefix, (IOptionSet<IOption>)set);
+            Sut = set;
+            Sut.ShouldContainOptionsWithPrefix(ParamPrefix, (IOptionSet<IOption>)set);
         }
 
         [Theory(DisplayName = "Alignment can NOT have option sets of none-alignment-options assigned")]
         [MemberData(nameof(IncompatibleOptionSetsFixtureData))]
         public void CanNOTHaveOptionSetOfAlignmentOptionsSpecified(dynamic set)
         {
-            Assert.Throws<RuntimeBinderException>(() => sut = set);
+            Assert.Throws<RuntimeBinderException>(() => Sut = set);
         }
     }
 }

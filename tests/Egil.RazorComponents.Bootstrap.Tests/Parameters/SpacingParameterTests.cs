@@ -1,8 +1,9 @@
-﻿using Egil.RazorComponents.Bootstrap.Grid;
+﻿using Egil.RazorComponents.Bootstrap.Layout.Parameters;
 using Egil.RazorComponents.Bootstrap.Options;
 using Egil.RazorComponents.Bootstrap.Options.CommonOptions;
 using Egil.RazorComponents.Bootstrap.Parameters;
 using Egil.RazorComponents.Bootstrap.Tests.TestUtilities;
+using Egil.RazorComponents.Bootstrap.Utilities.Spacing;
 using Microsoft.CSharp.RuntimeBinder;
 using Shouldly;
 using System;
@@ -14,7 +15,7 @@ using static Egil.RazorComponents.Bootstrap.Options.SpacingOptions.Factory.Lower
 namespace Egil.RazorComponents.Bootstrap.Tests.Parameters
 {
     public abstract class SpacingParameterTests<TParamPrefix> : ParameterFixture<ISpacingOption>
-        where TParamPrefix : IParameterPrefix, new()
+        where TParamPrefix : ICssClassParameterPrefix, new()
     {
         protected abstract string ParamPrefix { get; }
 

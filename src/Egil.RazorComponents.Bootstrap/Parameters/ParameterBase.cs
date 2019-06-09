@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Egil.RazorComponents.Bootstrap.Parameters
 {
 
-    public abstract class ParameterBase : IParameter
+    public abstract class CssClassParameterBase : ICssClassParameter
     {
         public abstract int Count { get; }
 
@@ -12,7 +12,7 @@ namespace Egil.RazorComponents.Bootstrap.Parameters
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return this.GetEnumerator();
+            return GetEnumerator();
         }
     }
 }

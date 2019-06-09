@@ -1,14 +1,15 @@
 ﻿using Egil.RazorComponents.Bootstrap.Options;
 using Egil.RazorComponents.Bootstrap.Options.CommonOptions;
 using Egil.RazorComponents.Bootstrap.Options.SpacingOptions;
+using Egil.RazorComponents.Bootstrap.Parameters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Egil.RazorComponents.Bootstrap.Parameters
+namespace Egil.RazorComponents.Bootstrap.Utilities.Spacing
 {
-    public abstract class SpacingParameter<TParamPrefix> : ParameterBase, IParameter
-        where TParamPrefix : IParameterPrefix, new()
+    public abstract class SpacingParameter<TParamPrefix> : CssClassParameterBase, ICssClassParameter
+        where TParamPrefix : ICssClassParameterPrefix, new()
     {
         private static readonly TParamPrefix SpacingType = new TParamPrefix();
 
@@ -63,7 +64,7 @@ namespace Egil.RazorComponents.Bootstrap.Parameters
 
             public OptionParameter(IOption option)
             {
-                this.optionValue = ToSpacingValue(option);
+                optionValue = ToSpacingValue(option);
             }
 
             public override int Count => 1;
@@ -95,19 +96,9 @@ namespace Egil.RazorComponents.Bootstrap.Parameters
 
         class NoneParameter : SpacingParameter<TParamPrefix>
         {
-            public override int Count => 0;
+            public override int Count { get; } = 0;
 
             public override IEnumerator<string> GetEnumerator() { yield break; }
         }
-    }
-
-    public sealed class MarginSpacing : IParameterPrefix
-    {
-        public string Prefix => "m";
-    }
-
-    public sealed class PaddingSpacing : IParameterPrefix
-    {
-        public string Prefix => "p";
     }
 }

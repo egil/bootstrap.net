@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using Egil.RazorComponents.Bootstrap.Parameters;
+using System.Collections.Generic;
 
-namespace Egil.RazorComponents.Bootstrap.Parameters
+namespace Egil.RazorComponents.Bootstrap.Layout.Parameters
 {
-    public class NoGuttersParameter : ParameterBase, IParameter
+    public class NoGuttersParameter : CssClassParameterBase, ICssClassParameter
     {
         private const string Value = "no-gutter";
 
@@ -25,7 +26,7 @@ namespace Egil.RazorComponents.Bootstrap.Parameters
 
         class NoneParameter : NoGuttersParameter
         {
-            public override int Count => 0;
+            public override int Count { get; } = 0;
 
             public override IEnumerator<string> GetEnumerator() { yield break; }
         }

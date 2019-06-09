@@ -6,6 +6,7 @@ using System.Linq;
 using Xunit;
 using static Egil.RazorComponents.Bootstrap.Options.Factory.LowerCase.Abbr;
 using static Egil.RazorComponents.Bootstrap.Options.SpacingOptions.Factory.LowerCase;
+using static Egil.RazorComponents.Bootstrap.Utilities.Colors.OptionsFactory.LowerCase;
 
 namespace Egil.RazorComponents.Bootstrap.Tests.Options
 {
@@ -18,7 +19,8 @@ namespace Egil.RazorComponents.Bootstrap.Tests.Options
             xs, lg, auto, sm-auto, // span
             first, last, lg-first, md-last, // order
             sm-1, // common TODO NUMBER
-            left-(-4), left-lg-3 // spacing
+            left-(-4), left-lg-3, // spacing
+            primary
         };
 
         public static IEnumerable<object[]> AllOptionsFixtureData => AllOptions.ToFixtureData();

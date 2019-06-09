@@ -1,6 +1,6 @@
-﻿using Egil.RazorComponents.Bootstrap.Options.AlignmentOptions;
+﻿using Egil.RazorComponents.Bootstrap.Layout.Parameters;
+using Egil.RazorComponents.Bootstrap.Options.AlignmentOptions;
 using Egil.RazorComponents.Bootstrap.Options.CommonOptions;
-using Egil.RazorComponents.Bootstrap.Parameters;
 
 namespace Egil.RazorComponents.Bootstrap.Options
 {

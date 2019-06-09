@@ -1,11 +1,12 @@
 ﻿using Egil.RazorComponents.Bootstrap.Options;
 using Egil.RazorComponents.Bootstrap.Options.CommonOptions;
+using Egil.RazorComponents.Bootstrap.Parameters;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Egil.RazorComponents.Bootstrap.Parameters
+namespace Egil.RazorComponents.Bootstrap.Layout.Parameters
 {
-    public class SpanParameter : ParameterBase, IParameter
+    public class SpanParameter : CssClassParameterBase, ICssClassParameter
     {
         private const string OptionPrefix = "col";
 
@@ -71,26 +72,26 @@ namespace Egil.RazorComponents.Bootstrap.Parameters
 
         class OptionParameter : SpanParameter
         {
-            private readonly string option;
+            private readonly string _option;
 
             public OptionParameter(IOption option)
             {
-                this.option = ToOptionValue(option);
+                this._option = ToOptionValue(option);
             }
 
             public override IEnumerator<string> GetEnumerator()
             {
-                yield return option;
+                yield return _option;
             }
         }
 
         class OptionSetParameter : SpanParameter
         {
-            private readonly IReadOnlyCollection<string> set;
+            private readonly IReadOnlyCollection<string> _set;
 
             public OptionSetParameter(IOptionSet<IOption> set)
             {
-                this.set = ToOptionValueSet(set);
+                this._set = ToOptionValueSet(set);
             }
 
             private List<string> ToOptionValueSet(IOptionSet<IOption> set)
@@ -118,9 +119,9 @@ namespace Egil.RazorComponents.Bootstrap.Parameters
                 return res;
             }
 
-            public override int Count => set.Count;
+            public override int Count => _set.Count;
 
-            public override IEnumerator<string> GetEnumerator() => set.GetEnumerator();
+            public override IEnumerator<string> GetEnumerator() => _set.GetEnumerator();
         }
     }
 }
