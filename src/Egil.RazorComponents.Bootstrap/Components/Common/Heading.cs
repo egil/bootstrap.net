@@ -28,6 +28,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Common
         {
             builder.OpenElement(HeadingTags[_size - 1]);
             builder.AddClassAttribute(CssClassValue);
+            builder.AddAttribute("id", Id);
             builder.AddContent(ChildContent);
             builder.CloseElement();
         }

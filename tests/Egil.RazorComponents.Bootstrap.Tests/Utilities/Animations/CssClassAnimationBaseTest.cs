@@ -34,14 +34,12 @@ namespace Egil.RazorComponents.Bootstrap.Utilities.Animations
         }
 
         [Fact(DisplayName = "State changes from running to completed correctly after call to Run")]
-        public async Task MyTestMethod2()
+        public async void MyTestMethod2()
         {
             var sut = new CssClassAnimationTester(DelayFactory);
-
             var runtask = sut.Run();
 
             sut.Running.ShouldBeTrue();
-            
             DelayFactory.RunAnimation();
             await runtask;
 
@@ -50,14 +48,16 @@ namespace Egil.RazorComponents.Bootstrap.Utilities.Animations
             sut.Completed.ShouldBeTrue();
         }
 
-        [Fact(DisplayName = "Calling Run when state is running throws")]
-        public void MyTestMethod3()
+        [Fact(DisplayName = "When Reset is called, state is changed to ready")]
+        public async Task MyTestMethod4()
         {
             var sut = new CssClassAnimationTester(DelayFactory);
+            DelayFactory.RunAnimation();
+            await sut.Run();
 
-            _ = sut.Run();
-            Should.Throw<InvalidOperationException>(() => _ = sut.Run())
-                .Message.ShouldBe("The animation is already running.");
+            sut.Reset();
+
+            sut.Ready.ShouldBeTrue();
         }
     }
 }

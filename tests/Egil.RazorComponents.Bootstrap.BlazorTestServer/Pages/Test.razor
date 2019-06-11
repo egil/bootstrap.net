@@ -1,0 +1,18 @@
+﻿@functions {
+    public void BtnClicked()
+    {
+
+    }
+
+    private bool Showing { get; set; } = true;
+
+    [Parameter]
+    private int Year { get; set; }
+
+    [Parameter]
+    private EventCallback<int> YearChanged { get; set; }
+}
+@if (Showing)
+{
+    <button class="btn btn-primary" onclick=@BtnClicked>BTN</button>
+}

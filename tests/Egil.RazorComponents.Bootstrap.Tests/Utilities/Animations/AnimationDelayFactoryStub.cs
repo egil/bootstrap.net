@@ -9,7 +9,7 @@ namespace Egil.RazorComponents.Bootstrap.Utilities.Animations
 
         public void RunAnimation()
         {
-            Task.Start();
+            Task.RunSynchronously();
         }
 
         public Task StandardDelay() => Task;

@@ -16,6 +16,9 @@ namespace Egil.RazorComponents.Bootstrap
         private static readonly char CssClassSplitChar = ' ';
 
         [Parameter]
+        public string? Id { get; set; }
+
+        [Parameter]
         public string? Class { get; set; }
 
         internal string? DefaultCssClass { get; set; }

@@ -6,12 +6,15 @@ namespace Egil.RazorComponents.Bootstrap
     {
         private BootstrapContext? _bootstrapContext;
 
-        internal bool HasContext => !(_bootstrapContext is null);
+        protected internal bool HasContext => !(_bootstrapContext is null);
 
-        internal BootstrapContext ChildContext => _bootstrapContext ?? (_bootstrapContext = new BootstrapContext());
+        protected internal BootstrapContext ChildContext => _bootstrapContext ?? (_bootstrapContext = new BootstrapContext());
 
         [CascadingParameter]
-        internal BootstrapContextAwareComponentBase? Parent { get; set; }
+        protected internal BootstrapContextAwareComponentBase? Parent { get; private set; }
+
+        [Parameter]
+        public bool IgnoreParentContext { get; private set; }
 
         protected virtual void RegisterChildContextRules() { }
 
@@ -19,11 +22,11 @@ namespace Egil.RazorComponents.Bootstrap
 
         protected virtual void OnBootstrapComponentInit() { }
 
-        protected sealed override void OnInit()
+        protected override void OnInit()
         {
             RegisterChildContextRules();
 
-            if (!(Parent is null) && Parent.HasContext)
+            if (!IgnoreParentContext && !(Parent is null) && Parent.HasContext)
             {
                 Parent.OnChildInit(this);
                 Parent.ChildContext.UpdateChild(this);

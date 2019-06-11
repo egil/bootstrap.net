@@ -1,9 +1,5 @@
 ﻿using Egil.RazorComponents.Bootstrap.Parameters;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Egil.RazorComponents.Bootstrap.Components.Alerts.Parameters
 {
@@ -16,14 +12,14 @@ namespace Egil.RazorComponents.Bootstrap.Components.Alerts.Parameters
             yield return "alert-dismissible";
         }
 
-        public static explicit operator bool(DismissableParameter dismissable)
-        {
-            return dismissable.Count > 0;
-        }
-
         public static implicit operator DismissableParameter(bool isDismissable)
         {
             return isDismissable ? Dismissable : Default;
+        }
+
+        public static explicit operator bool(DismissableParameter dismissable)
+        {
+            return dismissable.Count > 0;
         }
 
         public static DismissableParameter Dismissable = new DismissableParameter();

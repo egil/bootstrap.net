@@ -1,0 +1,26 @@
+﻿@functions {
+    protected override void OnAfterRender()
+    {
+        Console.WriteLine($"Child: OnAfterRender {Id}");
+    }
+
+    private void Dismiss()
+    {
+        Console.WriteLine($"Child: Dismiss {Id}");
+        Visible = false;
+    }
+
+    [Parameter]
+    public string Id { get; set; }
+
+    [Parameter]
+    public bool Visible { get; set; } = true;
+
+    private string ShowCssClass => Visible ? "show" : "";
+}
+<div class="alert alert-warning alert-dismissible fade @ShowCssClass" role="alert">
+    ALERT:
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick=@Dismiss>
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>

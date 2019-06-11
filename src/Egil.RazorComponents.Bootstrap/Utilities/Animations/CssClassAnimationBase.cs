@@ -24,17 +24,13 @@ namespace Egil.RazorComponents.Bootstrap.Utilities.Animations
 
         public void Reset()
         {
-            if (Running) throw new InvalidOperationException("The animation is running.");
+            if (Running) return;
             Completed = false;
         }
 
         public Task Run()
         {
-            if (Running)
-            {
-                throw new InvalidOperationException("The animation is already running.");
-            }
-            if (Completed) return Task.CompletedTask;
+            if (Running || Completed) return Task.CompletedTask;
 
             Running = true;
             return _animationDelayFactory
