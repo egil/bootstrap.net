@@ -19,7 +19,7 @@ namespace Egil.RazorComponents.Bootstrap.Utilities.Colors
     }
 
     public abstract class ColorParameterTest<TParamPrefix> : ParameterFixture<IColorOption>
-        where TParamPrefix : ICssClassParameterPrefix, new()
+        where TParamPrefix : ICssClassPrefix, new()
     {
         private ColorParameter<AlertColor>? Param { get; set; }
 

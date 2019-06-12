@@ -1,114 +1,58 @@
 ﻿@page "/"
 @using static Egil.RazorComponents.Bootstrap.Utilities.Colors.OptionsFactory.LowerCase
-@using Egil.RazorComponents.Bootstrap.Components.Common
+@using Egil.RazorComponents.Bootstrap.Components.Html
+@using Egil.RazorComponents.Bootstrap.Components.Badges
+@using Egil.RazorComponents.Bootstrap.Components.Accessibility
 
-@functions {
-    private Alert _alert;
+<h1>Example heading <Badge Color="primary">New</Badge></h1>
+<h2>Example heading <Badge PillShaped="true" Color="secondary">New</Badge></h2>
+<h3>Example heading <Badge Href=" " Color="warning">New</Badge></h3>
+<h4>Example heading <Badge Href="#" Color="dark">New</Badge></h4>
+<h5>Example heading <Badge PillShaped="true" Href="https://egilhansen.com" Color="danger">New</Badge></h5>
+<h6>Example heading <Badge Color="secondary">New</Badge></h6>
 
-    protected override void OnAfterRender()
-    {
-        Console.WriteLine($"Parent: OnAfterRender");
-        base.OnAfterRender();
-    }
-
-    private void AlertDismissing(UIDismissingEventArgs e)
-    {
-        Console.WriteLine($"Parent: ChildDismissing");
-    }
-
-    private void AlertDismissed()
-    {
-        Console.WriteLine($"Parent: ChildDismissed");
-    }
-
-    private async void EnableAlert()
-    {
-        if (_alert.Enabled)
-        {
-            await _alert.Dismiss();
-        }
-        else
-        {
-            _alert.Show();
-        }
-    }
-}
-
-<button onclick=@EnableAlert>Toggle Alert</button>
 <hr />
-<Alert Color="warning" ref="_alert" Id="a1" Dismissable="false">
-    <strong>Holy guacamole!</strong> You should check in on some of those fields below.
-</Alert>
+
+<button type="button" class="btn btn-primary">
+    Notifications <Badge Color="light">4</Badge>
+</button>
+
 <hr />
-<Alert Color="primary" Id="a2">
-    A simple primary alert—check it out!
-</Alert>
-<Alert Color="secondary">
-    A simple secondary alert—check it out!
-</Alert>
-<Alert Color="success">
-    A simple success alert—check it out!
-</Alert>
-<Alert Color="danger">
-    A simple danger alert—check it out!
-</Alert>
-<Alert Color="warning">
-    A simple warning alert—check it out!
-</Alert>
-<Alert Color="info">
-    A simple info alert—check it out!
-</Alert>
-<Alert Color="light">
-    A simple light alert—check it out!
-</Alert>
-<Alert Color="dark">
-    A simple dark alert—check it out!
-</Alert>
+
+<button type="button" class="btn btn-primary">
+    Profile <Badge Color="light">8</Badge>
+    <SrOnly>unread messages</SrOnly>
+</button>
+
 <hr />
-<Alert Color="primary">
-    A simple primary alert with <a href="#" IgnoreParentContext="true">an example link</a>. Give it a click if you like.
-</Alert>
-<Alert Color="secondary">
-    A simple secondary alert with <a href="#">an example link</a>. Give it a click if you like.
-</Alert>
-<Alert Color="success">
-    A simple success alert with <a href="#">an example link</a>. Give it a click if you like.
-</Alert>
-<Alert Color="danger">
-    A simple danger alert with <a href="#">an example link</a>. Give it a click if you like.
-</Alert>
-<Alert Color="warning">
-    A simple warning alert with <a href="#">an example link</a>. Give it a click if you like.
-</Alert>
-<Alert Color="info">
-    A simple info alert with <a href="#">an example link</a>. Give it a click if you like.
-</Alert>
-<Alert Color="light">
-    A simple light alert with <a href="#">an example link</a>. Give it a click if you like.
-</Alert>
-<Alert Color="dark">
-    A simple dark alert with <a href="#">an example link</a>. Give it a click if you like.
-</Alert>
+
+<Badge Color="primary">Primary</Badge>
+<Badge Color="secondary">Secondary</Badge>
+<Badge Color="success">Success</Badge>
+<Badge Color="danger">Danger</Badge>
+<Badge Color="warning">Warning</Badge>
+<Badge Color="info">Info</Badge>
+<Badge Color="light">Light</Badge>
+<Badge Color="dark">Dark</Badge>
+
 <hr />
-<Alert Color="primary">
-    <h1>Well done!</h1>
-    <p>Aww yeah, you successfully read this important alert message. This example text is going to run a bit longer so that you can see how spacing within an alert works with this kind of content.</p>
-    <hr>
-    <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
-</Alert>
-<Alert Color="secondary">
-    <h2>Well done!</h2>
-</Alert>
-<Alert Color="success">
-    <h3>Well done!</h3>
-</Alert>
-<Alert Color="danger">
-    <h4>Well done!</h4>
-</Alert>
-<Alert Color="warning">
-    <h5>Well done!</h5>
-</Alert>
-<Alert Color="info">
-    <h6>Well done!</h6>
-</Alert>
+
+<Badge PillShaped="true" Color="primary">Primary</Badge>
+<Badge PillShaped="true" Color="secondary">Secondary</Badge>
+<Badge PillShaped="true" Color="success">Success</Badge>
+<Badge PillShaped="true" Color="danger">Danger</Badge>
+<Badge PillShaped="true" Color="warning">Warning</Badge>
+<Badge PillShaped="true" Color="info">Info</Badge>
+<Badge PillShaped="true" Color="light">Light</Badge>
+<Badge PillShaped="true" Color="dark">Dark</Badge>
+
 <hr />
+
+<Badge href="#" Color="primary">Primary</Badge>
+<Badge href="#" Color="secondary">Secondary</Badge>
+<Badge href="#" Color="success">Success</Badge>
+<Badge href="#" Color="danger">Danger</Badge>
+<Badge href="#" Color="warning">Warning</Badge>
+<Badge href="#" Color="info">Info</Badge>
+<Badge href="#" Color="light">Light</Badge>
+<Badge href="#" Color="dark">Dark</Badge>

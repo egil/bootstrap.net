@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Egil.RazorComponents.Bootstrap.Layout.Parameters
 {
-    public class SpanParameter : CssClassParameterBase, ICssClassParameter
+    public class SpanParameter : CssClassProviderBase, ICssClassProvider
     {
         private const string OptionPrefix = "col";
 

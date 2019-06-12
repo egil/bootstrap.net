@@ -8,8 +8,8 @@ using System.Linq;
 
 namespace Egil.RazorComponents.Bootstrap.Utilities.Spacing
 {
-    public abstract class SpacingParameter<TParamPrefix> : CssClassParameterBase, ICssClassParameter
-        where TParamPrefix : ICssClassParameterPrefix, new()
+    public abstract class SpacingParameter<TParamPrefix> : CssClassProviderBase, ICssClassProvider
+        where TParamPrefix : ICssClassPrefix, new()
     {
         private static readonly TParamPrefix SpacingType = new TParamPrefix();
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Egil.RazorComponents.Bootstrap.Layout.Parameters
 {
-    public class NoGuttersParameter : CssClassParameterBase, ICssClassParameter
+    public class NoGuttersParameter : CssClassProviderBase, ICssClassProvider
     {
         private const string Value = "no-gutter";
 

@@ -18,7 +18,7 @@ namespace Egil.RazorComponents.Bootstrap.Tests
         public new string CssClassValue => base.CssClassValue;
     }
 
-    sealed class TestCssClassParameter : CssClassParameterBase
+    sealed class TestCssClassParameter : CssClassProviderBase
     {
         public TestCssClassParameter(params string[] testCssClasses)
         {

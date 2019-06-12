@@ -2,12 +2,8 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.RenderTree;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Egil.RazorComponents.Bootstrap.Components.Common
+namespace Egil.RazorComponents.Bootstrap.Components.Html
 {
     public class Heading : BootstrapParentComponentBase
     {

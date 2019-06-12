@@ -1,0 +1,32 @@
+﻿@using Egil.RazorComponents.Bootstrap
+@using Egil.RazorComponents.Bootstrap.Components.Badges.Parameters;
+@using Egil.RazorComponents.Bootstrap.Components.Html;
+@using Egil.RazorComponents.Bootstrap.Utilities.Colors;
+
+@inherits BootstrapParentComponentBase
+
+@functions {
+    // TODO: Copy all properties to NavLink with p6
+
+    [Parameter]
+    public ColorParameter<BadgeColor> Color { get; set; } = OptionsFactory.Primary;
+
+    [Parameter]
+    public PillBadgeParameter PillShaped { get; set; } = PillBadgeParameter.None;
+
+    [Parameter]
+    public string? Href { get; set; }
+
+    public Badge()
+    {
+        DefaultCssClass = "badge";
+    }
+}
+@if (string.IsNullOrEmpty(Href))
+{
+    <span class=@CssClassValue>@ChildContent</span>
+}
+else
+{
+    <a href=@Href class=@CssClassValue>@ChildContent</a>
+}

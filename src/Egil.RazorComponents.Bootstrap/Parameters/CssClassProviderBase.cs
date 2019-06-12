@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Egil.RazorComponents.Bootstrap.Parameters
 {
 
-    public abstract class CssClassParameterBase : ICssClassParameter
+    public abstract class CssClassProviderBase : ICssClassProvider
     {
         public abstract int Count { get; }
 

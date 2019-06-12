@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace Egil.RazorComponents.Bootstrap.Utilities.Colors
 {
-    public class ColorParameter<TParamPrefix> : CssClassParameterBase, ICssClassParameter
-        where TParamPrefix : ICssClassParameterPrefix, new()
+    public class ColorParameter<TParamPrefix> : CssClassProviderBase, ICssClassProvider
+        where TParamPrefix : ICssClassPrefix, new()
     {
         private static readonly TParamPrefix ColorPrefix = new TParamPrefix();
 

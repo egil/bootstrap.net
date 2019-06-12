@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Egil.RazorComponents.Bootstrap.Utilities.Animations
 {
-    public interface ICssClassAnimation : ICssClassParameter
+    public interface ICssClassAnimation : ICssClassProvider
     {
         public bool Ready { get; }
 

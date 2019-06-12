@@ -15,7 +15,7 @@ using static Egil.RazorComponents.Bootstrap.Options.SpacingOptions.Factory.Lower
 namespace Egil.RazorComponents.Bootstrap.Tests.Parameters
 {
     public abstract class SpacingParameterTests<TParamPrefix> : ParameterFixture<ISpacingOption>
-        where TParamPrefix : ICssClassParameterPrefix, new()
+        where TParamPrefix : ICssClassPrefix, new()
     {
         protected abstract string ParamPrefix { get; }
 

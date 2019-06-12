@@ -25,10 +25,10 @@ namespace Egil.RazorComponents.Bootstrap
 
         protected string CssClassValue => BuildCssClassValue();
 
-        private IEnumerable<ICssClassParameter> GetCssClassParameters()
+        private IEnumerable<ICssClassProvider> GetCssClassParameters()
         {
-            var properties = GetType().GetPropertiesAssignableFrom<ICssClassParameter>();
-            return properties.GetValues<ICssClassParameter>(this);
+            var properties = GetType().GetPropertiesAssignableFrom<ICssClassProvider>();
+            return properties.GetValues<ICssClassProvider>(this);
         }
 
         private string BuildCssClassValue()

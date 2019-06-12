@@ -5,18 +5,18 @@ using System.Collections.Generic;
 
 namespace Egil.RazorComponents.Bootstrap.Layout.Parameters
 {
-    public sealed class VerticalColumnAlignment : ICssClassParameterPrefix
+    public sealed class VerticalColumnAlignment : ICssClassPrefix
     {
         public string Prefix => "align-self";
     }
 
-    public sealed class VerticalRowAlignment : ICssClassParameterPrefix
+    public sealed class VerticalRowAlignment : ICssClassPrefix
     {
         public string Prefix => "align-items";
     }
 
-    public abstract class AlignmentParameter<TParamPrefix> : CssClassParameterBase, ICssClassParameter
-        where TParamPrefix : ICssClassParameterPrefix, new()
+    public abstract class AlignmentParameter<TParamPrefix> : CssClassProviderBase, ICssClassProvider
+        where TParamPrefix : ICssClassPrefix, new()
     {
         protected static readonly TParamPrefix SpacingType = new TParamPrefix();
 

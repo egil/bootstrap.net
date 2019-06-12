@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Egil.RazorComponents.Bootstrap.Layout.Parameters
 {
-    public class ContainerTypeParameter : CssClassParameterBase, ICssClassParameter
+    public class ContainerTypeParameter : CssClassProviderBase, ICssClassProvider
     {
         private string Value { get; }
 

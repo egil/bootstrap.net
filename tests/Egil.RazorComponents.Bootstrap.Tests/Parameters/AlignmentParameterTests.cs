@@ -21,7 +21,7 @@ namespace Egil.RazorComponents.Bootstrap.Tests.Parameters
     }
 
     public abstract class AlignmentParameterTests<TParamPrefix> : ParameterFixture<IAlignmentOption>
-        where TParamPrefix : ICssClassParameterPrefix, new()
+        where TParamPrefix : ICssClassPrefix, new()
     {
         private AlignmentParameter<TParamPrefix>? Sut { get; set; }
         protected abstract string ParamPrefix { get; }

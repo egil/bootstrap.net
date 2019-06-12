@@ -7,8 +7,10 @@ using System.Threading.Tasks;
 
 namespace Egil.RazorComponents.Bootstrap.Components.Alerts.Parameters
 {
-    public class AlertColor : ICssClassParameterPrefix
+    public class AlertColor : ICssClassPrefix
     {
-        public string Prefix { get; } = "alert";
+        private const string AlertPrefix = "alert";
+
+        public string Prefix { get; } = AlertPrefix;
     }
 }

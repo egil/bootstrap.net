@@ -2,7 +2,7 @@
 
 namespace Egil.RazorComponents.Bootstrap.Utilities.Spacing
 {
-    public sealed class PaddingSpacing : ICssClassParameterPrefix
+    public sealed class PaddingSpacing : ICssClassPrefix
     {
         public string Prefix => "p";
     }

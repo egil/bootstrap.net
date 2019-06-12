@@ -8,13 +8,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Egil.RazorComponents.Bootstrap.Components.Common
+namespace Egil.RazorComponents.Bootstrap.Components.Html
 {
     // TODO: Copy all properties to NavLink with p6
     public sealed class A : BootstrapParentComponentBase
     {
         [Parameter]
-        public string Href { get; set; }
+        public string? Href { get; set; }
 
         protected override void BuildRenderTree(RenderTreeBuilder builder)
         {

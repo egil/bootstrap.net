@@ -1,6 +1,6 @@
 ﻿@using Egil.RazorComponents.Bootstrap
 @using Egil.RazorComponents.Bootstrap.Components.Alerts.Parameters;
-@using Egil.RazorComponents.Bootstrap.Components.Common;
+@using Egil.RazorComponents.Bootstrap.Components.Html;
 @using Egil.RazorComponents.Bootstrap.Helpers;
 @using Egil.RazorComponents.Bootstrap.Utilities.Animations;
 @using Egil.RazorComponents.Bootstrap.Utilities.Colors;
@@ -28,7 +28,7 @@
     public ColorParameter<AlertColor> Color { get; set; } = OptionsFactory.Primary;
 
     [Parameter]
-    public DismissableParameter Dismissable { get; set; } = DismissableParameter.Default;
+    public DismissableParameter Dismissable { get; set; } = DismissableParameter.None;
 
     [Parameter]
     public EventCallback<UIDismissingEventArgs> OnDismissing { get; set; }

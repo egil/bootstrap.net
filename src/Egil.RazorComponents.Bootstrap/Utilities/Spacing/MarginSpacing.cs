@@ -2,7 +2,7 @@
 
 namespace Egil.RazorComponents.Bootstrap.Utilities.Spacing
 {
-    public sealed class MarginSpacing : ICssClassParameterPrefix
+    public sealed class MarginSpacing : ICssClassPrefix
     {
         public string Prefix => "m";
     }

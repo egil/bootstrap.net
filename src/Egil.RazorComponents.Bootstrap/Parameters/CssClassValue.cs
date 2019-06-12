@@ -2,7 +2,7 @@
 
 namespace Egil.RazorComponents.Bootstrap.Parameters
 {
-    public class CssClassValueProvider : CssClassParameterBase
+    public class CssClassValueProvider : CssClassProviderBase
     {
         public CssClassValueProvider(string? value = null)
         {

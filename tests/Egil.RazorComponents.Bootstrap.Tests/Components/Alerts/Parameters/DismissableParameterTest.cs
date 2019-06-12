@@ -16,7 +16,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Alerts.Parameters
         public void MyTestMethod1()
         {
             DismissableParameter.Dismissable.ShouldBe(new[] { "alert-dismissible" });
-            DismissableParameter.Default.ShouldBeEmpty();
+            DismissableParameter.None.ShouldBeEmpty();
         }
 
         [Fact(DisplayName = "Paramter should be convertable from true false")]
@@ -26,7 +26,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Alerts.Parameters
             sut.ShouldBe(DismissableParameter.Dismissable);
 
             sut = false;
-            sut.ShouldBe(DismissableParameter.Default);
+            sut.ShouldBe(DismissableParameter.None);
         }
     }
 }

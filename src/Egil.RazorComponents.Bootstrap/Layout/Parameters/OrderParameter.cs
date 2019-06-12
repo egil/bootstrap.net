@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace Egil.RazorComponents.Bootstrap.Layout.Parameters
 {
-    public abstract class OrderParameter : CssClassParameterBase, ICssClassParameter
+    public abstract class OrderParameter : CssClassProviderBase, ICssClassProvider
     {
         protected const string OptionPrefix = "order";
 

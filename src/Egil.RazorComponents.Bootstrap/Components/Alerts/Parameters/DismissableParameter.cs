@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Egil.RazorComponents.Bootstrap.Components.Alerts.Parameters
 {
-    public class DismissableParameter : CssClassParameterBase
+    public class DismissableParameter : CssClassProviderBase
     {
         public override int Count { get; } = 1;
 
@@ -14,7 +14,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Alerts.Parameters
 
         public static implicit operator DismissableParameter(bool isDismissable)
         {
-            return isDismissable ? Dismissable : Default;
+            return isDismissable ? Dismissable : None;
         }
 
         public static explicit operator bool(DismissableParameter dismissable)
@@ -23,7 +23,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Alerts.Parameters
         }
 
         public static DismissableParameter Dismissable = new DismissableParameter();
-        public static DismissableParameter Default = new NoneParameter();
+        public static DismissableParameter None = new NoneParameter();
 
         private sealed class NoneParameter : DismissableParameter
         {
