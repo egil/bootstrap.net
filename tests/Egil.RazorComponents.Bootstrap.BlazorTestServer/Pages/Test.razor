@@ -1,18 +1,23 @@
-﻿@functions {
-    public void BtnClicked()
-    {
+﻿@using Egil.RazorComponents.Bootstrap.Components.Html
 
+@page "/test/second"
+
+<style type="text/css">
+    .navlink.active {
+        font-weight: bolder;
     }
+</style>
+<nav class="nav">
+    <NavLink2 Class="nav-link" MatchUrl="/test">
+        Top level menu
+    </NavLink2>
+    <NavLink2 Class="nav-link" href="/test/first">First child</NavLink2>
+    <NavLink2 Class="nav-link" href="/test/second">Second child</NavLink2>
+    <NavLink2 Class="nav-link" href="/test/third">Thrid child</NavLink2>
+</nav>
 
-    private bool Showing { get; set; } = true;
-
-    [Parameter]
-    private int Year { get; set; }
-
-    [Parameter]
-    private EventCallback<int> YearChanged { get; set; }
-}
-@if (Showing)
-{
-    <button class="btn btn-primary" onclick=@BtnClicked>BTN</button>
-}
+<NavLink Class="nav-link" href="/components/alerts" MatchUrl="/components">Components</NavLink>
+<NavLink Class="nav-link" href="/components/alerts">Alerts</NavLink>
+<NavLink Class="nav-link" href="/components/badges">Badges</NavLink>
+<NavLink Class="nav-link" href="/components/breadcrumbs">Breadcrumbs</NavLink>
+...

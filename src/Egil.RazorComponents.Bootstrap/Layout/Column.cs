@@ -28,7 +28,7 @@ namespace Egil.RazorComponents.Bootstrap.Layout
 
         protected override void BuildRenderTree(RenderTreeBuilder builder)
         {
-            builder.OpenElement(Html.DIV);
+            builder.OpenElement(HtmlTags.DIV);
             builder.AddClassAttribute(CssClassValue);
             builder.AddContent(ChildContent);
             builder.CloseElement();

@@ -23,7 +23,7 @@ namespace Egil.RazorComponents.Bootstrap
 
         internal string? DefaultCssClass { get; set; }
 
-        protected string CssClassValue => BuildCssClassValue();
+        protected internal string CssClassValue => BuildCssClassValue();
 
         private IEnumerable<ICssClassProvider> GetCssClassParameters()
         {

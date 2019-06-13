@@ -3,8 +3,38 @@
 @using Egil.RazorComponents.Bootstrap.Components.Html
 @using Egil.RazorComponents.Bootstrap.Components.Badges
 @using Egil.RazorComponents.Bootstrap.Components.Accessibility
+@using Egil.RazorComponents.Bootstrap.Components.Breadcrumbs
 
-<h1>Example heading <Badge Color="primary">New</Badge></h1>
+<style type="text/css"></style>
+
+<Breadcrumb>
+    <a href="/">Home</a>
+</Breadcrumb>
+
+<Breadcrumb Separator=">>>">
+    <a href="/home">Home</a>
+    <a href="/">Library</a>
+</Breadcrumb>
+
+<Breadcrumb Separator="url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjgiPjxwYXRoIGQ9Ik0yLjUgMEwxIDEuNSAzLjUgNCAxIDYuNSAyLjUgOGw0LTQtNC00eiIgZmlsbD0iY3VycmVudENvbG9yIi8+PC9zdmc+)">
+    <a href="/home">Home</a>
+    <a href="/home/library">Library</a>
+    <a href="/">Data</a>
+</Breadcrumb>
+
+<Breadcrumb Separator="">
+    <a href="/home">Home</a>
+    <a href="/home/library">Library</a>
+    <a href="/">Data</a>
+</Breadcrumb>
+
+<hr />
+
+<a href="www.egilhansen.com" title="ASDASDASD">asfdasdf</a>
+
+<hr />
+
+<h1>Example heading <Badge style="font-size: 4rem;" Color="primary">New</Badge></h1>
 <h2>Example heading <Badge PillShaped="true" Color="secondary">New</Badge></h2>
 <h3>Example heading <Badge Href=" " Color="warning">New</Badge></h3>
 <h4>Example heading <Badge Href="#" Color="dark">New</Badge></h4>

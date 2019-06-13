@@ -8,7 +8,7 @@ namespace Egil.RazorComponents.Bootstrap
         private RenderFragment? _childContent;
 
         [Parameter]
-        protected RenderFragment ChildContent
+        protected internal RenderFragment ChildContent
         {
             get => BuildChildContentRenderTree;
             set => _childContent = value;

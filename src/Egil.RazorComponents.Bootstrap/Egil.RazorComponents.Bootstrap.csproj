@@ -15,7 +15,7 @@
     <RepositoryUrl>https://github.com/egil/bootstrap.net</RepositoryUrl>
     <PackageProjectUrl>https://github.com/egil/bootstrap.net</PackageProjectUrl>
     <PackageTags>blazor blazor-server-side razor-components bootstrap bootstrap4</PackageTags>
-    <Version>0.1.0-preview5-05</Version>
+    <Version>0.1.0-preview5-06</Version>
     <Authors>Egil Hansen</Authors>
     <Company>Egil Hansen</Company>
     <Product>Bootstrap.NET</Product>
@@ -41,7 +41,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components.Browser" Version="3.0.0-preview5-19227-01" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Browser" Version="3.0.0-preview6.19307.2" />
   </ItemGroup>
 
   <ItemGroup>

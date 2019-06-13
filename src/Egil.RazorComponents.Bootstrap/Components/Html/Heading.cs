@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.RenderTree;
 using System;
+using System.Collections.Generic;
 
 namespace Egil.RazorComponents.Bootstrap.Components.Html
 {
@@ -9,6 +10,9 @@ namespace Egil.RazorComponents.Bootstrap.Components.Html
     {
         public static readonly string[] HeadingTags = { "h1", "h2", "h3", "h4", "h5", "h6" };
         protected int _size = 1;
+
+        [Parameter(CaptureUnmatchedValues = true)]
+        public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; private set; }
 
         [Parameter]
         public int Size
@@ -24,7 +28,8 @@ namespace Egil.RazorComponents.Bootstrap.Components.Html
         {
             builder.OpenElement(HeadingTags[_size - 1]);
             builder.AddClassAttribute(CssClassValue);
-            builder.AddAttribute("id", Id);
+            builder.AddIdAttribute(Id);
+            builder.AddMultipleAttributes(AdditionalAttributes);
             builder.AddContent(ChildContent);
             builder.CloseElement();
         }

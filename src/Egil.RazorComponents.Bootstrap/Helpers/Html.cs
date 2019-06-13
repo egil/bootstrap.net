@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Egil.RazorComponents.Bootstrap.Helpers
 {
-    public static class Html
+    public static class HtmlTags
     {
         public const string DIV = "div";
         public const string A = "a";

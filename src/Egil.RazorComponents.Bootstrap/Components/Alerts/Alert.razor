@@ -1,7 +1,6 @@
 ﻿@using Egil.RazorComponents.Bootstrap
 @using Egil.RazorComponents.Bootstrap.Components.Alerts.Parameters;
 @using Egil.RazorComponents.Bootstrap.Components.Html;
-@using Egil.RazorComponents.Bootstrap.Helpers;
 @using Egil.RazorComponents.Bootstrap.Utilities.Animations;
 @using Egil.RazorComponents.Bootstrap.Utilities.Colors;
 @using Egil.RazorComponents.Bootstrap.Utilities.Spacing;
@@ -9,8 +8,11 @@
 
 @inherits BootstrapParentComponentBase
 
-@functions {
+@code {
     private ICssClassAnimation DismissAnimation { get; } = new FadeOutAnimation();
+
+    [Parameter(CaptureUnmatchedValues = true)] 
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; private set; } // TODO P7: Add to element
 
     [Parameter]
     public bool Enabled { get; set; } = true;
@@ -98,7 +100,7 @@
         @ChildContent
         @if ((bool)Dismissable)
         {
-            <button type="button" class="close" aria-label="Close" onclick=@Dismiss>
+            <button type="button" class="close" aria-label="Close" @onclick=@Dismiss>
                 <span aria-hidden="true">&times;</span>
             </button>
         }

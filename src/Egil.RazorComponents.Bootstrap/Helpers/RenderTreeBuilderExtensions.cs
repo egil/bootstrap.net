@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Components.RenderTree;
 using System.Runtime.CompilerServices;
 using System;
+using System.Collections.Generic;
 
 namespace Egil.RazorComponents.Bootstrap.Helpers
 {
@@ -43,6 +44,13 @@ namespace Egil.RazorComponents.Bootstrap.Helpers
             builder.AddAttribute(sequence, name, value);
         }
 
+        public static void AddMultipleAttributes<T>(this RenderTreeBuilder builder, IEnumerable<KeyValuePair<string, T>>? attributes, [CallerLineNumber] int sequence = DEFAULT_SEQUENCE)
+        {
+            if (attributes is null) return;
+
+            builder.AddMultipleAttributes<T>(sequence, attributes);
+        }
+
         public static void AddContent(this RenderTreeBuilder builder, RenderFragment fragment, [CallerLineNumber] int sequence = DEFAULT_SEQUENCE)
         {
             builder.AddContent(sequence, fragment);
@@ -53,18 +61,27 @@ namespace Egil.RazorComponents.Bootstrap.Helpers
             builder.AddMarkupContent(sequence, markupContent);
         }
 
-        public static void AddClassAttribute(this RenderTreeBuilder builder, string value, [CallerLineNumber] int sequence = DEFAULT_SEQUENCE)
-        {            
+        public static void AddIdAttribute(this RenderTreeBuilder builder, string? value, [CallerLineNumber] int sequence = DEFAULT_SEQUENCE)
+        {
+            if (string.IsNullOrEmpty(value)) return;
+            builder.AddAttribute(sequence, "id", value);
+        }
+
+        public static void AddClassAttribute(this RenderTreeBuilder builder, string? value, [CallerLineNumber] int sequence = DEFAULT_SEQUENCE)
+        {
+            if (string.IsNullOrEmpty(value)) return;
             builder.AddAttribute(sequence, "class", value);
         }
 
-        public static void AddRoleAttribute(this RenderTreeBuilder builder, string value, [CallerLineNumber] int sequence = DEFAULT_SEQUENCE)
+        public static void AddRoleAttribute(this RenderTreeBuilder builder, string? value, [CallerLineNumber] int sequence = DEFAULT_SEQUENCE)
         {
+            if (string.IsNullOrEmpty(value)) return;
             builder.AddAttribute(sequence, "role", value);
         }
 
-        public static void AddAriaLabelAttribute(this RenderTreeBuilder builder, string value, [CallerLineNumber] int sequence = DEFAULT_SEQUENCE)
+        public static void AddAriaLabelAttribute(this RenderTreeBuilder builder, string? value, [CallerLineNumber] int sequence = DEFAULT_SEQUENCE)
         {
+            if (string.IsNullOrEmpty(value)) return;
             builder.AddAttribute(sequence, "aria-label", value);
         }
 
@@ -73,5 +90,29 @@ namespace Egil.RazorComponents.Bootstrap.Helpers
             builder.AddAttribute(sequence, "aria-hidden", value);
         }
 
+        public static void AddClassAttribute(this RenderTreeBuilder builder, int sequence, string? value)
+        {
+            if (string.IsNullOrEmpty(value)) return;
+            builder.AddAttribute(sequence, "class", value);
+        }
+
+        public static void AddRoleAttribute(this RenderTreeBuilder builder, int sequence, string? value)
+        {
+            if (string.IsNullOrEmpty(value)) return;
+            builder.AddAttribute(sequence, "role", value);
+        }
+
+        public static void AddAriaLabelAttribute(this RenderTreeBuilder builder, int sequence, string? value)
+        {
+            if (string.IsNullOrEmpty(value)) return;
+            builder.AddAttribute(sequence, "aria-label", value);
+        }
+
+        public static void AddAriaHiddenAttribute(this RenderTreeBuilder builder, int sequence, bool value = true)
+        {
+            builder.AddAttribute(sequence, "aria-hidden", value);
+        }
+
+        //public static void AddDefaultRenderTree(this RenderTreeBuilder builder, int sequence, RenderFragment renderFragment)
     }
 }

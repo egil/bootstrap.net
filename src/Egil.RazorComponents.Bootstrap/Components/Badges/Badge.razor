@@ -5,8 +5,9 @@
 
 @inherits BootstrapParentComponentBase
 
-@functions {
-    // TODO: Copy all properties to NavLink with p6
+@code {
+    [Parameter(CaptureUnmatchedValues = true)] 
+    public IReadOnlyDictionary<string, object> AdditionalAttributes { get; private set; } // TODO P7: Add to element
 
     [Parameter]
     public ColorParameter<BadgeColor> Color { get; set; } = OptionsFactory.Primary;
@@ -28,5 +29,5 @@
 }
 else
 {
-    <a href=@Href class=@CssClassValue>@ChildContent</a>
+    <A href=@Href class=@CssClassValue>@ChildContent</A>
 }
