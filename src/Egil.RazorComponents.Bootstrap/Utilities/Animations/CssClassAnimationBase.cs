@@ -17,6 +17,8 @@ namespace Egil.RazorComponents.Bootstrap.Utilities.Animations
 
         public abstract int Count { get; }
 
+        public bool HasValues => Count > 0;
+
         protected CssClassAnimationBase(IAnimationDelayFactory? animationDelayFactory = null)
         {
             _animationDelayFactory = animationDelayFactory ?? DefaultAnimationDelayFactory.Instance;

@@ -1,6 +1,6 @@
-﻿using Egil.RazorComponents.Bootstrap.Options;
+﻿using Egil.RazorComponents.Bootstrap.Base.CssClassValues;
+using Egil.RazorComponents.Bootstrap.Options;
 using Egil.RazorComponents.Bootstrap.Options.CommonOptions;
-using Egil.RazorComponents.Bootstrap.Parameters;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -15,7 +15,7 @@ namespace Egil.RazorComponents.Bootstrap.Layout.Parameters
             if (option is BreakpointWithNumber bwn) bwn.Number.ValidateAsSpanNumber();
             if (option is Number n) n.ValidateAsSpanNumber();
 
-            return option is DefaultBreakpoint
+            return option is DefaultSizeOption
                 ? OptionPrefix
                 : string.Concat(OptionPrefix, Option.OptionSeparator, option.Value);
         }
@@ -32,12 +32,17 @@ namespace Egil.RazorComponents.Bootstrap.Layout.Parameters
             return new OptionParameter(Number.ToSpanNumber(number));
         }
 
-        public static implicit operator SpanParameter(DefaultBreakpoint _)
+        public static implicit operator SpanParameter(DefaultSizeOption _)
         {
             return Default;
         }
 
-        public static implicit operator SpanParameter(Breakpoint option)
+        public static implicit operator SpanParameter(SizeOption option)
+        {
+            return new OptionParameter(option);
+        }
+
+        public static implicit operator SpanParameter(ExtendedSizeOption option)
         {
             return new OptionParameter(option);
         }
@@ -102,7 +107,7 @@ namespace Egil.RazorComponents.Bootstrap.Layout.Parameters
 
                 foreach (var option in set)
                 {
-                    if (option is DefaultBreakpoint)
+                    if (option is DefaultSizeOption)
                     {
                         if (numberAdded) continue;
                         else defaultAdded = true;

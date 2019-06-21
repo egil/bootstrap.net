@@ -1,4 +1,4 @@
-﻿using Egil.RazorComponents.Bootstrap.Parameters;
+﻿using Egil.RazorComponents.Bootstrap.Base.CssClassValues;
 using System.Collections.Generic;
 
 namespace Egil.RazorComponents.Bootstrap.Layout.Parameters

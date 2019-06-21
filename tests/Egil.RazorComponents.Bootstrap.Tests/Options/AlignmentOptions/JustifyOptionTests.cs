@@ -3,7 +3,7 @@ using Egil.RazorComponents.Bootstrap.Tests.TestUtilities;
 using Shouldly;
 using Xunit;
 using static Egil.RazorComponents.Bootstrap.Options.Factory.LowerCase.Abbr;
-using static Egil.RazorComponents.Bootstrap.Options.SpacingOptions.Factory.LowerCase;
+using static Egil.RazorComponents.Bootstrap.Utilities.Spacing.Factory.LowerCase;
 
 namespace Egil.RazorComponents.Bootstrap.Tests.Options.AlignmentOptions
 {

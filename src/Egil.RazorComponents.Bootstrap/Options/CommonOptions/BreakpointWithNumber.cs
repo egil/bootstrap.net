@@ -3,17 +3,17 @@ using System.Diagnostics;
 
 namespace Egil.RazorComponents.Bootstrap.Options.CommonOptions
 {
+
     [DebuggerDisplay("BreakpointWithNumber: {Value}")]
 
-    public class BreakpointWithNumber : OptionPair<Breakpoint, Number>, IBreakpointWithNumber
+    public class BreakpointWithNumber : OptionPair<ISpanOption, Number>, IBreakpointWithNumber
     {
         internal Number Number { get; }
 
-        public BreakpointWithNumber(Breakpoint breakpoint, Number number) : base(breakpoint, number)
+        public BreakpointWithNumber(ISpanOption breakpoint, Number number) : base(breakpoint, number)
         {
             Number = number;
         }
-
         public static OptionSet<IBreakpointWithNumber> operator |(BreakpointWithNumber option1, int number)
         {
             return new OptionSet<IBreakpointWithNumber>() { option1, (Number)number };

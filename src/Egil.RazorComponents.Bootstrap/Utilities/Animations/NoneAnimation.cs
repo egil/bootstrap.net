@@ -14,6 +14,8 @@ namespace Egil.RazorComponents.Bootstrap.Utilities.Animations
 
         public int Count { get; } = 0;
 
+        public bool HasValues { get; } = false;
+
         private NoneAnimation() { }
 
         public IEnumerator<string> GetEnumerator()
@@ -32,6 +34,4 @@ namespace Egil.RazorComponents.Bootstrap.Utilities.Animations
 
         public static readonly NoneAnimation Instance = new NoneAnimation();
     }
-
-
 }

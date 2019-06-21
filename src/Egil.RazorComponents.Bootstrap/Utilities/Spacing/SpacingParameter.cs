@@ -1,7 +1,6 @@
-﻿using Egil.RazorComponents.Bootstrap.Options;
+﻿using Egil.RazorComponents.Bootstrap.Base.CssClassValues;
+using Egil.RazorComponents.Bootstrap.Options;
 using Egil.RazorComponents.Bootstrap.Options.CommonOptions;
-using Egil.RazorComponents.Bootstrap.Options.SpacingOptions;
-using Egil.RazorComponents.Bootstrap.Parameters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -60,28 +59,28 @@ namespace Egil.RazorComponents.Bootstrap.Utilities.Spacing
 
         class OptionParameter : SpacingParameter<TParamPrefix>
         {
-            private readonly string optionValue;
+            private readonly string _optionValue;
 
             public OptionParameter(IOption option)
             {
-                optionValue = ToSpacingValue(option);
+                _optionValue = ToSpacingValue(option);
             }
 
             public override int Count => 1;
 
             public override IEnumerator<string> GetEnumerator()
             {
-                yield return optionValue;
+                yield return _optionValue;
             }
         }
 
         class OptionSetParameter : SpacingParameter<TParamPrefix>
         {
-            private readonly IReadOnlyCollection<string> set;
+            private readonly IReadOnlyCollection<string> _set;
 
             public OptionSetParameter(IOptionSet<IOption> set)
             {
-                this.set = set.Select(option =>
+                this._set = set.Select(option =>
                 {
                     if (option is BreakpointWithNumber bwn) bwn.Number.ValidateAsSpacingNumber();
                     if (option is Number n) n.ValidateAsSpacingNumber();
@@ -89,9 +88,9 @@ namespace Egil.RazorComponents.Bootstrap.Utilities.Spacing
                 }).ToArray();
             }
 
-            public override int Count => set.Count;
+            public override int Count => _set.Count;
 
-            public override IEnumerator<string> GetEnumerator() => set.GetEnumerator();
+            public override IEnumerator<string> GetEnumerator() => _set.GetEnumerator();
         }
 
         class NoneParameter : SpacingParameter<TParamPrefix>

@@ -1,4 +1,5 @@
-﻿using Egil.RazorComponents.Bootstrap.Components.Alerts.Parameters;
+﻿using Egil.RazorComponents.Bootstrap.Base.CssClassValues;
+using Egil.RazorComponents.Bootstrap.Components.Alerts.Parameters;
 using Egil.RazorComponents.Bootstrap.Options;
 using Egil.RazorComponents.Bootstrap.Parameters;
 using Egil.RazorComponents.Bootstrap.Tests.TestUtilities;
@@ -9,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
-using static Egil.RazorComponents.Bootstrap.Utilities.Colors.OptionsFactory.LowerCase;
+using static Egil.RazorComponents.Bootstrap.Utilities.Colors.Factory.LowerCase;
 
 namespace Egil.RazorComponents.Bootstrap.Utilities.Colors
 {

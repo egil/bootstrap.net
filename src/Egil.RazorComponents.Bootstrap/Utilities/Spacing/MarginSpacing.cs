@@ -1,9 +1,9 @@
-﻿using Egil.RazorComponents.Bootstrap.Parameters;
+﻿using Egil.RazorComponents.Bootstrap.Base.CssClassValues;
 
 namespace Egil.RazorComponents.Bootstrap.Utilities.Spacing
 {
     public sealed class MarginSpacing : ICssClassPrefix
     {
-        public string Prefix => "m";
+        public string Prefix { get; } = "m";
     }
 }

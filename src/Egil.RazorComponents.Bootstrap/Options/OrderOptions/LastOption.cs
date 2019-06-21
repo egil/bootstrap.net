@@ -4,12 +4,12 @@ using System.Diagnostics;
 namespace Egil.RazorComponents.Bootstrap.Options
 {
     [DebuggerDisplay("LastOption: {Value}")]
-    public class LastOption : IOrderOption
+    public class LastOption : Option, IOrderOption
     {
         private const string OptionText = "last";
-        public string Value => OptionText;
+        public override string Value { get; } = OptionText;
 
-        public static BreakpointLast operator -(Breakpoint breakpoint, LastOption option)
+        public static BreakpointLast operator -(ISpanOption breakpoint, LastOption option)
         {
             return new BreakpointLast(breakpoint, option);
         }

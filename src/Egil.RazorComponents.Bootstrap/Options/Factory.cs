@@ -4,15 +4,16 @@ using Egil.RazorComponents.Bootstrap.Options.CommonOptions;
 
 namespace Egil.RazorComponents.Bootstrap.Options
 {
+#pragma warning disable IDE1006 // Naming Styles
     public static class Factory
     {
         public static readonly ContainerTypeParameter Fluid = ContainerTypeParameter.Fluid;
 
-        public static readonly DefaultBreakpoint ExtraSmall = new DefaultBreakpoint();
-        public static readonly Breakpoint Small = new Breakpoint(BreakpointType.Small);
-        public static readonly Breakpoint Medium = new Breakpoint(BreakpointType.Medium);
-        public static readonly Breakpoint Large = new Breakpoint(BreakpointType.Large);
-        public static readonly Breakpoint ExtraLarge = new Breakpoint(BreakpointType.ExtraLarge);
+        public static readonly DefaultSizeOption ExtraSmall = DefaultSizeOption.Default;
+        public static readonly SizeOption Small = SizeOption.Small;
+        public static readonly ExtendedSizeOption Medium = ExtendedSizeOption.Medium;
+        public static readonly SizeOption Large = SizeOption.Large;
+        public static readonly ExtendedSizeOption ExtraLarge = ExtendedSizeOption.ExtraLarge;
 
         public static readonly FirstOption First = new FirstOption();
         public static readonly LastOption Last = new LastOption();
@@ -28,11 +29,11 @@ namespace Egil.RazorComponents.Bootstrap.Options
         {
             public static readonly ContainerTypeParameter fluid = Fluid;
 
-            public static readonly DefaultBreakpoint extraSmall = ExtraSmall;
-            public static readonly Breakpoint small = Small;
-            public static readonly Breakpoint medium = Medium;
-            public static readonly Breakpoint large = Large;
-            public static readonly Breakpoint extraLarge = ExtraLarge;
+            public static readonly DefaultSizeOption extraSmall = ExtraSmall;
+            public static readonly SizeOption small = Small;
+            public static readonly ExtendedSizeOption medium = Medium;
+            public static readonly SizeOption large = Large;
+            public static readonly ExtendedSizeOption extraLarge = ExtraLarge;
 
             public static readonly FirstOption first = First;
             public static readonly LastOption last = Last;
@@ -48,11 +49,11 @@ namespace Egil.RazorComponents.Bootstrap.Options
             {
                 public static readonly ContainerTypeParameter fluid = Fluid;
 
-                public static readonly DefaultBreakpoint xs = ExtraSmall;
-                public static readonly Breakpoint sm = Small;
-                public static readonly Breakpoint md = Medium;
-                public static readonly Breakpoint lg = Large;
-                public static readonly Breakpoint xl = ExtraLarge;
+                public static readonly DefaultSizeOption xs = ExtraSmall;
+                public static readonly SizeOption sm = Small;
+                public static readonly ExtendedSizeOption md = Medium;
+                public static readonly SizeOption lg = Large;
+                public static readonly ExtendedSizeOption xl = ExtraLarge;
 
                 public static readonly FirstOption first = First;
                 public static readonly LastOption last = Last;
@@ -66,5 +67,6 @@ namespace Egil.RazorComponents.Bootstrap.Options
             }
         }
     }
+#pragma warning restore IDE1006 // Naming Styles
 }
 

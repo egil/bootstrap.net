@@ -9,7 +9,7 @@ namespace Egil.RazorComponents.Bootstrap.Tests.Options.CommonOptions
         [Fact(DisplayName = "Breakpoint can have width specified via - operator")]
         public void BreakpointCanHaveWidthSpecifiedViaMinusOperator()
         {
-            var bp = new Breakpoint(BreakpointType.Large);
+            var bp = ExtendedSizeOption.ExtraLarge;
             var span = 2;
             var bpw = bp - span;
             bpw.Value.ShouldBeCombinationOf(bp, (Number)span);

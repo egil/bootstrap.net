@@ -5,7 +5,7 @@ using System.Diagnostics;
 namespace Egil.RazorComponents.Bootstrap.Options.AlignmentOptions
 {
     [DebuggerDisplay("JustifyOption: {Value}")]
-    public sealed class JustifyOption : IJustifyOption
+    public sealed class JustifyOption : Option, IJustifyOption
     {
         private readonly JustifyType type;
 
@@ -14,14 +14,14 @@ namespace Egil.RazorComponents.Bootstrap.Options.AlignmentOptions
             this.type = type;
         }
 
-        public string Value => type switch
+        public override string Value => type switch
         {
             JustifyType.Between => "between",
             JustifyType.Around => "around",
             _ => throw new InvalidOperationException($"Unknown {nameof(IJustifyOption)} specified in {nameof(JustifyOption)}.")
         };
-
-        public static BreakpointJustifyOption operator -(Breakpoint breakpoint, JustifyOption option)
+        
+        public static BreakpointJustifyOption operator -(ISpanOption breakpoint, JustifyOption option)
         {
             return new BreakpointJustifyOption(breakpoint, option);
         }

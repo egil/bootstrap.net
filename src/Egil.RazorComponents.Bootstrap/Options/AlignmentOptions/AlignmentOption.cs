@@ -5,7 +5,7 @@ using System.Diagnostics;
 namespace Egil.RazorComponents.Bootstrap.Options.AlignmentOptions
 {
     [DebuggerDisplay("AlignmentOption: {Value}")]
-    public sealed class AlignmentOption : IAlignmentOption, IJustifyOption
+    public sealed class AlignmentOption : Option, IAlignmentOption, IJustifyOption
     {
         private readonly AlignmentType type;
 
@@ -14,7 +14,7 @@ namespace Egil.RazorComponents.Bootstrap.Options.AlignmentOptions
             this.type = type;
         }
 
-        public string Value => type switch
+        public override string Value => type switch
         {
             AlignmentType.Start => "start",
             AlignmentType.End => "end",
@@ -22,7 +22,7 @@ namespace Egil.RazorComponents.Bootstrap.Options.AlignmentOptions
             _ => throw new InvalidOperationException($"Unknown {nameof(AlignmentType)} specified in {nameof(AlignmentOption)}.")
         };
 
-        public static BreakpointAlignmentOption operator -(Breakpoint breakpoint, AlignmentOption option)
+        public static BreakpointAlignmentOption operator -(ISpanOption breakpoint, AlignmentOption option)
         {
             return new BreakpointAlignmentOption(breakpoint, option);
         }

@@ -1,4 +1,5 @@
-﻿using Egil.RazorComponents.Bootstrap.Helpers;
+﻿using Egil.RazorComponents.Bootstrap.Base;
+using Egil.RazorComponents.Bootstrap.Extensions;
 using Egil.RazorComponents.Bootstrap.Layout.Parameters;
 using Egil.RazorComponents.Bootstrap.Utilities.Spacing;
 using Microsoft.AspNetCore.Components;

@@ -4,46 +4,46 @@ using System.Diagnostics;
 namespace Egil.RazorComponents.Bootstrap.Options.CommonOptions
 {
     [DebuggerDisplay("Number: {Value}")]
-    public class Number : IBreakpointWithNumber
+    public class Number : Option, IBreakpointWithNumber
     {
-        private readonly int number;
+        private readonly int _number;
 
-        public string Value { get; }
+        public override string Value { get; }
 
         public void ValidateAsSpanNumber()
         {
-            if (!IsValidSpanNumber(number))
+            if (!IsValidSpanNumber(_number))
                 throw new ArgumentOutOfRangeException("Bootstrap grid has 12 columns. Numbers referring to it must be between 1 and 12.");
         }
 
         public void ValidateAsSpacingNumber()
         {
-            if (!IsValidSpacingNumber(number))
+            if (!IsValidSpacingNumber(_number))
                 throw new ArgumentOutOfRangeException("Bootstrap spacing numbers must be between -5 and 5.");
         }
 
         public void ValidateAsOrderNumber()
         {
-            if (!IsValidOrderNumber(number))
+            if (!IsValidOrderNumber(_number))
                 throw new ArgumentOutOfRangeException("Order index can be between 0 and 12.");
         }
 
         public void ValidateAsOffsetNumber()
         {
-            if (!IsValidOffsetNumber(number))
+            if (!IsValidOffsetNumber(_number))
                 throw new ArgumentOutOfRangeException("When offset is specified without a breakpoint, the number can be between 1 and 11.");
         }
 
         public void ValidateAsOffsetBreakpointNumber()
         {
-            if (!IsValidOffsetBreakpointNumber(number))
+            if (!IsValidOffsetBreakpointNumber(_number))
                 throw new ArgumentOutOfRangeException("When offset is specified with a breakpoint, the number can be between 0 and 11.");
         }
 
         private Number(int number)
         {
             Value = number < 0 ? "n" + number * -1 : number.ToString();
-            this.number = number;
+            _number = number;
         }
 
         public static Number ToSpanNumber(int number)
@@ -103,6 +103,11 @@ namespace Egil.RazorComponents.Bootstrap.Options.CommonOptions
         public static implicit operator Number(int number)
         {
             return new Number(number);
+        }
+
+        public static BreakpointWithNumber operator -(ISpanOption breakpoint, Number number)
+        {
+            return new BreakpointWithNumber(breakpoint, number);
         }
 
         public static OptionSet<IBreakpointWithNumber> operator |(Number option1, IBreakpointWithNumber option2)

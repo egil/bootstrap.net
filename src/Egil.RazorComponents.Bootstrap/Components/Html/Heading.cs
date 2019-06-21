@@ -1,4 +1,6 @@
-﻿using Egil.RazorComponents.Bootstrap.Helpers;
+﻿using Egil.RazorComponents.Bootstrap.Base;
+using Egil.RazorComponents.Bootstrap.Extensions;
+using Egil.RazorComponents.Bootstrap.Utilities.Spacing;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.RenderTree;
 using System;
@@ -6,29 +8,36 @@ using System.Collections.Generic;
 
 namespace Egil.RazorComponents.Bootstrap.Components.Html
 {
-    public class Heading : BootstrapParentComponentBase
+    public class Heading : BootstrapHtmlElementComponentBase
     {
         public static readonly string[] HeadingTags = { "h1", "h2", "h3", "h4", "h5", "h6" };
         protected int _size = 1;
 
-        [Parameter(CaptureUnmatchedValues = true)]
-        public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; private set; }
-
         [Parameter]
         public int Size
         {
-            get => _size; set
+            get => _size;
+            set
             {
                 if (value < 1 || value > 6) throw new ArgumentOutOfRangeException("A HTML heading size can only between 1 and 6.");
                 _size = value;
             }
         }
 
-        protected override void BuildRenderTree(RenderTreeBuilder builder)
+        /// <summary>
+        /// Gets or sets the padding of the component, using Bootstrap.NETs spacing syntax.
+        /// </summary>
+        [Parameter] public SpacingParameter<PaddingSpacing> Padding { get; set; } = SpacingParameter<PaddingSpacing>.None;
+
+        /// <summary>
+        /// Gets or sets the margin of the component, using Bootstrap.NETs spacing syntax.
+        /// </summary>
+        [Parameter] public SpacingParameter<MarginSpacing> Margin { get; set; } = SpacingParameter<MarginSpacing>.None;
+
+        protected internal override void DefaultRenderFragment(RenderTreeBuilder builder)
         {
             builder.OpenElement(HeadingTags[_size - 1]);
             builder.AddClassAttribute(CssClassValue);
-            builder.AddIdAttribute(Id);
             builder.AddMultipleAttributes(AdditionalAttributes);
             builder.AddContent(ChildContent);
             builder.CloseElement();

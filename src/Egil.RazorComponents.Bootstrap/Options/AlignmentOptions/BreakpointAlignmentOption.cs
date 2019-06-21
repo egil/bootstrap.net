@@ -4,10 +4,9 @@ using System.Diagnostics;
 namespace Egil.RazorComponents.Bootstrap.Options.AlignmentOptions
 {
     [DebuggerDisplay("AlignmentOption: {Value}")]
-    public sealed class BreakpointAlignmentOption : OptionPair<Breakpoint, AlignmentOption>,
-        IAlignmentOption, IJustifyOption
+    public sealed class BreakpointAlignmentOption : OptionPair<ISpanOption, AlignmentOption>, IAlignmentOption, IJustifyOption
     {
-        public BreakpointAlignmentOption(Breakpoint leftOption, AlignmentOption rightOption) : base(leftOption, rightOption)
+        public BreakpointAlignmentOption(ISpanOption leftOption, AlignmentOption rightOption) : base(leftOption, rightOption)
         {
         }
 

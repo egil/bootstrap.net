@@ -4,13 +4,13 @@ using System.Diagnostics;
 namespace Egil.RazorComponents.Bootstrap.Options
 {
     [DebuggerDisplay("Auto: {Value}")]
-    public class AutoOption : IAutoOption
+    public class AutoOption : Option, IAutoOption
     {
         private const string OptionText = "auto";
 
-        public string Value => OptionText;
+        public override string Value { get; } = OptionText;
 
-        public static BreakpointAuto operator -(Breakpoint breakpoint, AutoOption option)
+        public static BreakpointAuto operator -(ISpanOption breakpoint, AutoOption option)
         {
             return new BreakpointAuto(breakpoint, option);
         }

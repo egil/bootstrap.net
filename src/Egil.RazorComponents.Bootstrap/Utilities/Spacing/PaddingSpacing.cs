@@ -1,9 +1,9 @@
-﻿using Egil.RazorComponents.Bootstrap.Parameters;
+﻿using Egil.RazorComponents.Bootstrap.Base.CssClassValues;
 
 namespace Egil.RazorComponents.Bootstrap.Utilities.Spacing
 {
     public sealed class PaddingSpacing : ICssClassPrefix
     {
-        public string Prefix => "p";
+        public string Prefix { get; } = "p";
     }
 }

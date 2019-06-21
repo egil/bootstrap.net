@@ -8,10 +8,11 @@ namespace Egil.RazorComponents.Bootstrap.Options
     [DebuggerDisplay("OptionSet with {Count} options of {OptionTypeName}")]
     public class OptionSet<TOption> : IOptionSet<TOption> where TOption : IOption
     {
-        private static string OptionTypeName => typeof(TOption).Name;
-        private readonly HashSet<TOption> options = new HashSet<TOption>(OptionEqualityComparer<TOption>.Instance);
+        //private static string OptionTypeName { get; } = typeof(TOption).Name;
 
-        public int Count => options.Count;
+        private readonly HashSet<TOption> _options = new HashSet<TOption>();
+
+        public int Count => _options.Count;
 
         public OptionSet() { }
 
@@ -25,10 +26,10 @@ namespace Egil.RazorComponents.Bootstrap.Options
 
         public void Add(TOption option)
         {
-            options.Add(option);
+            _options.Add(option);
         }
 
-        public IEnumerator<TOption> GetEnumerator() => options.GetEnumerator();
+        public IEnumerator<TOption> GetEnumerator() => _options.GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
 

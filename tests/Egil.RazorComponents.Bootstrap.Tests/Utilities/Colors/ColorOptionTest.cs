@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
-using static Egil.RazorComponents.Bootstrap.Utilities.Colors.OptionsFactory.LowerCase;
+using static Egil.RazorComponents.Bootstrap.Utilities.Colors.Factory.LowerCase;
 
 namespace Egil.RazorComponents.Bootstrap.Utilities.Colors
 {

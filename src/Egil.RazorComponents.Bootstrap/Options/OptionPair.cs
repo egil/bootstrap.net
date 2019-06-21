@@ -3,19 +3,15 @@
 namespace Egil.RazorComponents.Bootstrap.Options.AlignmentOptions
 {
     [DebuggerDisplay("OptionPair: {Value}")]
-    public class OptionPair<TLeftOption, TRightOption>
+    public class OptionPair<TLeftOption, TRightOption> : Option
         where TLeftOption : IOption
         where TRightOption : IOption
     {
-        private readonly TLeftOption leftOption;
-        private readonly TRightOption rightOption;
-
         public OptionPair(TLeftOption leftOption, TRightOption rightOption)
         {
-            this.leftOption = leftOption;
-            this.rightOption = rightOption;
+            Value = Option.CombineWith(leftOption, rightOption);
         }
 
-        public string Value => string.Concat(leftOption.Value, Option.OptionSeparator, rightOption.Value);
+        public override string Value { get; }
     }
 }

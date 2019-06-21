@@ -1,4 +1,6 @@
-﻿using Egil.RazorComponents.Bootstrap.Helpers;
+﻿using Egil.RazorComponents.Bootstrap.Base;
+using Egil.RazorComponents.Bootstrap.Base.CssClassValues;
+using Egil.RazorComponents.Bootstrap.Extensions;
 using Egil.RazorComponents.Bootstrap.Layout.Parameters;
 using Egil.RazorComponents.Bootstrap.Utilities.Spacing;
 using Microsoft.AspNetCore.Components;
@@ -15,8 +17,8 @@ namespace Egil.RazorComponents.Bootstrap.Layout
             DefaultCssClass = RowCssClass;
         }
 
-        [Parameter]
-        public NoGuttersParameter NoGutters { get; set; } = NoGuttersParameter.Default;
+        [Parameter, CssClassToggleParameter("no-gutters")]
+        public bool NoGutters { get; set; }
 
         [Parameter]
         public AlignmentParameter<VerticalRowAlignment> VerticalAlign { get; set; } = AlignmentParameter<VerticalRowAlignment>.None;

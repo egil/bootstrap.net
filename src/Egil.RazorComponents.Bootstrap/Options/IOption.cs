@@ -7,6 +7,16 @@ namespace Egil.RazorComponents.Bootstrap.Options
         string Value { get; }
     }
 
+
+    public interface ITextualSize : IOption
+    {
+    }
+
+    public interface IExtendedTextualSize : IOption
+    {
+
+    }
+
     public interface IOrderOption : IOption { }
     public interface ISpanOption : IOption { }
     public interface IAlignmentOption : IOption { }

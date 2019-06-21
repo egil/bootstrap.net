@@ -1,4 +1,5 @@
-﻿using Egil.RazorComponents.Bootstrap.Options;
+﻿using System.Linq;
+using Egil.RazorComponents.Bootstrap.Options;
 using Shouldly;
 using Xunit;
 
@@ -6,9 +7,9 @@ namespace Egil.RazorComponents.Bootstrap.Tests.Options
 {
     public class OptionSetTests : OptionFixture
     {
-        private class OptionValueCopy : IOption
+        private class OptionValueCopy : Option, IOption
         {
-            public string Value { get; }
+            public override string Value { get; }
 
             public OptionValueCopy(IOption sourceOption)
             {
@@ -28,8 +29,8 @@ namespace Egil.RazorComponents.Bootstrap.Tests.Options
 
             option.Value.ShouldBe(optionCopy.Value);
             set.Count.ShouldBe(1);
-            set.ShouldContain(option);
-            set.ShouldNotContain(optionCopy);
+            set.ShouldContain(option);            
+            set.Single().ShouldBeSameAs(option);
         }
     }
 }

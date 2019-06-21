@@ -1,4 +1,5 @@
-﻿using Egil.RazorComponents.Bootstrap.Layout.Parameters;
+﻿using Egil.RazorComponents.Bootstrap.Base.CssClassValues;
+using Egil.RazorComponents.Bootstrap.Layout.Parameters;
 using Egil.RazorComponents.Bootstrap.Options;
 using Egil.RazorComponents.Bootstrap.Options.CommonOptions;
 using Egil.RazorComponents.Bootstrap.Parameters;
@@ -10,7 +11,7 @@ using System;
 using System.Linq;
 using Xunit;
 using static Egil.RazorComponents.Bootstrap.Options.Factory.LowerCase.Abbr;
-using static Egil.RazorComponents.Bootstrap.Options.SpacingOptions.Factory.LowerCase;
+using static Egil.RazorComponents.Bootstrap.Utilities.Spacing.Factory.LowerCase;
 
 namespace Egil.RazorComponents.Bootstrap.Tests.Parameters
 {

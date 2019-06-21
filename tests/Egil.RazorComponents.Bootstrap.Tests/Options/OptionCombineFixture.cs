@@ -5,8 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 using static Egil.RazorComponents.Bootstrap.Options.Factory.LowerCase.Abbr;
-using static Egil.RazorComponents.Bootstrap.Options.SpacingOptions.Factory.LowerCase;
-using static Egil.RazorComponents.Bootstrap.Utilities.Colors.OptionsFactory.LowerCase;
+using static Egil.RazorComponents.Bootstrap.Utilities.Spacing.Factory.LowerCase;
+using static Egil.RazorComponents.Bootstrap.Utilities.Colors.Factory.LowerCase;
 
 namespace Egil.RazorComponents.Bootstrap.Tests.Options
 {
@@ -14,12 +14,12 @@ namespace Egil.RazorComponents.Bootstrap.Tests.Options
     {
         public static readonly IReadOnlyList<IOption> AllOptions = new List<IOption>
         {
-            center, sm-start, // alignment
-            between, md-between, // justify
-            xs, lg, auto, sm-auto, // span
-            first, last, lg-first, md-last, // order
-            sm-1, // common TODO NUMBER
-            left-(-4), left-lg-3, // spacing
+            center, sm-start, md-end, // alignment
+            between, sm-around, md-between, // justify
+            xs, sm, md, lg, xl, auto, sm-auto, md-auto, // span
+            first, last, md-first, lg-first, md-last, lg-last,  // order
+            sm-1, md-2, // common TODO NUMBER
+            left-(-4), right-md-2, left-lg-3, // spacing
             primary
         };
 

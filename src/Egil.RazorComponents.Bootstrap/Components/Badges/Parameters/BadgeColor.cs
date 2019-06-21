@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Egil.RazorComponents.Bootstrap.Parameters;
+using Egil.RazorComponents.Bootstrap.Base.CssClassValues;
 
 namespace Egil.RazorComponents.Bootstrap.Components.Badges.Parameters
 {

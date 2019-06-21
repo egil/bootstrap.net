@@ -5,9 +5,9 @@ using System.Diagnostics;
 namespace Egil.RazorComponents.Bootstrap.Options
 {
     [DebuggerDisplay("First: {Value}")]
-    public class BreakpointFirst : OptionPair<Breakpoint, FirstOption>, IOrderOption
+    public class BreakpointFirst : OptionPair<ISpanOption, FirstOption>, IOrderOption
     {
-        public BreakpointFirst(Breakpoint leftOption, FirstOption rightOption) : base(leftOption, rightOption)
+        public BreakpointFirst(ISpanOption leftOption, FirstOption rightOption) : base(leftOption, rightOption)
         {
         }
 

@@ -5,9 +5,9 @@ using System.Diagnostics;
 namespace Egil.RazorComponents.Bootstrap.Options
 {
     [DebuggerDisplay("Auto: {Value}")]
-    public class BreakpointAuto : OptionPair<Breakpoint, AutoOption>, IAutoOption
+    public class BreakpointAuto : OptionPair<ISpanOption, AutoOption>, IAutoOption
     {
-        public BreakpointAuto(Breakpoint leftOption, AutoOption rightOption) : base(leftOption, rightOption)
+        public BreakpointAuto(ISpanOption leftOption, AutoOption rightOption) : base(leftOption, rightOption)
         {
         }
 

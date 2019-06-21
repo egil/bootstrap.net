@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Egil.RazorComponents.Bootstrap.Utilities.Colors
 {
 #pragma warning disable IDE1006 // Naming Styles
-    public static class OptionsFactory
+    public static class Factory
     {
         public static readonly ColorOption Primary = new ColorOption(Colors.Primary);
         public static readonly ColorOption Secondary = new ColorOption(Colors.Secondary);

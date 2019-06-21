@@ -1,5 +1,5 @@
-﻿using Egil.RazorComponents.Bootstrap.Options;
-using Egil.RazorComponents.Bootstrap.Parameters;
+﻿using Egil.RazorComponents.Bootstrap.Base.CssClassValues;
+using Egil.RazorComponents.Bootstrap.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,22 +11,21 @@ namespace Egil.RazorComponents.Bootstrap.Utilities.Colors
     public class ColorParameter<TParamPrefix> : CssClassProviderBase, ICssClassProvider
         where TParamPrefix : ICssClassPrefix, new()
     {
-        private static readonly TParamPrefix ColorPrefix = new TParamPrefix();
+        private readonly ColorOption? _option;
+        public TParamPrefix ColorPrefix { get; } = new TParamPrefix();
 
-        private readonly string? _value;
+        public override int Count { get; }
 
-        private ColorParameter() { }
-
-        private ColorParameter(ColorOption option)
+        private ColorParameter(ColorOption? option)
         {
-            _value = string.Concat(ColorPrefix.Prefix, Option.OptionSeparator, option.Value);
+            _option = option;
+            Count = option is null ? 0 : 1;
         }
-
-        public override int Count { get; } = 1;
 
         public override IEnumerator<string> GetEnumerator()
         {
-            yield return _value!;
+            if (Count == 1) yield return CombineWith(ColorPrefix, _option);
+            yield break;
         }
 
         public static implicit operator ColorParameter<TParamPrefix>(ColorOption option)
@@ -34,16 +33,6 @@ namespace Egil.RazorComponents.Bootstrap.Utilities.Colors
             return new ColorParameter<TParamPrefix>(option);
         }
 
-        public static readonly ColorParameter<TParamPrefix> None = new NoneParameter();
-
-        class NoneParameter : ColorParameter<TParamPrefix>
-        {
-            public override int Count { get; } = 0;
-
-            public override IEnumerator<string> GetEnumerator()
-            {
-                yield break;
-            }
-        }
+        public static readonly ColorParameter<TParamPrefix> None = new ColorParameter<TParamPrefix>(null);
     }
 }

@@ -1,4 +1,8 @@
-﻿using Egil.RazorComponents.Bootstrap.Helpers;
+﻿using Egil.RazorComponents.Bootstrap.Base;
+using Egil.RazorComponents.Bootstrap.Base.CssClassValues;
+using Egil.RazorComponents.Bootstrap.Components.Html.Parameters;
+using Egil.RazorComponents.Bootstrap.Extensions;
+using Egil.RazorComponents.Bootstrap.Utilities.Colors;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.RenderTree;
 using Microsoft.AspNetCore.Components.Routing;
@@ -10,54 +14,57 @@ using System.Threading.Tasks;
 
 namespace Egil.RazorComponents.Bootstrap.Components.Html
 {
-    public sealed class A : BootstrapParentComponentBase, IDisposable
+    public sealed class A : BootstrapHtmlElementComponentBase, IDisposable
     {
-        private const string DefaultActiveClass = "active";
-
         private string? MatchUrlAbsolute { get; set; }
 
-        public bool IsActive { get; private set; }
+        private ICssClassProvider ActiveCssClass { get; set; } = CssClassProviderBase.Empty;
 
-        [Parameter(CaptureUnmatchedValues = true)]
-        public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; private set; }
+        [Inject] private IUriHelper? UriHelper { get; set; }
 
-        [Parameter]
-        public string? Href { get; set; }
+        public bool Active { get; private set; }
 
         /// <summary>
         /// Gets or sets the CSS class name applied to the NavLink when the 
         /// current route matches the NavLink href.
         /// </summary>
-        [Parameter]
-        public string? ActiveClass { get; set; } = DefaultActiveClass;
+        [Parameter] public string? ActiveClass { get; set; } = ActiveCssClassProvider.DefaultActiveClass;
 
         /// <summary>
         /// Gets or sets a value representing the URL matching behavior.
         /// </summary>
-        [Parameter]
-        public NavLinkMatch Match { get; set; } = NavLinkMatch.Prefix;
+        [Parameter] public NavLinkMatch Match { get; set; } = NavLinkMatch.Prefix;
 
         /// <summary>
         /// Gets or sets a custom URL, that should be used instead of the URL 
         /// in the href attribute, to match current route and determine if link
         /// is active or not.
         /// </summary>
+        [Parameter] public string? MatchUrl { get; set; }
+
+        [Parameter, CssClassToggleParameter("btn")] public bool AsButton { get; set; } = false;
+
+        /// <summary>
+        /// Sets the color of the button.
+        /// </summary>
         [Parameter]
-        public string? MatchUrl { get; set; }
+        public ColorParameter<ButtonColor> Color { get; set; } = ColorParameter<ButtonColor>.None;
 
-        [Inject] private IUriHelper? UriHelper { get; set; }
-
-        protected override void OnInit()
+        protected override void OnBootstrapInit()
         {
-            base.OnInit();
             // We'll consider re-rendering on each location change
             UriHelper!.OnLocationChanged += OnLocationChanged;
         }
 
-        protected override void OnParametersSet()
+        protected override void OnBootstrapParametersSet()
         {
-            MatchUrlAbsolute = CreateMatchUrlAbsolute();
-            IsActive = ShouldMatch(UriHelper!.GetAbsoluteUri());
+            var newMatchUrl = CreateMatchUrlAbsolute();
+            if (newMatchUrl != MatchUrlAbsolute)
+            {
+                MatchUrlAbsolute = newMatchUrl;
+                Active = UriHelper!.CurrentUriMatches(MatchUrlAbsolute, Match);
+                SetActiveCssClassProvider();
+            }
         }
 
         /// <inheritdoc />
@@ -67,19 +74,10 @@ namespace Egil.RazorComponents.Bootstrap.Components.Html
             UriHelper!.OnLocationChanged -= OnLocationChanged;
         }
 
-        internal RenderFragment? CustomRenderFragment { get; set; }
-
-        protected override void BuildRenderTree(RenderTreeBuilder builder)
-        {
-            var renderFragment = CustomRenderFragment ?? DefaultRenderFragment;
-            renderFragment(builder);
-        }
-
-        internal void DefaultRenderFragment(RenderTreeBuilder builder)
+        protected internal override void DefaultRenderFragment(RenderTreeBuilder builder)
         {
             builder.OpenElement(HtmlTags.A);
-            builder.AddClassAttribute(CombineWithSpace(CssClassValue, IsActive ? ActiveClass : null));
-            builder.AddAttribute("href", Href);
+            builder.AddClassAttribute(CssClassValue);
             builder.AddMultipleAttributes(AdditionalAttributes);
             builder.AddContent(4, ChildContent);
             builder.CloseElement();
@@ -89,10 +87,11 @@ namespace Egil.RazorComponents.Bootstrap.Components.Html
         {
             // We could just re-render always, but for this component we know the
             // only relevant state change is to the _isActive property.
-            var shouldBeActiveNow = ShouldMatch(args.Location);
-            if (shouldBeActiveNow != IsActive)
+            var isActiveNow = UriHelper!.CurrentUriMatches(MatchUrlAbsolute, Match);
+            if (isActiveNow != Active)
             {
-                IsActive = shouldBeActiveNow;
+                Active = isActiveNow;
+                SetActiveCssClassProvider();
                 StateHasChanged();
             }
         }
@@ -101,82 +100,30 @@ namespace Egil.RazorComponents.Bootstrap.Components.Html
         {
             if (!string.IsNullOrWhiteSpace(MatchUrl))
                 return UriHelper!.ToAbsoluteUri(MatchUrl).AbsoluteUri;
-            else if (!string.IsNullOrWhiteSpace(Href))
-                return UriHelper!.ToAbsoluteUri(Href).AbsoluteUri;
+            else if (AdditionalAttributes.TryGetValue(HtmlAttrs.HREF, out string href) && !string.IsNullOrWhiteSpace(href))
+                return UriHelper!.ToAbsoluteUri(href).AbsoluteUri;
             else
                 return null;
         }
 
-        private bool ShouldMatch(string currentUriAbsolute)
+        private void SetActiveCssClassProvider()
         {
-            if (MatchUrlAbsolute is null) return false;
-
-            if (EqualsHrefExactlyOrIfTrailingSlashAdded(currentUriAbsolute, MatchUrlAbsolute))
+            if (!Active || ActiveClass is null)
             {
-                return true;
+                ActiveCssClass = CssClassProviderBase.Empty;
             }
-
-            if (Match == NavLinkMatch.Prefix
-                && IsStrictlyPrefixWithSeparator(currentUriAbsolute, MatchUrlAbsolute))
+            else if (ActiveCssClassProvider.IsDefault(ActiveClass))
             {
-                return true;
-            }
-
-            return false;
-        }
-
-        private static bool EqualsHrefExactlyOrIfTrailingSlashAdded(string currentUriAbsolute, string matchUrlAbsolute)
-        {
-            if (string.Equals(currentUriAbsolute, matchUrlAbsolute, StringComparison.Ordinal))
-            {
-                return true;
-            }
-
-            if (currentUriAbsolute.Length == matchUrlAbsolute.Length - 1)
-            {
-                // Special case: highlight links to http://host/path/ even if you're
-                // at http://host/path (with no trailing slash)
-                //
-                // This is because the router accepts an absolute URI value of "same
-                // as base URI but without trailing slash" as equivalent to "base URI",
-                // which in turn is because it's common for servers to return the same page
-                // for http://host/vdir as they do for host://host/vdir/ as it's no
-                // good to display a blank page in that case.
-                if (matchUrlAbsolute[matchUrlAbsolute.Length - 1] == '/'
-                    && matchUrlAbsolute.StartsWith(currentUriAbsolute, StringComparison.Ordinal))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        private static bool IsStrictlyPrefixWithSeparator(string value, string prefix)
-        {
-            var prefixLength = prefix.Length;
-            if (value.Length > prefixLength)
-            {
-                return value.StartsWith(prefix, StringComparison.Ordinal)
-                    && (
-                        // Only match when there's a separator character either at the end of the
-                        // prefix or right after it.
-                        // Example: "/abc" is treated as a prefix of "/abc/def" but not "/abcdef"
-                        // Example: "/abc/" is treated as a prefix of "/abc/def" but not "/abcdef"
-                        prefixLength == 0
-                        || !char.IsLetterOrDigit(prefix[prefixLength - 1])
-                        || !char.IsLetterOrDigit(value[prefixLength])
-                    );
+                ActiveCssClass = ActiveCssClassProvider.Default;
             }
             else
             {
-                return false;
+                var currentActiveClass = ActiveCssClass.FirstOrDefault() ?? string.Empty;
+                if (!ActiveClass.Equals(currentActiveClass, StringComparison.Ordinal))
+                {
+                    ActiveCssClass = new ActiveCssClassProvider(ActiveClass);
+                }
             }
         }
-
-        private static string CombineWithSpace(string? str1, string? str2)
-           => str1 == null && str2 != null ? str2
-            : str1 != null && str2 == null ? str1
-            : $"{str1} {str2}";
     }
 }

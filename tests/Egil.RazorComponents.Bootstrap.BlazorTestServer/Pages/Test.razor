@@ -1,23 +1,187 @@
-﻿@using Egil.RazorComponents.Bootstrap.Components.Html
+﻿@page "/test"
 
-@page "/test/second"
 
-<style type="text/css">
-    .navlink.active {
-        font-weight: bolder;
-    }
-</style>
-<nav class="nav">
-    <NavLink2 Class="nav-link" MatchUrl="/test">
-        Top level menu
-    </NavLink2>
-    <NavLink2 Class="nav-link" href="/test/first">First child</NavLink2>
-    <NavLink2 Class="nav-link" href="/test/second">Second child</NavLink2>
-    <NavLink2 Class="nav-link" href="/test/third">Thrid child</NavLink2>
-</nav>
+<a href="" disabled></a>
 
-<NavLink Class="nav-link" href="/components/alerts" MatchUrl="/components">Components</NavLink>
-<NavLink Class="nav-link" href="/components/alerts">Alerts</NavLink>
-<NavLink Class="nav-link" href="/components/badges">Badges</NavLink>
-<NavLink Class="nav-link" href="/components/breadcrumbs">Breadcrumbs</NavLink>
-...
+<Container>
+    <Row>
+        <Column Span="12 | sm-6 | md-8"></Column>
+    </Row>
+</Container>
+
+
+@code {
+    Button btn;
+}
+
+<hr />
+
+<Group aria-label="Basic example" Orientation="vertical">
+    <button Color="secondary">Left</button>
+    <button Color="secondary">Middle</button>
+    <button Color="secondary">Right</button>
+</Group>
+
+<hr />
+
+<Toolbar>
+    <Group Margin="right-2" aria-label="First group" Orientation="vertical">
+        <button Color="secondary">1</button>
+        <button Color="secondary">2</button>
+        <button Color="secondary">3</button>
+        <button Color="secondary">4</button>
+    </Group>
+    <Group Margin="right-2" aria-label="Second group">
+        <button Color="secondary">5</button>
+        <button Color="secondary">6</button>
+        <button Color="secondary">7</button>
+    </Group>
+    <Group aria-label="Third group">
+        <button Color="secondary">8</button>
+    </Group>
+</Toolbar>
+
+<hr />
+
+<Group aria-label="Basic example" Size="lg">
+    <button Color="secondary">Left</button>
+    <button Color="secondary">Middle</button>
+    <button Color="secondary">Right</button>
+</Group>
+
+<hr />
+
+<button @ref="btn" Color="primary" @onclick=@(e => btn.IsActive = !btn.IsActive)>Toggle</button>
+
+<button Color="secondary" Toggleable="true">Toggle private</button>
+
+<hr />
+<button Color="primary">Primary</button>
+<button Color="secondary">Secondary</button>
+<button Color="success">Success</button>
+<button Color="danger">Danger</button>
+<button Color="warning">Warning</button>
+<button Color="info">Info</button>
+<button Color="light">Light</button>
+<button Color="dark">Dark</button>
+<button Color="danger" AsLink="true">Link</button>
+
+<hr />
+
+<button Outlined="true" Color="primary" Size="lg">Primary</button>
+<button Outlined="true" Color="secondary" Size="sm">Secondary</button>
+<button Outlined="true" Color="success">Success</button>
+<button Outlined="true" Color="danger">Danger</button>
+<button Outlined="true" Color="warning">Warning</button>
+<button Outlined="true" Color="info">Info</button>
+<button Outlined="true" Color="light">Light</button>
+<button Outlined="true" Color="dark">Dark</button>
+
+<hr />
+
+<button disabled Color="primary">Primary</button>
+<button disabled Color="secondary">Secondary</button>
+<button disabled Color="success">Success</button>
+<button disabled Color="danger">Danger</button>
+<button disabled Color="warning">Warning</button>
+<button disabled Color="info">Info</button>
+<button disabled Color="light">Light</button>
+<button disabled Color="dark">Dark</button>
+
+<hr />
+
+<a class="btn btn-primary" href="#" role="button">Link</a>
+<button Color="primary" type="submit">Button</button>
+<input class="btn btn-primary" type="button" value="Input">
+<input class="btn btn-primary" type="submit" value="Submit">
+<input class="btn btn-primary" type="reset" value="Reset">
+
+<hr />
+
+<Breadcrumb>
+    <a DisableOverride="true" title="blah" href="/home">Home</a>
+    <a DisableOverride="true" href="/home/library">Library</a>
+    <a DisableOverride="true" href="/">Data</a>
+</Breadcrumb>
+
+<hr />
+
+<Breadcrumb>
+    <a href="/">Home</a>
+</Breadcrumb>
+
+<Breadcrumb Separator=">>>">
+    <a href="/home">Home</a>
+    <a href="/">Library</a>
+</Breadcrumb>
+
+<Breadcrumb Separator="url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjgiPjxwYXRoIGQ9Ik0yLjUgMEwxIDEuNSAzLjUgNCAxIDYuNSAyLjUgOGw0LTQtNC00eiIgZmlsbD0iY3VycmVudENvbG9yIi8+PC9zdmc+)">
+    <a href="/home">Home</a>
+    <a href="/home/library">Library</a>
+    <a DisableOverride="true" href="/">Data</a>
+</Breadcrumb>
+
+<Breadcrumb>
+    <a href="/home">Home</a>
+    <a href="/home/library">Library</a>
+    <a href="/">Data</a>
+</Breadcrumb>
+
+<hr />
+
+<a href="www.egilhansen.com" title="ASDASDASD">asfdasdf</a>
+
+<hr />
+
+<h1>Example heading <Badge style="font-size: 4rem;" Color="primary">New</Badge></h1>
+<h2>Example heading <Badge PillShaped="true" Color="secondary">New</Badge></h2>
+<h3>Example heading <Badge Href=" " Color="warning">New</Badge></h3>
+<h4>Example heading <Badge Href="#" Color="dark">New</Badge></h4>
+<h5>Example heading <Badge PillShaped="true" Href="https://egilhansen.com" Color="danger">New</Badge></h5>
+<h6>Example heading <Badge Color="secondary">New</Badge></h6>
+
+<hr />
+
+<button Color="primary">
+    Notifications <Badge Color="light">4</Badge>
+</button>
+
+<hr />
+
+<button Color="primary">
+    Profile <Badge Color="light">8</Badge>
+    <SrOnly>unread messages</SrOnly>
+</button>
+
+<hr />
+
+<Badge Color="primary">Primary</Badge>
+<Badge Color="secondary">Secondary</Badge>
+<Badge Color="success">Success</Badge>
+<Badge Color="danger">Danger</Badge>
+<Badge Color="warning">Warning</Badge>
+<Badge Color="info">Info</Badge>
+<Badge Color="light">Light</Badge>
+<Badge Color="dark">Dark</Badge>
+
+<hr />
+
+<Badge PillShaped Color="primary">Primary</Badge>
+<Badge PillShaped Color="secondary">Secondary</Badge>
+<Badge PillShaped Color="success">Success</Badge>
+<Badge PillShaped Color="danger">Danger</Badge>
+<Badge PillShaped Color="warning">Warning</Badge>
+<Badge PillShaped Color="info">Info</Badge>
+<Badge PillShaped Color="light">Light</Badge>
+<Badge PillShaped Color="dark">Dark</Badge>
+
+<hr />
+
+<Badge href="#" Color="primary">Primary</Badge>
+<Badge href="#" Color="secondary">Secondary</Badge>
+<Badge href="#" Color="success">Success</Badge>
+<Badge href="#" Color="danger">Danger</Badge>
+<Badge href="#" Color="warning">Warning</Badge>
+<Badge href="#" Color="info">Info</Badge>
+<Badge href="#" Color="light">Light</Badge>
+<Badge href="#" Color="dark">Dark</Badge>
