@@ -50,6 +50,18 @@ namespace Egil.RazorComponents.Bootstrap.Components.Html
         [Parameter]
         public ColorParameter<ButtonColor> Color { get; set; } = ColorParameter<ButtonColor>.None;
 
+        public A()
+        {
+            DefaultElementName = HtmlTags.A;
+        }
+
+        /// <inheritdoc />
+        public void Dispose()
+        {
+            // To avoid leaking memory, it's important to detach any event handlers in Dispose()
+            UriHelper!.OnLocationChanged -= OnLocationChanged;
+        }
+
         protected override void OnBootstrapInit()
         {
             // We'll consider re-rendering on each location change
@@ -65,22 +77,6 @@ namespace Egil.RazorComponents.Bootstrap.Components.Html
                 Active = UriHelper!.CurrentUriMatches(MatchUrlAbsolute, Match);
                 SetActiveCssClassProvider();
             }
-        }
-
-        /// <inheritdoc />
-        public void Dispose()
-        {
-            // To avoid leaking memory, it's important to detach any event handlers in Dispose()
-            UriHelper!.OnLocationChanged -= OnLocationChanged;
-        }
-
-        protected internal override void DefaultRenderFragment(RenderTreeBuilder builder)
-        {
-            builder.OpenElement(HtmlTags.A);
-            builder.AddClassAttribute(CssClassValue);
-            builder.AddMultipleAttributes(AdditionalAttributes);
-            builder.AddContent(4, ChildContent);
-            builder.CloseElement();
         }
 
         private void OnLocationChanged(object sender, LocationChangedEventArgs args)

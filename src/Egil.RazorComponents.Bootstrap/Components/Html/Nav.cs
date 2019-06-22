@@ -5,24 +5,18 @@ using System.Text;
 using System.Threading.Tasks;
 using Egil.RazorComponents.Bootstrap.Base;
 using Egil.RazorComponents.Bootstrap.Extensions;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.RenderTree;
 
 namespace Egil.RazorComponents.Bootstrap.Components.Html
 {
-    public sealed class Header : BootstrapHtmlElementComponentBase
+    public class Nav : BootstrapHtmlElementComponentBase
     {
-        public Header()
-        {
-            DefaultElementName = HtmlTags.HEADER;
-        }
-    }
+        [Parameter] public bool Pills { get; set; } = false;
 
-    public sealed class Footer : BootstrapHtmlElementComponentBase
-    {
-
-        public Footer()
+        public Nav()
         {
-            DefaultElementName = HtmlTags.FOOTER;
+            DefaultElementName = HtmlTags.NAV;
         }
     }
 }

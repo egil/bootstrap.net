@@ -37,7 +37,7 @@ namespace Egil.RazorComponents.Bootstrap.Base
             CssClasses.AsEnumerable<string>().GetEnumerator();
     }
 
-    public class BoostrapComponentBaseTest
+    public class BootstrapComponentBaseTest
     {
         [Fact(DisplayName = "If no css classes are specified CssClassValue returns empty string")]
         public void MyTestMethodAsync()
@@ -120,5 +120,7 @@ namespace Egil.RazorComponents.Bootstrap.Base
 
             sut.CssClassValue.ShouldBe("false");   
         }
+
+        // TODO: Use BootstrapComponentFixture and make a generic test that tests all components that inherits from it, and check that they correctly include CssClassValue when rendered and additoinal attributes.
     }
 }

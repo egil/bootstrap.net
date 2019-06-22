@@ -4,15 +4,12 @@ using Microsoft.AspNetCore.Components.RenderTree;
 
 namespace Egil.RazorComponents.Bootstrap.Components.Html
 {
+    // TODO: Create special parent that does not render child content but is parent aware
     public sealed class Img : BootstrapHtmlElementComponentBase
     {
-        protected internal override void DefaultRenderFragment(RenderTreeBuilder builder)
+        public Img()
         {
-            builder.OpenElement(HtmlTags.IMG);
-            builder.AddClassAttribute(CssClassValue);
-            builder.AddMultipleAttributes(AdditionalAttributes);
-            builder.AddContent(ChildContent);
-            builder.CloseElement();
+            DefaultElementName = HtmlTags.IMG;
         }
     }
 }

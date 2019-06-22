@@ -24,6 +24,7 @@ namespace Egil.RazorComponents.Bootstrap.Base
 
         [Parameter] public string? Class { get; set; }
 
+        protected internal string DefaultElementName { get; set; } = HtmlTags.DIV;
         protected internal string DefaultCssClass { get; set; } = string.Empty;
 
         protected internal virtual string CssClassValue => BuildCssClassValue();

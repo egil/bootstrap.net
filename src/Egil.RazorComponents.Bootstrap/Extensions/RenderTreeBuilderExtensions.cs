@@ -99,7 +99,7 @@ namespace Egil.RazorComponents.Bootstrap.Extensions
 
         public static void AddAriaHiddenAttribute(this RenderTreeBuilder builder, bool value = true, [CallerLineNumber] int sequence = DEFAULT_SEQUENCE)
         {
-            builder.AddAttribute(sequence, "aria-hidden", value);
+            builder.AddAttribute(sequence, "aria-hidden", value.ToString().ToLower());
         }
 
         public static void AddClassAttribute(this RenderTreeBuilder builder, int sequence, string? value)

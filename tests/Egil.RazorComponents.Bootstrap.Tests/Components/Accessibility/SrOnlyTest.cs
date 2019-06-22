@@ -8,15 +8,14 @@ using Microsoft.AspNetCore.Components;
 
 namespace Egil.RazorComponents.Bootstrap.Components.Accessibility
 {
-
-    public class SrOnlyTests : BootstrapComponentBaseTests
+    public class SrOnlyTest : BootstrapComponentFixture
     {
         [Fact(DisplayName = "SrOnly does not render anything when ChildContent is null")]
         public void MyTestMethod()
         {
             var expectedHtml = string.Empty;
 
-            var result = RenderComponent<SrOnly>(ParameterCollection.Empty);
+            var result = RenderComponent<SrOnly>();
 
             result.ShouldBe(expectedHtml);
         }
@@ -27,7 +26,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Accessibility
             var content = "CONTENT";
             var expectedHtml = $@"<span class=""sr-only"">{content}</span>";            
 
-            var result = RenderComponent<SrOnly>(builder => builder.AddContent(content));
+            var result = RenderComponent<SrOnly>(content);
 
             result.ShouldBe(expectedHtml);
         }

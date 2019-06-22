@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Egil.RazorComponents.Bootstrap.Extensions;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.RenderTree;
 
 namespace Egil.RazorComponents.Bootstrap.Base
@@ -14,6 +15,20 @@ namespace Egil.RazorComponents.Bootstrap.Base
         {
             get => BuildChildContentRenderTree;
             set => _childContent = value;
+        }
+
+        /// <summary>
+        /// This method is called by the <see cref="BuildRenderTree(RenderTreeBuilder)" /> method
+        /// to render the component, if a custom render fragment is not specified.
+        /// </summary>
+        /// <param name="builder"></param>
+        protected internal override void DefaultRenderFragment(RenderTreeBuilder builder)
+        {
+            builder.OpenElement(DefaultElementName);
+            builder.AddClassAttribute(CssClassValue);
+            builder.AddMultipleAttributes(AdditionalAttributes);
+            builder.AddContent(ChildContent);
+            builder.CloseElement();
         }
 
         private void BuildChildContentRenderTree(RenderTreeBuilder builder)

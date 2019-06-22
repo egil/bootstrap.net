@@ -29,6 +29,8 @@ namespace Egil.RazorComponents.Bootstrap.Components.Cards
         private const string ImgBottomCssClass = "card-img-bottom";
         private const string HeaderCssClass = "card-header";
         private const string FooterCssClass = "card-footer";
+        private const string HeaderNavCssCass = "nav nav-tabs card-header-tabs";
+        private const string HeaderNavPillsCssCass = "nav nav-pills card-header-pills";
         private int _childComponentCount;
 
         /// <summary>
@@ -52,13 +54,25 @@ namespace Egil.RazorComponents.Bootstrap.Components.Cards
 
         protected override void OnRegisterChildContextRules()
         {
-            void ImageRule(BootstrapContextAwareComponentBase component) => component.DefaultCssClass = _childComponentCount == 1 ? ImgTopCssClass : ImgBottomCssClass;
+            void ImageRule(BootstrapContextAwareComponentBase component)
+            {
+                component.DefaultCssClass = ImageOverlayed 
+                    ? ImgCssClass 
+                    : _childComponentCount == 1 ? ImgTopCssClass : ImgBottomCssClass;
+            }
 
             Context.RegisterOnInitRule<Svg>(ImageRule);
             Context.RegisterOnInitRule<Img>(ImageRule);
 
-            Context.RegisterOnInitRule<Header>(header => { header.CustomHtmlTag = HtmlTags.DIV; header.DefaultCssClass = HeaderCssClass; });
-            Context.RegisterOnInitRule<Footer>(footer => { footer.CustomHtmlTag = HtmlTags.DIV; footer.DefaultCssClass = FooterCssClass; });
+            Context.RegisterOnInitRule<Header>(header =>
+            {
+                header.DefaultElementName = HtmlTags.DIV;
+                header.DefaultCssClass = HeaderCssClass;
+                header.Context.RegisterRule<Nav>(nav => nav.DefaultCssClass = nav.Pills ? HeaderNavPillsCssCass : HeaderNavCssCass);
+            });
+
+            Context.RegisterOnInitRule<Footer>(footer => { footer.DefaultElementName = HtmlTags.DIV; footer.DefaultCssClass = FooterCssClass; });
+            Context.RegisterOnInitRule<Heading, H1, H2, H3, H4, H5, H6>(heading => { if (_childComponentCount == 1) heading.DefaultCssClass = HeaderCssClass; });
 
             Context.RegisterOnInitRule<Content>(content =>
             {

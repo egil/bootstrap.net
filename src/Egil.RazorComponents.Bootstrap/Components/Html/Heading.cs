@@ -34,13 +34,9 @@ namespace Egil.RazorComponents.Bootstrap.Components.Html
         /// </summary>
         [Parameter] public SpacingParameter<MarginSpacing> Margin { get; set; } = SpacingParameter<MarginSpacing>.None;
 
-        protected internal override void DefaultRenderFragment(RenderTreeBuilder builder)
+        protected override void OnBootstrapParametersSet()
         {
-            builder.OpenElement(HeadingTags[_size - 1]);
-            builder.AddClassAttribute(CssClassValue);
-            builder.AddMultipleAttributes(AdditionalAttributes);
-            builder.AddContent(ChildContent);
-            builder.CloseElement();
+            DefaultElementName = HeadingTags[_size - 1];
         }
     }
 

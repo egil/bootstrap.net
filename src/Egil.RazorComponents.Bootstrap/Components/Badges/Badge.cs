@@ -29,17 +29,12 @@ namespace Egil.RazorComponents.Bootstrap.Components.Badges
             DefaultCssClass = BadgeCssClass;
         }
 
-        protected internal override void DefaultRenderFragment(RenderTreeBuilder builder)
+        protected override void OnBootstrapParametersSet()
         {
             if (AdditionalAttributes.ContainsKey(HtmlAttrs.HREF))
-                builder.OpenElement(HtmlTags.A);
+                DefaultElementName = HtmlTags.A;
             else
-                builder.OpenElement(HtmlTags.SPAN);
-
-            builder.AddClassAttribute(CssClassValue);
-            builder.AddMultipleAttributes(AdditionalAttributes);
-            builder.AddContent(ChildContent);
-            builder.CloseElement();
+                DefaultElementName = HtmlTags.SPAN;
         }
     }
 }

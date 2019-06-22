@@ -1,4 +1,5 @@
 ﻿using System;
+using Egil.RazorComponents.Bootstrap.Extensions;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.RenderTree;
 
@@ -12,7 +13,7 @@ namespace Egil.RazorComponents.Bootstrap.Base
 
         private void UpdateChildOnInit(BootstrapContextAwareComponentBase component)
         {
-            if(_context is null) return;
+            if (_context is null) return;
             _context.UpdateChildOnInit(component);
         }
 
@@ -109,6 +110,12 @@ namespace Egil.RazorComponents.Bootstrap.Base
         /// to render the component, if a custom render fragment is not specified.
         /// </summary>
         /// <param name="builder"></param>
-        protected internal virtual void DefaultRenderFragment(RenderTreeBuilder builder) { }
+        protected internal virtual void DefaultRenderFragment(RenderTreeBuilder builder)
+        {
+            builder.OpenElement(DefaultElementName);
+            builder.AddClassAttribute(CssClassValue);
+            builder.AddMultipleAttributes(AdditionalAttributes);            
+            builder.CloseElement();
+        }
     }
 }

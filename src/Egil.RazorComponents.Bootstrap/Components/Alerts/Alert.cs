@@ -20,13 +20,13 @@ namespace Egil.RazorComponents.Bootstrap.Components.Alerts
         private const string HeadingCssClass = "alert-heading";
         private const string DismissableCssClass = "alert-dismissible";
         private const string DismissButtonType = "button";
+        private const string CloseCssClass = "close";
         private const string DefaultDismissAriaLabel = "Close";
         private const string DefaultDismissText = "&times;";
 
         private ICssClassAnimation DismissAnimation { get; } = new FadeOutAnimation();
 
-        [Parameter]
-        public bool EnableRendering { get; set; } = true;
+        [Parameter] public bool EnableRendering { get; set; } = true;
 
         /// <summary>
         /// Gets or sets the role HTML attribute used on the component.
@@ -48,17 +48,13 @@ namespace Egil.RazorComponents.Bootstrap.Components.Alerts
         [Parameter, CssClassToggleParameter(DismissableCssClass)]
         public bool Dismissable { get; set; } = false;
 
-        [Parameter]
-        public EventCallback<UIDismissingEventArgs> OnDismissing { get; set; }
+        [Parameter] public EventCallback<UIDismissingEventArgs> OnDismissing { get; set; }
 
-        [Parameter]
-        public EventCallback OnDismissed { get; set; }
+        [Parameter] public EventCallback OnDismissed { get; set; }
 
-        [Parameter]
-        public string DismissAriaLabel { get; set; } = DefaultDismissAriaLabel;
+        [Parameter] public string DismissAriaLabel { get; set; } = DefaultDismissAriaLabel;
 
-        [Parameter]
-        public string DismissText { get; set; } = DefaultDismissText;
+        [Parameter] public string DismissText { get; set; } = DefaultDismissText;
 
         public AlertState State { get; private set; } = AlertState.Visible;
 
@@ -134,6 +130,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Alerts
             if (!Dismissable) return;
 
             builder.OpenElement(HtmlTags.BUTTON);
+            builder.AddClassAttribute(CloseCssClass);
             builder.AddAttribute(HtmlAttrs.TYPE, DismissButtonType);
             builder.AddAriaLabelAttribute(DismissAriaLabel);
             builder.AddEventListener(HtmlEvents.CLICK, EventCallback.Factory.Create<UIMouseEventArgs>(this, Dismiss));
