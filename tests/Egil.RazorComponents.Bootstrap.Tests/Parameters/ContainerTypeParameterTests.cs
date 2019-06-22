@@ -1,4 +1,4 @@
-﻿using Egil.RazorComponents.Bootstrap.Layout.Parameters;
+﻿using Egil.RazorComponents.Bootstrap.Components.Layout.Parameters;
 using Shouldly;
 using System.Linq;
 using Xunit;

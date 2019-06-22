@@ -1,5 +1,5 @@
 ﻿using Egil.RazorComponents.Bootstrap.Base.CssClassValues;
-using Egil.RazorComponents.Bootstrap.Layout.Parameters;
+using Egil.RazorComponents.Bootstrap.Components.Layout.Parameters;
 using Egil.RazorComponents.Bootstrap.Options;
 using Egil.RazorComponents.Bootstrap.Parameters;
 using Egil.RazorComponents.Bootstrap.Tests.TestUtilities;

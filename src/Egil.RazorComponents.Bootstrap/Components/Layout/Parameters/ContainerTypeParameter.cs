@@ -1,7 +1,7 @@
 ﻿using Egil.RazorComponents.Bootstrap.Base.CssClassValues;
 using System.Collections.Generic;
 
-namespace Egil.RazorComponents.Bootstrap.Layout.Parameters
+namespace Egil.RazorComponents.Bootstrap.Components.Layout.Parameters
 {
     public class ContainerTypeParameter : CssClassProviderBase, ICssClassProvider
     {

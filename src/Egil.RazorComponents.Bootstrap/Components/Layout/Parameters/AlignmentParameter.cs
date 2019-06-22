@@ -3,7 +3,7 @@ using Egil.RazorComponents.Bootstrap.Options;
 using Egil.RazorComponents.Bootstrap.Options.AlignmentOptions;
 using System.Collections.Generic;
 
-namespace Egil.RazorComponents.Bootstrap.Layout.Parameters
+namespace Egil.RazorComponents.Bootstrap.Components.Layout.Parameters
 {
     public sealed class VerticalColumnAlignment : ICssClassPrefix
     {

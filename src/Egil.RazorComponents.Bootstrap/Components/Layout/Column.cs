@@ -1,11 +1,11 @@
 ﻿using Egil.RazorComponents.Bootstrap.Base;
+using Egil.RazorComponents.Bootstrap.Components.Layout.Parameters;
 using Egil.RazorComponents.Bootstrap.Extensions;
-using Egil.RazorComponents.Bootstrap.Layout.Parameters;
 using Egil.RazorComponents.Bootstrap.Utilities.Spacing;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.RenderTree;
 
-namespace Egil.RazorComponents.Bootstrap.Layout
+namespace Egil.RazorComponents.Bootstrap.Components.Layout
 {
     public sealed class Column : BootstrapParentComponentBase
     {
@@ -26,13 +26,5 @@ namespace Egil.RazorComponents.Bootstrap.Layout
 
         [Parameter]
         public SpacingParameter<MarginSpacing> Margin { get; set; } = SpacingParameter<MarginSpacing>.None;
-
-        protected override void BuildRenderTree(RenderTreeBuilder builder)
-        {
-            builder.OpenElement(HtmlTags.DIV);
-            builder.AddClassAttribute(CssClassValue);
-            builder.AddContent(ChildContent);
-            builder.CloseElement();
-        }
     }
 }

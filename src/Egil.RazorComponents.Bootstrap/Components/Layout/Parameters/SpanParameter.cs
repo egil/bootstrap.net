@@ -4,7 +4,7 @@ using Egil.RazorComponents.Bootstrap.Options.CommonOptions;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Egil.RazorComponents.Bootstrap.Layout.Parameters
+namespace Egil.RazorComponents.Bootstrap.Components.Layout.Parameters
 {
     public class SpanParameter : CssClassProviderBase, ICssClassProvider
     {
@@ -81,7 +81,7 @@ namespace Egil.RazorComponents.Bootstrap.Layout.Parameters
 
             public OptionParameter(IOption option)
             {
-                this._option = ToOptionValue(option);
+                _option = ToOptionValue(option);
             }
 
             public override IEnumerator<string> GetEnumerator()
@@ -96,7 +96,7 @@ namespace Egil.RazorComponents.Bootstrap.Layout.Parameters
 
             public OptionSetParameter(IOptionSet<IOption> set)
             {
-                this._set = ToOptionValueSet(set);
+                _set = ToOptionValueSet(set);
             }
 
             private List<string> ToOptionValueSet(IOptionSet<IOption> set)

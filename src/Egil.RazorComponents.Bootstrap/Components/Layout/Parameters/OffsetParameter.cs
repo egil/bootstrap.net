@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Egil.RazorComponents.Bootstrap.Layout.Parameters
+namespace Egil.RazorComponents.Bootstrap.Components.Layout.Parameters
 {
     public abstract class OffsetParameter : CssClassProviderBase, ICssClassProvider
     {
@@ -40,7 +40,7 @@ namespace Egil.RazorComponents.Bootstrap.Layout.Parameters
 
             public OffsetOptionParameter(IOption option)
             {
-                this._option = option;
+                _option = option;
             }
 
             public override int Count => 1;
@@ -57,7 +57,7 @@ namespace Egil.RazorComponents.Bootstrap.Layout.Parameters
 
             public OptionSetParameter(IOptionSet<IOption> set)
             {
-                this._set = set.Select(option =>
+                _set = set.Select(option =>
                 {
                     if (option is BreakpointWithNumber bwn) bwn.Number.ValidateAsOffsetBreakpointNumber();
                     if (option is Number n) n.ValidateAsOffsetNumber();

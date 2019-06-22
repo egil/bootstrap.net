@@ -3,7 +3,7 @@ using Egil.RazorComponents.Bootstrap.Options;
 using Egil.RazorComponents.Bootstrap.Options.AlignmentOptions;
 using System.Collections.Generic;
 
-namespace Egil.RazorComponents.Bootstrap.Layout.Parameters
+namespace Egil.RazorComponents.Bootstrap.Components.Layout.Parameters
 {
     public abstract class HorizontalAlignmentParameter : CssClassProviderBase, ICssClassProvider
     {
@@ -47,7 +47,7 @@ namespace Egil.RazorComponents.Bootstrap.Layout.Parameters
 
             public OptionParameter(IOption option)
             {
-                this._option = option;
+                _option = option;
             }
 
             public override int Count => 1;
@@ -64,7 +64,7 @@ namespace Egil.RazorComponents.Bootstrap.Layout.Parameters
 
             public OptionSetParameter(IOptionSet<IOption> set)
             {
-                this._set = set;
+                _set = set;
             }
 
             public override int Count => _set.Count;
