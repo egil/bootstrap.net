@@ -1,0 +1,110 @@
+﻿@page "/div"
+
+@code {
+    public bool OverlayedImage { get; set; } = true;
+}
+
+<hr />
+<button Color="primary" @onclick=@((e) => OverlayedImage = !OverlayedImage)>Toggle Overlay</button>
+<hr />
+<Group>
+    <Card ImageOverlayed=@OverlayedImage>
+        <img src="https://cdn.dribbble.com/users/476251/screenshots/2619255/attachments/523315/placeholder.png" />
+        <Content>
+            <h5>Card title</h5>
+            <p>This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+        </Content>
+        <footer>
+            <small class="text-muted">Last updated 3 mins ago</small>
+        </footer>
+    </Card>
+    <Card>
+        <img src="https://cdn.dribbble.com/users/476251/screenshots/2619255/attachments/523315/placeholder.png" />
+        <Content>
+            <h5>Card title</h5>
+            <p>This card has supporting text below as a natural lead-in to additional content.</p>
+        </Content>
+        <footer>
+            <small class="text-muted">Last updated 3 mins ago</small>
+        </footer>
+    </Card>
+    <Card ImageOverlayed=@OverlayedImage>
+        <img src="https://cdn.dribbble.com/users/476251/screenshots/2619255/attachments/523315/placeholder.png" />
+        <Content>
+            <h5>Card title</h5>
+            <p>This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
+        </Content>
+        <footer>
+            <small class="text-muted">Last updated 3 mins ago</small>
+        </footer>
+    </Card>
+</Group>
+
+@*<hr />
+
+    <Card style="max-width: 540px;">
+        <Row>
+            <Column Span="md-4">
+                <img src="https://cdn.dribbble.com/users/476251/screenshots/2619255/attachments/523315/placeholder.png" />
+            </Column>
+            <Column Span="md-8">
+                <Content>
+                    <h5>Card title</h5>
+                    <p>This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                    <p><small class="text-muted">Last updated 3 mins ago</small></p>
+                </Content>
+            </Column>
+        </Row>
+    </Card>
+
+    <hr />
+    <button Color="primary" @onclick=@((e) => OverlayedImage = !OverlayedImage)>Toggle Overlay</button>
+    <hr />
+
+    <Card class="bg-dark text-white" Width="25" ImageOverlayed=@OverlayedImage>
+        <img src="https://cdn.dribbble.com/users/476251/screenshots/2619255/attachments/523315/placeholder.png" />
+        <Content>
+            <h5>Card title</h5>
+            <p>This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+            <p>Last updated 3 mins ago</p>
+        </Content>
+    </Card>
+
+    <hr />
+    <Card Width="25">
+        <img src="https://cdn.dribbble.com/users/476251/screenshots/2619255/attachments/523315/placeholder.png" />
+        <header>
+            Featured
+        </header>
+        <Content>
+            <h5>Card title</h5>
+            <h6 Margin="bottom-2">Card sub-title</h6>
+            <p>Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <a href="#" Color="primary" AsButton>Go somewhere</a>
+            <a href="#">Card link</a>
+            <a href="#">Another link</a>
+        </Content>
+        <footer>Some footer</footer>
+        <svg class="bd-placeholder-img" width="100%" height="180" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Image cap">
+            <title>Placeholder</title>
+            <rect width="100%" height="100%" fill="#868e96"></rect>
+            <text x="50%" y="50%" fill="#dee2e6" font-size="300%" text-anchor="middle">Image cap</text>
+        </svg>
+    </Card>
+    <hr />
+    <Card style="width: 18rem;">
+        <img src="https://cdn.dribbble.com/users/476251/screenshots/2619255/attachments/523315/placeholder.png" />
+        <Content>
+            <h5>Card title</h5>
+            <p>Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+        </Content>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">Cras justo odio</li>
+            <li class="list-group-item">Dapibus ac facilisis in</li>
+            <li class="list-group-item">Vestibulum at eros</li>
+        </ul>
+        <Content>
+            <a href="#">Card link</a>
+            <a href="#">Another link</a>
+        </Content>
+    </Card>*@

@@ -1,4 +1,4 @@
-@page "/"
+﻿@page "/"
 @namespace Egil.RazorComponents.Bootstrap.BlazorTestServer.Pages
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
@@ -25,5 +25,6 @@
     <app>@(await Html.RenderComponentAsync<App>())</app>
 
     <script src="_framework/blazor.server.js"></script>
+    @*<script src="~/pageVisibilityInterop.js"></script>*@
 </body>
 </html>
