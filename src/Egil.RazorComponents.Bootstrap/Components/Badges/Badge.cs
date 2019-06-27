@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Egil.RazorComponents.Bootstrap.Base;
+﻿using Egil.RazorComponents.Bootstrap.Base;
 using Egil.RazorComponents.Bootstrap.Base.CssClassValues;
 using Egil.RazorComponents.Bootstrap.Components.Badges.Parameters;
-using Egil.RazorComponents.Bootstrap.Extensions;
 using Egil.RazorComponents.Bootstrap.Utilities.Colors;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.RenderTree;
 
 namespace Egil.RazorComponents.Bootstrap.Components.Badges
 {

@@ -2,7 +2,6 @@
 using Egil.RazorComponents.Bootstrap.Options;
 using Egil.RazorComponents.Bootstrap.Options.CommonOptions;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Egil.RazorComponents.Bootstrap.Components.Layout.Parameters
 {

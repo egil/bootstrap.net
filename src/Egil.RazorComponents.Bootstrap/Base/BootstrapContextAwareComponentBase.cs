@@ -1,5 +1,4 @@
-﻿using System;
-using Egil.RazorComponents.Bootstrap.Extensions;
+﻿using Egil.RazorComponents.Bootstrap.Extensions;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.RenderTree;
 
@@ -7,27 +6,27 @@ namespace Egil.RazorComponents.Bootstrap.Base
 {
     public abstract class BootstrapContextAwareComponentBase : BootstrapComponentBase
     {
-        private BootstrapContext? _context;
+        private BootstrapRuleRegistry? _rules;
 
-        protected internal BootstrapContext Context => _context ?? (_context = new BootstrapContext());
+        protected internal BootstrapRuleRegistry Rules => _rules ?? (_rules = new BootstrapRuleRegistry());
 
         private void UpdateChildOnInit(BootstrapContextAwareComponentBase component)
         {
-            if (_context is null) return;
-            _context.UpdateChildOnInit(component);
+            if (_rules is null) return;
+            _rules.UpdateChildOnInit(component);
         }
 
         private void UpdateChild(BootstrapContextAwareComponentBase component)
         {
-            if (_context is null) return;
-            _context.UpdateChild(component);
+            if (_rules is null) return;
+            _rules.UpdateChild(component);
         }
 
         /// <summary>
         /// Returns true if this component has a context with rules
         /// that apply to nested components.
         /// </summary>
-        protected internal bool HasContext => _context != null;
+        protected internal bool HasChildRules => _rules != null;
 
         /// <summary>
         /// Gets or sets the parent Bootstrap.NET component through a casacading parameter.
@@ -44,7 +43,7 @@ namespace Egil.RazorComponents.Bootstrap.Base
         /// Used to register child component rules in this components child context.
         /// NOTE: child component rules should only be registered at this point.
         /// </summary>
-        protected virtual void OnRegisterChildContextRules() { }
+        protected virtual void OnRegisterChildRules() { }
 
         /// <summary>
         /// Each Bootstrap.NET child component will call this method, passing in
@@ -68,7 +67,7 @@ namespace Egil.RazorComponents.Bootstrap.Base
 
         protected sealed override void OnInit()
         {
-            OnRegisterChildContextRules();
+            OnRegisterChildRules();
 
             if (!IgnoreParentContext && Parent != null)
             {

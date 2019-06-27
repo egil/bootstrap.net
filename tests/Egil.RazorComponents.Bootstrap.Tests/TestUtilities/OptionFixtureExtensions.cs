@@ -65,17 +65,20 @@ namespace Egil.RazorComponents.Bootstrap.Tests.TestUtilities
 
         public static IEnumerable<(T2 second, T1 first)> ReversePairs<T1, T2>(this IEnumerable<(T1 first, T2 second)> source)
         {
-            foreach (var pair in source)
-                yield return (pair.second, pair.first);
+            foreach (var (first, second) in source)
+                yield return (second, first);
         }
 
         public static IEnumerable<object[]> ToFixtureData<T>(this IEnumerable<T> fixtureData, Func<T, object[]>? converter = null)
-            where T : object
-        {            
+        {
             converter ??= defaultConverter;
             return fixtureData.Select(converter);
 
-            static object[] defaultConverter(T x) => new[] { (object)x };
+            static object[] defaultConverter(T x)
+            {
+                if (x is null) throw new ArgumentNullException(nameof(x));
+                return new[] { (object)x };
+            }
         }
     }
 }

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Egil.RazorComponents.Bootstrap.Extensions
 {
@@ -10,7 +6,7 @@ namespace Egil.RazorComponents.Bootstrap.Extensions
     {
         public static bool TryGetValue<TKey, TValue>(this IReadOnlyDictionary<TKey, object> dictionary, TKey key, out TValue value)
         {
-            value = default;
+            value = default!;
 
             if(dictionary.TryGetValue(key, out object objectValue) && objectValue is TValue requestedValue)
             {

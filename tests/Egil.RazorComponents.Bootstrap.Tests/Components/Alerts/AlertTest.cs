@@ -1,15 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Egil.RazorComponents.Bootstrap.Components.Alerts.Parameters;
+﻿using Egil.RazorComponents.Bootstrap.Components.Alerts.Parameters;
 using Egil.RazorComponents.Bootstrap.Components.Html;
 using Egil.RazorComponents.Bootstrap.Utilities.Colors;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Rendering;
-using Microsoft.AspNetCore.Components.RenderTree;
-using Shouldly;
 using Xunit;
 using static Egil.RazorComponents.Bootstrap.Utilities.Colors.Factory.LowerCase;
 
@@ -22,7 +13,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Alerts
         {
             var expectedHtml = $@"<div class=""alert fade show"" role=""alert""></div>";
 
-            var result = RenderComponent<Alert>();
+            var result = Component<Alert>().Render();
 
             result.ShouldBe(expectedHtml);
         }
@@ -32,7 +23,9 @@ namespace Egil.RazorComponents.Bootstrap.Components.Alerts
         {
             var expectedHtml = $@"<div class=""alert fade show alert-primary"" role=""alert""></div>";
 
-            var result = RenderComponent<Alert>(("Color", (ColorParameter<AlertColor>)primary));
+            var component = Component<Alert>().WithParams(("Color", (ColorParameter<AlertColor>)primary));
+
+            var result = component.Render();
 
             result.ShouldBe(expectedHtml);
         }
@@ -43,7 +36,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Alerts
             var role = "ALERT";
             var expectedHtml = $@"<div class=""alert fade show"" role=""{role}""></div>";
 
-            var result = RenderComponent<Alert>(("Role", role));
+            var result = Component<Alert>().WithParams(("Role", role)).Render();
 
             result.ShouldBe(expectedHtml);
         }
@@ -57,7 +50,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Alerts
                                     </button>
                                   </div>";
 
-            var result = RenderComponent<Alert>(("Dismissable", true));
+            var result = Component<Alert>().WithParams(("Dismissable", true)).Render();
 
             result.ShouldBe(expectedHtml);
         }
@@ -73,11 +66,11 @@ namespace Egil.RazorComponents.Bootstrap.Components.Alerts
                                     </button>
                                   </div>";
 
-            var result = RenderComponent<Alert>(
+            var result = Component<Alert>().WithParams(
                 ("Dismissable", true),
                 ("DismissAriaLabel", dismissAriaLabel),
                 ("DismissText", dismissText)
-            );
+            ).Render();
 
             result.ShouldBe(expectedHtml);
         }
@@ -89,7 +82,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Alerts
                                     <a class=""alert-link""></a>
                                   </div>";
 
-            var result = RenderComponent<Alert>(CreateFragment<A>());
+            var result = Component<Alert>().WithChildContent(Fragment<A>()).Render();
 
             result.ShouldBe(expectedHtml);
         }
@@ -101,7 +94,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Alerts
                                     <h1 class=""alert-heading""></h1>
                                   </div>";
 
-            var result = RenderComponent<Alert>(CreateFragment<H1>());
+            var result = Component<Alert>().WithChildContent(Fragment<H1>()).Render();
 
             result.ShouldBe(expectedHtml);
         }

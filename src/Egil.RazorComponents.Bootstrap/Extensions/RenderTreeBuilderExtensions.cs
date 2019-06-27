@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace Egil.RazorComponents.Bootstrap.Extensions
 {
-    internal static class RenderTreeBuilderExtensions
+    public static class RenderTreeBuilderExtensions
     {
         private const int DEFAULT_SEQUENCE = -1;
 

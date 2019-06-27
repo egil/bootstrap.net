@@ -20,7 +20,7 @@
     <Company>Egil Hansen</Company>
     <Product>Bootstrap.NET</Product>
     <Description>Bootstrap.NET is a strongly typed version of Bootstrap implemented in Razor Components, with a nice Bootstrap-like syntax for specifying options on components. On top of that, you get compile-time errors if you try to assign invalid options to components.</Description>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <PackageId>BootstrapDotNet</PackageId>
     <PackageLicenseExpression></PackageLicenseExpression>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>

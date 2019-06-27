@@ -1,5 +1,4 @@
-﻿using Egil.RazorComponents.Bootstrap.Options.CommonOptions;
-using System;
+﻿using System;
 using System.Diagnostics;
 
 namespace Egil.RazorComponents.Bootstrap.Options.AlignmentOptions

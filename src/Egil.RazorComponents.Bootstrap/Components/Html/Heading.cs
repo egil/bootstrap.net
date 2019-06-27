@@ -1,10 +1,7 @@
 ﻿using Egil.RazorComponents.Bootstrap.Base;
-using Egil.RazorComponents.Bootstrap.Extensions;
 using Egil.RazorComponents.Bootstrap.Utilities.Spacing;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.RenderTree;
 using System;
-using System.Collections.Generic;
 
 namespace Egil.RazorComponents.Bootstrap.Components.Html
 {

@@ -9,7 +9,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Cards
         {
             var expectedHtml = $@"<div class=""card-deck""></div>";
 
-            var result = RenderComponent<Deck>();
+            var result = Component<Deck>().Render();
 
             result.ShouldBe(expectedHtml);
         }

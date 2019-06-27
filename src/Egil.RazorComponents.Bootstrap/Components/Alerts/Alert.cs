@@ -106,10 +106,10 @@ namespace Egil.RazorComponents.Bootstrap.Components.Alerts
             StateHasChanged();
         }
 
-        protected override void OnRegisterChildContextRules()
+        protected override void OnRegisterChildRules()
         {
-            Context.RegisterOnInitRule<A>(x => x.DefaultCssClass = LinkCssClass);
-            Context.RegisterOnInitRule<Heading, H1, H2, H3, H4, H5, H6>(x => x.DefaultCssClass = HeadingCssClass);
+            Rules.RegisterOnInitRule<A>(x => x.DefaultCssClass = LinkCssClass);
+            Rules.RegisterOnInitRule<Heading, H1, H2, H3, H4, H5, H6>(x => x.DefaultCssClass = HeadingCssClass);
         }
 
         protected internal override void DefaultRenderFragment(RenderTreeBuilder builder)

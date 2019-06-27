@@ -1,27 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Egil.RazorComponents.Bootstrap.Components.Common;
 using Egil.RazorComponents.Bootstrap.Components.Html;
 using Egil.RazorComponents.Bootstrap.Components.Layout;
-using Egil.RazorComponents.Bootstrap.Extensions;
 using Egil.RazorComponents.Bootstrap.Utilities.Sizings;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.RenderTree;
 using Xunit;
 
 namespace Egil.RazorComponents.Bootstrap.Components.Cards
 {
+
     public class CardTest : BootstrapComponentFixture
     {
         [Fact(DisplayName = "Card renders correctly without any parameters")]
         public void MyTestMethod()
         {
             var expectedHtml = $@"<div class=""card""></div>";
+            var component = Component<Card>();
 
-            var result = RenderComponent<Card>();
+            var result = component.Render();
 
             result.ShouldBe(expectedHtml);
         }
@@ -30,12 +25,12 @@ namespace Egil.RazorComponents.Bootstrap.Components.Cards
         public void MyTestMethod2()
         {
             var expectedHtml = $@"<div class=""card""><div class=""card-body""></div></div>";
+            var component = Component<Card>().WithChildContent(Fragment<Content>());
 
-            var result = RenderComponent<Card>(CreateFragment<Content>());
+            var result = component.Render();
 
             result.ShouldBe(expectedHtml);
         }
-
 
         [Fact(DisplayName = "Card > Content > Headings gets card-title and card-subtitle set for first and following headings")]
         public void MyTestMethod3()
@@ -50,17 +45,18 @@ namespace Egil.RazorComponents.Bootstrap.Components.Cards
                                       <h6 class=""card-subtitle""></h6>
                                     </div>
                                   </div>";
-
-            var result = RenderComponent<Card>(
-                CreateFragment<Content>(
-                    CreateFragment<H1>(),
-                    CreateFragment<H2>(),
-                    CreateFragment<H3>(),
-                    CreateFragment<H4>(),
-                    CreateFragment<H5>(),
-                    CreateFragment<H6>()
+            var component = Component<Card>().WithChildContent(
+                Fragment<Content>().WithChildContent(
+                    Fragment<H1>(),
+                    Fragment<H2>(),
+                    Fragment<H3>(),
+                    Fragment<H4>(),
+                    Fragment<H5>(),
+                    Fragment<H6>()
                 )
             );
+
+            var result = component.Render();
 
             result.ShouldBe(expectedHtml);
         }
@@ -74,13 +70,14 @@ namespace Egil.RazorComponents.Bootstrap.Components.Cards
                                       <p class=""card-text""></p>
                                     </div>
                                   </div>";
+            var component = Component<Card>().WithChildContent(
+                 Fragment<Content>().WithChildContent(
+                     Fragment<P>(),
+                     Fragment<P>()
+                 )
+             );
 
-            var result = RenderComponent<Card>(
-                CreateFragment<Content>(
-                    CreateFragment<P>(),
-                    CreateFragment<P>()
-                )
-            );
+            var result = component.Render();
 
             result.ShouldBe(expectedHtml);
         }
@@ -94,13 +91,14 @@ namespace Egil.RazorComponents.Bootstrap.Components.Cards
                                       <a class=""card-link""></a>
                                     </div>
                                   </div>";
+            var component = Component<Card>().WithChildContent(
+                 Fragment<Content>().WithChildContent(
+                     Fragment<A>(),
+                     Fragment<A>()
+                 )
+             );
 
-            var result = RenderComponent<Card>(
-                CreateFragment<Content>(
-                    CreateFragment<A>(),
-                    CreateFragment<A>()
-                )
-            );
+            var result = component.Render();
 
             result.ShouldBe(expectedHtml);
         }
@@ -114,11 +112,12 @@ namespace Egil.RazorComponents.Bootstrap.Components.Cards
                                     <{imageElementName} class=""card-img-top"" />
                                     <div class=""card-body""></div>
                                   </div>";
-
-            var result = RenderComponent<Card>(
-                CreateFragment(imageType),
-                CreateFragment<Content>()
+            var component = Component<Card>().WithChildContent(
+                Fragment(imageType),
+                Fragment<Content>()
             );
+
+            var result = component.Render();
 
             result.ShouldBe(expectedHtml);
         }
@@ -132,11 +131,12 @@ namespace Egil.RazorComponents.Bootstrap.Components.Cards
                                     <div class=""card-body""></div>
                                     <{imageElementName} class=""card-img-bottom"" />
                                   </div>";
-
-            var result = RenderComponent<Card>(
-                CreateFragment<Content>(),
-                CreateFragment(imageType)
+            var component = Component<Card>().WithChildContent(
+                Fragment<Content>(),
+                Fragment(imageType)
             );
+
+            var result = component.Render();
 
             result.ShouldBe(expectedHtml);
         }
@@ -147,10 +147,9 @@ namespace Egil.RazorComponents.Bootstrap.Components.Cards
             var expectedHtml = $@"<div class=""card"">
                                     <div class=""card-header""></div>
                                   </div>";
+            var component = Component<Card>().WithChildContent(Fragment<Header>());
 
-            var result = RenderComponent<Card>(
-                CreateFragment<Header>()
-            );
+            var result = component.Render();
 
             result.ShouldBe(expectedHtml);
         }
@@ -161,10 +160,9 @@ namespace Egil.RazorComponents.Bootstrap.Components.Cards
             var expectedHtml = $@"<div class=""card"">
                                     <div class=""card-footer""></div>
                                   </div>";
+            var component = Component<Card>().WithChildContent(Fragment<Footer>());
 
-            var result = RenderComponent<Card>(
-                CreateFragment<Footer>()
-            );
+            var result = component.Render();
 
             result.ShouldBe(expectedHtml);
         }
@@ -182,10 +180,9 @@ namespace Egil.RazorComponents.Bootstrap.Components.Cards
             var expectedHtml = $@"<div class=""card"">
                                     <h{headingSize} class=""card-header""></h{headingSize}>
                                   </div>";
+            var component = Component<Card>().WithChildContent(Fragment(headingType));
 
-            var result = RenderComponent<Card>(
-                CreateFragment(headingType)
-            );
+            var result = component.Render();
 
             result.ShouldBe(expectedHtml);
         }
@@ -198,8 +195,9 @@ namespace Egil.RazorComponents.Bootstrap.Components.Cards
         public void MyTestMethod10(int width)
         {
             var expectedHtml = $@"<div class=""card w-{width}""></div>";
+            var component = Component<Card>().WithParams(("Width", (NumericSizeParameter<WidthSizePrefix>)width));
 
-            var result = RenderComponent<Card>(("Width", (NumericSizeParameter<WidthSizePrefix>)width));
+            var result = component.Render();
 
             result.ShouldBe(expectedHtml);
         }
@@ -214,12 +212,12 @@ namespace Egil.RazorComponents.Bootstrap.Components.Cards
                                       <nav class=""nav {expectedNavCssClasses}""></nav>
                                     </div>
                                   </div>";
-
-            var result = RenderComponent<Card>(
-                CreateFragment<Header>(
-                    CreateFragment<Nav>(("Pills", navKind == "pills"))
+            var component = Component<Card>().WithChildContent(
+                Fragment<Header>().WithChildContent(
+                    Fragment<Nav>().WithParams(("Pills", navKind == "pills"))
                 )
             );
+            var result = component.Render();
 
             result.ShouldBe(expectedHtml);
         }
@@ -233,9 +231,9 @@ namespace Egil.RazorComponents.Bootstrap.Components.Cards
                                     <{imageElementName} class=""card-img"" />
                                     <div class=""card-img-overlay""></div>
                                   </div>";
-            RenderFragment[] childContent = { CreateFragment(imageType), CreateFragment<Content>() };
+            var component = Component<Card>().WithParams(("ImageOverlayed", true)).WithChildContent(Fragment(imageType), Fragment<Content>());
 
-            var result = RenderComponent<Card>(childContent, ("ImageOverlayed", true));
+            var result = component.Render();
 
             result.ShouldBe(expectedHtml);
         }
@@ -257,21 +255,22 @@ namespace Egil.RazorComponents.Bootstrap.Components.Cards
                                       </div>
                                     </div>
                                   </div>";
-
-            var result = RenderComponent<Card>(
-                CreateFragment<Row>(
-                    CreateFragment<Column>(
-                        CreateFragment<Img>()
+            var component = Component<Card>().WithChildContent(
+                Fragment<Row>().WithChildContent(
+                    Fragment<Column>().WithChildContent(
+                        Fragment<Img>()
                     ),
-                    CreateFragment<Column>(
-                        CreateFragment<Content>(
-                            CreateFragment<H5>(),
-                            CreateFragment<P>(),
-                            CreateFragment<A>()
+                    Fragment<Column>().WithChildContent(
+                        Fragment<Content>().WithChildContent(
+                            Fragment<H5>(),
+                            Fragment<P>(),
+                            Fragment<A>()
+                            )
                         )
                     )
-                )
-            );
+                );
+
+            var result = component.Render();
 
             result.ShouldBe(expectedHtml);
         }

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Blazor.Hosting;
 
-namespace Egil.RazorComponents.Bootstrap.BlazorTestClient
+namespace BlazorClientSideTestApp
 {
     public class Program
     {

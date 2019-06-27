@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Egil.RazorComponents.Bootstrap.Base
 {
-    public class BootstrapContext
+    public class BootstrapRuleRegistry
     {
         private readonly Dictionary<(Type childType, bool isOnInitRule), Action<IComponent>> _rules = new Dictionary<(Type childType, bool isOnInitRule), Action<IComponent>>();
 
@@ -23,7 +23,7 @@ namespace Egil.RazorComponents.Bootstrap.Base
                 applyAction(childComponent);
         }
 
-        public void CopyRulesFrom(BootstrapContext otherContext)
+        public void CopyRulesFrom(BootstrapRuleRegistry otherContext)
         {
             foreach (var typeRulePair in otherContext._rules)
             {

@@ -1,13 +1,10 @@
 ﻿using Egil.RazorComponents.Bootstrap.Base.CssClassValues;
 using Egil.RazorComponents.Bootstrap.Extensions;
-using Egil.RazorComponents.Bootstrap.Utilities.Spacing;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Egil.RazorComponents.Bootstrap.Base
 {

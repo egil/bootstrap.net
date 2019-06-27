@@ -11,7 +11,7 @@ namespace Egil.RazorComponents.Bootstrap.Base
         protected bool AlwaysCascadeToChildren { get; set; } = false;
 
         [Parameter]
-        protected internal RenderFragment ChildContent
+        public virtual RenderFragment ChildContent
         {
             get => BuildChildContentRenderTree;
             set => _childContent = value;
@@ -35,17 +35,17 @@ namespace Egil.RazorComponents.Bootstrap.Base
         {
             if (_childContent is null) return;
 
-            if (HasContext || AlwaysCascadeToChildren)
+            if (HasChildRules || AlwaysCascadeToChildren)
             {
-                builder.OpenComponent<CascadingValue<BootstrapContextAwareComponentBase>>(0);
-                builder.AddAttribute(0, "Value", this);
-                builder.AddAttribute(0, "IsFixed", true);
-                builder.AddAttribute(1, RenderTreeBuilder.ChildContent, _childContent);
+                builder.OpenComponent<CascadingValue<BootstrapContextAwareComponentBase>>();
+                builder.AddAttribute("Value", this);
+                builder.AddAttribute("IsFixed", true);
+                builder.AddAttribute(RenderTreeBuilder.ChildContent, _childContent);
                 builder.CloseComponent();
             }
             else
             {
-                builder.AddContent(0, _childContent);
+                builder.AddContent(_childContent);
             }
         }
     }

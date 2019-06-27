@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Components.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Egil.RazorComponents.Bootstrap.BlazorTestClient
+namespace BlazorClientSideTestApp
 {
     public class Startup
     {

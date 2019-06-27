@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Xunit;
+﻿using Xunit;
 
 namespace Egil.RazorComponents.Bootstrap.Components.Html
 {
@@ -14,7 +9,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Html
         {
             var expectedHtml = $@"<nav></nav>";
 
-            var result = RenderComponent<Nav>();
+            var result = Component<Nav>().Render();
 
             result.ShouldBe(expectedHtml);
         }

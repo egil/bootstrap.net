@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.AspNetCore.Components.RenderTree;
 using Moq;
-using Shouldly;
 using Xunit;
 
 namespace Egil.RazorComponents.Bootstrap.Base
@@ -96,12 +91,12 @@ namespace Egil.RazorComponents.Bootstrap.Base
         //    contextMock.Verify(x => x.UpdateChild<BootstrapContextAwareComponentBase>(sut), Times.Never);
         //}
 
-        private static (Mock<FakeComponent>, Mock<BootstrapContext>) SetupParentMock()
+        private static (Mock<FakeComponent>, Mock<BootstrapRuleRegistry>) SetupParentMock()
         {
             var parentMock = new Mock<FakeComponent>();
-            var contextMock = new Mock<BootstrapContext>();
-            parentMock.SetupGet(x => x.Context).Returns(contextMock.Object);
-            parentMock.SetupGet(x => x.HasContext).Returns(true);
+            var contextMock = new Mock<BootstrapRuleRegistry>();
+            parentMock.SetupGet(x => x.Rules).Returns(contextMock.Object);
+            parentMock.SetupGet(x => x.HasChildRules).Returns(true);
             return (parentMock, contextMock);
         }
 

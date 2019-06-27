@@ -4,11 +4,6 @@ using Egil.RazorComponents.Bootstrap.Options;
 using Egil.RazorComponents.Bootstrap.Parameters;
 using Egil.RazorComponents.Bootstrap.Tests.TestUtilities;
 using Shouldly;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 using static Egil.RazorComponents.Bootstrap.Utilities.Colors.Factory.LowerCase;
 

@@ -1,7 +1,6 @@
 ﻿using Egil.RazorComponents.Bootstrap.Base.CssClassValues;
 using Egil.RazorComponents.Bootstrap.Options;
 using Egil.RazorComponents.Bootstrap.Options.CommonOptions;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 

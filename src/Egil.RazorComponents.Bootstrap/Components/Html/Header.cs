@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Egil.RazorComponents.Bootstrap.Base;
-using Egil.RazorComponents.Bootstrap.Extensions;
-using Microsoft.AspNetCore.Components.RenderTree;
+﻿using Egil.RazorComponents.Bootstrap.Base;
 
 namespace Egil.RazorComponents.Bootstrap.Components.Html
 {
@@ -14,15 +7,6 @@ namespace Egil.RazorComponents.Bootstrap.Components.Html
         public Header()
         {
             DefaultElementName = HtmlTags.HEADER;
-        }
-    }
-
-    public sealed class Footer : BootstrapHtmlElementComponentBase
-    {
-
-        public Footer()
-        {
-            DefaultElementName = HtmlTags.FOOTER;
         }
     }
 }

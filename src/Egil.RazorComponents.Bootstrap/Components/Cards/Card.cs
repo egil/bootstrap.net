@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Egil.RazorComponents.Bootstrap.Base;
-using Egil.RazorComponents.Bootstrap.Base.CssClassValues;
+﻿using Egil.RazorComponents.Bootstrap.Base;
 using Egil.RazorComponents.Bootstrap.Components.Common;
 using Egil.RazorComponents.Bootstrap.Components.Html;
 using Egil.RazorComponents.Bootstrap.Components.Layout;
@@ -52,7 +46,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Cards
             _childComponentCount += 1;
         }
 
-        protected override void OnRegisterChildContextRules()
+        protected override void OnRegisterChildRules()
         {
             void ImageRule(BootstrapContextAwareComponentBase component)
             {
@@ -61,41 +55,41 @@ namespace Egil.RazorComponents.Bootstrap.Components.Cards
                     : _childComponentCount == 1 ? ImgTopCssClass : ImgBottomCssClass;
             }
 
-            Context.RegisterOnInitRule<Svg>(ImageRule);
-            Context.RegisterOnInitRule<Img>(ImageRule);
+            Rules.RegisterOnInitRule<Svg>(ImageRule);
+            Rules.RegisterOnInitRule<Img>(ImageRule);
 
-            Context.RegisterOnInitRule<Header>(header =>
+            Rules.RegisterOnInitRule<Header>(header =>
             {
                 header.DefaultElementName = HtmlTags.DIV;
                 header.DefaultCssClass = HeaderCssClass;
-                header.Context.RegisterRule<Nav>(nav => nav.DefaultCssClass = nav.Pills ? HeaderNavPillsCssCass : HeaderNavCssCass);
+                header.Rules.RegisterRule<Nav>(nav => nav.DefaultCssClass = nav.Pills ? HeaderNavPillsCssCass : HeaderNavCssCass);
             });
 
-            Context.RegisterOnInitRule<Footer>(footer => { footer.DefaultElementName = HtmlTags.DIV; footer.DefaultCssClass = FooterCssClass; });
-            Context.RegisterOnInitRule<Heading, H1, H2, H3, H4, H5, H6>(heading => { if (_childComponentCount == 1) heading.DefaultCssClass = HeaderCssClass; });
+            Rules.RegisterOnInitRule<Footer>(footer => { footer.DefaultElementName = HtmlTags.DIV; footer.DefaultCssClass = FooterCssClass; });
+            Rules.RegisterOnInitRule<Heading, H1, H2, H3, H4, H5, H6>(heading => { if (_childComponentCount == 1) heading.DefaultCssClass = HeaderCssClass; });
 
-            Context.RegisterOnInitRule<Content>(content =>
+            Rules.RegisterOnInitRule<Content>(content =>
             {
                 int headingsSeen = 0;
 
-                content.Context.RegisterOnInitRule<Heading, H1, H2, H3, H4, H5, H6>(x =>
+                content.Rules.RegisterOnInitRule<Heading, H1, H2, H3, H4, H5, H6>(x =>
                 {
                     headingsSeen++;
                     x.DefaultCssClass = headingsSeen == 1 ? TitleCssClass : SubTitleCssClass;
                 });
 
-                content.Context.RegisterOnInitRule<A>(x => x.DefaultCssClass = LinkCssClass);
-                content.Context.RegisterOnInitRule<P>(x => x.DefaultCssClass = TextCssClass);
+                content.Rules.RegisterOnInitRule<A>(x => x.DefaultCssClass = LinkCssClass);
+                content.Rules.RegisterOnInitRule<P>(x => x.DefaultCssClass = TextCssClass);
             });
 
-            Context.RegisterRule<Content>(content => content.DefaultCssClass = ImageOverlayed ? OverlayImgCssClass : BodyCssClass);
+            Rules.RegisterRule<Content>(content => content.DefaultCssClass = ImageOverlayed ? OverlayImgCssClass : BodyCssClass);
 
-            Context.RegisterOnInitRule<Row>(row =>
+            Rules.RegisterOnInitRule<Row>(row =>
             {
                 row.NoGutters = true;
-                row.Context.CopyRulesFrom(Context);
-                row.Context.RegisterOnInitRule<Svg>(x => x.DefaultCssClass = ImgCssClass);
-                row.Context.RegisterOnInitRule<Img>(x => x.DefaultCssClass = ImgCssClass);
+                row.Rules.CopyRulesFrom(Rules);
+                row.Rules.RegisterOnInitRule<Svg>(x => x.DefaultCssClass = ImgCssClass);
+                row.Rules.RegisterOnInitRule<Img>(x => x.DefaultCssClass = ImgCssClass);
             });
         }
 

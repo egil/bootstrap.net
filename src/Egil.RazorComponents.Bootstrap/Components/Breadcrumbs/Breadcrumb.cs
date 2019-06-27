@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Egil.RazorComponents.Bootstrap.Base;
 using Egil.RazorComponents.Bootstrap.Base.CssClassValues;
 using Egil.RazorComponents.Bootstrap.Components.Html;
@@ -42,9 +38,9 @@ namespace Egil.RazorComponents.Bootstrap.Components.Breadcrumbs
                 ";}");
         }
 
-        protected override void OnRegisterChildContextRules()
+        protected override void OnRegisterChildRules()
         {
-            Context.RegisterOnInitRule<A>(a =>
+            Rules.RegisterOnInitRule<A>(a =>
             {
                 a.CustomRenderFragment = BreadcrumpItemRenderFragment;
                 a.Match = NavLinkMatch.All;

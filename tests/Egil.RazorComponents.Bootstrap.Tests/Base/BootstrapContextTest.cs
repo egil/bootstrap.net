@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Egil.RazorComponents.Bootstrap.Components.Html;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
-using Moq;
 using Shouldly;
 using Xunit;
 
@@ -41,7 +35,7 @@ namespace Egil.RazorComponents.Bootstrap.Base
         [Fact(DisplayName = "When a component does not have a registered rule, it remains unchanged when calling UpdateChild")]
         public void MyTestMethod()
         {
-            var sut = new BootstrapContext();
+            var sut = new BootstrapRuleRegistry();
             var component = new TestComponent();
 
             sut.UpdateChild(component);
@@ -53,7 +47,7 @@ namespace Egil.RazorComponents.Bootstrap.Base
         public void MyTestMethod2()
         {
             var component = new TestComponent();
-            var sut = new BootstrapContext();
+            var sut = new BootstrapRuleRegistry();
             sut.RegisterRule<TestComponent>(x => x.SetParametersAsync(new ParameterCollection()));
 
             sut.UpdateChild(component);
@@ -64,7 +58,7 @@ namespace Egil.RazorComponents.Bootstrap.Base
         [Fact(DisplayName = "Register 1 sub components register works correctly")]
         public void MyTestMethod3()
         {
-            var sut = new BootstrapContext();
+            var sut = new BootstrapRuleRegistry();
             var c0 = new TestComponent();
             var c1 = new T1();
 
@@ -79,7 +73,7 @@ namespace Egil.RazorComponents.Bootstrap.Base
         [Fact(DisplayName = "Register 2 sub components register works correctly")]
         public void MyTestMethod4()
         {
-            var sut = new BootstrapContext();
+            var sut = new BootstrapRuleRegistry();
             var c0 = new TestComponent();
             var c1 = new T1();
             var c2 = new T2();
@@ -97,7 +91,7 @@ namespace Egil.RazorComponents.Bootstrap.Base
         [Fact(DisplayName = "Register 3 sub components register works correctly")]
         public void MyTestMethod5()
         {
-            var sut = new BootstrapContext();
+            var sut = new BootstrapRuleRegistry();
             var c0 = new TestComponent();
             var c1 = new T1();
             var c2 = new T2();
@@ -119,7 +113,7 @@ namespace Egil.RazorComponents.Bootstrap.Base
         [Fact(DisplayName = "Register 4 sub components register works correctly")]
         public void MyTestMethod6()
         {
-            var sut = new BootstrapContext();
+            var sut = new BootstrapRuleRegistry();
             var c0 = new TestComponent();
             var c1 = new T1();
             var c2 = new T2();
@@ -143,7 +137,7 @@ namespace Egil.RazorComponents.Bootstrap.Base
         [Fact(DisplayName = "Register 5 sub components register works correctly")]
         public void MyTestMethod7()
         {
-            var sut = new BootstrapContext();
+            var sut = new BootstrapRuleRegistry();
             var c0 = new TestComponent();
             var c1 = new T1();
             var c2 = new T2();
@@ -170,7 +164,7 @@ namespace Egil.RazorComponents.Bootstrap.Base
         [Fact(DisplayName = "Register 6 sub components register works correctly")]
         public void MyTestMethod8()
         {
-            var sut = new BootstrapContext();
+            var sut = new BootstrapRuleRegistry();
             var c0 = new TestComponent();
             var c1 = new T1();
             var c2 = new T2();

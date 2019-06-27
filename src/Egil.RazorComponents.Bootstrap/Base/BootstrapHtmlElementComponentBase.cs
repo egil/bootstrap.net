@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 
 namespace Egil.RazorComponents.Bootstrap.Base
 {
@@ -11,9 +8,7 @@ namespace Egil.RazorComponents.Bootstrap.Base
 
         [Parameter] public bool DisableOverride { get; set; } = false;
 
-        protected internal sealed override string CssClassValue => DisableOverride
-            ? Class ?? string.Empty
-            : base.CssClassValue;
+        protected internal sealed override string CssClassValue => DisableOverride ? Class ?? string.Empty : base.CssClassValue;
 
         public sealed override bool IgnoreParentContext
         {

@@ -1,10 +1,5 @@
 ﻿using Egil.RazorComponents.Bootstrap.Base.CssClassValues;
-using Egil.RazorComponents.Bootstrap.Options;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Egil.RazorComponents.Bootstrap.Utilities.Colors
 {

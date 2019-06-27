@@ -1,10 +1,4 @@
-﻿using System.Text;
-using Org.XmlUnit.Diff;
-using Xunit;
-using Xunit.Abstractions;
-using Egil.RazorComponents.Bootstrap.Extensions;
-using Microsoft.AspNetCore.Components.RenderTree;
-using Microsoft.AspNetCore.Components;
+﻿using Xunit;
 
 namespace Egil.RazorComponents.Bootstrap.Components.Accessibility
 {
@@ -15,7 +9,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Accessibility
         {
             var expectedHtml = string.Empty;
 
-            var result = RenderComponent<SrOnly>();
+            var result = Component<SrOnly>().Render();
 
             result.ShouldBe(expectedHtml);
         }
@@ -26,7 +20,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Accessibility
             var content = "CONTENT";
             var expectedHtml = $@"<span class=""sr-only"">{content}</span>";            
 
-            var result = RenderComponent<SrOnly>(content);
+            var result = Component<SrOnly>().WithChildContent(content).Render();
 
             result.ShouldBe(expectedHtml);
         }

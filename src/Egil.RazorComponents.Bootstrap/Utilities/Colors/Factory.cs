@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Egil.RazorComponents.Bootstrap.Utilities.Colors
+﻿namespace Egil.RazorComponents.Bootstrap.Utilities.Colors
 {
 #pragma warning disable IDE1006 // Naming Styles
     public static class Factory

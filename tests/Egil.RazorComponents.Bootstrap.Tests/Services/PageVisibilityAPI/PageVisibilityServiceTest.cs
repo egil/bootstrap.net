@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.JSInterop;
 using Moq;
@@ -14,14 +11,14 @@ namespace Egil.RazorComponents.Bootstrap.Services.PageVisibilityAPI
     {
         class StubJsRuntime : IJSRuntime
         {
-            private List<(string identifier, object[] args)> _invocations = new List<(string identifier, object[] args)>();
+            private readonly List<(string identifier, object[] args)> _invocations = new List<(string identifier, object[] args)>();
 
             public IReadOnlyList<(string identifier, object[] args)> Invocations => _invocations.AsReadOnly();
 
             public Task<TValue> InvokeAsync<TValue>(string identifier, params object[] args)
             {
                 _invocations.Add((identifier, args));
-                return Task.FromResult<TValue>(default);
+                return Task.FromResult<TValue>(default!);
             }
         }
 
@@ -89,7 +86,7 @@ namespace Egil.RazorComponents.Bootstrap.Services.PageVisibilityAPI
         [Fact(DisplayName = "When there are no more subscribers left, the service unsubscribes from the api adapter")]
         public void MyTestMethod6()
         {
-            void Subscriber(object sender, PageVisibilityChangedEventArgs args) { };
+            static void Subscriber(object sender, PageVisibilityChangedEventArgs args) { };
             var (sut, jsRuntimeMock) = SetupSutAndJsRuntime();
             var sequence = new MockSequence();
             jsRuntimeMock.InSequence(sequence).Setup(x => x.InvokeAsync<object>(It.IsAny<string>(), It.IsAny<string>())).Returns(Task.FromResult(new object()));
@@ -107,7 +104,7 @@ namespace Egil.RazorComponents.Bootstrap.Services.PageVisibilityAPI
         [Fact(DisplayName = "When user subscribes again to service that has previously had subscribers but have none now, api adapter is not injected again")]
         public void MyTestMethod7()
         {
-            void Subscriber(object sender, PageVisibilityChangedEventArgs args) { };
+            static void Subscriber(object sender, PageVisibilityChangedEventArgs args) { };
             var (sut, jsRuntimeMock) = SetupSutAndJsRuntime();
             var sequence = new MockSequence();
             jsRuntimeMock.InSequence(sequence).Setup(x => x.InvokeAsync<object>(It.IsAny<string>(), It.IsAny<string>())).Returns(Task.FromResult(new object()));
