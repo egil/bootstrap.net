@@ -264,20 +264,14 @@ namespace Egil.RazorComponents.Bootstrap.Components.Carousels
             if (oldActiveIndex == newActiveIndex || ChangingItems) return;
 
             ChangingItems = true;
-
-            if (!_changeItemTimer.IsStopped && Autoplay) _changeItemTimer.Stop();
+            if (!_changeItemTimer.IsStopped) _changeItemTimer.Stop();
 
             if (Animation == AnimationParameter.None)
-            {
                 await InstantChangeActiveItem(oldActiveIndex, newActiveIndex);
-            }
             else
-            {
                 await AnimateChangeActiveItem(oldActiveIndex, newActiveIndex);
-            }
 
             ChangingItems = false;
-
             if (Autoplay) _changeItemTimer.Start();
         }
 
@@ -333,19 +327,13 @@ namespace Egil.RazorComponents.Bootstrap.Components.Carousels
             _carouselItems[newActiveIndex].Active = true;
 
             ActiveIndex = (ushort)newActiveIndex;
-
             await ActiveIndexChanged.InvokeAsync(ActiveIndex);
+            StateHasChanged();
         }
 
         public void Dispose()
         {
             _changeItemTimer.Dispose();
-        }
-
-        protected override void OnAfterRender()
-        {
-            base.OnAfterRender();
-            Console.WriteLine($"{DateTime.Now}: CAORUSEL RENDERED!");
         }
     }
 }
