@@ -33,5 +33,8 @@
     public static class HtmlEvents
     {
         public const string CLICK = "onclick";
+        public const string MOUSEENTER = "onmouseenter";
+        public const string MOUSELEAVE = "onmouseleave";
+        public const string KEYDOWN = "onkeydown";
     }
 }

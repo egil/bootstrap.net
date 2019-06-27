@@ -102,6 +102,11 @@ namespace Egil.RazorComponents.Bootstrap.Extensions
             builder.AddAttribute(sequence, "aria-hidden", value.ToString().ToLower());
         }
 
+        public static void AddTabIndex(this RenderTreeBuilder builder, int index = 0, [CallerLineNumber] int sequence = DEFAULT_SEQUENCE)
+        {
+            builder.AddAttribute(sequence, "tabindex", index);
+        }
+
         public static void AddClassAttribute(this RenderTreeBuilder builder, int sequence, string? value)
         {
             if (string.IsNullOrEmpty(value)) return;
@@ -124,7 +129,7 @@ namespace Egil.RazorComponents.Bootstrap.Extensions
         {
             builder.AddAttribute(sequence, "aria-hidden", value);
         }
-
+        
         //public static void AddDefaultRenderTree(this RenderTreeBuilder builder, int sequence, RenderFragment renderFragment)
     }
 }

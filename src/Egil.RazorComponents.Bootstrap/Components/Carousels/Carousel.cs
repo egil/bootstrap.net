@@ -1,16 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Egil.RazorComponents.Bootstrap.Base;
 using Egil.RazorComponents.Bootstrap.Components.Carousels.Parameters;
 using Egil.RazorComponents.Bootstrap.Components.Html;
 using Egil.RazorComponents.Bootstrap.Extensions;
+using Egil.RazorComponents.Bootstrap.Utilities.Animations.Timers;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.RenderTree;
 
 namespace Egil.RazorComponents.Bootstrap.Components.Carousels
 {
-    public class Carousel<TItem> : BootstrapContextAwareComponentBase
+    public class Carousel<TItem> : BootstrapContextAwareComponentBase, IDisposable
     {
         private const string DefaultCarouselCssClass = "carousel";
         private const string CarouselInnerCssClass = "carousel-inner";
@@ -18,6 +20,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Carousels
         private const string DefaultNextControlSrText = "Next";
         private static readonly Type CarouselStaticType = typeof(CarouselStatic);
 
+        private readonly AnimationTimer _changeItemTimer;
         private readonly List<CarouselItem> _carouselItems = new List<CarouselItem>();
 
         private bool ChangingItems { get; set; }
@@ -29,6 +32,10 @@ namespace Egil.RazorComponents.Bootstrap.Components.Carousels
         [Parameter] public ushort ActiveIndex { get; set; } = 0;
         [Parameter] public EventCallback<ushort> ActiveIndexChanged { get; set; }
         [Parameter] public AnimationParameter Animation { get; set; } = AnimationParameter.Slide;
+        [Parameter] public bool Autoplay { get; set; } = true;
+        [Parameter] public TimeSpan Interval { get; set; } = TimeSpan.FromSeconds(5);
+        [Parameter] public bool PauseOnHover { get; set; } = true;
+        [Parameter] public bool KeyboardNavigateable { get; set; } = true;
         [Parameter] public bool ShowControls { get; set; } = false;
         [Parameter] public bool ShowIndicators { get; set; } = false;
         [Parameter] public string PreviousControlSrText { get; set; } = DefaultPreviousControlSrText;
@@ -37,16 +44,58 @@ namespace Egil.RazorComponents.Bootstrap.Components.Carousels
         public Carousel()
         {
             DefaultCssClass = DefaultCarouselCssClass;
+            _changeItemTimer = new AnimationTimer(async () => await InvokeAsync(Next));
         }
 
-        public void Previous() => ChangeActiveItem(ActiveIndex, (ActiveIndex - 1 + ItemCount) % ItemCount);
-
-        public void Next() => ChangeActiveItem(ActiveIndex, (ActiveIndex + 1 + ItemCount) % ItemCount);
-
-        public void Goto(ushort index)
+        public void Cycle()
         {
-            if (index >= ItemCount) throw new ArgumentOutOfRangeException(nameof(index), index, $"Specify a zero-based index, that is not higher than the total number of items in the Carousel.");
-            ChangeActiveItem(ActiveIndex, index);
+            if (ItemCount > 0 && !_changeItemTimer.IsRunning)
+            {
+                _changeItemTimer.Start();
+            }
+        }
+
+        public void Resume()
+        {
+            if (_changeItemTimer.IsPaused)
+                _changeItemTimer.Resume();
+        }
+
+        public void Pause()
+        {
+            if (_changeItemTimer.IsRunning)
+                _changeItemTimer.Pause();
+        }
+
+        public void Stop()
+        {
+            if (_changeItemTimer.IsRunning)
+                _changeItemTimer.Stop();
+        }
+
+        public async Task Previous()
+        {
+            if (ItemCount == 0) return;
+            await ChangeActiveItem(ActiveIndex, (ActiveIndex - 1 + ItemCount) % ItemCount);
+        }
+
+        public async Task Next()
+        {
+            if (ItemCount == 0) return;
+            await ChangeActiveItem(ActiveIndex, (ActiveIndex + 1 + ItemCount) % ItemCount);
+        }
+
+        protected override void OnBootstrapParametersSet()
+        {
+            if (Interval > TimeSpan.Zero)
+            {
+                _changeItemTimer.DueTime = Interval;
+                _changeItemTimer.Interval = Interval;
+            }
+            if (Autoplay)
+            {
+                Cycle();
+            }
         }
 
         protected override void OnChildInit(BootstrapContextAwareComponentBase component)
@@ -68,11 +117,45 @@ namespace Egil.RazorComponents.Bootstrap.Components.Carousels
         protected internal override void DefaultRenderFragment(RenderTreeBuilder builder)
         {
             builder.OpenElement(HtmlTags.DIV);
+
+            AddPauseOnMouseHover(builder);
+            AddKeyboardNavigation(builder);
+
             builder.AddClassAttribute(CssClassValue);
             builder.AddContent(IndicatorsRenderFragment);
             builder.AddContent(CarouselInnerRenderFragment);
             builder.AddContent(ControlsRenderFragment);
             builder.CloseElement();
+        }
+
+        private void AddKeyboardNavigation(RenderTreeBuilder builder)
+        {
+            if (KeyboardNavigateable)
+            {
+                // To make the KEYDOWN event fire on a DIV element, it must be focusable. Setting
+                // tabindex to -1 makes it focusable, without making it possible to tab to it.
+                // See https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/tabindex for details.
+                builder.AddTabIndex(-1);
+
+                builder.AddEventListener(HtmlEvents.KEYDOWN, EventCallback.Factory.Create<UIKeyboardEventArgs>(this, async (UIKeyboardEventArgs e) =>
+                {
+                    switch (e.Code)
+                    {
+                        case "ArrowLeft": await Previous(); break;
+                        case "ArrowRight": await Next(); break;
+                        default: break;
+                    }
+                }));
+            }
+        }
+
+        private void AddPauseOnMouseHover(RenderTreeBuilder builder)
+        {
+            if (PauseOnHover && Autoplay || _changeItemTimer.IsRunning)
+            {
+                builder.AddEventListener(HtmlEvents.MOUSEENTER, EventCallback.Factory.Create<UIMouseEventArgs>(this, Pause));
+                builder.AddEventListener(HtmlEvents.MOUSELEAVE, EventCallback.Factory.Create<UIMouseEventArgs>(this, Resume));
+            }
         }
 
         private void CarouselInnerRenderFragment(RenderTreeBuilder builder)
@@ -176,14 +259,14 @@ namespace Egil.RazorComponents.Bootstrap.Components.Carousels
             };
         }
 
-        private async void ChangeActiveItem(int oldActiveIndex, int newActiveIndex)
+        private async Task ChangeActiveItem(int oldActiveIndex, int newActiveIndex)
         {
-            if (oldActiveIndex == newActiveIndex) return;
+            if (oldActiveIndex == newActiveIndex || ChangingItems) return;
 
-            //if (isCycling)
-            //{
-            //    this.pause()
-            //}
+            ChangingItems = true;
+
+            if (!_changeItemTimer.IsStopped && Autoplay) _changeItemTimer.Stop();
+
             if (Animation == AnimationParameter.None)
             {
                 await InstantChangeActiveItem(oldActiveIndex, newActiveIndex);
@@ -192,16 +275,29 @@ namespace Egil.RazorComponents.Bootstrap.Components.Carousels
             {
                 await AnimateChangeActiveItem(oldActiveIndex, newActiveIndex);
             }
-            //if (isCycling)
-            //{
-            //    this.cycle()
-            //}
+
+            ChangingItems = false;
+
+            if (Autoplay) _changeItemTimer.Start();
         }
 
         private async Task AnimateChangeActiveItem(int oldActiveIndex, int newActiveIndex)
         {
-            if (ChangingItems) return;
-            ChangingItems = true;
+            // This is complex due to the css transition rules used by bootstrap.
+            // Here are the steps involved to make it:
+            //
+            // 1. nextElm gets the orderClassName class set (rendered to DOM).
+            //    If the orderClassName class isn't rendered to the DOM a 'tick' before step 2, the 
+            //    animation will not work correctly.
+            //    If the delay is too long, there will be a gab between the two images as they slide in/out.
+            // 
+            //    Step 1 updates ActiveIndex, and calls StateHasChanged() to ensure that indicators are updated
+            //    immediately.
+            //
+            // 2. immediately after, both nextElm and activeElm has directionalClassName class set (rendered to DOM)
+            //    and the animation/transition in CSS should be in sync (in/out following each other)
+            //
+            // 3. after 600ms the animation/transition is done in CSS and class can be reset and active set
 
             var nextElm = _carouselItems[newActiveIndex];
             var activeElm = _carouselItems[oldActiveIndex];
@@ -209,24 +305,26 @@ namespace Egil.RazorComponents.Bootstrap.Components.Carousels
             var directionalClassName = oldActiveIndex < newActiveIndex ? "carousel-item-left" : "carousel-item-right";
             var orderClassName = oldActiveIndex < newActiveIndex ? "carousel-item-next" : "carousel-item-prev";
 
+            // Step 1
             nextElm.Class = orderClassName;
             ActiveIndex = (ushort)newActiveIndex;
             await ActiveIndexChanged.InvokeAsync(ActiveIndex);
+            StateHasChanged();
 
-            await Task.Yield();
-
+            await Task.Delay(1);
+            
+            // Step 2
             activeElm.UpdateCssClass(directionalClassName);
             nextElm.UpdateCssClass($"{directionalClassName} {orderClassName}");
 
             await Task.Delay(600);
 
+            // Step 3
             activeElm.Active = false;
             nextElm.Active = true;
 
             activeElm.UpdateCssClass(string.Empty);
             nextElm.UpdateCssClass(string.Empty);
-
-            ChangingItems = false;
         }
 
         private async Task InstantChangeActiveItem(int oldActiveIndex, int newActiveIndex)
@@ -237,6 +335,17 @@ namespace Egil.RazorComponents.Bootstrap.Components.Carousels
             ActiveIndex = (ushort)newActiveIndex;
 
             await ActiveIndexChanged.InvokeAsync(ActiveIndex);
+        }
+
+        public void Dispose()
+        {
+            _changeItemTimer.Dispose();
+        }
+
+        protected override void OnAfterRender()
+        {
+            base.OnAfterRender();
+            Console.WriteLine($"{DateTime.Now}: CAORUSEL RENDERED!");
         }
     }
 }
