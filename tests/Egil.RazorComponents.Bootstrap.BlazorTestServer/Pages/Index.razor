@@ -12,22 +12,22 @@
     Carousel<(string url, string alt, string text)> carousel;
 }
 
-    <div class="form-group">
-        <label for="exampleFormControlInput1">Change frame: </label>
-        <input type="number" class="form-control" id="exampleFormControlInput1"  @onchange=@(x=> carousel.Goto(ushort.Parse(x.Value.ToString()))) value="0" />        
-    </div>
-
+<div class="form-group">
+    <label for="exampleFormControlInput1">Change frame: </label>
+    <input type="number" class="form-control" id="exampleFormControlInput1" 
+           @onchange=@(x=> carousel.GoTo(x.Value)) value="0" />
+</div>
 
 <Container>
     <Row>
         <Column>
-            <Carousel Items="@Images" Context="item" ShowControls ShowIndicators @ref="carousel">
+            <Carousel Items="@Images" Context="item" ShowControls ShowIndicators @ref="carousel" Ride>
                 <img src=@item.url alt=@item.alt />
                 <caption>@item.text</caption>
             </Carousel>
         </Column>
-        @*<Column>
-            <Carousel Animation="fade" Items="@Images" Context="item" ShowControls ShowIndicators>
+        <Column>
+            <Carousel Animation="fade" Items="@Images" Context="item" ShowControls ShowIndicators Wrap="false">
                 <img src=@item.url alt=@item.alt />
             </Carousel>
         </Column>
@@ -45,6 +45,6 @@
                     <CarouselItem><img src=@url alt=@alt /></CarouselItem>
                 }
             </Carousel>
-        </Column>*@
+        </Column>
     </Row>
 </Container>

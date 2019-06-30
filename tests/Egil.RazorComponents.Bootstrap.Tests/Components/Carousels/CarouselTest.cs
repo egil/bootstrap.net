@@ -39,7 +39,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Carousels
         [Fact(DisplayName = "First item is marked as active by default")]
         public void MyTestMethod3()
         {
-            var expectedHtml = $@"<div class=""carousel slide"">
+            var expectedHtml = $@"<div tabindex=""-1"" class=""carousel slide"">
                                      <div class=""carousel-inner"">
                                         <div class=""carousel-item active""></div>
                                         <div class=""carousel-item""></div>
@@ -59,7 +59,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Carousels
         public void MyTestMethod4(ushort activeIndex)
         {
             var activeCssClass = " active";
-            var expectedHtml = $@"<div class=""carousel slide"">
+            var expectedHtml = $@"<div tabindex=""-1"" class=""carousel slide"">
                                      <div class=""carousel-inner"">
                                         <div class=""carousel-item{(activeIndex == 0 ? activeCssClass : string.Empty)}""></div>
                                         <div class=""carousel-item{(activeIndex == 1 ? activeCssClass : string.Empty)}""></div>
@@ -114,7 +114,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Carousels
         public void MyTestMethod7()
         {
             var items = new string[] { "https://img-1.jpg", "https://img-2.jpg" };
-            var expectedHtml = $@"<div class=""carousel slide"">
+            var expectedHtml = $@"<div tabindex=""-1"" class=""carousel slide"">
                                     <div class=""carousel-inner"">
                                       <div class=""carousel-item active"">
                                         <img class=""d-block w-100"" src=""{items[0]}"" />
@@ -136,7 +136,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Carousels
         public void MyTestMethod8()
         {
             var items = new (string, string)[] { ("https://img-1.jpg", "img-1"), ("https://img-2.jpg", "img-2") };
-            var expectedHtml = $@"<div class=""carousel slide"">
+            var expectedHtml = $@"<div tabindex=""-1"" class=""carousel slide"">
                                     <div class=""carousel-inner"">
                                       <div class=""carousel-item active"">
                                         <img class=""d-block w-100"" src=""{items[0].Item1}"" alt=""{items[0].Item2}"" />
@@ -156,8 +156,11 @@ namespace Egil.RazorComponents.Bootstrap.Components.Carousels
         [Fact(DisplayName = "Setting ShowControls parameter renders default control buttons")]
         public void MyTestMethod9()
         {
-            var expectedHtml = $@"<div class=""carousel slide"">
-                                    <div class=""carousel-inner""></div>
+            var expectedHtml = $@"<div tabindex=""-1"" class=""carousel slide"">
+                                    <div class=""carousel-inner"">
+                                      <div class=""carousel-item active""></div>
+                                      <div class=""carousel-item""></div>
+                                    </div>
                                     <a class=""carousel-control-prev"" role=""button"">
                                       <span class=""carousel-control-prev-icon"" aria-hidden=""true""></span>
                                       <span class=""sr-only"">Previous</span>
@@ -167,7 +170,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Carousels
                                       <span class=""sr-only"">Next</span>
                                     </a>
                                   </div>";
-            var component = BuildCarousel<string>().WithParams(("ShowControls", true));
+            var component = BuildCarousel<string>().WithDefaultItems(2).WithParams(("ShowControls", true));
 
             var result = component.Render();
 
@@ -179,8 +182,11 @@ namespace Egil.RazorComponents.Bootstrap.Components.Carousels
         {
             var prevSrOnlyText = "Forrige";
             var nextSrOnlyText = "Næste";
-            var expectedHtml = $@"<div class=""carousel slide"">
-                                    <div class=""carousel-inner""></div>
+            var expectedHtml = $@"<div tabindex=""-1"" class=""carousel slide"">
+                                    <div class=""carousel-inner"">
+                                      <div class=""carousel-item active""></div>
+                                      <div class=""carousel-item""></div>
+                                    </div>
                                     <a class=""carousel-control-prev"" role=""button"">
                                       <span class=""carousel-control-prev-icon"" aria-hidden=""true""></span>
                                       <span class=""sr-only"">{prevSrOnlyText}</span>
@@ -190,9 +196,13 @@ namespace Egil.RazorComponents.Bootstrap.Components.Carousels
                                       <span class=""sr-only"">{nextSrOnlyText}</span>
                                     </a>
                                   </div>";
-            var component = BuildCarousel<string>().WithParams(("ShowControls", true),
-                ("PreviousControlSrText", prevSrOnlyText),
-                ("NextControlSrText", nextSrOnlyText));
+            var component = BuildCarousel<string>()
+                .WithDefaultItems(2)
+                .WithParams(
+                    ("ShowControls", true),
+                    ("PreviousControlSrText", prevSrOnlyText),
+                    ("NextControlSrText", nextSrOnlyText)
+                );
 
             var result = component.Render();
 
@@ -202,7 +212,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Carousels
         [Fact(DisplayName = "Setting ShowIndicators renders indicators matching the number of items")]
         public void MyTestMethod11()
         {
-            var expectedHtml = $@"<div class=""carousel slide"">
+            var expectedHtml = $@"<div tabindex=""-1"" class=""carousel slide"">
                                     <ol class=""carousel-indicators"">
                                       <li class=""active""></li>
                                       <li></li>
@@ -229,7 +239,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Carousels
         {
             var activeCssClass = " active";
             var activeClassAttribute = @" class = ""active""";
-            var expectedHtml = $@"<div class=""carousel slide"">
+            var expectedHtml = $@"<div tabindex=""-1"" class=""carousel slide"">
                                     <ol class=""carousel-indicators"">
                                       <li{(activeIndex == 0 ? activeClassAttribute : string.Empty)}></li>
                                       <li{(activeIndex == 1 ? activeClassAttribute : string.Empty)}></li>
@@ -253,7 +263,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Carousels
         [Fact(DisplayName = "If no items are provided and TItem is set to CarouselStatic, then ChildContent is rendered as is")]
         public void MyTestMethodstatic2()
         {
-            var expectedHtml = $@"<div class=""carousel slide"">
+            var expectedHtml = $@"<div tabindex=""-1"" class=""carousel slide"">
                                     <div class=""carousel-inner"">
                                       <div class=""carousel-item active"">
                                         <img class=""d-block w-100"" />
@@ -282,7 +292,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Carousels
         [Fact(DisplayName = "In static content mode, indicators are rendered correctly after static content is rendered")]
         public void MyTestMethodstatic3()
         {
-            var expectedHtml = $@"<div class=""carousel slide"">
+            var expectedHtml = $@"<div tabindex=""-1"" class=""carousel slide"">
                                     <ol class=""carousel-indicators"">
                                       <li class=""active""></li>
                                       <li></li>

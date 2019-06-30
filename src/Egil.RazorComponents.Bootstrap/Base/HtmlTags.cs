@@ -36,5 +36,9 @@
         public const string MOUSEENTER = "onmouseenter";
         public const string MOUSELEAVE = "onmouseleave";
         public const string KEYDOWN = "onkeydown";
+
+        public const string POINTERDOWN = "onpointerdown";
+        public const string POINTERMOVE = "onpointermove";
+        public const string POINTERUP = "onpointerup";
     }
 }

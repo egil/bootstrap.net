@@ -72,8 +72,8 @@ namespace Egil.RazorComponents.Bootstrap.Utilities.Animations.Timers
         /// </summary>
         public void Start()
         {
-            _timer.Change(DueTime, Interval);
             _stopWatch.Restart();
+            _timer.Change(DueTime, Interval);
             Status = AnimationTimerStatus.Running;
         }
 
@@ -82,8 +82,8 @@ namespace Egil.RazorComponents.Bootstrap.Utilities.Animations.Timers
         /// </summary>
         public void Stop()
         {
-            _timer.Change(Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan);
             _stopWatch.Reset();
+            _timer.Change(Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan);
             Status = AnimationTimerStatus.Stopped;
         }
 
@@ -92,8 +92,8 @@ namespace Egil.RazorComponents.Bootstrap.Utilities.Animations.Timers
         /// </summary>
         public void Pause()
         {
-            _timer.Change(Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan);
             _stopWatch.Stop();
+            _timer.Change(Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan);
             Status = AnimationTimerStatus.Paused;
         }
 

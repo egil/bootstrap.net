@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Egil.RazorComponents.Bootstrap.Base;
+using Egil.RazorComponents.Bootstrap.Base.PointerEvents;
 using Egil.RazorComponents.Bootstrap.Components.Carousels.Parameters;
 using Egil.RazorComponents.Bootstrap.Components.Html;
 using Egil.RazorComponents.Bootstrap.Extensions;
@@ -22,10 +23,13 @@ namespace Egil.RazorComponents.Bootstrap.Components.Carousels
 
         private readonly AnimationTimer _changeItemTimer;
         private readonly List<CarouselItem> _carouselItems = new List<CarouselItem>();
+        private HorizontalSwipePointerEventDetector _swipeDetector;
 
         private bool ChangingItems { get; set; }
-        private int ItemCount => StaticContentMode ? _carouselItems.Count : Items?.Count ?? 0;
         private bool StaticContentMode { get; } = typeof(TItem) == CarouselStaticType;
+
+        public int Count => StaticContentMode ? _carouselItems.Count : Items?.Count ?? 0;
+        public bool Cycling => _changeItemTimer.IsRunning;
 
         [Parameter] public RenderFragment<TItem>? ChildContent { get; set; }
         [Parameter] public IReadOnlyList<TItem>? Items { get; set; }
@@ -34,8 +38,11 @@ namespace Egil.RazorComponents.Bootstrap.Components.Carousels
         [Parameter] public AnimationParameter Animation { get; set; } = AnimationParameter.Slide;
         [Parameter] public bool Autoplay { get; set; } = true;
         [Parameter] public TimeSpan Interval { get; set; } = TimeSpan.FromSeconds(5);
+        [Parameter] public bool Wrap { get; set; } = true;
+        [Parameter] public bool Ride { get; set; } = false;
         [Parameter] public bool PauseOnHover { get; set; } = true;
-        [Parameter] public bool KeyboardNavigateable { get; set; } = true;
+        [Parameter] public bool EnableKeyboard { get; set; } = true;
+        [Parameter] public bool EnableTouch { get; set; } = true;
         [Parameter] public bool ShowControls { get; set; } = false;
         [Parameter] public bool ShowIndicators { get; set; } = false;
         [Parameter] public string PreviousControlSrText { get; set; } = DefaultPreviousControlSrText;
@@ -44,12 +51,12 @@ namespace Egil.RazorComponents.Bootstrap.Components.Carousels
         public Carousel()
         {
             DefaultCssClass = DefaultCarouselCssClass;
-            _changeItemTimer = new AnimationTimer(async () => await InvokeAsync(Next));
+            _changeItemTimer = new AnimationTimer(async () => await InvokeAsync(AutoplayNext));
         }
 
         public void Cycle()
         {
-            if (ItemCount > 0 && !_changeItemTimer.IsRunning)
+            if (Count > 1 && !_changeItemTimer.IsRunning)
             {
                 _changeItemTimer.Start();
             }
@@ -73,16 +80,55 @@ namespace Egil.RazorComponents.Bootstrap.Components.Carousels
                 _changeItemTimer.Stop();
         }
 
+        public async Task GoTo(ushort index)
+        {
+            if (index >= Count) throw new ArgumentOutOfRangeException(nameof(index), "Index cannot be higher than the number of items in the carousel.");
+            await ChangeActiveItem(ActiveIndex, index);
+        }
+
+        public async Task GoTo(object index)
+        {
+            await GoTo(ushort.Parse(index.ToString()));
+        }
+
         public async Task Previous()
         {
-            if (ItemCount == 0) return;
-            await ChangeActiveItem(ActiveIndex, (ActiveIndex - 1 + ItemCount) % ItemCount);
+            if (Count < 2) return;
+            await ChangeActiveItem(ActiveIndex, (ActiveIndex - 1 + Count) % Count);
         }
 
         public async Task Next()
         {
-            if (ItemCount == 0) return;
-            await ChangeActiveItem(ActiveIndex, (ActiveIndex + 1 + ItemCount) % ItemCount);
+            if (Count < 2) return;
+            await ChangeActiveItem(ActiveIndex, (ActiveIndex + 1 + Count) % Count);
+        }
+
+        protected async Task UserNext()
+        {
+            Autoplay = Ride;
+            await Next();
+        }
+
+        protected async Task UserPrevious()
+        {
+            Autoplay = Ride;
+            await Previous();
+        }
+
+        protected async Task UserGoTo(ushort index)
+        {
+            Autoplay = Ride;
+            await GoTo(index);
+        }
+
+        protected async Task AutoplayNext()
+        {
+            if (!Wrap && ActiveIndex + 1 == Count)
+            {
+                _changeItemTimer.Stop();
+                return;
+            }
+            await Next();
         }
 
         protected override void OnBootstrapParametersSet()
@@ -95,6 +141,10 @@ namespace Egil.RazorComponents.Bootstrap.Components.Carousels
             if (Autoplay)
             {
                 Cycle();
+            }
+            if (EnableTouch && _swipeDetector is null)
+            {
+                _swipeDetector = new HorizontalSwipePointerEventDetector(async () => await Previous(), async () => await Next());
             }
         }
 
@@ -117,45 +167,51 @@ namespace Egil.RazorComponents.Bootstrap.Components.Carousels
         protected internal override void DefaultRenderFragment(RenderTreeBuilder builder)
         {
             builder.OpenElement(HtmlTags.DIV);
+            builder.AddClassAttribute(CssClassValue);
 
             AddPauseOnMouseHover(builder);
             AddKeyboardNavigation(builder);
+            AddTouchNavigation(builder);
 
-            builder.AddClassAttribute(CssClassValue);
             builder.AddContent(IndicatorsRenderFragment);
             builder.AddContent(CarouselInnerRenderFragment);
             builder.AddContent(ControlsRenderFragment);
             builder.CloseElement();
         }
 
-        private void AddKeyboardNavigation(RenderTreeBuilder builder)
-        {
-            if (KeyboardNavigateable)
-            {
-                // To make the KEYDOWN event fire on a DIV element, it must be focusable. Setting
-                // tabindex to -1 makes it focusable, without making it possible to tab to it.
-                // See https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/tabindex for details.
-                builder.AddTabIndex(-1);
-
-                builder.AddEventListener(HtmlEvents.KEYDOWN, EventCallback.Factory.Create<UIKeyboardEventArgs>(this, async (UIKeyboardEventArgs e) =>
-                {
-                    switch (e.Code)
-                    {
-                        case "ArrowLeft": await Previous(); break;
-                        case "ArrowRight": await Next(); break;
-                        default: break;
-                    }
-                }));
-            }
-        }
-
         private void AddPauseOnMouseHover(RenderTreeBuilder builder)
         {
-            if (PauseOnHover && Autoplay || _changeItemTimer.IsRunning)
+            if (Count > 1 && PauseOnHover && (Autoplay || Cycling))
             {
                 builder.AddEventListener(HtmlEvents.MOUSEENTER, EventCallback.Factory.Create<UIMouseEventArgs>(this, Pause));
                 builder.AddEventListener(HtmlEvents.MOUSELEAVE, EventCallback.Factory.Create<UIMouseEventArgs>(this, Resume));
             }
+        }
+
+        private void AddKeyboardNavigation(RenderTreeBuilder builder)
+        {
+            if (!EnableKeyboard || Count < 2) return;
+
+            // To make the KEYDOWN event fire on a DIV element, it must be focusable. Setting
+            // tabindex to -1 makes it focusable, without making it possible to tab to it.
+            // See https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/tabindex for details.
+            builder.AddTabIndex(-1);
+
+            builder.AddEventListener(HtmlEvents.KEYDOWN, EventCallback.Factory.Create<UIKeyboardEventArgs>(this, async (UIKeyboardEventArgs e) =>
+            {
+                switch (e.Code)
+                {
+                    case "ArrowLeft": await UserPrevious(); break;
+                    case "ArrowRight": await UserNext(); break;
+                    default: break;
+                }
+            }));
+        }
+
+        private void AddTouchNavigation(RenderTreeBuilder builder)
+        {
+            if (!EnableTouch || Count < 2) return;
+            builder.AddEventListeners(_swipeDetector);
         }
 
         private void CarouselInnerRenderFragment(RenderTreeBuilder builder)
@@ -208,10 +264,10 @@ namespace Egil.RazorComponents.Bootstrap.Components.Carousels
 
         private void ControlsRenderFragment(RenderTreeBuilder builder)
         {
-            if (!ShowControls) return;
+            if (!ShowControls || Count < 2) return;
 
             builder.OpenElement(HtmlTags.A);
-            builder.AddEventListener(HtmlEvents.CLICK, EventCallback.Factory.Create<UIMouseEventArgs>(this, Previous));
+            builder.AddEventListener(HtmlEvents.CLICK, EventCallback.Factory.Create<UIMouseEventArgs>(this, UserPrevious));
             builder.AddClassAttribute("carousel-control-prev");
             builder.AddRoleAttribute("button");
             builder.AddMarkupContent(@"<span class=""carousel-control-prev-icon"" aria-hidden=""true""></span>");
@@ -219,7 +275,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Carousels
             builder.CloseElement();
 
             builder.OpenElement(HtmlTags.A);
-            builder.AddEventListener(HtmlEvents.CLICK, EventCallback.Factory.Create<UIMouseEventArgs>(this, Next));
+            builder.AddEventListener(HtmlEvents.CLICK, EventCallback.Factory.Create<UIMouseEventArgs>(this, UserNext));
             builder.AddClassAttribute("carousel-control-next");
             builder.AddRoleAttribute("button");
             builder.AddMarkupContent(@"<span class=""carousel-control-next-icon"" aria-hidden=""true""></span>");
@@ -229,17 +285,17 @@ namespace Egil.RazorComponents.Bootstrap.Components.Carousels
 
         private void IndicatorsRenderFragment(RenderTreeBuilder builder)
         {
-            if (!ShowIndicators) return;
+            if (!ShowIndicators || Count < 2) return;
 
             builder.OpenElement(HtmlTags.OL);
             builder.AddClassAttribute("carousel-indicators");
-            for (int i = 0; i < ItemCount; i++)
+            for (ushort i = 0; i < Count; i++)
             {
                 var itemIndex = i;
                 builder.OpenElement(HtmlTags.LI);
                 builder.AddEventListener(HtmlEvents.CLICK,
                     EventCallback.Factory.Create<UIMouseEventArgs>(this,
-                        () => ChangeActiveItem(ActiveIndex, itemIndex)
+                        async () => await UserGoTo(itemIndex)
                     )
                 );
                 if (ActiveIndex == itemIndex) builder.AddClassAttribute("active");
@@ -306,7 +362,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Carousels
             StateHasChanged();
 
             await Task.Delay(1);
-            
+
             // Step 2
             activeElm.UpdateCssClass(directionalClassName);
             nextElm.UpdateCssClass($"{directionalClassName} {orderClassName}");
