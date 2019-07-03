@@ -1,3 +1,4 @@
+using Egil.RazorComponents.Bootstrap.Services;
 using Egil.RazorComponents.Bootstrap.Services.PageVisibilityAPI;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -14,7 +15,7 @@ namespace Egil.RazorComponents.Bootstrap.BlazorTestServer
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddPageVisibility();
+            services.AddBootstrapServices();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

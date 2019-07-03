@@ -1,0 +1,5 @@
+﻿@code {
+    [Parameter] public string Color { get; set; }
+    [Parameter] public RenderFragment ChildContent { get; set; }
+}
+<div class="bg-@Color">@ChildContent</div>

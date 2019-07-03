@@ -7,11 +7,11 @@
         public const string CAPTION = "caption";
         public const string DIV = "div";
         public const string FIGURE = "figure";
-        public const string FIGCAPTION = "figcaption";        
+        public const string FIGCAPTION = "figcaption";
         public const string FOOTER = "footer";
         public const string IMG = "img";
         public const string HEADER = "header";
-        public const string LI = "li";        
+        public const string LI = "li";
         public const string NAV = "nav";
         public const string OL = "ol";
         public const string P = "p";
@@ -24,8 +24,11 @@
     public static class HtmlAttrs
     {
         public const string ARIA_LABEL = "aria-label";
+        public const string ARIA_EXPANDED = "aria-expanded";
+        public const string ARIA_CONTROLS = "aria-controls";        
         public const string ALT = "alt";
         public const string HREF = "href";
+        public const string ROLE = "role";
         public const string SRC = "src";
         public const string TYPE = "type";
     }

@@ -20,6 +20,11 @@ namespace Egil.RazorComponents.Bootstrap.Extensions
             builder.OpenComponent<TComponent>(sequence);
         }
 
+        public static void AddElementReferenceCapture(this RenderTreeBuilder builder, Action<ElementRef> elementReferenceCaptureAction, [CallerLineNumber] int sequence = DEFAULT_SEQUENCE)
+        {
+            builder.AddElementReferenceCapture(sequence, elementReferenceCaptureAction);
+        }
+
         public static void AddAttribute(this RenderTreeBuilder builder, string name, string? value, [CallerLineNumber] int sequence = DEFAULT_SEQUENCE)
         {
             if (string.IsNullOrEmpty(value)) return;
@@ -99,37 +104,12 @@ namespace Egil.RazorComponents.Bootstrap.Extensions
 
         public static void AddAriaHiddenAttribute(this RenderTreeBuilder builder, bool value = true, [CallerLineNumber] int sequence = DEFAULT_SEQUENCE)
         {
-            builder.AddAttribute(sequence, "aria-hidden", value.ToString().ToLower());
+            builder.AddAttribute(sequence, "aria-hidden", value.ToLowerCaseString());
         }
 
         public static void AddTabIndex(this RenderTreeBuilder builder, int index = 0, [CallerLineNumber] int sequence = DEFAULT_SEQUENCE)
         {
             builder.AddAttribute(sequence, "tabindex", index);
         }
-
-        public static void AddClassAttribute(this RenderTreeBuilder builder, int sequence, string? value)
-        {
-            if (string.IsNullOrEmpty(value)) return;
-            builder.AddAttribute(sequence, "class", value);
-        }
-
-        public static void AddRoleAttribute(this RenderTreeBuilder builder, int sequence, string? value)
-        {
-            if (string.IsNullOrEmpty(value)) return;
-            builder.AddAttribute(sequence, "role", value);
-        }
-
-        public static void AddAriaLabelAttribute(this RenderTreeBuilder builder, int sequence, string? value)
-        {
-            if (string.IsNullOrEmpty(value)) return;
-            builder.AddAttribute(sequence, "aria-label", value);
-        }
-
-        public static void AddAriaHiddenAttribute(this RenderTreeBuilder builder, int sequence, bool value = true)
-        {
-            builder.AddAttribute(sequence, "aria-hidden", value);
-        }
-        
-        //public static void AddDefaultRenderTree(this RenderTreeBuilder builder, int sequence, RenderFragment renderFragment)
     }
 }

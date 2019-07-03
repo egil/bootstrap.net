@@ -1,19 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using Egil.RazorComponents.Bootstrap.Base;
 using Egil.RazorComponents.Bootstrap.Base.PointerEvents;
 using Egil.RazorComponents.Bootstrap.Components.Carousels.Parameters;
 using Egil.RazorComponents.Bootstrap.Components.Html;
 using Egil.RazorComponents.Bootstrap.Extensions;
+using Egil.RazorComponents.Bootstrap.Services.PageVisibilityAPI;
 using Egil.RazorComponents.Bootstrap.Utilities.Animations.Timers;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.RenderTree;
 
 namespace Egil.RazorComponents.Bootstrap.Components.Carousels
 {
-    public class Carousel<TItem> : BootstrapContextAwareComponentBase, IDisposable
+    public sealed class Carousel<TItem> : BootstrapContextAwareComponentBase, IDisposable
     {
         private const string DefaultCarouselCssClass = "carousel";
         private const string CarouselInnerCssClass = "carousel-inner";
@@ -28,24 +28,104 @@ namespace Egil.RazorComponents.Bootstrap.Components.Carousels
         private bool ChangingItems { get; set; }
         private bool StaticContentMode { get; } = typeof(TItem) == CarouselStaticType;
 
+        [Inject] private IPageVisibilityAPI? PageVisibilityAPI { get; set; }
+
+        /// <summary>
+        /// Gets the total number of items in the carousel.
+        /// </summary>
         public int Count => StaticContentMode ? _carouselItems.Count : Items?.Count ?? 0;
+
+        /// <summary>
+        /// Gets whether the carousel is currently automatically cycling.
+        /// </summary>
         public bool Cycling => _changeItemTimer.IsRunning;
 
-        [Parameter] public RenderFragment<TItem>? ChildContent { get; set; }
-        [Parameter] public IReadOnlyList<TItem>? Items { get; set; }
-        [Parameter] public ushort ActiveIndex { get; set; } = 0;
+        [Parameter] public RenderFragment<TItem>? ChildContent { get; private set; }
+
+        [Parameter] public IReadOnlyList<TItem>? Items { get; private set; }
+
+        /// <summary>
+        /// Gets or sets the current active index of carousel.
+        /// </summary>
+        [Parameter] public ushort ActiveIndex { get; private set; } = 0;
+
         [Parameter] public EventCallback<ushort> ActiveIndexChanged { get; set; }
+
+        /// <summary>
+        /// Gets or sets the item change animation. 
+        /// <list type="bullet">
+        ///   <listheader>
+        ///     <term>slide</term>
+        ///     <description>*Default: Uses a 0.6 second slide animation between items.</description>
+        ///   </listheader>
+        ///   <item>
+        ///     <term>fade</term>
+        ///     <description>A 0.6s fading animation between items.</description>
+        ///   </item>
+        ///   <item>
+        ///     <term>none</term>
+        ///     <description>An instant change between items.</description>
+        ///   </item>
+        /// </list>
+        /// </summary>
         [Parameter] public AnimationParameter Animation { get; set; } = AnimationParameter.Slide;
+
+        /// <summary>
+        /// Gets or sets whether the carousel will automatically cycle to the next item after the specified <see cref="Interval"/>.
+        /// </summary>
         [Parameter] public bool Autoplay { get; set; } = true;
+
+        /// <summary>
+        /// Gets or sets the amount of time to delay between automatically cycling an item.
+        /// Default is five seconds.
+        /// </summary>
         [Parameter] public TimeSpan Interval { get; set; } = TimeSpan.FromSeconds(5);
+
+        /// <summary>
+        /// Gets or sets whether the carousel should cycle continuously or stop <see cref="Autoplay"/> at the last item.
+        /// </summary>
         [Parameter] public bool Wrap { get; set; } = true;
+
+        /// <summary>
+        /// Gets or sets whether the carousel should continue <see cref="Autoplay"/> after the user manually cycles the an item.
+        /// </summary>
         [Parameter] public bool Ride { get; set; } = false;
+
+        /// <summary>
+        /// Gets or sets whether the carousel pauses <see cref="Autoplay"/> when the user hovers a pointer over the carousel.
+        /// </summary>
         [Parameter] public bool PauseOnHover { get; set; } = true;
+
+        /// <summary>
+        /// Gets or sets whether the carousel should react to keyboard events.
+        /// Default is true.
+        /// </summary>
         [Parameter] public bool EnableKeyboard { get; set; } = true;
+
+        /// <summary>
+        /// Gets or sets whether the carousel should support left/right swipe interactions on touchscreen devices.
+        /// Default is true.
+        /// </summary>
         [Parameter] public bool EnableTouch { get; set; } = true;
+
+        /// <summary>
+        /// Gets or sets whether Next/Previous controls should be rendered.
+        /// </summary>
         [Parameter] public bool ShowControls { get; set; } = false;
+
+        /// <summary>
+        /// Gets or sets whether indicators should be rendered.
+        /// </summary>
         [Parameter] public bool ShowIndicators { get; set; } = false;
+
+        /// <summary>
+        /// Gets or sets the screen-reader only text for the Previous control.
+        /// </summary>
         [Parameter] public string PreviousControlSrText { get; set; } = DefaultPreviousControlSrText;
+
+        /// <summary>
+        /// Gets or sets the screen-reader only text for the Next control.
+        /// </summary>
         [Parameter] public string NextControlSrText { get; set; } = DefaultNextControlSrText;
 
         public Carousel()
@@ -54,6 +134,9 @@ namespace Egil.RazorComponents.Bootstrap.Components.Carousels
             _changeItemTimer = new AnimationTimer(async () => await InvokeAsync(AutoplayNext));
         }
 
+        /// <summary>
+        /// Starts the automatic cycling of items in the carousel based on the specified <see cref="Interval"/>.
+        /// </summary>
         public void Cycle()
         {
             if (Count > 1 && !_changeItemTimer.IsRunning)
@@ -62,66 +145,93 @@ namespace Egil.RazorComponents.Bootstrap.Components.Carousels
             }
         }
 
+        /// <summary>
+        /// Resumes the automatic cycling of the carousel that has been paused (<see cref="Pause"/>).
+        /// </summary>
         public void Resume()
         {
             if (_changeItemTimer.IsPaused)
                 _changeItemTimer.Resume();
         }
 
+        /// <summary>
+        /// Pauses the automatic cycling of the carousel.
+        /// </summary>
         public void Pause()
         {
             if (_changeItemTimer.IsRunning)
                 _changeItemTimer.Pause();
         }
 
+        /// <summary>
+        /// Stops the automatic cycling of the carousel.
+        /// </summary>
         public void Stop()
         {
             if (_changeItemTimer.IsRunning)
                 _changeItemTimer.Stop();
         }
 
+        /// <summary>
+        /// Changes the active index to another item. Zero based indexing is used.
+        /// </summary>
+        /// <param name="index">A zero based index</param>
+        /// <returns></returns>
         public async Task GoTo(ushort index)
         {
             if (index >= Count) throw new ArgumentOutOfRangeException(nameof(index), "Index cannot be higher than the number of items in the carousel.");
             await ChangeActiveItem(ActiveIndex, index);
         }
 
+        /// <summary>
+        /// Changes the active index to another item. Zero based indexing is used.
+        /// </summary>
+        /// <param name="index">A zero based index</param>
+        /// <returns></returns>
         public async Task GoTo(object index)
         {
             await GoTo(ushort.Parse(index.ToString()));
         }
 
+        /// <summary>
+        /// Sets the previous item as the active in the carousel.
+        /// </summary>
+        /// <returns></returns>
         public async Task Previous()
         {
             if (Count < 2) return;
             await ChangeActiveItem(ActiveIndex, (ActiveIndex - 1 + Count) % Count);
         }
 
+        /// <summary>
+        /// Sets the next item as the active in the carousel.
+        /// </summary>
+        /// <returns></returns>
         public async Task Next()
         {
             if (Count < 2) return;
             await ChangeActiveItem(ActiveIndex, (ActiveIndex + 1 + Count) % Count);
         }
 
-        protected async Task UserNext()
+        private async Task UserNext()
         {
             Autoplay = Ride;
             await Next();
         }
 
-        protected async Task UserPrevious()
+        private async Task UserPrevious()
         {
             Autoplay = Ride;
             await Previous();
         }
 
-        protected async Task UserGoTo(ushort index)
+        private async Task UserGoTo(ushort index)
         {
             Autoplay = Ride;
             await GoTo(index);
         }
 
-        protected async Task AutoplayNext()
+        private async Task AutoplayNext()
         {
             if (!Wrap && ActiveIndex + 1 == Count)
             {
@@ -129,6 +239,12 @@ namespace Egil.RazorComponents.Bootstrap.Components.Carousels
                 return;
             }
             await Next();
+        }
+
+        protected override void OnAfterFirstRender()
+        {            
+            if (!(PageVisibilityAPI is null))
+                PageVisibilityAPI.OnPageVisibilityChanged += PageVisibilityAPI_OnPageVisibilityChanged;
         }
 
         protected override void OnBootstrapParametersSet()
@@ -387,8 +503,17 @@ namespace Egil.RazorComponents.Bootstrap.Components.Carousels
             StateHasChanged();
         }
 
+        private void PageVisibilityAPI_OnPageVisibilityChanged(object sender, PageVisibilityChangedEventArgs e)
+        {
+            if (e.IsPageVisible && !Cycling) Resume();
+            else if (Cycling) Pause();
+        }
+
         public void Dispose()
         {
+            if(!(PageVisibilityAPI is null))
+                PageVisibilityAPI.OnPageVisibilityChanged -= PageVisibilityAPI_OnPageVisibilityChanged;
+
             _changeItemTimer.Dispose();
         }
     }

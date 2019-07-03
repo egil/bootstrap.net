@@ -1,50 +1,88 @@
 ﻿@page "/"
-@code {
-    public (string url, string alt, string text)[] Images { get; } = {
-        ("https://picsum.photos/id/1/536/354", "Lorem ipsum dolor", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus scelerisque elit quis suscipit rhoncus. Nunc nec posuere elit. Proin et."),
-        ("https://picsum.photos/id/20/536/354?grayscale", "Fusce a pretium", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc ex mi, elementum nec interdum non, convallis quis sapie. Nam felis."),
-        ("https://picsum.photos/id/30/536/354", "Aliquam eleifend arcu", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus vitae metus venenatis, lacinia ex at, sodales lorem. Nullam eget venenatis."),
-        ("https://picsum.photos/id/40/536/354?grayscale", "Curabitur mattis euismod", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin posuere id lorem ut dapibus. Sed luctus vehicula ipsum ut porta."),
-        ("https://picsum.photos/id/50/536/354", "Vivamus id pretium", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla lacinia, risus elementum molestie pharetra, nisl dui fermentum velit, sollicitudin semper."),
-        ("https://picsum.photos/id/60/536/354?grayscale", "Phasellus eu volutpat", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu aliquet augue. Donec vitae elit rhoncus, faucibus est id, dapibus.")
-    };
 
-    Carousel<(string url, string alt, string text)> carousel;
+@code {
+    Collapse c1;
 }
 
-<div class="form-group">
-    <label for="exampleFormControlInput1">Change frame: </label>
-    <input type="number" class="form-control" id="exampleFormControlInput1" 
-           @onchange=@(x=> carousel.GoTo(x.Value)) value="0" />
-</div>
+<button Color="secondary" ToggleFor="c1,c2">
+    Toggle for c1 and c2
+</button>
+<a AsButton Color="primary" ToggleFor="c1" class="text-white">
+    Toggle for c1
+</a>
+<a AsButton Color="danger" class="text-white" @onclick=@(_ => c1.Toggle())>
+    Indirect
+</a>
+<hr />
+<Collapse id="c1" @ref=c1>
+    <Card>
+        <content>Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.</content>
+    </Card>
+</Collapse>
+<hr />
+<Collapse id="c2">
+    <Card>
+        <content>Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.</content>
+    </Card>
+</Collapse>
+@*<Container>*@
+@*<Row>
+        <Column>
+            <p>
+                <a AsButton Color="primary" aria-expanded="false" aria-controls="collapseExample" @onclick=@(_=> c1.Expanded = !c1.Expanded)>
+                    Link with href
+                </a>
+                <button Color="secondary" aria-expanded="false" aria-controls="collapseExample" @onclick=@(_=> c1.Expanded = !c1.Expanded)>
+                    Button with data-target
+                </button>
+            </p>
 
-<Container>
-    <Row>
-        <Column>
-            <Carousel Items="@Images" Context="item" ShowControls ShowIndicators @ref="carousel" Ride>
-                <img src=@item.url alt=@item.alt />
-                <caption>@item.text</caption>
-            </Carousel>
+            <Collapse @ref="c1">
+                <Card>
+                    <content>Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.</content>
+                </Card>
+            </Collapse>
         </Column>
         <Column>
-            <Carousel Animation="fade" Items="@Images" Context="item" ShowControls ShowIndicators Wrap="false">
-                <img src=@item.url alt=@item.alt />
-            </Carousel>
+            <Collapse @ref="c2">
+                <Card>
+                    <content>Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.</content>
+                </Card>
+            </Collapse>
+            <hr />
+            <p>
+                <a AsButton Color="primary" aria-expanded="false" aria-controls="collapseExample" @onclick=@(_=> c2.Expanded = !c2.Expanded)>
+                    Link with href
+                </a>
+                <button Color="secondary" aria-expanded="false" aria-controls="collapseExample" @onclick=@(_=> c2.Expanded = !c2.Expanded)>
+                    Button with data-target
+                </button>
+            </p>
         </Column>
-    </Row>
-    <Row>
+    </Row>*@
+@*<Row>
+        <Column Span="md-6">
+            <p>
+                <a AsButton Color="primary" ToggleFor="c3id, c4id" PreventDefaultOnClick href="https://code.org/" class="text-white">
+                    Link with href
+                </a>
+                <button Color="secondary" ToggleFor="c3id">
+                    Button with data-target
+                </button>
+            </p>
+            <Collapse id="c3id">
+                <Card>
+                    <content>Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.</content>
+                </Card>
+            </Collapse>
+        </Column>
         <Column>
-            <Carousel Animation="none" Items="@Images" Context="item" ShowControls ShowIndicators>
-                <img src=@item.url alt=@item.alt />
-            </Carousel>
+            <Collapse id="c4id">
+                <Card>
+                    <content>Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.</content>
+                </Card>
+            </Collapse>
         </Column>
-        <Column>
-            <Carousel TItem="CarouselStatic" ShowControls ShowIndicators>
-                @foreach (var (url, alt, text) in Images)
-                {
-                    <CarouselItem><img src=@url alt=@alt /></CarouselItem>
-                }
-            </Carousel>
-        </Column>
-    </Row>
-</Container>
+    </Row>*@
+
+@*</Container>*@

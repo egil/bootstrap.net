@@ -1,22 +1,32 @@
 ﻿using Egil.RazorComponents.Bootstrap.Base;
 using Egil.RazorComponents.Bootstrap.Base.CssClassValues;
+using Egil.RazorComponents.Bootstrap.Components.Collapsibles;
 using Egil.RazorComponents.Bootstrap.Components.Html.Parameters;
 using Egil.RazorComponents.Bootstrap.Extensions;
+using Egil.RazorComponents.Bootstrap.Utilities;
 using Egil.RazorComponents.Bootstrap.Utilities.Colors;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.RenderTree;
 using Microsoft.AspNetCore.Components.Routing;
+using Microsoft.JSInterop;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Egil.RazorComponents.Bootstrap.Components.Html
 {
-    public sealed class A : BootstrapHtmlElementComponentBase, IDisposable
+    public sealed class A : BootstrapHtmlElementComponentBase, IToggleForCollapse, IDisposable
     {
+        private ElementRef _domElement;
+        private bool _preventDefaultHandlerRegistered;
+
         private string? MatchUrlAbsolute { get; set; }
 
         private ICssClassProvider ActiveCssClass { get; set; } = CssClassProviderBase.Empty;
 
         [Inject] private IUriHelper? UriHelper { get; set; }
+
+        [Inject] private IJSRuntime? JsRuntime { get; set; }
 
         public bool Active { get; private set; }
 
@@ -38,17 +48,46 @@ namespace Egil.RazorComponents.Bootstrap.Components.Html
         /// </summary>
         [Parameter] public string? MatchUrl { get; set; }
 
+        /// <summary>
+        /// Renders the link as a button using Bootstraps button style.
+        /// </summary>
         [Parameter, CssClassToggleParameter("btn")] public bool AsButton { get; set; } = false;
 
         /// <summary>
         /// Sets the color of the button.
         /// </summary>
-        [Parameter]
-        public ColorParameter<ButtonColor> Color { get; set; } = ColorParameter<ButtonColor>.None;
+        [Parameter] public ColorParameter<ButtonColor> Color { get; set; } = ColorParameter<ButtonColor>.None;
+
+        [Parameter] public bool PreventDefaultOnClick { get; set; }
+
+        #region IToggleForCollapse
+
+        private bool _isToggleTargetExpanded;
+        private string? _ariaControls;
+        public event EventHandler OnToggled;
+
+        [Parameter] public string? ToggleFor { get; set; }
+
+        void IToggleForCollapse.SetExpandedState(bool isExpanded)
+        {
+            _isToggleTargetExpanded = isExpanded;
+            StateHasChanged();
+        }
+
+        #endregion
 
         public A()
         {
             DefaultElementName = HtmlTags.A;
+        }
+
+        protected override void OnBootstrapInit()
+        {
+            // We'll consider re-rendering on each location change
+            UriHelper!.OnLocationChanged += OnLocationChanged;
+                        
+            IToggleForCollapse.Connect(this);
+            _ariaControls = string.Join(' ', ToggleFor?.SplitOnComma() ?? Array.Empty<string>());
         }
 
         /// <inheritdoc />
@@ -56,12 +95,30 @@ namespace Egil.RazorComponents.Bootstrap.Components.Html
         {
             // To avoid leaking memory, it's important to detach any event handlers in Dispose()
             UriHelper!.OnLocationChanged -= OnLocationChanged;
+            IToggleForCollapse.Disconnect(this);
         }
 
-        protected override void OnBootstrapInit()
+        protected internal override void DefaultRenderFragment(RenderTreeBuilder builder)
         {
-            // We'll consider re-rendering on each location change
-            UriHelper!.OnLocationChanged += OnLocationChanged;
+            builder.OpenElement(DefaultElementName);
+            
+            if (!(OnToggled is null))
+            {
+                builder.AddEventListener(HtmlEvents.CLICK, EventCallback.Factory.Create<UIMouseEventArgs>(this, (e) => OnToggled?.Invoke(this, EventArgs.Empty)));
+            }
+            
+            if (!(ToggleFor is null))
+            {
+                builder.AddAttribute(HtmlAttrs.ARIA_EXPANDED, _isToggleTargetExpanded.ToLowerCaseString());
+                builder.AddAttribute(HtmlAttrs.ARIA_CONTROLS, _ariaControls);
+                builder.AddRoleAttribute("button");
+            }
+
+            builder.AddClassAttribute(CssClassValue);
+            builder.AddMultipleAttributes(AdditionalAttributes);
+            builder.AddContent(ChildContent);
+            builder.AddElementReferenceCapture(elm => _domElement = elm);
+            builder.CloseElement();
         }
 
         protected override void OnBootstrapParametersSet()
@@ -72,6 +129,29 @@ namespace Egil.RazorComponents.Bootstrap.Components.Html
                 MatchUrlAbsolute = newMatchUrl;
                 Active = UriHelper!.CurrentUriMatches(MatchUrlAbsolute, Match);
                 SetActiveCssClassProvider();
+            }
+        }
+
+        protected override async Task OnAfterRenderAsync()
+        {
+            await base.OnAfterRenderAsync();
+
+            await ApplyPreventDefaultRule();
+        }
+
+        private async Task ApplyPreventDefaultRule()
+        {
+            if (!PreventDefaultOnClick && !_preventDefaultHandlerRegistered) return;
+
+            if (PreventDefaultOnClick)
+            {
+                await _domElement.PreventDefault(JsRuntime, "click");
+                _preventDefaultHandlerRegistered = true;
+            }
+            else
+            {
+                await _domElement.AllowDefault(JsRuntime, "click");
+                _preventDefaultHandlerRegistered = false;
             }
         }
 
@@ -92,7 +172,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Html
         {
             if (!string.IsNullOrWhiteSpace(MatchUrl))
                 return UriHelper!.ToAbsoluteUri(MatchUrl).AbsoluteUri;
-            else if (AdditionalAttributes.TryGetValue(HtmlAttrs.HREF, out string href) && !string.IsNullOrWhiteSpace(href))
+            else if (AdditionalAttributes.TryGetValue(HtmlAttrs.HREF, out object value) && value is string href && !string.IsNullOrWhiteSpace(href))
                 return UriHelper!.ToAbsoluteUri(href).AbsoluteUri;
             else
                 return null;

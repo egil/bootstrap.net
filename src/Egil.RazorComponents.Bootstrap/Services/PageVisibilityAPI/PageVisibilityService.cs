@@ -9,7 +9,6 @@ namespace Egil.RazorComponents.Bootstrap.Services.PageVisibilityAPI
         private readonly Func<PageVisibilityAPIService, DotNetObjectRef<PageVisibilityAPIService>> _dotNetObjectRefFactory;
         private EventHandler<PageVisibilityChangedEventArgs>? _onPageVisibleChanged;
         private bool _disposed = false;
-        private bool _adapterInjected = false;
         private bool _subscribed = false;
         private bool _subscribing = false;
         private bool _unsubscribing = false;
@@ -63,15 +62,9 @@ namespace Egil.RazorComponents.Bootstrap.Services.PageVisibilityAPI
             {
                 _subscribing = true;
 
-                if (!_adapterInjected)
-                {
-                    await _jsRuntime.InvokeAsync<object>("eval", PageVisibilityApiRazorAdapter);
-                    _adapterInjected = true;
-                }
-
                 if (!_subscribed)
                 {
-                    await _jsRuntime.InvokeAsync<object>("window.pageVisibilityApiRazorAdapter.subscribe", _dotNetObjectRefFactory(this));
+                    await _jsRuntime.InvokeAsync<object>("window.bootstrapDotNet.services.pageVisibilityApiInterop.subscribe", _dotNetObjectRefFactory(this), nameof(SetVisibilityState));
                     _subscribed = true;
                 }
             }
@@ -93,7 +86,7 @@ namespace Egil.RazorComponents.Bootstrap.Services.PageVisibilityAPI
             {
                 _unsubscribing = true;
                 
-                await _jsRuntime.InvokeAsync<object>("window.pageVisibilityApiRazorAdapter.unsubscribe");
+                await _jsRuntime.InvokeAsync<object>("window.bootstrapDotNet.services.pageVisibilityApiInterop.unsubscribe");
                 
                 _subscribed = false; 
                 _subscribing = false; 
@@ -141,61 +134,5 @@ namespace Egil.RazorComponents.Bootstrap.Services.PageVisibilityAPI
             }
         }
         #endregion
-
-        private const string PageVisibilityApiRazorAdapter =
-            @"(function () {
-                'use strict';
-                if (window.pageVisibilityBlazorInterop !== undefined) {
-                    console.log('pageVisibilityBlazorInterop functionality injected in page but is already defined');
-                    return;
-                }
-
-                var dotnetCallback = undefined;
-                var visibilityChangeListener;
-                var hidden, visibilityChange;
-
-                if (typeof document.hidden !== 'undefined') {
-                    hidden = 'hidden';
-                    visibilityChange = 'visibilitychange';
-                } else if (typeof document.msHidden !== 'undefined') {
-                    hidden = 'msHidden';
-                    visibilityChange = 'msvisibilitychange';
-                } else if (typeof document.webkitHidden !== 'undefined') {
-                    hidden = 'webkitHidden';
-                    visibilityChange = 'webkitvisibilitychange';
-                }
-
-                var handleVisibilityChange = function () {
-                    dotnetCallback.invokeMethodAsync('" + nameof(SetVisibilityState) + @"', isPageVisible());
-                };
-
-                var isPageVisible = function () {
-                    return document.visibilityState === 'visible';
-                };
-
-                var isSupported = function () {
-                    return typeof document.addEventListener !== 'undefined' && hidden !== undefined;
-                };
-
-                var subscribe = function (dotnetHelper) {
-                    if (dotnetCallback === undefined && isSupported()) {
-                        dotnetCallback = dotnetHelper;
-                        handleVisibilityChange();
-                        visibilityChangeListener = document.addEventListener(visibilityChange, handleVisibilityChange, false);
-                    }
-                };
-
-                var unsubscribe = function () {
-                    if (dotnetCallback !== undefined && isSupported()) {
-                        document.removeEventListener(visibilityChange, visibilityChangeListener);
-                    }
-                };
-
-                window.pageVisibilityApiRazorAdapter = {};
-                window.pageVisibilityApiRazorAdapter.isPageVisible = isPageVisible;
-                window.pageVisibilityApiRazorAdapter.isSupported = isSupported;
-                window.pageVisibilityApiRazorAdapter.subscribe = subscribe;
-                window.pageVisibilityApiRazorAdapter.unsubscribe = unsubscribe;
-            })();";
     }
 }

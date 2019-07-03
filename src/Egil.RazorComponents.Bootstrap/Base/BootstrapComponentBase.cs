@@ -1,4 +1,5 @@
-﻿using Egil.RazorComponents.Bootstrap.Base.CssClassValues;
+﻿using Egil.RazorComponents.Bootstrap.Base.Context;
+using Egil.RazorComponents.Bootstrap.Base.CssClassValues;
 using Egil.RazorComponents.Bootstrap.Extensions;
 using Microsoft.AspNetCore.Components;
 using System;
@@ -8,23 +9,27 @@ using System.Text;
 
 namespace Egil.RazorComponents.Bootstrap.Base
 {
-    public abstract class BootstrapComponentBase : ComponentBase
+    public abstract class BootstrapComponentBase : ComponentBase, IBootstrapComponent
     {
         private static readonly Type CssClassProviderType = typeof(ICssClassProvider);
         private static readonly Type BoolType = typeof(bool);
         private static readonly char CssClassSplitChar = ' ';
-
         private static readonly IReadOnlyDictionary<string, object> EmptyDictionary = new Dictionary<string, object>(0);
 
-        [Parameter(CaptureUnmatchedValues = true)]
-        protected internal IReadOnlyDictionary<string, object> AdditionalAttributes { get; set; } = EmptyDictionary;
+        private bool _isFirstRender = true;
+
+        [CascadingParameter] public IBootstrapContext? BootstrapContext { get; private set; }
+
+        [Parameter(CaptureUnmatchedValues = true)] public IReadOnlyDictionary<string, object> AdditionalAttributes { get; private set; } = EmptyDictionary;
 
         [Parameter] public string? Class { get; set; }
 
         protected internal string DefaultElementName { get; set; } = HtmlTags.DIV;
+
         protected internal string DefaultCssClass { get; set; } = string.Empty;
 
         protected internal virtual string CssClassValue => BuildCssClassValue();
+
 
         private string BuildCssClassValue()
         {
@@ -81,6 +86,23 @@ namespace Egil.RazorComponents.Bootstrap.Base
             if (!string.IsNullOrWhiteSpace(cssClass) && string.IsNullOrWhiteSpace(otherCssClass)) return cssClass;
             if (string.IsNullOrWhiteSpace(cssClass) && !string.IsNullOrWhiteSpace(otherCssClass)) return otherCssClass;
             return string.Concat(cssClass, CssClassSplitChar, otherCssClass);
+        }
+
+        protected override void OnAfterRender()
+        {
+            base.OnAfterRender();
+            if (_isFirstRender)
+            {
+                _isFirstRender = false;
+                OnAfterFirstRender();
+            }
+        }
+
+        protected virtual void OnAfterFirstRender() { }
+
+        internal void TriggerRender()
+        {
+            StateHasChanged();
         }
     }
 }

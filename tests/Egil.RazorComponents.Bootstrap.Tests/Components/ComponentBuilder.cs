@@ -10,6 +10,8 @@ using System.Text.Encodings.Web;
 using Moq;
 using System.Linq;
 using Microsoft.AspNetCore.Components.RenderTree;
+using Egil.RazorComponents.Bootstrap.Services;
+using Microsoft.JSInterop;
 
 namespace Egil.RazorComponents.Bootstrap.Components
 {
@@ -23,8 +25,10 @@ namespace Egil.RazorComponents.Bootstrap.Components
 
         public ComponentBuilder()
         {
-            Services.AddSingleton<TComponent>();
             Services.AddSingleton(x => Mock.Of<IUriHelper>());
+            Services.AddSingleton(x => Mock.Of<IJSRuntime>());
+            Services.AddBootstrapServices();
+            Services.AddSingleton<TComponent>();
         }
 
         public ComponentBuilder<TComponent> WithParams(params (string name, object value)[] paramValues)
