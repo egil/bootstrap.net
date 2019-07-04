@@ -5,8 +5,8 @@ namespace Egil.RazorComponents.Bootstrap.Base
 {
     public interface IBootstrapComponent
     {
-        public IBootstrapContext? BootstrapContext { get;  }
+        protected IBootstrapContext? BootstrapContext { get;  }
 
-        public IReadOnlyDictionary<string, object> AdditionalAttributes { get; }
+        protected internal IDictionary<string, object> AdditionalAttributes { get; }
     }
 }

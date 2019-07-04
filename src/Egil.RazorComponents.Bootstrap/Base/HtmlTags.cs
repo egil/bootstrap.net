@@ -25,9 +25,11 @@
     {
         public const string ARIA_LABEL = "aria-label";
         public const string ARIA_EXPANDED = "aria-expanded";
-        public const string ARIA_CONTROLS = "aria-controls";        
+        public const string ARIA_CONTROLS = "aria-controls";      
+        public const string ARIA_LABELLEDBY = "aria-labelledby";
         public const string ALT = "alt";
         public const string HREF = "href";
+        public const string ID = "id";
         public const string ROLE = "role";
         public const string SRC = "src";
         public const string TYPE = "type";

@@ -9,6 +9,28 @@ namespace Egil.RazorComponents.Bootstrap.Base
     {
         private readonly Dictionary<(Type childType, bool isOnInitRule), Action<IComponent>> _rules = new Dictionary<(Type childType, bool isOnInitRule), Action<IComponent>>();
 
+        public bool TryGetRule<TComponent>(out Action<TComponent>? rule) where TComponent : class, IComponent
+        {
+            rule = default;
+            if (_rules.TryGetValue((typeof(TComponent), false), out var tmp) && tmp is Action<TComponent> result)
+            {
+                rule = result;
+                return true;
+            }
+            return false;
+        }
+
+        public bool TryGetOnInitRule<TComponent>(out Action<TComponent>? rule) where TComponent : class, IComponent
+        {
+            rule = default;
+            if (_rules.TryGetValue((typeof(TComponent), true), out var tmp) && tmp is Action<TComponent> result)
+            {
+                rule = result;
+                return true;
+            }
+            return false;
+        }
+
         public void UpdateChildOnInit<TComponent>(TComponent childComponent) where TComponent : class, IComponent
         {
             var type = childComponent.GetType();

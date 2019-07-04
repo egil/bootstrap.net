@@ -14,13 +14,19 @@ namespace Egil.RazorComponents.Bootstrap.Base
         private static readonly Type CssClassProviderType = typeof(ICssClassProvider);
         private static readonly Type BoolType = typeof(bool);
         private static readonly char CssClassSplitChar = ' ';
-        private static readonly IReadOnlyDictionary<string, object> EmptyDictionary = new Dictionary<string, object>(0);
+        private static readonly IDictionary<string, object> EmptyDictionary = new Dictionary<string, object>(0);
 
         private bool _isFirstRender = true;
+        private IDictionary<string, object>? _additionalAttributes;
 
-        [CascadingParameter] public IBootstrapContext? BootstrapContext { get; private set; }
+        [CascadingParameter] protected IBootstrapContext? BootstrapContext { get; private set; }
 
-        [Parameter(CaptureUnmatchedValues = true)] public IReadOnlyDictionary<string, object> AdditionalAttributes { get; private set; } = EmptyDictionary;
+        [Parameter(CaptureUnmatchedValues = true)]
+        protected internal IDictionary<string, object> AdditionalAttributes
+        {
+            get => _additionalAttributes ?? (_additionalAttributes = new Dictionary<string, object>());
+            private set => _additionalAttributes = value;
+        }
 
         [Parameter] public string? Class { get; set; }
 
@@ -29,7 +35,6 @@ namespace Egil.RazorComponents.Bootstrap.Base
         protected internal string DefaultCssClass { get; set; } = string.Empty;
 
         protected internal virtual string CssClassValue => BuildCssClassValue();
-
 
         private string BuildCssClassValue()
         {
@@ -100,9 +105,7 @@ namespace Egil.RazorComponents.Bootstrap.Base
 
         protected virtual void OnAfterFirstRender() { }
 
-        internal void TriggerRender()
-        {
-            StateHasChanged();
-        }
+        IDictionary<string, object> IBootstrapComponent.AdditionalAttributes => AdditionalAttributes;
+        IBootstrapContext IBootstrapComponent.BootstrapContext => BootstrapContext;
     }
 }

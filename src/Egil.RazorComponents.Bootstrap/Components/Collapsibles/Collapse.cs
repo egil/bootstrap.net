@@ -25,6 +25,8 @@ namespace Egil.RazorComponents.Bootstrap.Components.Collapsibles
 
         [Parameter] public bool Expanded { get; set; }
 
+        [Parameter] public string? AriaLabelledBy { get; set; }
+
         public Collapse()
         {
             DefaultCssClass = CollapsedCssClass;
@@ -53,6 +55,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Collapsibles
             builder.OpenElement(DefaultElementName);
             builder.AddIdAttribute(Id);
             builder.AddClassAttribute(CssClassValue);
+            builder.AddAttribute(HtmlAttrs.ARIA_LABELLEDBY, AriaLabelledBy);
             builder.AddMultipleAttributes(AdditionalAttributes);
             builder.AddContent(ChildContent);
             builder.AddElementReferenceCapture(elm => _domElement = elm);

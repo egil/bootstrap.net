@@ -14,7 +14,7 @@ namespace Egil.RazorComponents.Bootstrap.Base
         public virtual RenderFragment ChildContent
         {
             get => BuildChildContentRenderTree;
-            set => _childContent = value;
+            private set => _childContent = value;
         }
 
         /// <summary>

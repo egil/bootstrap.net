@@ -47,7 +47,7 @@ namespace Egil.RazorComponents.Bootstrap.Base
 
         /// <summary>
         /// Each Bootstrap.NET child component will call this method, passing in
-        /// themselves as the argument. This happens during the childs <see cref="OnInit"/>
+        /// themselves as the argument. This happens during the child's <see cref="OnInit"/>
         /// phase.
         /// </summary>
         /// <param name="component"></param>

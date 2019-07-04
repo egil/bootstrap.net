@@ -17,12 +17,22 @@ namespace Egil.RazorComponents.Bootstrap.Components
         internal static void ShouldBe(this ComponentRenderedText componentRenderedText, string expectedHtml)
         {
             var testHtml = string.Concat(componentRenderedText.Tokens).Trim();
-            var test = Input.FromString(WrapInTestRoot(testHtml)).Build();
-            var control = Input.FromString(WrapInTestRoot(expectedHtml)).Build();
-            var diffResult = DiffBuilder.Compare(control)
-                .IgnoreWhitespace()
-                .WithTest(test)
-                .Build();
+            Org.XmlUnit.Diff.Diff? diffResult = null;
+            Should.NotThrow(() =>
+            {
+                var test = Input.FromString(WrapInTestRoot(testHtml)).Build();
+                var control = Input.FromString(WrapInTestRoot(expectedHtml)).Build();
+                diffResult = DiffBuilder.Compare(control)
+                   .IgnoreWhitespace()
+                   .WithTest(test)
+                   .Build();
+            }, $"Error while comparing HTML snippets. " +
+               $"{Environment.NewLine}{Environment.NewLine}Expected HTML:" +
+               $"{Environment.NewLine}{Environment.NewLine}{PrettyXml(expectedHtml)}" +
+               $"{Environment.NewLine}{Environment.NewLine}Test HTML: " +
+               $"{Environment.NewLine}{Environment.NewLine}{PrettyXml(testHtml)}");
+
+            if(diffResult is null) return;
 
             var assertDiffMessage = diffResult.Differences
                 .Select(diff => $"- {diff.ToString()}")
@@ -43,7 +53,7 @@ namespace Egil.RazorComponents.Bootstrap.Components
         }
 
         private static string PrettyXml(string xml)
-        {            
+        {
             try
             {
                 var stringBuilder = new StringBuilder();

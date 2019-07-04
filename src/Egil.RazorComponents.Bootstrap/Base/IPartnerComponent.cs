@@ -23,7 +23,7 @@ namespace Egil.RazorComponents.Bootstrap.Base.Context
             partner.BootstrapContext.RegisterPartner(partner);
         }
 
-        protected static void Unregister(IPartnerComponent partner)
+        protected static void Unregister(IPartnerComponent<TBootstrapComponent> partner)
         {
             if (partner.Id is null) return;
             if (partner.BootstrapContext is null) return;
