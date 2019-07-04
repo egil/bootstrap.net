@@ -38,7 +38,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Html
         [Parameter] public ColorParameter<ButtonColor> Color { get; set; } = ColorParameter<ButtonColor>.None;
 
         /// <summary>
-        /// Set to true to remove all backgroud color from the button. Keeps the specified 
+        /// Set to true to remove all background color from the button. Keeps the specified 
         /// color in text and border.
         /// </summary>
         /// <see cref="Color"/>
@@ -136,7 +136,9 @@ namespace Egil.RazorComponents.Bootstrap.Components.Html
             builder.AddAttribute(HtmlAttrs.TYPE, Type);
             builder.AddClassAttribute(CssClassValue);
             builder.AddAttribute("aria-pressed", IsActive.ToLowerCaseString());
+
             builder.AddMultipleAttributes(AdditionalAttributes);
+            
             builder.AddContent(ChildContent);
             builder.CloseElement();
         }

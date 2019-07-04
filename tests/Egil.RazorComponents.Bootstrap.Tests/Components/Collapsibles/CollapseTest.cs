@@ -30,7 +30,5 @@ namespace Egil.RazorComponents.Bootstrap.Components.Collapsibles
 
             result.ShouldBe(expectedHtml);
         }
-
-
     }
 }

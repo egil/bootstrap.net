@@ -56,6 +56,14 @@ namespace Egil.RazorComponents.Bootstrap.Extensions
             builder.AddAttribute(sequence, name, value);
         }
 
+        /// <summary>
+        /// Adds multiple attributes to the target.
+        /// <para>
+        /// NOTE: If this call appears after a specific <see cref="AddAttribute"/> call but 
+        /// the attributes dictionary contains an attribute with the same name, then the 
+        /// previously added attribute will be used.
+        /// </para>
+        /// </summary>
         public static void AddMultipleAttributes<T>(this RenderTreeBuilder builder, IEnumerable<KeyValuePair<string, T>>? attributes, [CallerLineNumber] int sequence = DEFAULT_SEQUENCE)
         {
             if (attributes is null) return;
