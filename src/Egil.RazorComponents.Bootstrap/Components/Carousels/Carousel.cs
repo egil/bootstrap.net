@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Components.RenderTree;
 
 namespace Egil.RazorComponents.Bootstrap.Components.Carousels
 {
-    public sealed class Carousel<TItem> : BootstrapContextAwareComponentBase, IDisposable
+    public sealed class Carousel<TItem> : BootstrapParentAwareComponentBase, IDisposable
     {
         private const string DefaultCarouselCssClass = "carousel";
         private const string CarouselInnerCssClass = "carousel-inner";
@@ -264,7 +264,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Carousels
             }
         }
 
-        protected override void OnChildInit(BootstrapContextAwareComponentBase component)
+        protected override void OnChildInit(BootstrapParentAwareComponentBase component)
         {
             if (component is CarouselItem item)
             {
@@ -335,7 +335,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Carousels
             builder.OpenElement(HtmlTags.DIV);
             builder.AddClassAttribute(CarouselInnerCssClass);
 
-            builder.OpenComponent<CascadingValue<BootstrapContextAwareComponentBase>>();
+            builder.OpenComponent<CascadingValue<BootstrapParentAwareComponentBase>>();
             builder.AddAttribute("Value", this);
             builder.AddAttribute("IsFixed", true);
             builder.AddAttribute(RenderTreeBuilder.ChildContent, (RenderFragment)ItemsRenderFragment);

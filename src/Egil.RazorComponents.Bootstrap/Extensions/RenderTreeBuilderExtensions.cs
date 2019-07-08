@@ -119,5 +119,20 @@ namespace Egil.RazorComponents.Bootstrap.Extensions
         {
             builder.AddAttribute(sequence, "tabindex", index);
         }
+
+        public static void AddChildContentFragment(this RenderTreeBuilder builder, RenderFragment renderFragment, [CallerLineNumber] int sequence = DEFAULT_SEQUENCE)
+        {
+            builder.AddAttribute(sequence, RenderTreeBuilder.ChildContent, renderFragment);
+        }
+
+        public static void AddChildMarkupContent(this RenderTreeBuilder builder, string markupContent, [CallerLineNumber] int sequence = DEFAULT_SEQUENCE)
+        {
+            builder.AddAttribute(sequence, RenderTreeBuilder.ChildContent, (RenderFragment)(nestedBuilder => nestedBuilder.AddMarkupContent(markupContent)));
+        }
+
+        public static void AddIgnoreParentContextAttribute(this RenderTreeBuilder builder, bool value = true, [CallerLineNumber] int sequence = DEFAULT_SEQUENCE)
+        {
+            builder.AddAttribute(sequence, "IgnoreParentContext", value);
+        }
     }
 }

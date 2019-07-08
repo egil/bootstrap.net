@@ -4,7 +4,6 @@ using Egil.RazorComponents.Bootstrap.Tests.TestUtilities;
 using System.Collections.Generic;
 using System.Linq;
 using static Egil.RazorComponents.Bootstrap.Options.Factory.LowerCase.Abbr;
-using static Egil.RazorComponents.Bootstrap.Utilities.Spacing.Factory.LowerCase;
 
 namespace Egil.RazorComponents.Bootstrap.Parameters
 {
@@ -19,7 +18,7 @@ namespace Egil.RazorComponents.Bootstrap.Parameters
             new OptionSet<IJustifyOption>() { between, around } ,
             new OptionSet<IOffsetOption>() { (Number)1, md-3 },
             new OptionSet<IBreakpointWithNumber>(){ (Number)1, md-3 },
-            new OptionSet<ISpacingOption>(){ (Number)1, right-2, left-md-3 },
+            new OptionSet<ISpacingOption>(){ (Number)1, (ISideOption)right-2, (ISideOption)left-md-3 },
         };
     }
 

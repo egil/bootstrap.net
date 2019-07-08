@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Egil.RazorComponents.Bootstrap.Base.CssClassValues;
+using Egil.RazorComponents.Bootstrap.Options.SimpleOptions;
 using Egil.RazorComponents.Bootstrap.Utilities.Spacing;
 
 namespace Egil.RazorComponents.Bootstrap.Components.Groups.Parameters
@@ -26,17 +27,9 @@ namespace Egil.RazorComponents.Bootstrap.Components.Groups.Parameters
             yield return _value;
         }
 
-        public static implicit operator OrientationParameter(SpacingSide side)
-        {
-            // TODO: split spacing side up in orientation group and rest. Orientation and Sides
-            // TODO: Rename SpacingSide to a more generalized use
-            return side.Type switch
-            {
-                SpacingSideType.Horizontal => Horizontal,
-                SpacingSideType.Vertical => Vertical,
-                _ => throw new ArgumentException($"Group orientation can only be vertical or horizontal. {side.Type} is not allowed.")
-            };
-        }
+
+        public static implicit operator OrientationParameter(HorizontalOption _) => Horizontal;
+        public static implicit operator OrientationParameter(VerticalOption _) => Vertical;
 
         public static OrientationParameter Horizontal = new OrientationParameter(SpacingSideType.Horizontal);
         public static OrientationParameter Vertical = new OrientationParameter(SpacingSideType.Vertical);

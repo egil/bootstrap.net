@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Egil.RazorComponents.Bootstrap.Extensions;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.RenderTree;
 
@@ -14,6 +15,12 @@ namespace Egil.RazorComponents.Bootstrap.Components
         public FragmentBuilder(Type componentType)
         {
             _componentType = componentType;
+        }
+
+        public FragmentBuilder WithChildContent(string markupContent)
+        {
+            _childContent = (builder) => builder.AddMarkupContent(markupContent);
+            return this;
         }
 
         public FragmentBuilder WithChildContent(RenderFragment childContent)

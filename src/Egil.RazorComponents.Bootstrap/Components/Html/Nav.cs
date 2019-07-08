@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace Egil.RazorComponents.Bootstrap.Components.Html
 {
-    public class Nav : BootstrapHtmlElementComponentBase
+    public sealed class Nav : BootstrapHtmlElementComponentBase
     {
         [Parameter] public bool Pills { get; set; } = false;
 

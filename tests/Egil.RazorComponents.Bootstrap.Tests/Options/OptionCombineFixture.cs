@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 using static Egil.RazorComponents.Bootstrap.Options.Factory.LowerCase.Abbr;
-using static Egil.RazorComponents.Bootstrap.Utilities.Spacing.Factory.LowerCase;
 using static Egil.RazorComponents.Bootstrap.Utilities.Colors.Factory.LowerCase;
 
 namespace Egil.RazorComponents.Bootstrap.Tests.Options

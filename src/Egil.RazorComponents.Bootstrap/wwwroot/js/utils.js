@@ -2,6 +2,10 @@
     elm.offsetHeight;
 }
 
+export function focus(elm) {
+    elm.focus();
+}
+
 export function cssTimeToMilliseconds(time) {
     var num = parseFloat(time, 10),
         unit = time.match(/m?s/),

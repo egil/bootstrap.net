@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Components.RenderTree;
 
 namespace Egil.RazorComponents.Bootstrap.Base
 {
-    public abstract class BootstrapParentComponentBase : BootstrapContextAwareComponentBase
+    public abstract class BootstrapParentComponentBase : BootstrapParentAwareComponentBase
     {
         private RenderFragment? _childContent;
 
@@ -37,16 +37,21 @@ namespace Egil.RazorComponents.Bootstrap.Base
 
             if (HasChildRules || AlwaysCascadeToChildren)
             {
-                builder.OpenComponent<CascadingValue<BootstrapContextAwareComponentBase>>();
-                builder.AddAttribute("Value", this);
-                builder.AddAttribute("IsFixed", true);
-                builder.AddAttribute(RenderTreeBuilder.ChildContent, _childContent);
-                builder.CloseComponent();
+                WrapRenderTreeInBootstrapParentAwareCascade(builder, _childContent);
             }
             else
             {
                 builder.AddContent(_childContent);
             }
+        }
+
+        protected void WrapRenderTreeInBootstrapParentAwareCascade(RenderTreeBuilder builder, RenderFragment childContent)
+        {
+            builder.OpenComponent<CascadingValue<BootstrapParentAwareComponentBase>>();
+            builder.AddAttribute("Value", this);
+            builder.AddAttribute("IsFixed", true);
+            builder.AddChildContentFragment(childContent);
+            builder.CloseComponent();
         }
     }
 }

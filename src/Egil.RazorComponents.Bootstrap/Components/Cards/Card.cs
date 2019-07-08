@@ -40,14 +40,14 @@ namespace Egil.RazorComponents.Bootstrap.Components.Cards
             DefaultCssClass = DefaultCardCssClass;
         }
 
-        protected override void OnChildInit(BootstrapContextAwareComponentBase component)
+        protected override void OnChildInit(BootstrapParentAwareComponentBase component)
         {
             _childComponentCount += 1;
         }
 
         protected override void OnRegisterChildRules()
         {
-            void ImageRule(BootstrapContextAwareComponentBase component)
+            void ImageRule(BootstrapParentAwareComponentBase component)
             {
                 component.DefaultCssClass = ImageOverlayed 
                     ? ImgCssClass 

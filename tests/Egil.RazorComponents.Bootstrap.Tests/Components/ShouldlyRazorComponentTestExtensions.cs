@@ -35,7 +35,11 @@ namespace Egil.RazorComponents.Bootstrap.Components
                 diffResult = DiffBuilder.Compare(control)
                     .IgnoreWhitespace()
                     .WithTest(test)
-                    .WithDifferenceEvaluator(DifferenceEvaluators.Chain(DifferenceEvaluators.Default, RegexAttributeDifferenceEvaluator.Default))
+                    .WithDifferenceEvaluator(DifferenceEvaluators.Chain(
+                        DifferenceEvaluators.Default, 
+                        RegexAttributeDifferenceEvaluator.Default,
+                        CssClassAttributeDifferenceEvaluator.Default)
+                    )
                     .Build();
             }, CreateParseErrorText(expectedHtml, testHtml));
 
@@ -103,10 +107,6 @@ namespace Egil.RazorComponents.Bootstrap.Components
 
     internal class RegexAttributeDifferenceEvaluator
     {
-        public RegexAttributeDifferenceEvaluator()
-        {
-        }
-
         public ComparisonResult Evaluate(Comparison comparison, ComparisonResult outcome)
         {
             if (outcome == ComparisonResult.EQUAL) return outcome;
@@ -121,5 +121,25 @@ namespace Egil.RazorComponents.Bootstrap.Components
         }
 
         internal static readonly DifferenceEvaluator Default = new RegexAttributeDifferenceEvaluator().Evaluate;
+    }
+
+    internal class CssClassAttributeDifferenceEvaluator
+    {
+        private readonly static char[] Space = new char[] { ' ' };
+        public ComparisonResult Evaluate(Comparison comparison, ComparisonResult outcome)
+        {
+            if (outcome == ComparisonResult.EQUAL) return outcome;
+            if (comparison.Type != ComparisonType.ATTR_VALUE) return outcome;
+            if (!comparison.TestDetails.Target.Name.Equals("class", StringComparison.OrdinalIgnoreCase)) return outcome;
+
+            var expected = comparison.ControlDetails.Value.ToString().Split(Space, StringSplitOptions.RemoveEmptyEntries).ToHashSet();
+            var actual = comparison.TestDetails.Value.ToString().Split(Space, StringSplitOptions.RemoveEmptyEntries).ToHashSet();
+
+            if (expected.SetEquals(actual))
+                return ComparisonResult.EQUAL;
+            else return outcome;
+        }
+
+        internal static readonly DifferenceEvaluator Default = new CssClassAttributeDifferenceEvaluator().Evaluate;
     }
 }

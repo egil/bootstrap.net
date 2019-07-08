@@ -15,7 +15,8 @@ using System.Threading.Tasks;
 
 namespace Egil.RazorComponents.Bootstrap.Components.Html
 {
-    public sealed class A : BootstrapHtmlElementComponentBase, IToggleForCollapse, IDisposable
+
+    public sealed class A : BootstrapHtmlElementComponentBase, IToggleForCollapse, IExploseElementRef, IDisposable
     {
         private ElementRef _domElement;
         private bool _preventDefaultHandlerRegistered;
@@ -58,15 +59,22 @@ namespace Egil.RazorComponents.Bootstrap.Components.Html
         /// </summary>
         [Parameter] public ColorParameter<ButtonColor> Color { get; set; } = ColorParameter<ButtonColor>.None;
 
+        /// <summary>
+        /// Gets or sets whether to prevent default when a user clicks this link. 
+        /// </summary>
         [Parameter] public bool PreventDefaultOnClick { get; set; }
 
         #region IToggleForCollapse
 
         private bool _isToggleTargetExpanded;
         private string? _ariaControls;
-        public event EventHandler OnToggled;
+        private event EventHandler _onToggled;
+        event EventHandler IToggleForCollapse.OnToggled { add => _onToggled += value; remove => _onToggled -= value; }
 
+        /// <inheritdoc />
         [Parameter] public string? ToggleFor { get; set; }
+
+        ElementRef IExploseElementRef.DomElement => _domElement;
 
         void IToggleForCollapse.SetExpandedState(bool isExpanded)
         {
@@ -85,9 +93,9 @@ namespace Egil.RazorComponents.Bootstrap.Components.Html
         {
             // We'll consider re-rendering on each location change
             UriHelper!.OnLocationChanged += OnLocationChanged;
-                        
+
             IToggleForCollapse.Connect(this);
-            _ariaControls = string.Join(' ', ToggleFor?.SplitOnComma() ?? Array.Empty<string>());
+            _ariaControls = string.Join(' ', ToggleFor?.SplitOnCommaOrSpace() ?? Array.Empty<string>());
         }
 
         /// <inheritdoc />
@@ -101,12 +109,12 @@ namespace Egil.RazorComponents.Bootstrap.Components.Html
         protected internal override void DefaultRenderFragment(RenderTreeBuilder builder)
         {
             builder.OpenElement(DefaultElementName);
-            
-            if (!(OnToggled is null))
+
+            if (!(_onToggled is null))
             {
-                builder.AddEventListener(HtmlEvents.CLICK, EventCallback.Factory.Create<UIMouseEventArgs>(this, (e) => OnToggled?.Invoke(this, EventArgs.Empty)));
+                builder.AddEventListener(HtmlEvents.CLICK, EventCallback.Factory.Create<UIMouseEventArgs>(this, (e) => _onToggled?.Invoke(this, EventArgs.Empty)));
             }
-            
+
             if (!(ToggleFor is null))
             {
                 builder.AddAttribute(HtmlAttrs.ARIA_EXPANDED, _isToggleTargetExpanded.ToLowerCaseString());

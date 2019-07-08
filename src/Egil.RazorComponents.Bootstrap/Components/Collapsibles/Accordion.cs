@@ -14,34 +14,15 @@ namespace Egil.RazorComponents.Bootstrap.Components.Collapsibles
 {
     public sealed class Accordion : BootstrapParentComponentBase
     {
-        private class CardState
-        {
-            public int Index { get; }
-            public bool Expanded { get; set; }
-            public Collapse? Collapse { get; set; }
 
-            public CardState(int index)
-            {
-                Index = index;
-            }
-
-            // BANG NOTES: The collapse must be added to the dictionary at this point!
-            public void Toggle()
-            {
-                Collapse!.Toggle();
-                Expanded = Collapse!.Expanded;
-            }
-
-            public void Hide()
-            {
-                Collapse!.Hide();
-                Expanded = false;
-            }
-        }
-
-        private readonly Dictionary<Card, CardState> _items = new Dictionary<Card, CardState>();
+        private readonly Dictionary<Card, AccordionCardState> _items = new Dictionary<Card, AccordionCardState>();
         private readonly ISet<int> _expandedIndexes = new SortedSet<int>() { 0 };
 
+        /// <summary>
+        /// Gets or sets the index numbers of the expanded <see cref="Card"/>'s in the
+        /// accordion. Specify a single or multiple numbers (zero based index) separated
+        /// by a comma or space.
+        /// </summary>
         [Parameter]
         public string ExpandedIndex
         {
@@ -49,7 +30,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Collapsibles
             set
             {
                 _expandedIndexes.Clear();
-                foreach (var item in value.SplitOnComma())
+                foreach (var item in value.SplitOnCommaOrSpace())
                 {
                     if (int.TryParse(item, out var index))
                     {
@@ -63,8 +44,16 @@ namespace Egil.RazorComponents.Bootstrap.Components.Collapsibles
             }
         }
 
+        /// <summary>
+        /// Gets or sets whether the accordion allows for multiple cards 
+        /// to be visible/expanded at the same time.
+        /// </summary>
         [Parameter] public bool MultiExpand { get; set; }
 
+        /// <summary>
+        /// Gets or sets whether the buttons in the headers of each <see cref="Card"/>
+        /// is rendered as a link or as a button.
+        /// </summary>
         [Parameter] public bool HeaderButtonAsLink { get; set; }
 
         public Accordion()
@@ -72,11 +61,11 @@ namespace Egil.RazorComponents.Bootstrap.Components.Collapsibles
             DefaultCssClass = "accordion";
         }
 
-        protected override void OnChildInit(BootstrapContextAwareComponentBase component)
+        protected override void OnChildInit(BootstrapParentAwareComponentBase component)
         {
             if (component is Card card)
             {
-                _items[card] = new CardState(_items.Count) { Expanded = _expandedIndexes.Contains(_items.Count) };
+                _items[card] = new AccordionCardState(_items.Count) { Expanded = _expandedIndexes.Contains(_items.Count) };
             }
             else
             {

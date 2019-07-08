@@ -4,19 +4,19 @@ using Microsoft.AspNetCore.Components.RenderTree;
 
 namespace Egil.RazorComponents.Bootstrap.Base
 {
-    public abstract class BootstrapContextAwareComponentBase : BootstrapComponentBase
+    public abstract class BootstrapParentAwareComponentBase : BootstrapComponentBase
     {
         private BootstrapRuleRegistry? _rules;
 
         protected internal BootstrapRuleRegistry Rules => _rules ?? (_rules = new BootstrapRuleRegistry());
 
-        private void UpdateChildOnInit(BootstrapContextAwareComponentBase component)
+        private void UpdateChildOnInit(BootstrapParentAwareComponentBase component)
         {
             if (_rules is null) return;
             _rules.UpdateChildOnInit(component);
         }
 
-        private void UpdateChild(BootstrapContextAwareComponentBase component)
+        private void UpdateChild(BootstrapParentAwareComponentBase component)
         {
             if (_rules is null) return;
             _rules.UpdateChild(component);
@@ -31,7 +31,7 @@ namespace Egil.RazorComponents.Bootstrap.Base
         /// <summary>
         /// Gets or sets the parent Bootstrap.NET component through a casacading parameter.
         /// </summary>
-        [CascadingParameter] protected internal BootstrapContextAwareComponentBase? Parent { get; set; }
+        [CascadingParameter] protected internal BootstrapParentAwareComponentBase? Parent { get; set; }
 
         /// <summary>
         /// Gets or sets whether to ignore the parent Bootstrap.NET components child context 
@@ -51,7 +51,7 @@ namespace Egil.RazorComponents.Bootstrap.Base
         /// phase.
         /// </summary>
         /// <param name="component"></param>
-        protected virtual void OnChildInit(BootstrapContextAwareComponentBase component) { }
+        protected virtual void OnChildInit(BootstrapParentAwareComponentBase component) { }
 
         /// <summary>
         /// This method is called after the components normal <see cref="OnInit"/> has run,

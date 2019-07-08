@@ -9,7 +9,7 @@ namespace Egil.RazorComponents.Bootstrap.Base
 {
     public class BootstrapContextAwareComponentBaseTest
     {
-        public class FakeComponent : BootstrapContextAwareComponentBase
+        public class FakeComponent : BootstrapParentAwareComponentBase
         {
             public virtual new void BuildRenderTree(RenderTreeBuilder builder) { base.BuildRenderTree(builder); }
             public virtual new void OnInit() { base.OnInit(); }

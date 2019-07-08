@@ -4,6 +4,7 @@ using Egil.RazorComponents.Bootstrap.Extensions;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 
@@ -43,7 +44,7 @@ namespace Egil.RazorComponents.Bootstrap.Base
             AppendCssClass(DefaultCssClass);
 
             var sourceType = GetType();
-            var properties = sourceType.GetInstanceProperties();
+            var properties = sourceType.GetInstanceProperties().RemoveCssClassExcluded().ToArray();
             foreach (var cssProp in properties.IsAssignableFrom(CssClassProviderType).GetValues<ICssClassProvider>(this))
             {
                 foreach (var cssClass in cssProp)

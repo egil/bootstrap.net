@@ -1,5 +1,8 @@
-﻿using Egil.RazorComponents.Bootstrap.Options;
+﻿using System;
+using Egil.RazorComponents.Bootstrap.Extensions;
+using Egil.RazorComponents.Bootstrap.Options;
 using Egil.RazorComponents.Bootstrap.Options.CommonOptions;
+using Egil.RazorComponents.Bootstrap.Options.SimpleOptions;
 
 namespace Egil.RazorComponents.Bootstrap.Utilities.Spacing
 {
@@ -7,7 +10,7 @@ namespace Egil.RazorComponents.Bootstrap.Utilities.Spacing
     {
         public override string Value { get; }
 
-        public SpacingOption(SpacingSide side, Number size)
+        public SpacingOption(ISideOption side, Number size)
         {
             Value = side.CombineWith(size);
         }
@@ -17,18 +20,18 @@ namespace Egil.RazorComponents.Bootstrap.Utilities.Spacing
             Value = spacing.CombineWith(size);
         }
 
-        public SpacingOption(SpacingSide side, BreakpointWithNumber breakpoint)
+        public SpacingOption(ISideOption side, BreakpointWithNumber breakpoint)
         {
             breakpoint.Number.ValidateAsSpacingNumber();
             Value = side.CombineWith(breakpoint);
         }
 
-        public SpacingOption(SpacingSide side, AutoOption auto)
+        public SpacingOption(ISideOption side, AutoOption auto)
         {
             Value = side.CombineWith(auto);
         }
 
-        public SpacingOption(SpacingSide side, BreakpointAuto breakpointAuto)
+        public SpacingOption(ISideOption side, BreakpointAuto breakpointAuto)
         {
             Value = side.CombineWith(breakpointAuto);
         }

@@ -28,7 +28,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Collapsibles
             var expectedHtml = $@"<div class=""accordion"">
                                     <div class=""card"">
                                       <div class=""card-header"" id=""RegEx:^header-card"" role=""heading"">
-                                        <button aria-pressed=""false"" aria-expanded=""true"" aria-controls=""RegEx:^body-card"" type=""button"" class=""btn""></button>
+                                        <button aria-expanded=""true"" aria-controls=""RegEx:^body-card"" type=""button"" class=""btn""></button>
                                       </div>
                                       <div class=""collapse show"" id=""RegEx:^body-card"" aria-labelledby=""RegEx:^header-card"">
                                         <div class=""card-body""></div>
@@ -53,7 +53,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Collapsibles
             var expectedHtml = $@"<div class=""accordion"">
                                     <div class=""card"">
                                       <div class=""card-header"" id=""RegEx:^header-card"" role=""heading"">
-                                        <button aria-pressed=""false"" aria-expanded=""false"" aria-controls=""RegEx:^body-card"" type=""button"" class=""btn""></button>
+                                        <button aria-expanded=""false"" aria-controls=""RegEx:^body-card"" type=""button"" class=""btn""></button>
                                       </div>
                                       <div class=""collapse"" id=""RegEx:^body-card"" aria-labelledby=""RegEx:^header-card"">
                                         <div class=""card-body""></div>
@@ -61,7 +61,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Collapsibles
                                     </div>
                                     <div class=""card"">
                                       <div class=""card-header"" id=""RegEx:^header-card"" role=""heading"">
-                                        <button aria-pressed=""false"" aria-expanded=""true"" aria-controls=""RegEx:^body-card"" type=""button"" class=""btn""></button>
+                                        <button aria-expanded=""true"" aria-controls=""RegEx:^body-card"" type=""button"" class=""btn""></button>
                                       </div>
                                       <div class=""collapse show"" id=""RegEx:^body-card"" aria-labelledby=""RegEx:^header-card"">
                                         <div class=""card-body""></div>

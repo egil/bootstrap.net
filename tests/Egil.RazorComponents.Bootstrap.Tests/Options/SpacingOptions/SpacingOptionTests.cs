@@ -1,11 +1,11 @@
-﻿using Egil.RazorComponents.Bootstrap.Options.CommonOptions;
+﻿using Egil.RazorComponents.Bootstrap.Options;
+using Egil.RazorComponents.Bootstrap.Options.CommonOptions;
 using Egil.RazorComponents.Bootstrap.Tests.TestUtilities;
 using Egil.RazorComponents.Bootstrap.Utilities.Spacing;
 using Shouldly;
 using System;
 using Xunit;
 using static Egil.RazorComponents.Bootstrap.Options.Factory.LowerCase.Abbr;
-using static Egil.RazorComponents.Bootstrap.Utilities.Spacing.Factory.LowerCase;
 
 namespace Egil.RazorComponents.Bootstrap.Tests.Options.SpacingOptions
 {
@@ -24,12 +24,12 @@ namespace Egil.RazorComponents.Bootstrap.Tests.Options.SpacingOptions
         [Fact(DisplayName = "Spacing sides returns correct value based on side type")]
         public void CssClassReturnsCorrectBootstrapBreakpoint()
         {
-            new SpacingSide(SpacingSideType.Top).Value.ShouldBe("t");
-            new SpacingSide(SpacingSideType.Bottom).Value.ShouldBe("b");
-            new SpacingSide(SpacingSideType.Left).Value.ShouldBe("l");
-            new SpacingSide(SpacingSideType.Right).Value.ShouldBe("r");
-            new SpacingSide(SpacingSideType.Horizontal).Value.ShouldBe("x");
-            new SpacingSide(SpacingSideType.Vertical).Value.ShouldBe("y");
+            ((ISideOption)top).Value.ShouldBe("t");
+            ((ISideOption)bottom).Value.ShouldBe("b");
+            ((ISideOption)left).Value.ShouldBe("l");
+            ((ISideOption)right).Value.ShouldBe("r");
+            ((ISideOption)horizontal).Value.ShouldBe("x");
+            ((ISideOption)vertical).Value.ShouldBe("y");
         }
 
         [Theory(DisplayName = "A side and a size can be combined into a spacing option")]
@@ -38,7 +38,7 @@ namespace Egil.RazorComponents.Bootstrap.Tests.Options.SpacingOptions
         {
             var side = left;
             var spacing = side - size;
-            spacing.Value.ShouldBeCombinationOf(side, (Number)size);
+            spacing.Value.ShouldBeCombinationOf("l", (Number)size);
         }
 
         [Fact(DisplayName = "A side and auto option can be combined into a spacing option")]
@@ -46,7 +46,7 @@ namespace Egil.RazorComponents.Bootstrap.Tests.Options.SpacingOptions
         {
             var side = right;
             var spacing = side - auto;
-            spacing.Value.ShouldBeCombinationOf(side, auto);
+            spacing.Value.ShouldBeCombinationOf("r", auto);
         }
 
         [Theory(DisplayName = "Combining a side with an invalid size number throws")]
@@ -64,7 +64,7 @@ namespace Egil.RazorComponents.Bootstrap.Tests.Options.SpacingOptions
             var side = right;
             var breakpoint = md;
             var spacing = side - breakpoint - size;
-            spacing.Value.ShouldBeCombinationOf(side, breakpoint, (Number)size);
+            spacing.Value.ShouldBeCombinationOf("r", breakpoint, (Number)size);
         }
 
         [Theory(DisplayName = "Combining a breakpoint, side with an invalid size number throws")]

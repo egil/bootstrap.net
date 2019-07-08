@@ -49,7 +49,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Groups
             AlwaysCascadeToChildren = true;
         }
 
-        protected override void OnChildInit(BootstrapContextAwareComponentBase component)
+        protected override void OnChildInit(BootstrapParentAwareComponentBase component)
         {
             var originalType = Type;
             Type = component switch

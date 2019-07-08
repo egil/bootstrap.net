@@ -1,6 +1,7 @@
 ﻿using Egil.RazorComponents.Bootstrap.Components.Layout.Parameters;
 using Egil.RazorComponents.Bootstrap.Options.AlignmentOptions;
 using Egil.RazorComponents.Bootstrap.Options.CommonOptions;
+using Egil.RazorComponents.Bootstrap.Options.SimpleOptions;
 
 namespace Egil.RazorComponents.Bootstrap.Options
 {
@@ -25,6 +26,15 @@ namespace Egil.RazorComponents.Bootstrap.Options
         public static readonly JustifyOption Between = new JustifyOption(JustifyType.Between);
         public static readonly JustifyOption Around = new JustifyOption(JustifyType.Around);
 
+        public static readonly LeftOption Left = new LeftOption();
+        public static readonly RightOption Right = new RightOption();
+        public static readonly UpOption Up = new UpOption();
+        public static readonly DownOption Down = new DownOption();
+        public static readonly TopOption Top = new TopOption();
+        public static readonly BottomOption Bottom = new BottomOption();
+        public static readonly HorizontalOption Horizontal = new HorizontalOption();
+        public static readonly VerticalOption Vertical = new VerticalOption();
+
         public static class LowerCase
         {
             public static readonly ContainerTypeParameter fluid = Fluid;
@@ -45,6 +55,15 @@ namespace Egil.RazorComponents.Bootstrap.Options
             public static readonly JustifyOption between = Between;
             public static readonly JustifyOption around = Around;
 
+            public static readonly LeftOption left = Left;
+            public static readonly RightOption right = Right;
+            public static readonly UpOption up = Up;
+            public static readonly DownOption down = Down;
+            public static readonly TopOption top = Top;
+            public static readonly BottomOption bottom = Bottom;
+            public static readonly HorizontalOption horizontal = Horizontal;
+            public static readonly VerticalOption vertical = Vertical;
+
             public class Abbr
             {
                 public static readonly ContainerTypeParameter fluid = Fluid;
@@ -64,6 +83,15 @@ namespace Egil.RazorComponents.Bootstrap.Options
                 public static readonly AlignmentOption end = End;
                 public static readonly JustifyOption between = Between;
                 public static readonly JustifyOption around = Around;
+
+                public static readonly LeftOption left = Left;
+                public static readonly RightOption right = Right;
+                public static readonly UpOption up = Up;
+                public static readonly DownOption down = Down;
+                public static readonly TopOption top = Top;
+                public static readonly BottomOption bottom = Bottom;
+                public static readonly HorizontalOption horizontal = Horizontal;
+                public static readonly VerticalOption vertical = Vertical;
             }
         }
     }

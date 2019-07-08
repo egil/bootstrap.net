@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Egil.RazorComponents.Bootstrap.Base.CssClassValues;
 
 namespace Egil.RazorComponents.Bootstrap.Extensions
 {
@@ -17,6 +18,15 @@ namespace Egil.RazorComponents.Bootstrap.Extensions
             {
                 if (assignableFromType.IsAssignableFrom(prop.PropertyType))
                     yield return prop;
+            }
+        }
+
+        public static IEnumerable<PropertyInfo> RemoveCssClassExcluded(this IEnumerable<PropertyInfo> properties)
+        {
+            foreach (var prop in properties)
+            {
+                var hasExcludedAttribute = prop.GetCustomAttribute<CssClassExcludedAttribute>();
+                if (hasExcludedAttribute is null) yield return prop;
             }
         }
 

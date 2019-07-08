@@ -11,7 +11,6 @@ using System;
 using System.Linq;
 using Xunit;
 using static Egil.RazorComponents.Bootstrap.Options.Factory.LowerCase.Abbr;
-using static Egil.RazorComponents.Bootstrap.Utilities.Spacing.Factory.LowerCase;
 
 namespace Egil.RazorComponents.Bootstrap.Tests.Parameters
 {
@@ -20,7 +19,7 @@ namespace Egil.RazorComponents.Bootstrap.Tests.Parameters
     {
         protected abstract string ParamPrefix { get; }
 
-        private SpacingParameter<TParamPrefix>? sut;
+        private SpacingParameter<TParamPrefix>? Sut { get; set; }
 
         [Fact(DisplayName = "Parameter prefix returns correct value")]
         public void ParameterPrefixReturnsCorrectValue()
@@ -39,8 +38,8 @@ namespace Egil.RazorComponents.Bootstrap.Tests.Parameters
         [NumberRangeData(-5, 5)]
         public void CanHaveValidIndexNumberSpecifiedByAssignment(int size)
         {
-            sut = size;
-            sut.ShouldContainOptionsWithPrefix(ParamPrefix, size);
+            Sut = size;
+            Sut.ShouldContainOptionsWithPrefix(ParamPrefix, size);
         }
 
         [Theory(DisplayName = "Spacing can have sides and size specified by assignment ({property}[sides]-{size})")]
@@ -48,8 +47,8 @@ namespace Egil.RazorComponents.Bootstrap.Tests.Parameters
         public void CanHaveSideAndSizes(int size)
         {
             var side = left;
-            sut = side - size;
-            sut.Single().ShouldBe($"{ParamPrefix}{side.Value}-{((Number)size).Value}");
+            Sut = side - size;
+            Sut.Single().ShouldBe($"{ParamPrefix}{"l"}-{((Number)size).Value}");
         }
 
         [Theory(DisplayName = "Spacing can have breakpoint and size specified by assignment ({property}-{breakpoint}-{size})")]
@@ -57,8 +56,8 @@ namespace Egil.RazorComponents.Bootstrap.Tests.Parameters
         public void CanHaveBreakpointWithSize(int size)
         {
             var option = md - size;
-            sut = option;
-            sut.Single().ShouldBe($"{ParamPrefix}-{option.Value}");
+            Sut = option;
+            Sut.Single().ShouldBe($"{ParamPrefix}-{option.Value}");
         }
 
         [Theory(DisplayName = "Spacing can have side, breakpoint and size specified by assignment ({property}[sides]-{breakpoint}-{size})")]
@@ -66,31 +65,31 @@ namespace Egil.RazorComponents.Bootstrap.Tests.Parameters
         public void CanHaveSideAndBreakpointWithSize(int size)
         {
             var option = left - md - size;
-            sut = option;
-            sut.Single().ShouldBe($"{ParamPrefix}{option.Value}");
+            Sut = option;
+            Sut.Single().ShouldBe($"{ParamPrefix}{option.Value}");
         }
 
         [Fact(DisplayName = "Spacing can have auto option specified by assignment ({property}-{auto})")]
         public void AssignAuto()
         {
-            sut = auto;
-            sut.Single().ShouldBe($"{ParamPrefix}-{auto.Value}");
+            Sut = auto;
+            Sut.Single().ShouldBe($"{ParamPrefix}-{auto.Value}");
         }
 
         [Fact(DisplayName = "Spacing can have breakpoint auto option specified by assignment ({property}-{breakpoint}-{auto})")]
         public void AssignBreakpointWithAuto()
         {
             var option = md - auto;
-            sut = option;
-            sut.Single().ShouldBe($"{ParamPrefix}-{option.Value}");
+            Sut = option;
+            Sut.Single().ShouldBe($"{ParamPrefix}-{option.Value}");
         }
 
         [Fact(DisplayName = "Spacing can have side, breakpoint auto option specified by assignment ({property}[side]-{breakpoint}-{auto})")]
         public void AssignSideBreakpointWithAuto()
         {
             var option = left - md - auto;
-            sut = option;
-            sut.Single().ShouldBe($"{ParamPrefix}{option.Value}");
+            Sut = option;
+            Sut.Single().ShouldBe($"{ParamPrefix}{option.Value}");
         }
 
         [Theory(DisplayName = "Specifying an invalid size number throws")]
@@ -98,7 +97,7 @@ namespace Egil.RazorComponents.Bootstrap.Tests.Parameters
         [InlineData(6)]
         public void SpecifyinInvalidIndexNumberThrows(int invalidSize)
         {
-            Should.Throw<ArgumentOutOfRangeException>(() => sut = invalidSize);
+            Should.Throw<ArgumentOutOfRangeException>(() => Sut = invalidSize);
         }
 
         [Theory(DisplayName = "Specifying a breakpoint invalid size number throws")]
@@ -107,14 +106,14 @@ namespace Egil.RazorComponents.Bootstrap.Tests.Parameters
         public void CanHaveBreakpointWithSizeThrowsWithInvalidSize(int invalidSize)
         {
             var invalidOption = md - invalidSize;
-            Should.Throw<ArgumentOutOfRangeException>(() => sut = invalidOption);
+            Should.Throw<ArgumentOutOfRangeException>(() => Sut = invalidOption);
         }
 
         [Theory(DisplayName = "Spacing can have option sets of spacing-options assigned")]
         [MemberData(nameof(SutOptionSetsFixtureData))]
         public void CanHaveOptionSetOfSpacingOptionsSpecified(dynamic set)
         {
-            sut = set;
+            Sut = set;
         }
 
         [Fact(DisplayName = "Spacing correctly outputs option values specified in sets of spacing-options")]
@@ -128,9 +127,9 @@ namespace Egil.RazorComponents.Bootstrap.Tests.Parameters
             var spacingBpNumber = left - md - 4;
             var set = num | auto | bpAuto | bpn | sideBpAuto | spacing | spacingBpNumber;
 
-            sut = set;
+            Sut = set;
 
-            sut.OrderBy(x => x).ShouldBe(new[]{
+            Sut.OrderBy(x => x).ShouldBe(new[]{
                 $"{ParamPrefix}-{num}",
                 $"{ParamPrefix}-{auto.Value}",
                 $"{ParamPrefix}-{bpAuto.Value}",
@@ -147,17 +146,17 @@ namespace Egil.RazorComponents.Bootstrap.Tests.Parameters
         [InlineData(6)]
         public void InvalidSpacingInSetThrows(int number)
         {
-            Should.Throw<ArgumentOutOfRangeException>(() => sut = number | lg - 2);
-            Should.Throw<ArgumentOutOfRangeException>(() => sut = lg - number | 3);
+            Should.Throw<ArgumentOutOfRangeException>(() => Sut = number | lg - 2);
+            Should.Throw<ArgumentOutOfRangeException>(() => Sut = lg - number | 3);
         }
 
         [Theory(DisplayName = "Spacing can NOT have option sets of none-spacing-options assigned")]
         [MemberData(nameof(IncompatibleOptionSetsFixtureData))]
         public void CanNOTHaveOptionSetOfNoneSpacingOptionsSpecified(dynamic set)
         {
-            Assert.Throws<RuntimeBinderException>(() => sut = set);
+            Assert.Throws<RuntimeBinderException>(() => Sut = set);
         }
 
-        // TODO: ensure auto related sizes are not combinable with genera spacing options
+        // TODO: ensure auto related sizes are not combinable with general spacing options
     }
 }

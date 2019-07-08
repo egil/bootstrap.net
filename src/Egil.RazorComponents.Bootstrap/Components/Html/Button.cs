@@ -11,8 +11,10 @@ using Microsoft.AspNetCore.Components.RenderTree;
 
 namespace Egil.RazorComponents.Bootstrap.Components.Html
 {
-    public sealed class Button : BootstrapHtmlElementComponentBase, IToggleForCollapse, IDisposable
+    public sealed class Button : BootstrapHtmlElementComponentBase, IToggleForCollapse, IExploseElementRef, IDisposable
     {
+        private ElementRef _domElement;
+
         /// <summary>
         /// The type of the button. Possible values are:
         /// <list type="bullet">
@@ -73,9 +75,16 @@ namespace Egil.RazorComponents.Bootstrap.Components.Html
 
         private bool _isToggleTargetExpanded;
         private string? _ariaControls;
-        public event EventHandler OnToggled;
+        private event EventHandler _onToggled;
+        event EventHandler IToggleForCollapse.OnToggled { add => _onToggled += value; remove => _onToggled -= value; }
 
+        /// <summary>
+        /// Gets or sets the IDs of <see cref="Collapse"/> components that this 
+        /// Button should be used to toggle.
+        /// </summary>
         [Parameter] public string? ToggleFor { get; set; }
+
+        ElementRef IExploseElementRef.DomElement => _domElement;
 
         void IToggleForCollapse.SetExpandedState(bool isExpanded)
         {
@@ -101,10 +110,12 @@ namespace Egil.RazorComponents.Bootstrap.Components.Html
                 await IsActiveChanged.InvokeAsync(IsActive);
             }
 
-            if (!(OnToggled is null))
-            {
-                OnToggled?.Invoke(this, EventArgs.Empty);
-            }
+            _onToggled?.Invoke(this, EventArgs.Empty);
+        }
+
+        public void Dispose()
+        {
+            IToggleForCollapse.Disconnect(this);
         }
 
         protected override void OnBootstrapParametersSet()
@@ -115,14 +126,14 @@ namespace Egil.RazorComponents.Bootstrap.Components.Html
         protected override void OnBootstrapInit()
         {
             IToggleForCollapse.Connect(this);
-            _ariaControls = string.Join(' ', ToggleFor?.SplitOnComma() ?? Array.Empty<string>());
+            _ariaControls = string.Join(' ', ToggleFor?.SplitOnCommaOrSpace() ?? Array.Empty<string>());
         }
 
         protected internal override void DefaultRenderFragment(RenderTreeBuilder builder)
         {
             builder.OpenElement(HtmlTags.BUTTON);
 
-            if (Toggleable || !(OnToggled is null))
+            if (Toggleable || !(_onToggled is null))
             {
                 builder.AddEventListener(HtmlEvents.CLICK, EventCallback.Factory.Create<UIMouseEventArgs>(this, Toggle));
             }
@@ -132,20 +143,22 @@ namespace Egil.RazorComponents.Bootstrap.Components.Html
                 builder.AddAttribute(HtmlAttrs.ARIA_EXPANDED, _isToggleTargetExpanded.ToLowerCaseString());
                 builder.AddAttribute(HtmlAttrs.ARIA_CONTROLS, _ariaControls);
             }
+            
+            if(Toggleable)
+            {
+                builder.AddAttribute(HtmlAttrs.ARIA_PRESSED, IsActive.ToLowerCaseString());
+            }
 
             builder.AddAttribute(HtmlAttrs.TYPE, Type);
             builder.AddClassAttribute(CssClassValue);
-            builder.AddAttribute("aria-pressed", IsActive.ToLowerCaseString());
+
 
             builder.AddMultipleAttributes(AdditionalAttributes);
-            
-            builder.AddContent(ChildContent);
-            builder.CloseElement();
-        }
 
-        public void Dispose()
-        {
-            IToggleForCollapse.Disconnect(this);
+            builder.AddContent(ChildContent);
+
+            builder.AddElementReferenceCapture(elm => _domElement = elm);
+            builder.CloseElement();
         }
     }
 }

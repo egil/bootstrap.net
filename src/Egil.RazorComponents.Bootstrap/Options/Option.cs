@@ -6,13 +6,13 @@ namespace Egil.RazorComponents.Bootstrap.Options
     [DebuggerDisplay("Option: {Value}")]
     public abstract class Option : IOption, IEquatable<IOption>
     {
-        public const string OptionSeparator = "-";
+        public const string OptionSeparator = IOption.OptionSeparator;
 
         public abstract string Value { get; }
 
         public string CombineWith(IOption otherOption) => CombineWith(this, otherOption);
 
-        public static string CombineWith(IOption firstOption, IOption otherOption) => string.Concat(firstOption.Value, OptionSeparator, otherOption.Value);        
+        public static string CombineWith(IOption firstOption, IOption otherOption) => string.Concat(firstOption.Value, IOption.OptionSeparator, otherOption.Value);        
 
         public override int GetHashCode()
         {

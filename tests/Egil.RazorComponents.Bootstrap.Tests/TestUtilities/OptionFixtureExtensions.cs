@@ -9,6 +9,11 @@ namespace Egil.RazorComponents.Bootstrap.Tests.TestUtilities
 
     public static class OptionFixtureExtensions
     {
+        public static void ShouldBeCombinationOf(this string value, string firstValue, params IOption[] options)
+        {
+            value.ShouldBe($"{firstValue}{Option.OptionSeparator}{string.Join(Option.OptionSeparator, options.Select(option => option.Value))}");
+        }
+
         public static void ShouldBeCombinationOf(this string value, params IOption[] options)
         {
             var expected = string.Join(Option.OptionSeparator, options.Select(option => option.Value));

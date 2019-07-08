@@ -9,8 +9,10 @@
         public const string FIGURE = "figure";
         public const string FIGCAPTION = "figcaption";
         public const string FOOTER = "footer";
+        public const string FORM = "form";
         public const string IMG = "img";
         public const string HEADER = "header";
+        public const string HR = "hr";
         public const string LI = "li";
         public const string NAV = "nav";
         public const string OL = "ol";
@@ -23,10 +25,12 @@
 
     public static class HtmlAttrs
     {
-        public const string ARIA_LABEL = "aria-label";
-        public const string ARIA_EXPANDED = "aria-expanded";
         public const string ARIA_CONTROLS = "aria-controls";      
+        public const string ARIA_EXPANDED = "aria-expanded";
+        public const string ARIA_HASPOPUP = "aria-haspopup";
+        public const string ARIA_LABEL = "aria-label";
         public const string ARIA_LABELLEDBY = "aria-labelledby";
+        public const string ARIA_PRESSED = "aria-pressed";
         public const string ALT = "alt";
         public const string HREF = "href";
         public const string ID = "id";
