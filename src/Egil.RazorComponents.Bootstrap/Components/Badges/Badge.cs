@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace Egil.RazorComponents.Bootstrap.Components.Badges
 {
-    public sealed class Badge : BootstrapParentComponentBase
+    public sealed class Badge : ParentComponentBase
     {
         private const string BadgeCssClass = "badge";
         private const string PillShapedCssClass = "badge-pill";
@@ -22,12 +22,12 @@ namespace Egil.RazorComponents.Bootstrap.Components.Badges
             DefaultCssClass = BadgeCssClass;
         }
 
-        protected override void OnBootstrapParametersSet()
+        protected override void OnCompomnentParametersSet()
         {
             if (AdditionalAttributes.ContainsKey(HtmlAttrs.HREF))
-                DefaultElementName = HtmlTags.A;
+                DefaultElementTag = HtmlTags.A;
             else
-                DefaultElementName = HtmlTags.SPAN;
+                DefaultElementTag = HtmlTags.SPAN;
         }
     }
 }

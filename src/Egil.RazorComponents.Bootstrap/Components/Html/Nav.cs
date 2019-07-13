@@ -3,13 +3,13 @@ using Microsoft.AspNetCore.Components;
 
 namespace Egil.RazorComponents.Bootstrap.Components.Html
 {
-    public sealed class Nav : BootstrapHtmlElementComponentBase
+    public sealed class Nav : ParentComponentBase
     {
         [Parameter] public bool Pills { get; set; } = false;
 
         public Nav()
         {
-            DefaultElementName = HtmlTags.NAV;
+            DefaultElementTag = HtmlTags.NAV;
         }
     }
 }

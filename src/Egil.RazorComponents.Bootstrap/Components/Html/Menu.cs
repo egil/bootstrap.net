@@ -7,11 +7,11 @@ using Egil.RazorComponents.Bootstrap.Base;
 
 namespace Egil.RazorComponents.Bootstrap.Components.Html
 {
-    public sealed class Menu : BootstrapHtmlElementComponentBase
+    public sealed class Menu : ParentComponentBase
     {
         public Menu()
         {
-            DefaultElementName = HtmlTags.DIV;
+            DefaultElementTag = HtmlTags.DIV;
         }
     }
 }

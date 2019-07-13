@@ -16,9 +16,12 @@ namespace Egil.RazorComponents.Bootstrap.Components.Dropdowns.Parameters
 
         public override int Count { get; }
 
-        public DirectionParameter(IDirectionOption? left = null)
+        public string DirectionValue { get; }
+
+        private DirectionParameter(IDirectionOption direction)
         {
-            if (left is null)
+            DirectionValue = direction.Value;
+            if (direction == Factory.Down)
             {
                 Count = 0;
                 _value = string.Empty;
@@ -26,7 +29,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Dropdowns.Parameters
             else
             {
                 Count = 1;
-                _value = $"{Prefix}{left.Value}";
+                _value = $"{Prefix}{direction.Value}";
             }
         }
 
@@ -43,6 +46,6 @@ namespace Egil.RazorComponents.Bootstrap.Components.Dropdowns.Parameters
         public static readonly DirectionParameter Left = new DirectionParameter(Factory.Left);
         public static readonly DirectionParameter Right = new DirectionParameter(Factory.Right);
         public static readonly DirectionParameter Up = new DirectionParameter(Factory.Up);
-        public static readonly DirectionParameter Default = new DirectionParameter();
+        public static readonly DirectionParameter Default = new DirectionParameter(Factory.Down);
     }
 }

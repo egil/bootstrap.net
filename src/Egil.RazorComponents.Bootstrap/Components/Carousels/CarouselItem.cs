@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace Egil.RazorComponents.Bootstrap.Components.Carousels
 {
-    public sealed class CarouselItem : BootstrapParentComponentBase
+    public sealed class CarouselItem : ParentComponentBase
     {
         private const string CarouselItemCssClass = "carousel-item";
         private const string CarouselItemActiveCssClass = "active";
@@ -22,27 +22,27 @@ namespace Egil.RazorComponents.Bootstrap.Components.Carousels
             DefaultCssClass = CarouselItemCssClass;
         }
 
-        public void UpdateCssClass(string value)
+        internal void UpdateCssClass(string value)
         {
             Class = value;
             StateHasChanged();
         }
 
-        protected override void OnRegisterChildRules()
+        protected override void ApplyChildHooks(ComponentBase component)
         {
-            Rules.RegisterOnInitRule<Img>(img =>
+            switch (component)
             {
-                img.DefaultCssClass = CarouselImageCssClass;
-            });
-            Rules.RegisterOnInitRule<Svg>(svg =>
-            {
-                svg.DefaultCssClass = CarouselImageCssClass;
-            });
-            Rules.RegisterOnInitRule<Caption>(caption =>
-            {
-                caption.DefaultCssClass = CarouselCaptionCssClass;
-                caption.DefaultElementName = HtmlTags.DIV;
-            });
+                case Img img:
+                    img.DefaultCssClass = CarouselImageCssClass; break;
+                case Svg svg:
+                    svg.DefaultCssClass = CarouselImageCssClass;
+                    break;
+                case Caption caption:
+                    caption.DefaultCssClass = CarouselCaptionCssClass;
+                    caption.DefaultElementTag = HtmlTags.DIV;
+                    break;
+                default: break;
+            }
         }
     }
 }

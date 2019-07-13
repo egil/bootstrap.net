@@ -2,11 +2,11 @@
 
 namespace Egil.RazorComponents.Bootstrap.Components.Html
 {
-    public sealed class Figcaption : BootstrapHtmlElementComponentBase
+    public sealed class Figcaption : ParentComponentBase
     {
         public Figcaption()
         {
-            DefaultElementName = HtmlTags.FIGCAPTION;
+            DefaultElementTag = HtmlTags.FIGCAPTION;
         }
     }
 }

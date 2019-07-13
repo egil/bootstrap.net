@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace Egil.RazorComponents.Bootstrap.Components.Layout
 {
-    public sealed class Column : BootstrapParentComponentBase
+    public sealed class Column : ParentComponentBase
     {
         [Parameter]
         public SpanParameter Span { get; set; } = SpanParameter.Default;

@@ -2,11 +2,11 @@
 
 namespace Egil.RazorComponents.Bootstrap.Components.Html
 {
-    public sealed class Form : BootstrapHtmlElementComponentBase
+    public sealed class Form : ParentComponentBase
     {
         public Form()
         {
-            DefaultElementName = HtmlTags.FORM;
+            DefaultElementTag = HtmlTags.FORM;
         }
     }
 }

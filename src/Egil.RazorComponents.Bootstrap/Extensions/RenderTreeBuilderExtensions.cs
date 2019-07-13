@@ -20,8 +20,9 @@ namespace Egil.RazorComponents.Bootstrap.Extensions
             builder.OpenComponent<TComponent>(sequence);
         }
 
-        public static void AddElementReferenceCapture(this RenderTreeBuilder builder, Action<ElementRef> elementReferenceCaptureAction, [CallerLineNumber] int sequence = DEFAULT_SEQUENCE)
+        public static void AddElementReferenceCapture(this RenderTreeBuilder builder, Action<ElementRef>? elementReferenceCaptureAction, [CallerLineNumber] int sequence = DEFAULT_SEQUENCE)
         {
+            if (elementReferenceCaptureAction is null) return;
             builder.AddElementReferenceCapture(sequence, elementReferenceCaptureAction);
         }
 
@@ -34,6 +35,14 @@ namespace Egil.RazorComponents.Bootstrap.Extensions
 
         public static void AddEventListener<T>(this RenderTreeBuilder builder, string eventName, EventCallback<T> callback, [CallerLineNumber] int sequence = DEFAULT_SEQUENCE)
         {
+            if (string.IsNullOrEmpty(eventName)) return;
+
+            builder.AddAttribute(sequence, eventName, callback);
+        }
+
+        public static void AddEventListener<T>(this RenderTreeBuilder builder, string eventName, EventCallback<T>? callback, [CallerLineNumber] int sequence = DEFAULT_SEQUENCE)
+        {
+            if (callback is null) return;
             if (string.IsNullOrEmpty(eventName)) return;
 
             builder.AddAttribute(sequence, eventName, callback);
@@ -130,9 +139,9 @@ namespace Egil.RazorComponents.Bootstrap.Extensions
             builder.AddAttribute(sequence, RenderTreeBuilder.ChildContent, (RenderFragment)(nestedBuilder => nestedBuilder.AddMarkupContent(markupContent)));
         }
 
-        public static void AddIgnoreParentContextAttribute(this RenderTreeBuilder builder, bool value = true, [CallerLineNumber] int sequence = DEFAULT_SEQUENCE)
+        public static void AddDisableParentOverridesAttribute(this RenderTreeBuilder builder, bool value = true, [CallerLineNumber] int sequence = DEFAULT_SEQUENCE)
         {
-            builder.AddAttribute(sequence, "IgnoreParentContext", value);
+            builder.AddAttribute(sequence, "DisableParentOverrides", value);
         }
     }
 }

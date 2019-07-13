@@ -2,11 +2,11 @@
 
 namespace Egil.RazorComponents.Bootstrap.Components.Html
 {
-    public sealed class Hr : BootstrapHtmlElementComponentBase
+    public sealed class Hr : ComponentBase
     {
         public Hr()
         {
-            DefaultElementName = HtmlTags.HR;
+            DefaultElementTag = HtmlTags.HR;
         }
     }    
 }

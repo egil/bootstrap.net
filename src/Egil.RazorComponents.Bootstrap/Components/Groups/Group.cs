@@ -11,11 +11,13 @@ using Microsoft.AspNetCore.Components.RenderTree;
 
 namespace Egil.RazorComponents.Bootstrap.Components.Groups
 {
-    public sealed class Group : BootstrapParentComponentBase
+    public sealed class Group : ParentComponentBase, IChildTrackingParentComponent
     {
         private const string DefaultRole = "group";
         private const string CardGroupCssClass = "card-group";
         private const GroupType DefaultGroupType = GroupType.ButtonGroup;
+
+        private int _itemCount = 0;
 
         public GroupType Type { get; private set; } = GroupType.Undetermined;
 
@@ -44,34 +46,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Groups
         /// </summary>
         [Parameter] public SizeParamter<GroupSize>? Size { get; set; } = SizeParamter<GroupSize>.Medium;
 
-        public Group()
-        {
-            AlwaysCascadeToChildren = true;
-        }
-
-        protected override void OnChildInit(BootstrapParentAwareComponentBase component)
-        {
-            var originalType = Type;
-            Type = component switch
-            {
-                Button _ when Type == GroupType.ButtonGroup || Type == GroupType.Undetermined => GroupType.ButtonGroup,
-                Card _ when Type == GroupType.CardGroup || Type == GroupType.Undetermined => GroupType.CardGroup,
-                _ when Type != GroupType.Undetermined => throw new Exception("Mixed children not allowed"),
-                _ => throw new Exception("Unknown child type")
-            };
-
-            // Now that we have determined the type of children, there is 
-            // no need to continue to provide Group to them as their parent.
-            AlwaysCascadeToChildren = false;
-
-            if (Type != DefaultGroupType && originalType == GroupType.Undetermined)
-            {                
-                ConfigureParametersForGroupType();                
-                StateHasChanged();
-            }
-        }
-
-        protected override void OnBootstrapParametersSet()
+        protected override void OnCompomnentParametersSet()
         {
             ConfigureParametersForGroupType();
         }
@@ -79,9 +54,13 @@ namespace Egil.RazorComponents.Bootstrap.Components.Groups
         protected internal override void DefaultRenderFragment(RenderTreeBuilder builder)
         {
             builder.OpenElement(HtmlTags.DIV);
+            builder.AddIdAttribute(Id);
             builder.AddClassAttribute(CssClassValue);
             builder.AddRoleAttribute(Role);
+            builder.AddMultipleAttributes(AdditionalAttributes);
+            builder.AddMultipleAttributes(OverriddenAttributes);
             builder.AddContent(ChildContent);
+            builder.AddElementReferenceCapture(DomElementCapture);
             builder.CloseElement();
         }
 
@@ -93,6 +72,37 @@ namespace Egil.RazorComponents.Bootstrap.Components.Groups
                 Size = null;
                 Role = string.Empty;
                 DefaultCssClass = CardGroupCssClass;
+            }
+        }
+
+        void IChildTrackingParentComponent.AddChild(ComponentBase component)
+        {
+            var originalType = Type;
+            Type = component switch
+            {
+                Button _ when Type == GroupType.ButtonGroup || Type == GroupType.Undetermined => GroupType.ButtonGroup,
+                Card _ when Type == GroupType.CardGroup || Type == GroupType.Undetermined => GroupType.CardGroup,
+                _ when Type != GroupType.Undetermined => throw new InvalidChildContentException($"Different types of child components are not allowed inside a {nameof(Group)} component."),
+                _ => throw new InvalidChildContentException($"Components of type {component.GetType().Name} is not allowed inside a {nameof(Group)} component.")
+            };
+
+            _itemCount++;
+
+            if (Type != DefaultGroupType && originalType == GroupType.Undetermined)
+            {
+                ConfigureParametersForGroupType();
+                StateHasChanged();
+            }
+        }
+
+        void IChildTrackingParentComponent.RemoveChild(ComponentBase component)
+        {
+            _itemCount--;
+
+            if (_itemCount == 0)
+            {
+                Type = GroupType.Undetermined;
+                StateHasChanged();
             }
         }
     }

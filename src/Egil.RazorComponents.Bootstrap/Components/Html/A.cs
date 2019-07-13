@@ -3,10 +3,10 @@ using Egil.RazorComponents.Bootstrap.Base.CssClassValues;
 using Egil.RazorComponents.Bootstrap.Components.Collapsibles;
 using Egil.RazorComponents.Bootstrap.Components.Html.Parameters;
 using Egil.RazorComponents.Bootstrap.Extensions;
+using Egil.RazorComponents.Bootstrap.Services.EventBus;
 using Egil.RazorComponents.Bootstrap.Utilities;
 using Egil.RazorComponents.Bootstrap.Utilities.Colors;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.RenderTree;
 using Microsoft.AspNetCore.Components.Routing;
 using Microsoft.JSInterop;
 using System;
@@ -16,10 +16,23 @@ using System.Threading.Tasks;
 namespace Egil.RazorComponents.Bootstrap.Components.Html
 {
 
-    public sealed class A : BootstrapHtmlElementComponentBase, IToggleForCollapse, IExploseElementRef, IDisposable
+    public sealed class A : ParentComponentBase, IToggleForCollapse
     {
         private ElementRef _domElement;
         private bool _preventDefaultHandlerRegistered;
+
+        #region IToggleForCollapse state
+
+        string[] IToggleForCollapse.SubscribedToggleTargetIds { get; set; } = Array.Empty<string>();
+        IEventBus IToggleForCollapse.EventBus => EventBus!;
+        EventCallback<UIMouseEventArgs>? IToggleForCollapse.ToggleForClickHandler
+        {
+            get => ToggleForClickHandler; set => ToggleForClickHandler = value;
+        }
+
+        #endregion 
+
+        private EventCallback<UIMouseEventArgs>? ToggleForClickHandler { get; set; }
 
         private string? MatchUrlAbsolute { get; set; }
 
@@ -29,6 +42,11 @@ namespace Egil.RazorComponents.Bootstrap.Components.Html
 
         [Inject] private IJSRuntime? JsRuntime { get; set; }
 
+        [Inject] private IEventBus? EventBus { get; set; }
+
+        /// <summary>
+        /// Gets whether the link is currently pointing to the active browser URL.
+        /// </summary>
         public bool Active { get; private set; }
 
         /// <summary>
@@ -64,72 +82,32 @@ namespace Egil.RazorComponents.Bootstrap.Components.Html
         /// </summary>
         [Parameter] public bool PreventDefaultOnClick { get; set; }
 
-        #region IToggleForCollapse
-
-        private bool _isToggleTargetExpanded;
-        private string? _ariaControls;
-        private event EventHandler _onToggled;
-        event EventHandler IToggleForCollapse.OnToggled { add => _onToggled += value; remove => _onToggled -= value; }
-
-        /// <inheritdoc />
+        /// <summary>
+        /// Gets or sets the IDs of the <see cref="Collapse"/> components that this 
+        /// component should be used to toggle. One or more IDs can be specified 
+        /// by separating them with a comma or space.
+        /// </summary>
         [Parameter] public string? ToggleFor { get; set; }
 
-        ElementRef IExploseElementRef.DomElement => _domElement;
-
-        void IToggleForCollapse.SetExpandedState(bool isExpanded)
-        {
-            _isToggleTargetExpanded = isExpanded;
-            StateHasChanged();
-        }
-
-        #endregion
+        /// <summary>
+        /// Gets or sets whether this link should be disabled or not. Default is false.
+        /// Used together with <see cref="AsButton"/>.
+        /// </summary>
+        [Parameter, CssClassToggleParameter("disabled")] public bool Disabled { get; set; } = false;
 
         public A()
         {
-            DefaultElementName = HtmlTags.A;
+            DefaultElementTag = HtmlTags.A;
+            DomElementCapture = (elm) => _domElement = elm;
         }
 
-        protected override void OnBootstrapInit()
+        protected override void OnCompomnentInit()
         {
-            // We'll consider re-rendering on each location change
             UriHelper!.OnLocationChanged += OnLocationChanged;
-
-            IToggleForCollapse.Connect(this);
-            _ariaControls = string.Join(' ', ToggleFor?.SplitOnCommaOrSpace() ?? Array.Empty<string>());
+            ((IToggleForCollapse)this).AddToggleHooks(this);
         }
 
-        /// <inheritdoc />
-        public void Dispose()
-        {
-            // To avoid leaking memory, it's important to detach any event handlers in Dispose()
-            UriHelper!.OnLocationChanged -= OnLocationChanged;
-            IToggleForCollapse.Disconnect(this);
-        }
-
-        protected internal override void DefaultRenderFragment(RenderTreeBuilder builder)
-        {
-            builder.OpenElement(DefaultElementName);
-
-            if (!(_onToggled is null))
-            {
-                builder.AddEventListener(HtmlEvents.CLICK, EventCallback.Factory.Create<UIMouseEventArgs>(this, (e) => _onToggled?.Invoke(this, EventArgs.Empty)));
-            }
-
-            if (!(ToggleFor is null))
-            {
-                builder.AddAttribute(HtmlAttrs.ARIA_EXPANDED, _isToggleTargetExpanded.ToLowerCaseString());
-                builder.AddAttribute(HtmlAttrs.ARIA_CONTROLS, _ariaControls);
-                builder.AddRoleAttribute("button");
-            }
-
-            builder.AddClassAttribute(CssClassValue);
-            builder.AddMultipleAttributes(AdditionalAttributes);
-            builder.AddContent(ChildContent);
-            builder.AddElementReferenceCapture(elm => _domElement = elm);
-            builder.CloseElement();
-        }
-
-        protected override void OnBootstrapParametersSet()
+        protected override void OnCompomnentParametersSet()
         {
             var newMatchUrl = CreateMatchUrlAbsolute();
             if (newMatchUrl != MatchUrlAbsolute)
@@ -138,20 +116,40 @@ namespace Egil.RazorComponents.Bootstrap.Components.Html
                 Active = UriHelper!.CurrentUriMatches(MatchUrlAbsolute, Match);
                 SetActiveCssClassProvider();
             }
+
+            if (ToggleForClickHandler.HasValue)
+            {
+                AddOverride(HtmlEvents.CLICK, JoinEventCallbacks(HtmlEvents.CLICK, ToggleForClickHandler));
+            }
+
+            if (Disabled)
+            {
+                AddOverride(HtmlAttrs.TABINDEX, "-1");
+                AddOverride(HtmlAttrs.ARIA_DISABLED, "true");
+            }
+            else
+            {
+                RemoveOverride(HtmlAttrs.TABINDEX);
+                RemoveOverride(HtmlAttrs.ARIA_DISABLED);
+            }
         }
 
-        protected override async Task OnAfterRenderAsync()
+        protected override Task OnCompomnentAfterRenderAsync()
         {
-            await base.OnAfterRenderAsync();
+            return ApplyPreventDefaultRule();
+        }
 
-            await ApplyPreventDefaultRule();
+        protected override void OnCompomnentDispose()
+        {
+            // To avoid leaking memory, it's important to detach any event handlers in Dispose()
+            UriHelper!.OnLocationChanged -= OnLocationChanged;
         }
 
         private async Task ApplyPreventDefaultRule()
         {
-            if (!PreventDefaultOnClick && !_preventDefaultHandlerRegistered) return;
+            if (!Disabled && !PreventDefaultOnClick && !_preventDefaultHandlerRegistered) return;
 
-            if (PreventDefaultOnClick)
+            if (Disabled || PreventDefaultOnClick)
             {
                 await _domElement.PreventDefault(JsRuntime, "click");
                 _preventDefaultHandlerRegistered = true;

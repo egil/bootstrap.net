@@ -5,7 +5,7 @@ using System;
 
 namespace Egil.RazorComponents.Bootstrap.Components.Html
 {
-    public class Heading : BootstrapHtmlElementComponentBase
+    public class Heading : ParentComponentBase
     {
         public static readonly string[] HeadingTags = { "h1", "h2", "h3", "h4", "h5", "h6" };
         protected int _size = 1;
@@ -31,9 +31,9 @@ namespace Egil.RazorComponents.Bootstrap.Components.Html
         /// </summary>
         [Parameter] public SpacingParameter<MarginSpacing> Margin { get; set; } = SpacingParameter<MarginSpacing>.None;
 
-        protected override void OnBootstrapParametersSet()
+        protected override void OnCompomnentParametersSet()
         {
-            DefaultElementName = HeadingTags[_size - 1];
+            DefaultElementTag = HeadingTags[_size - 1];
         }
     }
 

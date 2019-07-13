@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace Egil.RazorComponents.Bootstrap.Components.Layout
 {
-    public sealed class Container : BootstrapParentComponentBase
+    public sealed class Container : ParentComponentBase
     {
         [Parameter, CssClassToggleParameter("container-fluid", "container")]
         public bool Fluid { get; set; } = false;

@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Components.RenderTree;
 
 namespace Egil.RazorComponents.Bootstrap.Components.Carousels
 {
-    public sealed class Carousel<TItem> : BootstrapParentAwareComponentBase, IDisposable
+    public sealed class Carousel<TItem> : ComponentBase, IChildTrackingParentComponent
     {
         private const string DefaultCarouselCssClass = "carousel";
         private const string CarouselInnerCssClass = "carousel-inner";
@@ -22,8 +22,8 @@ namespace Egil.RazorComponents.Bootstrap.Components.Carousels
         private static readonly Type CarouselStaticType = typeof(CarouselStatic);
 
         private readonly AnimationTimer _changeItemTimer;
+        private HorizontalSwipePointerEventDetector? _swipeDetector;
         private readonly List<CarouselItem> _carouselItems = new List<CarouselItem>();
-        private HorizontalSwipePointerEventDetector _swipeDetector;
 
         private bool ChangingItems { get; set; }
         private bool StaticContentMode { get; } = typeof(TItem) == CarouselStaticType;
@@ -241,13 +241,13 @@ namespace Egil.RazorComponents.Bootstrap.Components.Carousels
             await Next();
         }
 
-        protected override void OnAfterFirstRender()
-        {            
+        protected override void OnCompomnentAfterFirstRender()
+        {
             if (!(PageVisibilityAPI is null))
                 PageVisibilityAPI.OnPageVisibilityChanged += PageVisibilityAPI_OnPageVisibilityChanged;
         }
 
-        protected override void OnBootstrapParametersSet()
+        protected override void OnCompomnentParametersSet()
         {
             if (Interval > TimeSpan.Zero)
             {
@@ -258,40 +258,26 @@ namespace Egil.RazorComponents.Bootstrap.Components.Carousels
             {
                 Cycle();
             }
-            if (EnableTouch && _swipeDetector is null)
-            {
-                _swipeDetector = new HorizontalSwipePointerEventDetector(async () => await Previous(), async () => await Next());
-            }
-        }
-
-        protected override void OnChildInit(BootstrapParentAwareComponentBase component)
-        {
-            if (component is CarouselItem item)
-            {
-                item.Active = ActiveIndex == _carouselItems.Count;
-                _carouselItems.Add(item);
-                if (StaticContentMode) StateHasChanged();
-            }
-            else
-            {
-                throw new InvalidChildContentException($"When using a {nameof(Carousel<TItem>)} in static content mode, " +
-                    $"where no {nameof(Items)} is provided and {nameof(TItem)} is set to {nameof(CarouselStatic)}, " +
-                    $"all immediate children of the Carousel component must be a {nameof(CarouselItem)} component.");
-            }
         }
 
         protected internal override void DefaultRenderFragment(RenderTreeBuilder builder)
         {
             builder.OpenElement(HtmlTags.DIV);
+            builder.AddIdAttribute(Id);
             builder.AddClassAttribute(CssClassValue);
 
             AddPauseOnMouseHover(builder);
             AddKeyboardNavigation(builder);
             AddTouchNavigation(builder);
 
+            builder.AddMultipleAttributes(AdditionalAttributes);
+            builder.AddMultipleAttributes(OverriddenAttributes);
+
             builder.AddContent(IndicatorsRenderFragment);
             builder.AddContent(CarouselInnerRenderFragment);
             builder.AddContent(ControlsRenderFragment);
+
+            builder.AddElementReferenceCapture(DomElementCapture);
             builder.CloseElement();
         }
 
@@ -327,6 +313,12 @@ namespace Egil.RazorComponents.Bootstrap.Components.Carousels
         private void AddTouchNavigation(RenderTreeBuilder builder)
         {
             if (!EnableTouch || Count < 2) return;
+
+            if (_swipeDetector is null)
+            {
+                _swipeDetector = new HorizontalSwipePointerEventDetector(async () => await Previous(), async () => await Next());
+            }
+
             builder.AddEventListeners(_swipeDetector);
         }
 
@@ -335,13 +327,26 @@ namespace Egil.RazorComponents.Bootstrap.Components.Carousels
             builder.OpenElement(HtmlTags.DIV);
             builder.AddClassAttribute(CarouselInnerCssClass);
 
-            builder.OpenComponent<CascadingValue<BootstrapParentAwareComponentBase>>();
-            builder.AddAttribute("Value", this);
+            builder.OpenComponent<CascadingValue<ChildHooksInjector>>();
+            builder.AddAttribute("Value", (ChildHooksInjector)ApplyChildHooksInternal);
             builder.AddAttribute("IsFixed", true);
             builder.AddAttribute(RenderTreeBuilder.ChildContent, (RenderFragment)ItemsRenderFragment);
             builder.CloseComponent();
 
             builder.CloseElement();
+        }
+        internal ChildHooksInjector? CustomChildHooksInjector { get; set; }
+
+        private void ApplyChildHooksInternal(ComponentBase component)
+        {
+            if (this is IChildTrackingParentComponent trackingParent)
+            {
+                trackingParent.ApplyChildHooks(component);
+            }
+            if (!(CustomChildHooksInjector is null))
+            {
+                CustomChildHooksInjector(component);
+            }
         }
 
         private void ItemsRenderFragment(RenderTreeBuilder builder)
@@ -509,12 +514,45 @@ namespace Egil.RazorComponents.Bootstrap.Components.Carousels
             else if (Cycling) Pause();
         }
 
-        public void Dispose()
+        protected override void OnCompomnentDispose()
         {
-            if(!(PageVisibilityAPI is null))
+            if (!(PageVisibilityAPI is null))
                 PageVisibilityAPI.OnPageVisibilityChanged -= PageVisibilityAPI_OnPageVisibilityChanged;
 
             _changeItemTimer.Dispose();
+        }
+
+        void IChildTrackingParentComponent.AddChild(ComponentBase component)
+        {
+            if (component is CarouselItem item)
+            {
+                item.Active = ActiveIndex == _carouselItems.Count;
+                _carouselItems.Add(item);
+                if (StaticContentMode) StateHasChanged();
+            }
+            else
+            {
+                ThrowInvalidChildContentException();
+            }
+        }
+
+        void IChildTrackingParentComponent.RemoveChild(ComponentBase component)
+        {
+            if (component is CarouselItem item)
+            {
+                _carouselItems.Remove(item);
+            }
+            else
+            {
+                ThrowInvalidChildContentException();
+            }
+        }
+
+        private void ThrowInvalidChildContentException()
+        {
+            throw new InvalidChildContentException($"When using a {nameof(Carousel<TItem>)} in static content mode, " +
+                $"where no {nameof(Items)} is provided and {nameof(TItem)} is set to {nameof(CarouselStatic)}, " +
+                $"all immediate children of the Carousel component must be a {nameof(CarouselItem)} component.");
         }
     }
 }

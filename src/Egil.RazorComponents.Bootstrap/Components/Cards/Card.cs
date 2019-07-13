@@ -1,4 +1,5 @@
-﻿using Egil.RazorComponents.Bootstrap.Base;
+﻿using System.Collections.Generic;
+using Egil.RazorComponents.Bootstrap.Base;
 using Egil.RazorComponents.Bootstrap.Components.Html;
 using Egil.RazorComponents.Bootstrap.Components.Layout;
 using Egil.RazorComponents.Bootstrap.Extensions;
@@ -8,7 +9,7 @@ using Microsoft.AspNetCore.Components.RenderTree;
 
 namespace Egil.RazorComponents.Bootstrap.Components.Cards
 {
-    public sealed class Card : BootstrapParentComponentBase
+    public sealed class Card : ParentComponentBase, IChildTrackingParentComponent
     {
         private const string DefaultCardCssClass = "card";
         private const string BodyCssClass = "card-body";
@@ -24,7 +25,8 @@ namespace Egil.RazorComponents.Bootstrap.Components.Cards
         private const string FooterCssClass = "card-footer";
         private const string HeaderNavCssCass = "nav nav-tabs card-header-tabs";
         private const string HeaderNavPillsCssCass = "nav nav-pills card-header-pills";
-        private int _childComponentCount;
+        private int _childComponentCount = 0;
+        private int _contentHeadingCount = 0;
 
         /// <summary>
         /// Gets or sets the width of the component using standard Bootstrap
@@ -40,65 +42,84 @@ namespace Egil.RazorComponents.Bootstrap.Components.Cards
             DefaultCssClass = DefaultCardCssClass;
         }
 
-        protected override void OnChildInit(BootstrapParentAwareComponentBase component)
+        protected override void ApplyChildHooks(ComponentBase component)
         {
-            _childComponentCount += 1;
-        }
-
-        protected override void OnRegisterChildRules()
-        {
-            void ImageRule(BootstrapParentAwareComponentBase component)
+            switch (component)
             {
-                component.DefaultCssClass = ImageOverlayed 
-                    ? ImgCssClass 
-                    : _childComponentCount == 1 ? ImgTopCssClass : ImgBottomCssClass;
+                case Img image: image.OnParametersSetHook = SetImageCssClass; break;
+                case Svg image: image.OnParametersSetHook = SetImageCssClass; break;
+                case Header header:
+                    header.DefaultElementTag = HtmlTags.DIV;
+                    header.DefaultCssClass = HeaderCssClass;
+                    header.CustomChildHooksInjector = ApplyChildHooks;
+                    break;
+                case Nav nav:
+                    nav.DefaultCssClass = nav.Pills ? HeaderNavPillsCssCass : HeaderNavCssCass;
+                    break;
+                case Footer footer:
+                    footer.DefaultElementTag = HtmlTags.DIV;
+                    footer.DefaultCssClass = FooterCssClass;
+                    break;
+                case Heading heading when _childComponentCount == 0:
+                    heading.DefaultCssClass = HeaderCssClass;
+                    break;
+                case Content content:
+                    content.OnParametersSetHook = _ => content.DefaultCssClass = ImageOverlayed ? OverlayImgCssClass : BodyCssClass;
+                    content.CustomChildHooksInjector = CustomContentChildHooks;
+                    break;
+                case Row row:
+                    row.NoGutters = true;
+                    row.CustomChildHooksInjector = (c) => ((Column)c).CustomChildHooksInjector = CustomColumnChildHooks;
+                    break;
+                default: break;
             }
-
-            Rules.RegisterOnInitRule<Svg>(ImageRule);
-            Rules.RegisterOnInitRule<Img>(ImageRule);
-
-            Rules.RegisterOnInitRule<Header>(header =>
-            {
-                header.DefaultElementName = HtmlTags.DIV;
-                header.DefaultCssClass = HeaderCssClass;
-                header.Rules.RegisterRule<Nav>(nav => nav.DefaultCssClass = nav.Pills ? HeaderNavPillsCssCass : HeaderNavCssCass);
-            });
-
-            Rules.RegisterOnInitRule<Footer>(footer => { footer.DefaultElementName = HtmlTags.DIV; footer.DefaultCssClass = FooterCssClass; });
-            Rules.RegisterOnInitRule<Heading, H1, H2, H3, H4, H5, H6>(heading => { if (_childComponentCount == 1) heading.DefaultCssClass = HeaderCssClass; });
-
-            Rules.RegisterOnInitRule<Content>(content =>
-            {
-                int headingsSeen = 0;
-
-                content.Rules.RegisterOnInitRule<Heading, H1, H2, H3, H4, H5, H6>(x =>
-                {
-                    headingsSeen++;
-                    x.DefaultCssClass = headingsSeen == 1 ? TitleCssClass : SubTitleCssClass;
-                });
-
-                content.Rules.RegisterOnInitRule<A>(x => x.DefaultCssClass = LinkCssClass);
-                content.Rules.RegisterOnInitRule<P>(x => x.DefaultCssClass = TextCssClass);
-            });
-
-            Rules.RegisterRule<Content>(content => content.DefaultCssClass = ImageOverlayed ? OverlayImgCssClass : BodyCssClass);
-
-            Rules.RegisterOnInitRule<Row>(row =>
-            {
-                row.NoGutters = true;
-                row.Rules.CopyRulesFrom(Rules);
-                row.Rules.RegisterOnInitRule<Svg>(x => x.DefaultCssClass = ImgCssClass);
-                row.Rules.RegisterOnInitRule<Img>(x => x.DefaultCssClass = ImgCssClass);
-            });
         }
 
-        protected internal override void DefaultRenderFragment(RenderTreeBuilder builder)
+        private void SetImageCssClass(ComponentBase component)
         {
-            builder.OpenElement(HtmlTags.DIV);
-            builder.AddClassAttribute(CssClassValue);
-            builder.AddMultipleAttributes(AdditionalAttributes);
-            builder.AddContent(ChildContent);
-            builder.CloseElement();
+            component.DefaultCssClass = ImageOverlayed
+                ? ImgCssClass
+                : _childComponentCount == 1
+                    ? ImgTopCssClass
+                    : ImgBottomCssClass;
         }
+
+        private void CustomContentChildHooks(ComponentBase component)
+        {
+            switch (component)
+            {
+                case Heading heading:
+                    _contentHeadingCount++;
+                    heading.DefaultCssClass = _contentHeadingCount == 1 ? TitleCssClass : SubTitleCssClass;
+                    break;
+                case A a:
+                    a.DefaultCssClass = LinkCssClass;
+                    break;
+                case P p:
+                    p.DefaultCssClass = TextCssClass;
+                    break;
+                default: break;
+            }
+        }
+
+        private void CustomColumnChildHooks(ComponentBase component)
+        {
+            switch (component)
+            {
+                case Img image:
+                    image.DefaultCssClass = ImgCssClass;
+                    break;
+                case Svg image:
+                    image.DefaultCssClass = ImgCssClass;
+                    break;
+                default:
+                    ApplyChildHooks(component);
+                    break;
+            }
+        }
+
+        void IChildTrackingParentComponent.AddChild(ComponentBase component) => _childComponentCount++;
+
+        void IChildTrackingParentComponent.RemoveChild(ComponentBase component) => _childComponentCount--;
     }
 }

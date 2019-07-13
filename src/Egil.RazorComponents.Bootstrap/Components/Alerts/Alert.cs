@@ -8,11 +8,12 @@ using Egil.RazorComponents.Bootstrap.Utilities.Animations;
 using Egil.RazorComponents.Bootstrap.Utilities.Colors;
 using Egil.RazorComponents.Bootstrap.Utilities.Spacing;
 using Microsoft.AspNetCore.Components;
+using Egil.RazorComponents.Bootstrap.Components;
 using Microsoft.AspNetCore.Components.RenderTree;
 
 namespace Egil.RazorComponents.Bootstrap.Components.Alerts
 {
-    public sealed class Alert : BootstrapParentComponentBase
+    public sealed class Alert : ParentComponentBase
     {
         private const string DefaultRole = "alert";
         private const string CssClass = "alert";
@@ -57,6 +58,8 @@ namespace Egil.RazorComponents.Bootstrap.Components.Alerts
         [Parameter] public string DismissText { get; set; } = DefaultDismissText;
 
         public AlertState State { get; private set; } = AlertState.Visible;
+
+        public override RenderFragment ChildContent { get => ChildContentAndDismissButtonRenderFragment; protected set => base.ChildContent = value; }
 
         public Alert()
         {
@@ -106,23 +109,31 @@ namespace Egil.RazorComponents.Bootstrap.Components.Alerts
             StateHasChanged();
         }
 
-        protected override void OnRegisterChildRules()
+        protected override void ApplyChildHooks(ComponentBase component)
         {
-            Rules.RegisterOnInitRule<A>(x => x.DefaultCssClass = LinkCssClass);
-            Rules.RegisterOnInitRule<Heading, H1, H2, H3, H4, H5, H6>(x => x.DefaultCssClass = HeadingCssClass);
+            switch (component)
+            {
+                case A a: a.DefaultCssClass = LinkCssClass; break;
+                case Heading heading: heading.DefaultCssClass = HeadingCssClass; break;
+                default: break;
+            }
+        }
+
+        protected override void OnCompomnentParametersSet()
+        {
+            AddOverride(HtmlAttrs.ROLE, Role);
         }
 
         protected internal override void DefaultRenderFragment(RenderTreeBuilder builder)
         {
             if (!EnableRendering) return;
+            base.DefaultRenderFragment(builder);
+        }
 
-            builder.OpenElement(HtmlTags.DIV);
-            builder.AddRoleAttribute(Role);
-            builder.AddClassAttribute(CssClassValue);
-            builder.AddMultipleAttributes(AdditionalAttributes);
-            builder.AddContent(ChildContent);
+        private void ChildContentAndDismissButtonRenderFragment(RenderTreeBuilder builder)
+        {
+            builder.AddContent(base.ChildContent);
             builder.AddContent(DismissButtonRenderFragment);
-            builder.CloseElement();
         }
 
         private void DismissButtonRenderFragment(RenderTreeBuilder builder)

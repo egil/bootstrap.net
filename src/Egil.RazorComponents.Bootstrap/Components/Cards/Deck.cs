@@ -2,7 +2,7 @@
 
 namespace Egil.RazorComponents.Bootstrap.Components.Cards
 {
-    public class Deck : BootstrapParentComponentBase
+    public class Deck : ParentComponentBase
     {
         private const string DefaultCardCssClass = "card-deck";
 

@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 using Egil.RazorComponents.Bootstrap.Base;
 using Egil.RazorComponents.Bootstrap.Base.CssClassValues;
 using Egil.RazorComponents.Bootstrap.Components.Accessibility;
+using Egil.RazorComponents.Bootstrap.Components.Dropdowns.Events;
 using Egil.RazorComponents.Bootstrap.Components.Dropdowns.Parameters;
 using Egil.RazorComponents.Bootstrap.Components.Html;
 using Egil.RazorComponents.Bootstrap.Components.Html.Parameters;
 using Egil.RazorComponents.Bootstrap.Extensions;
+using Egil.RazorComponents.Bootstrap.Services.EventBus;
 using Egil.RazorComponents.Bootstrap.Utilities.Colors;
 using Egil.RazorComponents.Bootstrap.Utilities.Sizings;
 using Microsoft.AspNetCore.Components;
@@ -18,7 +20,7 @@ using Microsoft.JSInterop;
 
 namespace Egil.RazorComponents.Bootstrap.Components.Dropdowns
 {
-    public sealed class Dropdown : BootstrapParentComponentBase
+    public sealed class Dropdown : ParentComponentBase
     {
         private const string DropdownToggleCssClass = "dropdown-toggle";
         private const string SplitDropdownToggleCssClass = "dropdown-toggle dropdown-toggle-split";
@@ -27,12 +29,13 @@ namespace Egil.RazorComponents.Bootstrap.Components.Dropdowns
         private const string DropdownItemCssClass = "dropdown-item";
         private const string TrueValue = "true";
         private const string FalseValue = "false";
-        private readonly string _toggleId;
 
-        private List<IExploseElementRef> _items = new List<IExploseElementRef>();
-        private int _itemInFocus = -1;
+        private readonly string _toggleId;
+        private ElementRef _menuDomElement;
 
         [Inject] private IJSRuntime? JSRuntime { get; set; }
+
+        [Inject] private IEventBus? EventBus { get; set; }
 
         /// <summary>
         /// Gets or sets the screen reader only text used in the toggle button
@@ -69,7 +72,11 @@ namespace Egil.RazorComponents.Bootstrap.Components.Dropdowns
         /// </summary>
         [Parameter] public DirectionParameter Direction { get; set; } = DirectionParameter.Default;
 
+        /// <summary>
+        /// Gets or sets whether the dropdown is visible/open.
+        /// </summary>
         [Parameter] public bool Visible { get; set; }
+        [Parameter] public EventCallback<bool> VisibleChanged { get; set; }
 
         public Dropdown()
         {
@@ -94,6 +101,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Dropdowns
 
             Visible = true;
             StateHasChanged();
+            EventBus!.PublishAsync(new Event<DropdownOpenedEventType, Dropdown>(DropdownOpenedEventType.Instance, this));
         }
 
         public void Hide()
@@ -104,125 +112,188 @@ namespace Egil.RazorComponents.Bootstrap.Components.Dropdowns
             StateHasChanged();
         }
 
-        protected override void OnBootstrapParametersSet()
+        protected override void ApplyChildHooks(ComponentBase component)
+        {
+            switch (component)
+            {
+                case Button btn:
+                    ApplyButtonHooks(btn);
+                    break;
+
+                case A a:
+                    ApplyAHooks(a);
+                    break;
+
+                case Menu menu:
+                    menu.DomElementCapture = (elm) => _menuDomElement = elm;
+                    menu.CustomChildHooksInjector = CustomMenuChildHooksInjector;
+                    ApplyMenuHooks(menu);
+                    break;
+
+                case Form form:
+                    ApplyMenuHooks(form);
+                    break;
+
+                default: break;
+            }
+        }
+
+        protected override void OnCompomnentInit()
+        {
+            EventBus!.Subscribe<DropdownOpenedEventType, Dropdown>(DropdownOpenedEventType.Instance, DropDownOpenedEventHandler);
+        }
+
+        protected override void OnCompomnentParametersSet()
         {
             DefaultCssClass = Split || Direction != DirectionParameter.Default
                 ? "btn-group"
                 : "dropdown";
         }
 
-        protected override void OnRegisterChildRules()
-        {
-            Rules.RegisterOnInitRule<Button>(btn =>
-            {
-                btn.CustomRenderFragment = builder =>
-                {
-                    btn.Color = Color;
-                    btn.Size = Size;
-
-                    if (!Split)
-                    {
-                        btn.DefaultCssClass = BtnDropdownToggleCssClass;
-
-                        btn.AdditionalAttributes[HtmlAttrs.ID] = _toggleId;
-                        btn.AdditionalAttributes[HtmlAttrs.ARIA_HASPOPUP] = TrueValue;
-                        btn.AdditionalAttributes[HtmlAttrs.ARIA_EXPANDED] = FalseValue;
-                        btn.AdditionalAttributes[HtmlEvents.CLICK] = EventCallback.Factory.Create<UIMouseEventArgs>(this, Toggle);
-
-                        builder.AddContent(btn.DefaultRenderFragment);
-                    }
-                    else
-                    {
-                        builder.AddContent(btn.DefaultRenderFragment);
-
-                        CaretToggleButtonRenderFragment(builder);
-                    }
-                };
-            });
-
-            Rules.RegisterOnInitRule<A>(a =>
-            {
-                a.CustomRenderFragment = builder =>
-                {
-                    a.AsButton = true;
-                    a.Color = Color;
-
-                    if (!Split)
-                    {
-                        a.DefaultCssClass = Size != SizeParamter<ButtonSize>.Medium
-                            ? $"{DropdownToggleCssClass} {Size.Value}"
-                            : DropdownToggleCssClass;
-
-                        a.AdditionalAttributes[HtmlAttrs.ID] = _toggleId;
-                        a.AdditionalAttributes[HtmlAttrs.ARIA_HASPOPUP] = TrueValue;
-                        a.AdditionalAttributes[HtmlAttrs.ARIA_EXPANDED] = FalseValue;
-                        a.AdditionalAttributes[HtmlAttrs.ROLE] = "button";
-
-
-                        builder.AddContent(a.DefaultRenderFragment);
-                    }
-                    else
-                    {
-                        a.DefaultCssClass = Size.Value;
-
-                        builder.AddContent(a.DefaultRenderFragment);
-
-                        CaretToggleButtonRenderFragment(builder);
-                    }
-                };
-            });
-
-            Rules.RegisterOnInitRule<Menu>(menu =>
-            {
-                menu.DefaultCssClass = MenuCssClass;
-
-                Rules.RegisterOnInitRule<A>(a =>
-                {
-                    a.DefaultCssClass = DropdownItemCssClass;
-                    _items.Add(a);
-                });
-                Rules.RegisterOnInitRule<Button>(button =>
-                {
-                    button.DefaultCssClass = DropdownItemCssClass;
-                    _items.Add(button);
-                });
-                Rules.RegisterOnInitRule<Span>(span => span.DefaultCssClass = "dropdown-item-text");
-                Rules.RegisterOnInitRule<Hr>(hr =>
-                {
-                    hr.DefaultCssClass = "dropdown-divider";
-                    hr.DefaultElementName = HtmlTags.DIV;
-                });
-                Rules.RegisterOnInitRule<Heading, H1, H2, H3, H4, H5, H6>(heading => heading.DefaultCssClass = "dropdown-header");
-            });
-
-            Rules.RegisterRule<Menu>(menu =>
-            {
-                menu.AdditionalAttributes[HtmlAttrs.ARIA_LABELLEDBY] = _toggleId;
-                menu.DefaultCssClass = Visible ? $"{MenuCssClass} show" : MenuCssClass;
-            });
-
-            Rules.RegisterOnInitRule<Form>(form =>
-            {
-                form.DefaultCssClass = MenuCssClass;
-            });
-
-            Rules.RegisterRule<Form>(form =>
-            {
-                form.AdditionalAttributes[HtmlAttrs.ARIA_LABELLEDBY] = _toggleId;
-                form.DefaultCssClass = Visible ? $"{MenuCssClass} show" : MenuCssClass;
-            });
-
-        }
-
         protected internal override void DefaultRenderFragment(RenderTreeBuilder builder)
         {
-            builder.OpenElement(DefaultElementName);
+            builder.OpenElement(DefaultElementTag);
+            builder.AddIdAttribute(Id);
             builder.AddClassAttribute(CssClassValue);
             AddKeyboardNavigation(builder);
             builder.AddMultipleAttributes(AdditionalAttributes);
+            builder.AddMultipleAttributes(OverriddenAttributes);
             builder.AddContent(BuiltInButtonsRenderFragment);
             builder.AddContent(ChildContent);
+            builder.AddElementReferenceCapture(DomElementCapture);
             builder.CloseElement();
+        }
+
+        protected override Task OnCompomnentAfterRenderAsync()
+        {
+            if (Visible)
+            {
+                //  TOP       : 'top-start',
+                //  TOPEND    : 'top-end',
+                //  BOTTOM    : 'bottom-start',
+                //  BOTTOMEND : 'bottom-end',
+                //  RIGHT     : 'right-start',
+                //  RIGHTEND  : 'right-end',
+                //  LEFT      : 'left-start',
+                //  LEFTEND   : 'left-end'
+                var placement = Direction.DirectionValue switch
+                {
+                    "up" => "top-start",
+                    "down" => "bottom-start",
+                    "right" => "right-start",
+                    "left" => "left-start",
+                    string dir => dir
+                };
+                return JSRuntime!.InvokeAsync<object>("bootstrapDotNet.components.dropdown.positionDropdown", _menuDomElement, "toggle", placement);
+            }
+            else
+                return Task.CompletedTask;
+        }
+
+        protected override void OnCompomnentDispose()
+        {
+            EventBus!.Unsubscribe<DropdownOpenedEventType, Dropdown>(DropdownOpenedEventType.Instance, DropDownOpenedEventHandler);
+        }
+
+        private void DropDownOpenedEventHandler(IEvent<DropdownOpenedEventType, Dropdown> evt)
+        {
+            if (evt.Source == this) return;
+            Invoke(Hide);
+        }
+
+        private void ApplyAHooks(A a)
+        {
+            a.CustomRenderFragment = builder =>
+            {
+                a.AsButton = true;
+                a.Color = Color;
+
+                if (!Split)
+                {
+                    a.DefaultCssClass = Size != SizeParamter<ButtonSize>.Medium
+                        ? $"{DropdownToggleCssClass} {Size.Value}"
+                        : DropdownToggleCssClass;
+
+                    a.AddOverride(HtmlAttrs.ID, _toggleId);
+                    a.AddOverride(HtmlAttrs.ARIA_HASPOPUP, TrueValue);
+                    a.AddOverride(HtmlAttrs.ARIA_EXPANDED, Visible.ToLowerCaseString());
+                    a.AddOverride(HtmlAttrs.ROLE, "button");
+                    a.AddOverride(HtmlEvents.CLICK, JoinEventCallbacks<UIMouseEventArgs>(HtmlEvents.CLICK, EventCallback.Factory.Create<UIMouseEventArgs>(this, Toggle)));
+
+                    builder.AddContent(a.DefaultRenderFragment);
+                }
+                else
+                {
+                    a.DefaultCssClass = Size.Value;
+
+                    builder.AddContent(a.DefaultRenderFragment);
+
+                    CaretToggleButtonRenderFragment(builder);
+                }
+            };
+        }
+
+        private void ApplyButtonHooks(Button btn)
+        {
+            btn.CustomRenderFragment = builder =>
+            {
+                btn.Color = Color;
+                btn.Size = Size;
+
+                if (!Split)
+                {
+                    btn.DefaultCssClass = BtnDropdownToggleCssClass;
+
+                    btn.AddOverride(HtmlAttrs.ID, _toggleId);
+                    btn.AddOverride(HtmlAttrs.ARIA_HASPOPUP, TrueValue);
+                    btn.AddOverride(HtmlAttrs.ARIA_EXPANDED, Visible.ToLowerCaseString());
+                    btn.AddOverride(HtmlEvents.CLICK, JoinEventCallbacks<UIMouseEventArgs>(HtmlEvents.CLICK, EventCallback.Factory.Create<UIMouseEventArgs>(this, Toggle)));
+
+                    builder.AddContent(btn.DefaultRenderFragment);
+                }
+                else
+                {
+                    builder.AddContent(btn.DefaultRenderFragment);
+
+                    CaretToggleButtonRenderFragment(builder);
+                }
+            };
+        }
+
+        private void ApplyMenuHooks(ComponentBase menu)
+        {
+            menu.DefaultCssClass = MenuCssClass;
+            menu.AddOverride(HtmlAttrs.ARIA_LABELLEDBY, _toggleId);
+            menu.OnParametersSetHook = _ => menu.DefaultCssClass = Visible ? $"{MenuCssClass} show" : MenuCssClass;
+        }
+
+        private void CustomMenuChildHooksInjector(ComponentBase component)
+        {
+            switch (component)
+            {
+                case A a:
+                    a.DefaultCssClass = DropdownItemCssClass;
+                    break;
+
+                case Button button:
+                    button.DefaultCssClass = DropdownItemCssClass;
+                    break;
+
+                case Span span:
+                    span.DefaultCssClass = "dropdown-item-text";
+                    break;
+
+                case Hr hr:
+                    hr.DefaultCssClass = "dropdown-divider";
+                    hr.DefaultElementTag = HtmlTags.DIV;
+                    break;
+
+                case Heading heading:
+                    heading.DefaultCssClass = "dropdown-header";
+
+                    break;
+                default: break;
+            }
         }
 
         private void AddKeyboardNavigation(RenderTreeBuilder builder)
@@ -240,14 +311,8 @@ namespace Egil.RazorComponents.Bootstrap.Components.Dropdowns
                 {
                     case "Escape": Hide(); break;
                     case "ArrowUp":
-                        if (_itemInFocus <= 0) return;
-                        _itemInFocus--;
-                        await JSRuntime!.InvokeAsync<object>("bootstrapDotNet.utils.focus", _items[_itemInFocus].DomElement);
-                        break;
                     case "ArrowDown":
-                        if (_itemInFocus >= _items.Count - 1) return;
-                        _itemInFocus++;
-                        await JSRuntime!.InvokeAsync<object>("bootstrapDotNet.utils.focus", _items[_itemInFocus].DomElement);
+                        await JSRuntime!.InvokeAsync<object>("bootstrapDotNet.components.dropdown.changeFocusedDropdownItem", _menuDomElement, e.Code);
                         break;
                     default: break;
                 }
@@ -298,9 +363,9 @@ namespace Egil.RazorComponents.Bootstrap.Components.Dropdowns
             builder.AddAttribute(nameof(Size), Size);
             builder.AddIdAttribute(_toggleId);
             builder.AddAttribute(HtmlAttrs.ARIA_HASPOPUP, TrueValue);
-            builder.AddAttribute(HtmlAttrs.ARIA_EXPANDED, FalseValue);
+            builder.AddAttribute(HtmlAttrs.ARIA_EXPANDED, Visible.ToLowerCaseString());
             builder.AddEventListener(HtmlEvents.CLICK, EventCallback.Factory.Create<UIMouseEventArgs>(this, Toggle));
-            builder.AddIgnoreParentContextAttribute(true);
+            builder.AddDisableParentOverridesAttribute(true);
         }
     }
 }

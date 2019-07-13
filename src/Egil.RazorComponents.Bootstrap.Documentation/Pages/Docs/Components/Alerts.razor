@@ -1,0 +1,184 @@
+﻿@page "/docs/4.3/components/alerts"
+
+<DocHead Title="Alerts" RelatedBootstrapDoc="4.3/components/alerts/">
+    Provide contextual feedback messages for typical user actions with the handful of available and flexible alert messages.
+</DocHead>
+
+<h2 id="examples">Examples</h2>
+<p>Alerts are available for any length of text, as well as an optional dismiss button. For proper styling, use one of the eight <strong>required</strong> contextual options (e.g., <code class="highlighter-rouge">success</code>). For inline dismissal, set the <a href="#dismissing">Dismissable</a> parameter.</p>
+
+<Example File=@typeof(AlertsExample1) />
+
+<AssistiveTechCallout />
+
+<h3 id="link-color">Link color</h3>
+
+<p>By importing the overrides to the standard HTML components in Bootstrap.NET with <code class="highlighter-rouge">&#64;using Egil.RazorComponents.Bootstrap.Components.Html</code>, the <code class="highlighter-rouge">.alert-link</code> utility class is automatically applied to links placed inside any alerts to quickly provide matching colored links within any alert.</p>
+
+<Example File=@typeof(AlertsLinkColor) />
+
+<h3 id="additional-content">Additional content</h3>
+
+<p>Alerts can also contain additional HTML elements like headings, paragraphs and dividers.</p>
+<p>By importing the overrides to the standard HTML components in Bootstrap.NET with <code class="highlighter-rouge">&#64;using Egil.RazorComponents.Bootstrap.Components.Html</code>, headings will automatically have the <code class="highlighter-rouge">.alert-heading</code> utility class is automatically applied to quickly provide matching colored headlines within any alert.</p>
+
+<Example File=@typeof(AlertsAdditionalContent) />
+
+<h3 id="dismissing">Dismissing</h3>
+<p>To make an alert dismissable by the users, you only need to set the property <code class="highlighter-rouge">Dismissable="true"</code> on the Alert component.</p>
+<p>You can see this in action with a live demo below:</p>
+
+<Example File=@typeof(AlertDismissable) />
+
+<h2 id="references">References</h2>
+<h3 id="imports">Imports and Namespaces</h3>
+<p>To use the Alert component, import the following namespaces in your page, component or <code>_Imports.razor</code> file:</p>
+<table class="table table-references">
+    <thead>
+        <tr>
+            <th scope="col">Namespace</th>
+            <th scope="col">Required</th>
+            <th scope="col">Remark</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th scope="row"><code>Egil.RazorComponents.Bootstrap.Components.Alerts</code></th>
+            <td>Required</td>
+            <td>Namespace that contains Alert component.</td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <code>Egil.RazorComponents.Bootstrap.Utilities.Colors.OptionsFactory</code> or<br />
+                <code>Egil.RazorComponents.Bootstrap.Utilities.Colors.OptionsFactory.LowerCase</code>
+            </th>
+            <td>Recommended</td>
+            <td>Import using <code>&#64;using static</code>. This enables the use of the color names in either PascalCase (<code>OptionsFactory</code>) or camelCase (<code>OptionsFactory.LowerCase</code>). The camelCase variant is used in the examples on this page, similar to Bootstrap CSS class based options.</td>
+        </tr>
+        <tr>
+            <th scope="row"><code>Egil.RazorComponents.Bootstrap.Components.Html</code></th>
+            <td>Optional</td>
+            <td>
+                This namespace contains components that override the default HTML elements such as <code>H1</code> and <code>A</code>.
+                They allow the Alert component to automatically adapt those elements when nested inside it. See more on the <a href="/docs/4.3/components/html-components">Html Components page</a>.
+            </td>
+        </tr>
+    </tbody>
+</table>
+<h3 id="parameters">Parameters</h3>
+<table class="table table-references">
+    <thead>
+        <tr>
+            <th scope="col">Parameter</th>
+            <th scope="col">Required</th>
+            <th scope="col">Default option</th>
+            <th scope="col">Options</th>
+            <th scope="col">Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th scope="row"><code>Color</code></th>
+            <td>No</td>
+            <td><code>primary</code></td>
+            <th><code>primary, secondary, success, danger, warning, info, light, dark</code></th>
+            <td>
+                Used to specify the colors of the alert, including text, background, and nested compatible components (links and headings).<br />
+            </td>
+        </tr>
+        <tr>
+            <th scope="row"><code>Dismissable</code></th>
+            <td>No</td>
+            <td><code>false</code></td>
+            <th><code>true, false</code></th>
+            <td>Set to <code>true</code> to make Alert dismissiable.</td>
+        </tr>
+        <tr>
+            <th scope="row"><code>Enabled</code></th>
+            <td>No</td>
+            <td><code>true</code></td>
+            <th><code>true, false</code></th>
+            <td>TODO</td>
+        </tr>
+        <tr>
+            <th scope="row"><code>Role</code></th>
+            <td>No</td>
+            <td><code></code></td>
+            <th><code>TODO</code></th>
+            <td>TODO</td>
+        </tr>
+        <tr>
+            <th scope="row"><code>Margin</code></th>
+            <td>No</td>
+            <td><code>alert</code></td>
+            <th><code>TODO</code></th>
+            <td>TODO</td>
+        </tr>
+        <tr>
+            <th scope="row"><code>Padding</code></th>
+            <td>No</td>
+            <td><code></code></td>
+            <th><code>TODO</code></th>
+            <td>TODO</td>
+        </tr>
+    </tbody>
+</table>
+
+<h3 id="parameters">Parameters</h3>
+<table class="table table-references">
+    <thead>
+        <tr>
+            <th scope="col">Parameter</th>
+            <th scope="col">Required</th>
+            <th scope="col">Default option</th>
+            <th scope="col">Options</th>
+            <th scope="col">Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th scope="row"><code>Color</code></th>
+            <td>No</td>
+            <td><code>primary</code></td>
+            <th><code>primary, secondary, success, danger, warning, info, light, dark</code></th>
+            <td>
+                Used to specify the colors of the alert, including text, background, and nested compatible components (links and headings).<br />
+            </td>
+        </tr>
+        <tr>
+            <th scope="row"><code>Dismissable</code></th>
+            <td>No</td>
+            <td><code>false</code></td>
+            <th><code>true, false</code></th>
+            <td>Set to <code>true</code> to make Alert dismissiable.</td>
+        </tr>
+        <tr>
+            <th scope="row"><code>Enabled</code></th>
+            <td>No</td>
+            <td><code>true</code></td>
+            <th><code>true, false</code></th>
+            <td>TODO</td>
+        </tr>
+        <tr>
+            <th scope="row"><code>Role</code></th>
+            <td>No</td>
+            <td><code></code></td>
+            <th><code>TODO</code></th>
+            <td>TODO</td>
+        </tr>
+        <tr>
+            <th scope="row"><code>Margin</code></th>
+            <td>No</td>
+            <td><code>alert</code></td>
+            <th><code>TODO</code></th>
+            <td>TODO</td>
+        </tr>
+        <tr>
+            <th scope="row"><code>Padding</code></th>
+            <td>No</td>
+            <td><code></code></td>
+            <th><code>TODO</code></th>
+            <td>TODO</td>
+        </tr>
+    </tbody>
+</table>

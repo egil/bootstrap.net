@@ -1,0 +1,58 @@
+﻿@inject IJSRuntime jsRuntime
+@inject IExampleComponentRepository exampleRepo
+
+<div class="example border rounded-sm @Class" id=@Id>
+    <div class="example-output p-3 bg-light@(ShowSourcesOnly ? " d-none" : "")">@ExampleOutput</div>
+    <Container IsFluid="true">
+        <Row NoGutters="true">
+            <Column Span="sm-12 | lg-6">
+                <div class="example-code-bootstrap-dotnet">
+                    <pre class=""><code class="language-html">@ExampleSource</code></pre>
+                </div>
+                <p class="example-code-name text-muted">
+                    <strong><em>BootstrapDotNet Razor</em></strong> code sample
+                </p>
+            </Column>
+            <Column Span="sm-12 | lg-6" class="border-top-sm border-left-lg">
+                <div class="example-code-bootstrap">
+                    <pre class=""><code class="language-html"></code></pre>
+                </div>
+                <p class="example-code-name text-muted">
+                    <strong><em>Generated HTML</em></strong> code
+                </p>
+            </Column>
+        </Row>
+    </Container>
+</div>
+
+@code {
+    private RenderFragment ExampleOutput => (builder) =>
+    {
+        builder.OpenComponent(0, File);
+        builder.CloseComponent();
+    };
+
+    [Parameter]
+    private Type File { get; set; }
+
+    [Parameter]
+    private bool ShowSourcesOnly { get; set; }
+
+    [Parameter]
+    private string Class { get; set; } = string.Empty;
+
+    private string Id => File.FullName.Replace(".", "");
+
+    private string ExampleSource { get; set; }
+    private string BootstrapSource { get; set; }
+
+    protected override async Task OnInitAsync()
+    {
+        ExampleSource = await exampleRepo.GetExampleAsync(File.FullName);
+    }
+
+    protected override async Task OnAfterRenderAsync()
+    {
+        await jsRuntime.InvokeAsync<string>("setExampleBootstrapHtml", Id);
+    }
+}

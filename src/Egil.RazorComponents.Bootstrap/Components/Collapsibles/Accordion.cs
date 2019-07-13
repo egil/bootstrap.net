@@ -12,9 +12,8 @@ using Microsoft.AspNetCore.Components.RenderTree;
 
 namespace Egil.RazorComponents.Bootstrap.Components.Collapsibles
 {
-    public sealed class Accordion : BootstrapParentComponentBase
+    public sealed class Accordion : ParentComponentBase, IChildTrackingParentComponent
     {
-
         private readonly Dictionary<Card, AccordionCardState> _items = new Dictionary<Card, AccordionCardState>();
         private readonly ISet<int> _expandedIndexes = new SortedSet<int>() { 0 };
 
@@ -61,23 +60,6 @@ namespace Egil.RazorComponents.Bootstrap.Components.Collapsibles
             DefaultCssClass = "accordion";
         }
 
-        protected override void OnChildInit(BootstrapParentAwareComponentBase component)
-        {
-            if (component is Card card)
-            {
-                _items[card] = new AccordionCardState(_items.Count) { Expanded = _expandedIndexes.Contains(_items.Count) };
-            }
-            else
-            {
-                throw new InvalidChildContentException($"Only {nameof(Card)} components are allowed inside an {nameof(Accordion)}.");
-            }
-        }
-
-        protected override void OnRegisterChildRules()
-        {
-            Rules.RegisterOnInitRule<Card>(RegisterCardChildRules);
-        }
-
         private void CardToggled(Card toggledCard)
         {
             if (MultiExpand)
@@ -107,65 +89,100 @@ namespace Egil.RazorComponents.Bootstrap.Components.Collapsibles
             }
         }
 
-        private void RegisterCardChildRules(Card card)
+        protected override void ApplyChildHooks(ComponentBase component)
+        {
+            if (component is Card card)
+            {
+                ApplyCardHooks(card);
+            }
+            else
+            {
+                throw new InvalidChildContentException($"Only {nameof(Card)} components are allowed inside an {nameof(Accordion)}.");
+            }
+        }
+
+        private void ApplyCardHooks(Card card)
         {
             var cardId = $"card-{card.GetHashCode()}";
             var headerId = $"header-{cardId}";
             var collapseId = $"body-{cardId}";
 
-            card.Rules.TryGetOnInitRule<Header>(out var existingHeaderRule);
-            card.Rules.RegisterOnInitRule<Header>(header =>
+            card.CustomChildHooksInjector = (component) =>
             {
-                if (!(existingHeaderRule is null)) existingHeaderRule(header);
-
-                header.CustomRenderFragment = (builder) =>
+                switch (component)
                 {
-                    builder.OpenElement(header.DefaultElementName);
-                    builder.AddClassAttribute(header.CssClassValue);
-                    builder.AddMultipleAttributes(header.AdditionalAttributes);
+                    case Header header:
+                        header.CustomRenderFragment = (builder) =>
+                        {
+                            builder.OpenElement(header.DefaultElementTag);
+                            builder.AddIdAttribute(headerId);
+                            builder.AddRoleAttribute("heading");
+                            builder.AddClassAttribute(header.CssClassValue);
+                            builder.AddMultipleAttributes(header.AdditionalAttributes);
+                            builder.AddMultipleAttributes(header.OverriddenAttributes);
 
-                    builder.OpenComponent<Button>();
-                    builder.AddAttribute(HtmlAttrs.ARIA_CONTROLS, collapseId);
-                    builder.AddAttribute(HtmlAttrs.ARIA_EXPANDED, _items[card].Expanded.ToLowerCaseString());
-                    builder.AddAttribute("AsLink", HeaderButtonAsLink);
-                    builder.AddEventListener(HtmlEvents.CLICK, EventCallback.Factory.Create<UIMouseEventArgs>(card, _ => CardToggled(card)));
+                            builder.OpenComponent<Button>();
+                            builder.AddAttribute(HtmlAttrs.ARIA_CONTROLS, collapseId);
+                            builder.AddAttribute(HtmlAttrs.ARIA_EXPANDED, _items[card].Expanded.ToLowerCaseString());
+                            builder.AddAttribute("AsLink", HeaderButtonAsLink);
+                            builder.AddEventListener(HtmlEvents.CLICK, EventCallback.Factory.Create<UIMouseEventArgs>(card, _ => CardToggled(card)));
 
-                    builder.AddAttribute(RenderTreeBuilder.ChildContent, header.ChildContent);
-                    builder.CloseComponent();
+                            builder.AddAttribute(RenderTreeBuilder.ChildContent, header.ChildContent);
+                            builder.CloseComponent();
 
-                    builder.CloseElement();
-                };
-            });
+                            builder.CloseElement();
+                        };
+                        break;
+                    case Content content:
+                        content.CustomRenderFragment = (builder) =>
+                        {
+                            builder.OpenComponent<Collapse>();
+                            builder.AddAttribute(RenderTreeBuilder.ChildContent, (RenderFragment)content.DefaultRenderFragment);
+                            builder.CloseComponent();
+                        };
+                        break;
 
-            card.Rules.RegisterRule<Header>(header =>
+                    case Collapse collapse:
+                        var item = _items[card];
+
+                        collapse.Id = collapseId;
+                        collapse.AriaLabelledBy = headerId;
+                        collapse.Expanded = item.Expanded;
+
+                        _items[card].Collapse = collapse;
+                        break;
+
+                    default: break;
+                }
+            };
+        }
+
+        void IChildTrackingParentComponent.AddChild(ComponentBase component)
+        {
+            if (component is Card card)
             {
-                header.AdditionalAttributes[HtmlAttrs.ID] = headerId;
-                header.AdditionalAttributes[HtmlAttrs.ROLE] = "heading";
-            });
-
-            card.Rules.TryGetOnInitRule<Content>(out var existingContentRule);
-            card.Rules.RegisterOnInitRule<Content>(content =>
+                _items[card] = new AccordionCardState(_items.Count) { Expanded = _expandedIndexes.Contains(_items.Count) };
+            }
+            else
             {
-                if (!(existingContentRule is null)) existingContentRule(content);
+                throw new InvalidChildContentException($"Only {nameof(Card)} components are allowed inside an {nameof(Accordion)}.");
+            }
+        }
 
-                content.CustomRenderFragment = (builder) =>
+        void IChildTrackingParentComponent.RemoveChild(ComponentBase component)
+        {
+            if (component is Card card)
+            {
+                if (_items.TryGetValue(card, out var state))
                 {
-                    builder.OpenComponent<Collapse>();
-                    builder.AddAttribute(RenderTreeBuilder.ChildContent, (RenderFragment)content.DefaultRenderFragment);
-                    builder.CloseComponent();
-                };
-            });
-
-            card.Rules.RegisterOnInitRule<Collapse>(collapse =>
+                    if (state.Expanded) CardToggled(card);
+                    _items.Remove(card);
+                }
+            }
+            else
             {
-                var item = _items[card];
-
-                collapse.Id = collapseId;
-                collapse.AriaLabelledBy = headerId;
-                collapse.Expanded = item.Expanded;
-
-                _items[card].Collapse = collapse;
-            });
+                throw new InvalidChildContentException($"Only {nameof(Card)} components are allowed inside an {nameof(Accordion)}.");
+            }
         }
     }
 }

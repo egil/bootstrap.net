@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace Egil.RazorComponents.Bootstrap.Components.Layout
 {
-    public sealed class Row : BootstrapParentComponentBase
+    public sealed class Row : ParentComponentBase
     {
         private const string RowCssClass = "row";
 

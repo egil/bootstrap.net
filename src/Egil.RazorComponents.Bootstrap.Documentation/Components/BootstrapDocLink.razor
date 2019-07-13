@@ -1,0 +1,12 @@
+﻿@functions {
+    private static readonly Uri BoostrapBasePath = new Uri("https://getbootstrap.com");
+
+    [Parameter]
+    private string Href { get; set; }
+
+    [Parameter]
+    private RenderFragment ChildContent { get; set; }
+
+    private string Url => new Uri(BoostrapBasePath, Href).ToString();
+}
+<a href=@Url>@ChildContent</a>

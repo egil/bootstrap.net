@@ -2,12 +2,12 @@
 
 namespace Egil.RazorComponents.Bootstrap.Components.Html
 {
-    public sealed class Footer : BootstrapHtmlElementComponentBase
+    public sealed class Footer : ParentComponentBase
     {
 
         public Footer()
         {
-            DefaultElementName = HtmlTags.FOOTER;
+            DefaultElementTag = HtmlTags.FOOTER;
         }
     }
 }

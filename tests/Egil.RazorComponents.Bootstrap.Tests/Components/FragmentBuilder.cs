@@ -73,7 +73,7 @@ namespace Egil.RazorComponents.Bootstrap.Components
     }
 
     public class FragmentBuilder<TComponent> : FragmentBuilder
-        where TComponent : class, IComponent
+        where TComponent : Microsoft.AspNetCore.Components.ComponentBase
     {
         public FragmentBuilder() : base(typeof(TComponent))
         {

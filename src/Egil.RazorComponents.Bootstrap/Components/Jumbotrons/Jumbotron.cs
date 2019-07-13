@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace Egil.RazorComponents.Bootstrap.Components.Jumbotrons
 {
-    public sealed class Jumbotron : BootstrapParentComponentBase
+    public sealed class Jumbotron : ParentComponentBase
     {
         [Parameter, CssClassToggleParameter("jumbotron-fluid")] public bool Fluid { get; set; }
 

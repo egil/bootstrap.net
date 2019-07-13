@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Components.RenderTree;
 
 namespace Egil.RazorComponents.Bootstrap.Components.Groups
 {
-    public sealed class Toolbar : BootstrapParentComponentBase
+    public sealed class Toolbar : ParentComponentBase
     {
         private const string ToolbarCssClass = "btn-toolbar";
         private const string DefaultRole = "toolbar";
@@ -31,13 +31,9 @@ namespace Egil.RazorComponents.Bootstrap.Components.Groups
             DefaultCssClass = ToolbarCssClass;
         }
 
-        protected internal override void DefaultRenderFragment(RenderTreeBuilder builder)
+        protected override void OnCompomnentParametersSet()
         {
-            builder.OpenElement(HtmlTags.DIV);
-            builder.AddClassAttribute(CssClassValue);
-            builder.AddRoleAttribute(Role);
-            builder.AddContent(ChildContent);
-            builder.CloseElement();
+            AddOverride(HtmlAttrs.ROLE, Role);
         }
     }
 }

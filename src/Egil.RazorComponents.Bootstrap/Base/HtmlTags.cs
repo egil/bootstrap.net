@@ -25,18 +25,22 @@
 
     public static class HtmlAttrs
     {
-        public const string ARIA_CONTROLS = "aria-controls";      
+        public const string ARIA_CONTROLS = "aria-controls";
+        public const string ARIA_DISABLED = "aria-disabled";
         public const string ARIA_EXPANDED = "aria-expanded";
         public const string ARIA_HASPOPUP = "aria-haspopup";
         public const string ARIA_LABEL = "aria-label";
         public const string ARIA_LABELLEDBY = "aria-labelledby";
         public const string ARIA_PRESSED = "aria-pressed";
         public const string ALT = "alt";
+        public const string DISABLED = "disabled";
         public const string HREF = "href";
         public const string ID = "id";
         public const string ROLE = "role";
         public const string SRC = "src";
+        public const string TABINDEX = "tabindex";
         public const string TYPE = "type";
+        
     }
 
     public static class HtmlEvents

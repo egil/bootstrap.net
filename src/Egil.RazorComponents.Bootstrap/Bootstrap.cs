@@ -10,19 +10,19 @@ using Microsoft.AspNetCore.Components.RenderTree;
 namespace Egil.RazorComponents.Bootstrap
 {
 
-    public class Bootstrap : ComponentBase
-    {
-        private readonly IBootstrapContext _bootstrapContext = new BootstrapContext();
+//    public class Bootstrap : ComponentBase
+//    {
+////        private readonly IBootstrapContext _bootstrapContext = new BootstrapContext();
 
-        [Parameter] public RenderFragment? ChildContent { get; set; }
+//        [Parameter] public RenderFragment? ChildContent { get; set; }
 
-        protected override void BuildRenderTree(RenderTreeBuilder builder)
-        {
-            builder.OpenComponent<CascadingValue<IBootstrapContext>>();
-            builder.AddAttribute("Value", _bootstrapContext);
-            builder.AddAttribute("IsFixed", true);
-            builder.AddAttribute(RenderTreeBuilder.ChildContent, ChildContent!);
-            builder.CloseComponent();
-        }
-    }
+//        protected override void BuildRenderTree(RenderTreeBuilder builder)
+//        {
+//            builder.OpenComponent<CascadingValue<IBootstrapContext>>();
+//            builder.AddAttribute("Value", _bootstrapContext);
+//            builder.AddAttribute("IsFixed", true);
+//            builder.AddAttribute(RenderTreeBuilder.ChildContent, ChildContent!);
+//            builder.CloseComponent();
+//        }
+//    }
 }

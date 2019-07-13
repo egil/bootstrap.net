@@ -329,7 +329,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Carousels
             var component = Component<Carousel<CarouselStatic>, CarouselStatic>()
                 .WithTemplate(Fragment<Img>(), Fragment<Img>());
 
-            Should.Throw<AggregateException>(() => component.Render()).InnerException.ShouldBeOfType<InvalidChildContentException>();
+            Should.Throw<InvalidChildContentException>(() => component.Render());
         }
 
         //// Add data-interval="" to a .carousel-item to change the amount of time to delay between automatically cycling to the next item 

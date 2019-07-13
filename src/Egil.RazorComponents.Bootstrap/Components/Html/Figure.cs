@@ -3,11 +3,11 @@ using Microsoft.AspNetCore.Components.RenderTree;
 
 namespace Egil.RazorComponents.Bootstrap.Components.Html
 {
-    public sealed class Figure : BootstrapHtmlElementComponentBase
+    public sealed class Figure : ParentComponentBase
     {
         public Figure()
         {
-            DefaultElementName = HtmlTags.FIGURE;
+            DefaultElementTag = HtmlTags.FIGURE;
         }
     }
 }

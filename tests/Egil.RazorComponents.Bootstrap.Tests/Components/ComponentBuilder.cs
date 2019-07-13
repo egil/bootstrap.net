@@ -15,7 +15,7 @@ using Microsoft.JSInterop;
 
 namespace Egil.RazorComponents.Bootstrap.Components
 {
-    public class ComponentBuilder<TComponent> where TComponent : class, IComponent
+    public class ComponentBuilder<TComponent> where TComponent : Microsoft.AspNetCore.Components.ComponentBase
     {
         private readonly Func<string, string> _encoder = (t) => HtmlEncoder.Default.Encode(t);
         private readonly IDispatcher _dispatcher = Renderer.CreateDefaultDispatcher();
@@ -89,7 +89,7 @@ namespace Egil.RazorComponents.Bootstrap.Components
     }
 
     public class ComponentBuilder<TComponent, TItem> : ComponentBuilder<TComponent>
-        where TComponent : class, IComponent
+        where TComponent : Microsoft.AspNetCore.Components.ComponentBase
     {
         public new ComponentBuilder<TComponent, TItem> WithParams(params (string name, object value)[] paramValues)
         {

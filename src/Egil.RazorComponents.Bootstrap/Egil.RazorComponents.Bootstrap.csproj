@@ -36,6 +36,7 @@
   <ItemGroup>
     <Content Remove="wwwroot\js\components\bootstrap.net.js" />
     <Content Remove="wwwroot\js\components\Collapse.js" />
+    <Content Remove="wwwroot\js\components\dropdown.js" />
     <Content Remove="wwwroot\js\polyfills\classNamePolyfill.js" />
     <Content Remove="wwwroot\js\services\pageVisibilityApiInterop.js" />
     <Content Remove="wwwroot\js\utils.js" />

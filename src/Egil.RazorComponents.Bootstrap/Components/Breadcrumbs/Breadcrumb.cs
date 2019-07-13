@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Components.Routing;
 
 namespace Egil.RazorComponents.Bootstrap.Components.Breadcrumbs
 {
-    public sealed class Breadcrumb : BootstrapParentComponentBase
+    public sealed class Breadcrumb : ParentComponentBase
     {
         private const string BreadcrumbCssClass = "breadcrumb";
         private const string DefaultAriaLabel = "breadcrumb";
@@ -22,7 +22,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Breadcrumbs
         [Parameter]
         public string? Separator { get; set; }
 
-        protected override void OnBootstrapParametersSet()
+        protected override void OnCompomnentParametersSet()
         {
             if (Separator is null) return;
             var isSeparatorDataUrl = Separator.StartsWith("url(data:");
@@ -38,9 +38,9 @@ namespace Egil.RazorComponents.Bootstrap.Components.Breadcrumbs
                 ";}");
         }
 
-        protected override void OnRegisterChildRules()
+        protected override void ApplyChildHooks(ComponentBase component)
         {
-            Rules.RegisterOnInitRule<A>(a =>
+            if (component is A a)
             {
                 a.CustomRenderFragment = BreadcrumpItemRenderFragment;
                 a.Match = NavLinkMatch.All;
@@ -48,7 +48,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Breadcrumbs
                 void BreadcrumpItemRenderFragment(RenderTreeBuilder builder)
                 {
                     builder.OpenElement(HtmlTags.LI);
-                    builder.AddClassAttribute(CombineCssClasses(BreadcrumbItemCssClass, a.CssClassValue));
+                    builder.AddClassAttribute(BreadcrumbItemCssClass.CombineCssClassWith(a.CssClassValue));
                     if (a.Active)
                     {
                         builder.AddMultipleAttributes(a.AdditionalAttributes);
@@ -60,7 +60,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Breadcrumbs
                     }
                     builder.CloseElement();
                 }
-            });
+            }
         }
 
         protected internal override void DefaultRenderFragment(RenderTreeBuilder builder)
@@ -68,15 +68,19 @@ namespace Egil.RazorComponents.Bootstrap.Components.Breadcrumbs
             builder.AddContent(OverrideSeparatorRenderFragment);
 
             builder.OpenElement(HtmlTags.NAV);
+            builder.AddIdAttribute(Id);
             builder.AddClassAttribute(CssClassValue);
             builder.AddMultipleAttributes(AdditionalAttributes);
-            if (!AdditionalAttributes.ContainsKey(HtmlAttrs.ARIA_LABEL)) builder.AddAriaLabelAttribute(DefaultAriaLabel);
+            builder.AddMultipleAttributes(OverriddenAttributes);
+
+            if (!AdditionalAttributes.ContainsKey(HtmlAttrs.ARIA_LABEL) && !OverriddenAttributes.ContainsKey(HtmlAttrs.ARIA_LABEL))
+                builder.AddAriaLabelAttribute(DefaultAriaLabel);
 
             builder.OpenElement(HtmlTags.OL);
             builder.AddClassAttribute(BreadcrumbCssClass);
             builder.AddContent(ChildContent);
             builder.CloseElement();
-
+            builder.AddElementReferenceCapture(DomElementCapture);
             builder.CloseElement();
         }
 

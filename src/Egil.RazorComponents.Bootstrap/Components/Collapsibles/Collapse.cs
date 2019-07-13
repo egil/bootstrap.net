@@ -4,24 +4,28 @@ using System.Threading.Tasks;
 using Egil.RazorComponents.Bootstrap.Base;
 using Egil.RazorComponents.Bootstrap.Base.Context;
 using Egil.RazorComponents.Bootstrap.Base.CssClassValues;
+using Egil.RazorComponents.Bootstrap.Components.Collapsibles.Events;
 using Egil.RazorComponents.Bootstrap.Extensions;
+using Egil.RazorComponents.Bootstrap.Services.EventBus;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.RenderTree;
 using Microsoft.JSInterop;
 
 namespace Egil.RazorComponents.Bootstrap.Components.Collapsibles
 {
-    public sealed class Collapse : BootstrapParentComponentBase, IPartnerComponent<IToggleForCollapse>
+    public sealed class Collapse : ParentComponentBase
     {
         private const string CollapsedCssClass = "collapse";
-        private readonly HashSet<IToggleForCollapse> _togglers = new HashSet<IToggleForCollapse>();
         private ElementRef _domElement;
+        private string? _subscribedId;
+
+        private Action<IEvent<CollapseTogglerTriggeredEventType, ComponentBase>> _togglerTriggeredHandler;
 
         [Inject] private IJSRuntime? JSRuntime { get; set; }
 
-        [CssClassToggleParameter("show")] private bool Showing { get; set; }
+        [Inject] private IEventBus? EventBus { get; set; }
 
-        [Parameter] public string? Id { get; set; }
+        [CssClassToggleParameter("show")] private bool Showing { get; set; }
 
         [Parameter] public bool Expanded { get; set; }
 
@@ -30,12 +34,14 @@ namespace Egil.RazorComponents.Bootstrap.Components.Collapsibles
         public Collapse()
         {
             DefaultCssClass = CollapsedCssClass;
+            DomElementCapture = (elm) => _domElement = elm;
+            _togglerTriggeredHandler = _ => Invoke(Toggle);
         }
 
         public void Toggle()
         {
             Expanded = !Expanded;
-            StateHasChanged();
+            Invoke(StateHasChanged);
         }
 
         public void Show()
@@ -50,31 +56,35 @@ namespace Egil.RazorComponents.Bootstrap.Components.Collapsibles
             Toggle();
         }
 
-        protected internal override void DefaultRenderFragment(RenderTreeBuilder builder)
-        {
-            builder.OpenElement(DefaultElementName);
-            builder.AddIdAttribute(Id);
-            builder.AddClassAttribute(CssClassValue);
-            builder.AddAttribute(HtmlAttrs.ARIA_LABELLEDBY, AriaLabelledBy);
-            builder.AddMultipleAttributes(AdditionalAttributes);
-            builder.AddContent(ChildContent);
-            builder.AddElementReferenceCapture(elm => _domElement = elm);
-            builder.CloseElement();
-        }
-
-        protected override void OnBootstrapInit()
+        protected override Task OnCompomnentInitAsync()
         {
             Showing = Expanded;
-            IPartnerComponent<IToggleForCollapse>.Register(this);
+
+            if (Id is null)
+                return Task.CompletedTask;
+            else
+            {
+                SubscribeToTogglerEvents();
+                return EventBus!.PublishAsync(new CollapseStateChangedEvent(this)); // BANG: injected via setters at this point
+            }
         }
 
-        protected override async Task OnAfterRenderAsync()
+        protected override void OnCompomnentParametersSet()
         {
-            await base.OnAfterRenderAsync();
-
-            foreach (var toggle in _togglers)
+            if (_subscribedId != Id)
             {
-                toggle.SetExpandedState(Expanded);
+                UnsubscribeToTogglerEvents();
+                SubscribeToTogglerEvents();
+            }
+
+            AddOverride(HtmlAttrs.ARIA_LABELLEDBY, AriaLabelledBy);
+        }
+
+        protected override async Task OnCompomnentAfterRenderAsync()
+        {
+            if (Expanded != Showing)
+            {
+                var _ = EventBus!.PublishAsync(new CollapseStateChangedEvent(this)); // BANG: injected via setters at this point
             }
 
             if (Expanded && !Showing)
@@ -82,7 +92,6 @@ namespace Egil.RazorComponents.Bootstrap.Components.Collapsibles
                 await _domElement.Show(JSRuntime);
                 Showing = true;
             }
-
             else if (!Expanded && Showing)
             {
                 await _domElement.Hide(JSRuntime);
@@ -90,30 +99,25 @@ namespace Egil.RazorComponents.Bootstrap.Components.Collapsibles
             }
         }
 
-        private void ToggglerOnToggled(object sender, EventArgs e)
+        protected override void OnCompomnentDispose()
         {
-            Toggle();
+            UnsubscribeToTogglerEvents();
         }
 
-        void IPartnerComponent<IToggleForCollapse>.Connect(IToggleForCollapse toggle)
+        private void SubscribeToTogglerEvents()
         {
-            if (!_togglers.Add(toggle)) return;
-            toggle.OnToggled += ToggglerOnToggled;
-            toggle.SetExpandedState(Expanded);
+            if (Id is null) return;
+
+            _subscribedId = Id;
+            EventBus!.Subscribe(new CollapseTogglerTriggeredEventType(_subscribedId), _togglerTriggeredHandler);
         }
 
-        void IPartnerComponent<IToggleForCollapse>.Disconnect(IToggleForCollapse toggle)
+        private void UnsubscribeToTogglerEvents()
         {
-            toggle.OnToggled -= ToggglerOnToggled;
-            _togglers.Remove(toggle);
+            if (_subscribedId is null) return;
+
+            EventBus!.Unsubscribe(new CollapseTogglerTriggeredEventType(_subscribedId), _togglerTriggeredHandler);
         }
 
-        public void Dispose()
-        {
-            foreach (var toggle in _togglers)
-                toggle.OnToggled -= ToggglerOnToggled;
-
-            IPartnerComponent<IToggleForCollapse>.Unregister(this);
-        }
     }
 }

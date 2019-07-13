@@ -1,9 +1,13 @@
 ﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
 using Egil.RazorComponents.Bootstrap.Base;
 using Egil.RazorComponents.Bootstrap.Base.CssClassValues;
 using Egil.RazorComponents.Bootstrap.Components.Collapsibles;
+using Egil.RazorComponents.Bootstrap.Components.Collapsibles.Events;
 using Egil.RazorComponents.Bootstrap.Components.Html.Parameters;
 using Egil.RazorComponents.Bootstrap.Extensions;
+using Egil.RazorComponents.Bootstrap.Services.EventBus;
 using Egil.RazorComponents.Bootstrap.Utilities.Colors;
 using Egil.RazorComponents.Bootstrap.Utilities.Sizings;
 using Microsoft.AspNetCore.Components;
@@ -11,9 +15,23 @@ using Microsoft.AspNetCore.Components.RenderTree;
 
 namespace Egil.RazorComponents.Bootstrap.Components.Html
 {
-    public sealed class Button : BootstrapHtmlElementComponentBase, IToggleForCollapse, IExploseElementRef, IDisposable
+    public sealed class Button : ParentComponentBase, IToggleForCollapse
     {
-        private ElementRef _domElement;
+        #region IToggleForCollapse state
+
+        string[] IToggleForCollapse.SubscribedToggleTargetIds { get; set; } = Array.Empty<string>();
+        IEventBus IToggleForCollapse.EventBus => EventBus!;
+        EventCallback<UIMouseEventArgs>? IToggleForCollapse.ToggleForClickHandler
+        {
+            get => ToggleForClickHandler; set => ToggleForClickHandler = value;
+        }
+
+        #endregion 
+
+        private EventCallback<UIMouseEventArgs>? ToggleableClickHandler { get; set; }
+        private EventCallback<UIMouseEventArgs>? ToggleForClickHandler { get; set; }
+
+        [Inject] private IEventBus? EventBus { get; set; }
 
         /// <summary>
         /// The type of the button. Possible values are:
@@ -57,6 +75,11 @@ namespace Egil.RazorComponents.Bootstrap.Components.Html
         [Parameter] public SizeParamter<ButtonSize> Size { get; set; } = SizeParamter<ButtonSize>.Medium;
 
         /// <summary>
+        /// Gets or sets whether the button should be disabled or not.
+        /// </summary>
+        [Parameter] public bool Disabled { get; set; } = false;
+
+        /// <summary>
         /// Get or set the active state of the button. If set to true, the 'active' css class is added to the component.
         /// </summary>
         [Parameter, CssClassToggleParameter("active")] public bool IsActive { get; set; }
@@ -71,28 +94,12 @@ namespace Egil.RazorComponents.Bootstrap.Components.Html
         /// </summary>
         [Parameter] public bool Toggleable { get; set; } = false;
 
-        #region IToggleForCollapse
-
-        private bool _isToggleTargetExpanded;
-        private string? _ariaControls;
-        private event EventHandler _onToggled;
-        event EventHandler IToggleForCollapse.OnToggled { add => _onToggled += value; remove => _onToggled -= value; }
-
         /// <summary>
-        /// Gets or sets the IDs of <see cref="Collapse"/> components that this 
-        /// Button should be used to toggle.
+        /// Gets or sets the IDs of the <see cref="Collapse"/> components that this 
+        /// component should be used to toggle. One or more IDs can be specified 
+        /// by separating them with a comma or space.
         /// </summary>
         [Parameter] public string? ToggleFor { get; set; }
-
-        ElementRef IExploseElementRef.DomElement => _domElement;
-
-        void IToggleForCollapse.SetExpandedState(bool isExpanded)
-        {
-            _isToggleTargetExpanded = isExpanded;
-            StateHasChanged();
-        }
-
-        #endregion
 
         public Button()
         {
@@ -102,62 +109,60 @@ namespace Egil.RazorComponents.Bootstrap.Components.Html
         /// <summary>
         /// Toggles <see cref="IsActive"/>.
         /// </summary>
-        public async void Toggle()
+        public void Toggle()
         {
             if (Toggleable)
             {
                 IsActive = !IsActive;
-                await IsActiveChanged.InvokeAsync(IsActive);
+                IsActiveChanged.InvokeAsync(IsActive);
             }
-
-            _onToggled?.Invoke(this, EventArgs.Empty);
         }
 
-        public void Dispose()
+        protected override void OnCompomnentInit()
         {
-            IToggleForCollapse.Disconnect(this);
+            ((IToggleForCollapse)this).AddToggleHooks(this);
         }
 
-        protected override void OnBootstrapParametersSet()
+        protected override void OnCompomnentParametersSet()
         {
             Color.ColorPrefix.Outlined = Outlined;
-        }
 
-        protected override void OnBootstrapInit()
-        {
-            IToggleForCollapse.Connect(this);
-            _ariaControls = string.Join(' ', ToggleFor?.SplitOnCommaOrSpace() ?? Array.Empty<string>());
+            if (Toggleable && ToggleableClickHandler is null)
+            {
+                ToggleableClickHandler = EventCallback.Factory.Create<UIMouseEventArgs>(this, Toggle);
+            }
+
+            if (ToggleableClickHandler.HasValue || ToggleForClickHandler.HasValue)
+            {
+                AddOverride(HtmlEvents.CLICK, JoinEventCallbacks(HtmlEvents.CLICK, ToggleableClickHandler, ToggleForClickHandler));
+            }
         }
 
         protected internal override void DefaultRenderFragment(RenderTreeBuilder builder)
         {
             builder.OpenElement(HtmlTags.BUTTON);
 
-            if (Toggleable || !(_onToggled is null))
-            {
-                builder.AddEventListener(HtmlEvents.CLICK, EventCallback.Factory.Create<UIMouseEventArgs>(this, Toggle));
-            }
-
-            if (!(ToggleFor is null))
-            {
-                builder.AddAttribute(HtmlAttrs.ARIA_EXPANDED, _isToggleTargetExpanded.ToLowerCaseString());
-                builder.AddAttribute(HtmlAttrs.ARIA_CONTROLS, _ariaControls);
-            }
-            
-            if(Toggleable)
-            {
-                builder.AddAttribute(HtmlAttrs.ARIA_PRESSED, IsActive.ToLowerCaseString());
-            }
-
+            builder.AddIdAttribute(Id);
             builder.AddAttribute(HtmlAttrs.TYPE, Type);
             builder.AddClassAttribute(CssClassValue);
 
+            if (Toggleable)
+            {
+                AddOverride(HtmlAttrs.ARIA_PRESSED, IsActive.ToLowerCaseString());
+            }
+
+            if (Disabled)
+            {
+                builder.AddAttribute(HtmlAttrs.ARIA_DISABLED, "true");
+                builder.AddAttribute(HtmlAttrs.DISABLED, Disabled);
+            }
 
             builder.AddMultipleAttributes(AdditionalAttributes);
+            builder.AddMultipleAttributes(OverriddenAttributes);
 
             builder.AddContent(ChildContent);
 
-            builder.AddElementReferenceCapture(elm => _domElement = elm);
+            builder.AddElementReferenceCapture(DomElementCapture);
             builder.CloseElement();
         }
     }

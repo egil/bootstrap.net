@@ -2,11 +2,11 @@
 
 namespace Egil.RazorComponents.Bootstrap.Components.Html
 {
-    public sealed class Svg : BootstrapHtmlElementComponentBase
+    public sealed class Svg : ParentComponentBase
     {
         public Svg()
         {
-            DefaultElementName = HtmlTags.SVG;
+            DefaultElementTag = HtmlTags.SVG;
         }
     }
 }

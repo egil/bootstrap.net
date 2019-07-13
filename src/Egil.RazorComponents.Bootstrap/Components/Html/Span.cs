@@ -2,11 +2,11 @@
 
 namespace Egil.RazorComponents.Bootstrap.Components.Html
 {
-    public sealed class Span : BootstrapHtmlElementComponentBase
+    public sealed class Span : ParentComponentBase
     {
         public Span()
         {
-            DefaultElementName = HtmlTags.SPAN;
+            DefaultElementTag = HtmlTags.SPAN;
         }
     }
 }

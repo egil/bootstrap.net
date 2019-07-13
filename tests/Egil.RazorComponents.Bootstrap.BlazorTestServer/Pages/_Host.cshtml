@@ -20,11 +20,10 @@
               integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"/>
     </environment>
     <link href="css/site.css" rel="stylesheet" />
+    <script src="_content/bootstrapdotnet/js/bootstrap.net.js" type="module"></script>
 </head>
 <body>
     <app>@(await Html.RenderComponentAsync<App>())</app>
-
     <script src="_framework/blazor.server.js"></script>
-    <script src="_content/bootstrapdotnet/js/bootstrap.net.js" type="module"></script>
 </body>
 </html>

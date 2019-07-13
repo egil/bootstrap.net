@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace Egil.RazorComponents.Bootstrap.Components.Html
 {
-    public sealed class P : BootstrapHtmlElementComponentBase
+    public sealed class P : ParentComponentBase
     {
         /// <summary>
         /// Gets or sets the padding of the component, using Bootstrap.NETs spacing syntax.
@@ -18,7 +18,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Html
 
         public P()
         {
-            DefaultElementName = HtmlTags.P;
+            DefaultElementTag = HtmlTags.P;
         }
     }
 }
