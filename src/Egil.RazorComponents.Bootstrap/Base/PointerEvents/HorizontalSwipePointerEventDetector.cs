@@ -16,7 +16,7 @@ namespace Egil.RazorComponents.Bootstrap.Base.PointerEvents
 
         private bool _tracking = false;
         private long? _deviceId = null;
-        private long? _startX = null;
+        private double? _startX = null;
 
         public long DeltaBeforeTriggering { get; set; } = 5;
 

@@ -7,7 +7,7 @@ using Egil.RazorComponents.Bootstrap.Components;
 
 namespace Egil.RazorComponents.Bootstrap.Services.EventBus
 {
-    // TODO: Investigate race conditions between removal and adding - also with cache
+    // TODO: Investigate race conditions between removal and adding - also with cache -> https://docs.microsoft.com/en-us/dotnet/api/system.collections.concurrent.concurrentdictionary-2?view=netframework-4.8
     public class ComponentEventBus : IEventBus
     {
         private readonly Dictionary<string, Delegate> _eventSubscriptions = new Dictionary<string, Delegate>();

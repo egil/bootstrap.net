@@ -29,7 +29,7 @@ namespace Egil.RazorComponents.Bootstrap.Services.PageVisibilityAPI
         private (PageVisibilityAPIService, Mock<IJSRuntime>) SetupSutAndJsRuntime(MockBehavior mockBehavior = MockBehavior.Strict)
         {
             var jsRuntimeMock = new Mock<IJSRuntime>(mockBehavior);
-            var sut = new PageVisibilityAPIService(jsRuntimeMock.Object, pvs => default);
+            var sut = new PageVisibilityAPIService(jsRuntimeMock.Object, pvs => default!);
             return (sut, jsRuntimeMock);
         }
 

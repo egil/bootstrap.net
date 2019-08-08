@@ -1,4 +1,5 @@
-﻿using Xunit;
+﻿using Egil.RazorComponents.Testing;
+using Xunit;
 
 namespace Egil.RazorComponents.Bootstrap.Components.Html
 {

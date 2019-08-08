@@ -33,7 +33,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Dropdowns
         private readonly string _toggleId;
         private ElementRef _menuDomElement;
 
-        [Inject] private IJSRuntime? JSRuntime { get; set; }
+        [Inject] private IJSRuntime? JSRT { get; set; }
 
         [Inject] private IEventBus? EventBus { get; set; }
 
@@ -104,6 +104,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Dropdowns
             EventBus!.PublishAsync(new Event<DropdownOpenedEventType, Dropdown>(DropdownOpenedEventType.Instance, this));
         }
 
+        [JSInvokable]
         public void Hide()
         {
             if (!Visible) return;
@@ -184,7 +185,9 @@ namespace Egil.RazorComponents.Bootstrap.Components.Dropdowns
                     "left" => "left-start",
                     string dir => dir
                 };
-                return JSRuntime!.InvokeAsync<object>("bootstrapDotNet.components.dropdown.positionDropdown", _menuDomElement, "toggle", placement);
+                var positionTask = JSRT!.InvokeAsync<object>("bootstrapDotNet.components.dropdown.positionDropdown", _menuDomElement, "toggle", placement);
+                var closeTask = JSRT!.InvokeAsync<object>("bootstrapDotNet.components.dropdown.addDocumentClickEventListener", CreateDotNetObjectRef(this), nameof(Hide));
+                return Task.WhenAll(positionTask, closeTask);
             }
             else
                 return Task.CompletedTask;
@@ -312,7 +315,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Dropdowns
                     case "Escape": Hide(); break;
                     case "ArrowUp":
                     case "ArrowDown":
-                        await JSRuntime!.InvokeAsync<object>("bootstrapDotNet.components.dropdown.changeFocusedDropdownItem", _menuDomElement, e.Code);
+                        await JSRT!.InvokeAsync<object>("bootstrapDotNet.components.dropdown.changeFocusedDropdownItem", _menuDomElement, e.Code);
                         break;
                     default: break;
                 }
@@ -367,5 +370,19 @@ namespace Egil.RazorComponents.Bootstrap.Components.Dropdowns
             builder.AddEventListener(HtmlEvents.CLICK, EventCallback.Factory.Create<UIMouseEventArgs>(this, Toggle));
             builder.AddDisableParentOverridesAttribute(true);
         }
+
+
+        #region Hack to fix https://github.com/aspnet/AspNetCore/issues/11159
+        public static object CreateDotNetObjectRefSyncObj = new object();
+
+        private DotNetObjectRef<T> CreateDotNetObjectRef<T>(T value) where T : class
+        {
+            lock (CreateDotNetObjectRefSyncObj)
+            {
+                JSRuntime.SetCurrentJSRuntime(JSRT);
+                return DotNetObjectRef.Create(value);
+            }
+        }
+        #endregion
     }
 }

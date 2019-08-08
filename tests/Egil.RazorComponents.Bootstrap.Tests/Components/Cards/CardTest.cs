@@ -2,6 +2,7 @@
 using Egil.RazorComponents.Bootstrap.Components.Html;
 using Egil.RazorComponents.Bootstrap.Components.Layout;
 using Egil.RazorComponents.Bootstrap.Utilities.Sizings;
+using Egil.RazorComponents.Testing;
 using Xunit;
 
 namespace Egil.RazorComponents.Bootstrap.Components.Cards

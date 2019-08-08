@@ -21,6 +21,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Egil.RazorComponents.Bootst
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorClientSideTestApp", "tests\BlazorClientSideTestApp\BlazorClientSideTestApp.csproj", "{979C4AC2-3CDD-40C4-A90B-5CC4189DAA2E}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApplication1", "tests\WebApplication1\WebApplication1.csproj", "{108976E5-AE01-47CF-A710-C8B5921F4790}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,6 +45,10 @@ Global
 		{979C4AC2-3CDD-40C4-A90B-5CC4189DAA2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{979C4AC2-3CDD-40C4-A90B-5CC4189DAA2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{979C4AC2-3CDD-40C4-A90B-5CC4189DAA2E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{108976E5-AE01-47CF-A710-C8B5921F4790}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{108976E5-AE01-47CF-A710-C8B5921F4790}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{108976E5-AE01-47CF-A710-C8B5921F4790}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{108976E5-AE01-47CF-A710-C8B5921F4790}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -52,6 +58,7 @@ Global
 		{A88A6E63-C32A-473C-8E61-262FB28AADDB} = {BB5BC974-8940-4DD0-AA0B-EAAA981AEE5E}
 		{F795F803-60CB-4740-BBDD-2DB914333A1B} = {BB5BC974-8940-4DD0-AA0B-EAAA981AEE5E}
 		{979C4AC2-3CDD-40C4-A90B-5CC4189DAA2E} = {BB5BC974-8940-4DD0-AA0B-EAAA981AEE5E}
+		{108976E5-AE01-47CF-A710-C8B5921F4790} = {BB5BC974-8940-4DD0-AA0B-EAAA981AEE5E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2BB71BBE-C97E-45E8-9422-E29CB3EBF4F4}

@@ -1,7 +1,14 @@
 ﻿import Popper from '../libs/popper.js-1.15.0/popper.js';
 
+export function addDocumentClickEventListener(dotnetHelper, callbackMethodName) {
+    document.addEventListener('click', () => dotnetHelper.invokeMethodAsync(callbackMethodName), {
+        once: true,
+        passive: true
+    });
+}
+
 export function positionDropdown(menu, reference, placement) {
-    let existingPopper = menu.__bootstrap_dotnet_popper;
+    const existingPopper = menu.__bootstrap_dotnet_popper;
     let refElm;
 
     if (reference === "toggle") {
@@ -23,7 +30,7 @@ export function positionDropdown(menu, reference, placement) {
                 boundary: "scrollParent"
             }
         }
-    });   
+    });
 
     if (existingPopper) existingPopper.destroy();
 }

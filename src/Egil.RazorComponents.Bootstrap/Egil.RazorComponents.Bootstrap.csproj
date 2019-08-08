@@ -3,10 +3,6 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <IsPackable>true</IsPackable>
-    <RestoreAdditionalProjectSources>
-      https://dotnet.myget.org/F/aspnetcore-dev/api/v3/index.json;
-      https://dotnet.myget.org/F/blazor-dev/api/v3/index.json;
-    </RestoreAdditionalProjectSources>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <Nullable>enable</Nullable>
     <LangVersion>8.0</LangVersion>
@@ -14,8 +10,8 @@
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
     <RepositoryUrl>https://github.com/egil/bootstrap.net</RepositoryUrl>
     <PackageProjectUrl>https://github.com/egil/bootstrap.net</PackageProjectUrl>
-    <PackageTags>blazor blazor-server-side razor-components bootstrap bootstrap4</PackageTags>
-    <Version>0.1.0-preview6-03</Version>
+    <PackageTags>blazor blazor-server-side blazor-client-side razor-components bootstrap bootstrap4</PackageTags>
+    <Version>0.1.0-preview7-01</Version>
     <Authors>Egil Hansen</Authors>
     <Company>Egil Hansen</Company>
     <Product>Bootstrap.NET</Product>
@@ -25,13 +21,6 @@
     <PackageLicenseExpression></PackageLicenseExpression>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>
-
-  <ItemGroup>
-    <!-- .js/.css files will be referenced via <script>/<link> tags; other content files will just be included in the app's 'dist' directory without any tags referencing them -->
-    <EmbeddedResource Include="wwwroot\**\*.js" LogicalName="blazor:js:%(RecursiveDir)%(Filename)%(Extension)" />
-    <EmbeddedResource Include="wwwroot\**\*.css" LogicalName="blazor:css:%(RecursiveDir)%(Filename)%(Extension)" />
-    <EmbeddedResource Include="wwwroot\**" Exclude="**\*.js;**\*.css" LogicalName="blazor:file:%(RecursiveDir)%(Filename)%(Extension)" />
-  </ItemGroup>
 
   <ItemGroup>
     <Content Remove="wwwroot\js\components\bootstrap.net.js" />
@@ -50,13 +39,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components.Browser" Version="3.0.0-preview6.19307.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Browser" Version="3.0.0-preview7.19365.7" />
   </ItemGroup>
 
-  <ItemGroup>
+  <!--<ItemGroup>
     <Content Update="**\*.razor">
       <Pack>false</Pack>
     </Content>
-  </ItemGroup>
+  </ItemGroup>-->
 
 </Project>

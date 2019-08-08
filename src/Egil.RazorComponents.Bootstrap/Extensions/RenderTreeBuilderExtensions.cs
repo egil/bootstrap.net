@@ -73,11 +73,11 @@ namespace Egil.RazorComponents.Bootstrap.Extensions
         /// previously added attribute will be used.
         /// </para>
         /// </summary>
-        public static void AddMultipleAttributes<T>(this RenderTreeBuilder builder, IEnumerable<KeyValuePair<string, T>>? attributes, [CallerLineNumber] int sequence = DEFAULT_SEQUENCE)
+        public static void AddMultipleAttributes(this RenderTreeBuilder builder, IEnumerable<KeyValuePair<string, object>>? attributes, [CallerLineNumber] int sequence = DEFAULT_SEQUENCE)
         {
             if (attributes is null) return;
 
-            builder.AddMultipleAttributes<T>(sequence, attributes);
+            builder.AddMultipleAttributes(sequence, attributes);
         }
 
         public static void AddContent(this RenderTreeBuilder builder, string textContent, [CallerLineNumber] int sequence = DEFAULT_SEQUENCE)

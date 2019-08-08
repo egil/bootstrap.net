@@ -8,6 +8,7 @@ using Egil.RazorComponents.Bootstrap.Components.Html;
 using Egil.RazorComponents.Bootstrap.Components.Html.Parameters;
 using Egil.RazorComponents.Bootstrap.Utilities.Colors;
 using Egil.RazorComponents.Bootstrap.Utilities.Sizings;
+using Egil.RazorComponents.Testing;
 using Xunit;
 using static Egil.RazorComponents.Bootstrap.Options.Factory.LowerCase;
 using static Egil.RazorComponents.Bootstrap.Utilities.Colors.Factory.LowerCase;

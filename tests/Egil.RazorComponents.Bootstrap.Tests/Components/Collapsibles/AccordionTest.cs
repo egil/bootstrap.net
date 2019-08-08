@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Egil.RazorComponents.Bootstrap.Components.Cards;
 using Egil.RazorComponents.Bootstrap.Components.Html;
+using Egil.RazorComponents.Testing;
 using Xunit;
 
 namespace Egil.RazorComponents.Bootstrap.Components.Collapsibles

@@ -1,6 +1,7 @@
 ﻿using System;
 using Egil.RazorComponents.Bootstrap.Base;
 using Egil.RazorComponents.Bootstrap.Components.Html;
+using Egil.RazorComponents.Testing;
 using Shouldly;
 using Xunit;
 using static Egil.RazorComponents.Bootstrap.Utilities.Animations.Factory.LowerCase;

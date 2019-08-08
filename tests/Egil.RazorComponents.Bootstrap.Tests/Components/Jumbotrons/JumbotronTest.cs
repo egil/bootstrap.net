@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Egil.RazorComponents.Testing;
 using Xunit;
 
 namespace Egil.RazorComponents.Bootstrap.Components.Jumbotrons

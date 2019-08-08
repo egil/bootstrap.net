@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Egil.RazorComponents.Bootstrap.Components;
+using Egil.RazorComponents.Testing;
 using Microsoft.AspNetCore.Components.RenderTree;
 using Shouldly;
 using Xunit;

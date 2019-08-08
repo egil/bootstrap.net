@@ -1,30 +1,20 @@
 ﻿using System;
-using Microsoft.AspNetCore.Components;
+using Egil.RazorComponents.Bootstrap.Services;
+using Egil.RazorComponents.Testing;
 
 namespace Egil.RazorComponents.Bootstrap.Components
 {
 
-    public class BootstrapComponentFixture
+    public class BootstrapComponentFixture : RazorComponentFixture
     {
-
-        protected ComponentBuilder<TComponent> Component<TComponent>() where TComponent : Microsoft.AspNetCore.Components.ComponentBase
+        public override ComponentBuilder<TComponent> Component<TComponent>()
         {
-            return new ComponentBuilder<TComponent>();
+            return base.Component<TComponent>().WithServices(services => services.AddBootstrapServices());
         }
 
-        protected ComponentBuilder<TComponent, TItem> Component<TComponent, TItem>() where TComponent : Microsoft.AspNetCore.Components.ComponentBase
+        public virtual ComponentBuilder<TComponent, TItem> Component<TComponent, TItem>() where TComponent : ComponentBase
         {
-            return new ComponentBuilder<TComponent, TItem>().WithItems(new TItem[0]);
-        }
-
-        protected FragmentBuilder Fragment(Type componentType)
-        {
-            return new FragmentBuilder(componentType);
-        }
-
-        protected FragmentBuilder<TComponent> Fragment<TComponent>() where TComponent : Microsoft.AspNetCore.Components.ComponentBase
-        {
-            return new FragmentBuilder<TComponent>();
+            return base.Component<TComponent, TItem>().WithServices(services => services.AddBootstrapServices());
         }
     }
 }
