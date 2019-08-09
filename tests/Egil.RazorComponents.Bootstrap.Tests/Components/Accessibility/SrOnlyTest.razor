@@ -1,8 +1,0 @@
-﻿<Fact DisplayName="SrOnly does not render anything when ChildContent is null">
-    <TestSetup><SrOnly/></TestSetup>
-    <ExpectedHtml></ExpectedHtml>
-</Fact>
-<Fact DisplayName="SrOnly renders if ChildContent is not null">
-    <TestSetup><SrOnly>CONTENT</SrOnly></TestSetup>
-    <ExpectedHtml><span class="sr-only">CONTENT</span></ExpectedHtml>
-</Fact>

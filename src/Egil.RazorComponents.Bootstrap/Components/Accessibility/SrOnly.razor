@@ -1,7 +1,0 @@
-﻿@code {
-    [Parameter] public RenderFragment? ChildContent { get; set; }
-}
-@if (!(ChildContent is null))
-{
-    <span class="sr-only">@ChildContent</span>
-}

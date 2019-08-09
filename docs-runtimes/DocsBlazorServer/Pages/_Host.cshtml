@@ -1,0 +1,22 @@
+﻿@page
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bootstrap.NET (server side rendered)</title>
+    <base href="~/" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="_content/bootstrapdotnetdocs/css/site.css" rel="stylesheet" />
+
+    <script type="module" src="_content/bootstrapdotnetdocs/js/site.js"></script>
+    <link rel="modulepreload" href="_content/bootstrapdotnetdocs/js/site.js" />
+</head>
+<body>
+    <app>@(await Html.RenderComponentAsync<Egil.RazorComponents.Bootstrap.Documentation.Components.App>())</app>
+
+    <script defer src="_framework/blazor.server.js"></script>
+</body>
+</html>
