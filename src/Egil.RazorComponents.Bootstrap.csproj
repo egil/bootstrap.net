@@ -1,0 +1,50 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <IsPackable>true</IsPackable>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <Nullable>enable</Nullable>
+    <LangVersion>8.0</LangVersion>
+    <RazorLangVersion>3.0</RazorLangVersion>
+    <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+    <RepositoryUrl>https://github.com/egil/bootstrap.net</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/egil/bootstrap.net</PackageProjectUrl>
+    <PackageTags>blazor blazor-server-side blazor-client-side razor-components bootstrap bootstrap4</PackageTags>
+    <Version>0.1.0-preview7-01</Version>
+    <Authors>Egil Hansen</Authors>
+    <Company>Egil Hansen</Company>
+    <Product>Bootstrap.NET</Product>
+    <Description>Bootstrap.NET is a strongly typed version of Bootstrap implemented in Razor Components, with a nice Bootstrap-like syntax for specifying options on components. On top of that, you get compile-time errors if you try to assign invalid options to components.</Description>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <PackageId>BootstrapDotNet</PackageId>
+    <PackageLicenseExpression></PackageLicenseExpression>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="wwwroot\js\utils.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="wwwroot\js\components\collapse.js" />
+    <None Include="wwwroot\js\components\dropdown.js" />
+    <None Include="wwwroot\js\polyfills\classNamePolyfill.js" />
+    <None Include="wwwroot\js\services\pageVisibilityApiInterop.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.Browser" Version="$(AspNetCoreVersion)" />
+  </ItemGroup>
+
+  <!--<ItemGroup>
+    <Content Update="**\*.razor">
+      <Pack>false</Pack>
+    </Content>
+  </ItemGroup>-->
+
+</Project>

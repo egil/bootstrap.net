@@ -1,0 +1,58 @@
+﻿@inherits LayoutComponentBase
+@inject IUriHelper UriHelper
+
+<header>
+    <nav class="navbar navbar-expand sticky-top navbar-dark bg-dark">
+        <a class="navbar-brand mb-0 h1" href="/" Match="NavLinkMatch.All">
+            Bootstrap.NET
+        </a>
+
+        <div class="navbar">
+            <div class="navbar-nav">
+                <a class="nav-link" href="/" Match="NavLinkMatch.All">Home</a>
+                <a class="nav-link" href="/docs/4.3/getting-started/introduction" Match="NavLinkMatch.Prefix" MatchUrl="/docs">Documentation</a>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<Container Fluid>
+    <Row class="flex-xl-nowrap">
+        <Column Span="12 | md-3 | xl-2">
+            @if (UriHelper.GetAbsoluteUri() != @UriHelper.GetBaseUri())
+            {
+                <nav class="nav flex-column table-of-contents">
+                    <a class="nav-link" href="/docs/4.3/getting-started/introduction" Match="NavLinkMatch.Prefix" MatchUrl="/docs/4.3/getting-started">
+                        Getting started
+                        <a class="nav-link" href="/docs/4.3/getting-started/introduction">Introduction</a>
+                    </a>
+
+                    <a class="nav-link" href="/docs/4.3/layout/overview" Match="NavLinkMatch.Prefix" MatchUrl="/docs/4.3/layout">
+                        Layout
+                        <a class="nav-link" href="/docs/4.3/layout/overview">Overview</a>
+                        <a class="nav-link" href="/docs/4.3/layout/grid">Grid</a>
+                        <a class="nav-link" href="/docs/4.3/layout/utilities-for-layout">Utilities for layout</a>
+                    </a>
+
+                    <a class="nav-link" href="/docs/4.3/components/alerts" Match="NavLinkMatch.Prefix" MatchUrl="/docs/4.3/components">
+                        Components
+                        <a class="nav-link" href="/docs/4.3/components/alerts">Alerts</a>
+                        <a class="nav-link" href="/docs/4.3/components/badges">Badges</a>
+                        <a class="nav-link" href="/docs/4.3/components/breadcrumbs">Breadcrumbs</a>
+                    </a>
+
+                    <a class="nav-link" href="/docs/4.3/utilities/colors" Match="NavLinkMatch.Prefix" MatchUrl="/docs/4.3/utilities">
+                        Utilities
+                        <a class="nav-link" href="/docs/4.3/utilities/colors">Colors</a>
+                        <a class="nav-link" href="/docs/4.3/utilities/spacing">Spacing</a>
+                    </a>
+                </nav>
+            }
+        </Column>
+        <Column Span="12 | md-9 | xl-8" Padding="vertical-md-3 | left-md-5">
+            <main>
+                @Body
+            </main>
+        </Column>
+    </Row>
+</Container>

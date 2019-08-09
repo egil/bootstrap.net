@@ -1,0 +1,58 @@
+﻿@inject IJSRuntime jsRuntime
+@inject IExampleComponentRepository exampleRepo
+
+@code {
+    private RenderFragment ExampleOutput => (builder) =>
+    {
+        builder.OpenComponent(0, File);
+        builder.CloseComponent();
+    };
+    private string Id => File.FullName.Replace(".", "");
+    private string ExampleSource { get; set; }
+
+    [Parameter]
+    public Type File { get; set; }
+
+    [Parameter]
+    public bool ShowSourcesOnly { get; set; }
+
+    [Parameter]
+    public string Class { get; set; } = string.Empty;
+
+    private ElementRef ExampleElement { get; set; }
+
+    protected override async Task OnInitAsync()
+    {
+        ExampleSource = await exampleRepo.GetExampleAsync(File.FullName);
+    }
+
+    protected override Task OnAfterRenderAsync()
+    {
+        return jsRuntime.InvokeAsync<object>("bootstrapDotNetDocs.example.setOutputHtml", ExampleElement);
+    }
+}
+
+<div class="example @Class" id=@Id @ref="ExampleElement">
+    @if (!ShowSourcesOnly)
+    {
+        <div class="output">@ExampleOutput</div>
+    }
+    <div class="card-group">
+        <div class="card">
+            <div class="card-body">
+                <pre><code class="language-html example-source">@ExampleSource</code></pre>
+            </div>
+            <div class="card-footer">
+                <small class="text-muted"><em>Bootstrap.NET Razor code sample</em></small>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <pre><code class="language-html example-html-output"></code></pre>
+            </div>
+            <div class="card-footer">
+                <small class="text-muted"><em>Rendered HTML code</em></small>
+            </div>
+        </div>
+    </div>
+</div>

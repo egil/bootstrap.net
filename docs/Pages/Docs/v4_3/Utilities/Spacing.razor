@@ -1,0 +1,55 @@
+﻿@page "/docs/4.3/utilities/spacing"
+
+<DocHead Title="Spacing" RelatedBootstrapDoc="4.3/utilities/spacing/">
+    Bootstrap.NET includes a wide range of shorthand responsive margin and padding utility options to modify an element’s appearance.
+</DocHead>
+
+<h2 id="usage">Usage</h2>
+<p>Include the following in the relevant <code class="highlighter-rouge">_Imports.razor</code> files in your Blazor app, to gain access to the spacing options:</p>
+<pre><code class="highlighter-rouge">&#64;using static Egil.RazorComponents.Bootstrap.Options.SpacingOptions.Factory.LowerCase</code></pre>
+
+<h2 id="how-it-works">How it works</h2>
+
+<p>Assign responsive-friendly <code class="highlighter-rouge">Margin</code> or <code class="highlighter-rouge">Padding</code> options to components or a subset of its sides with shorthand options. Includes support for individual properties, all properties, and vertical and horizontal properties. Options are built from a default Sass map ranging from <code class="highlighter-rouge">.25rem</code> to <code class="highlighter-rouge">3rem</code>.</p>
+
+<h2 id="notation">Notation</h2>
+
+<p>Spacing utilities that apply to all breakpoints, from <code class="highlighter-rouge">xs</code> to <code class="highlighter-rouge">xl</code>, have no breakpoint abbreviation in them. This is because those classes are applied from <code class="highlighter-rouge">min-width: 0</code> and up, and thus are not bound by a media query. The remaining breakpoints, however, do include a breakpoint abbreviation.</p>
+
+<p>The option syntax is as follows for both <code class="highlighter-rouge">Margin</code> and <code class="highlighter-rouge">Padding</code> parameters (<code class="highlighter-rouge">&lt;Component Margin="..." Padding="..." /&gt;</code>).</p>
+
+<ul>
+    <li><code class="highlighter-rouge">{size}</code></li>
+    <li><code class="highlighter-rouge">{sides}-{size}</code></li>
+    <li><code class="highlighter-rouge">{breakpoint}-{size}</code></li>
+    <li><code class="highlighter-rouge">{sides}-{breakpoint}-{size}</code></li>
+</ul>
+
+<p>Where <em>size</em> is:</p>
+<ul>
+    <li>a number in the range from -5 to 5 for both Margin and Padding</li>
+    <li><code class="highlighter-rouge">auto</code> for Margin only.</li>
+</ul>
+
+<p>Where <em>sides</em> is one of:</p>
+
+<ul>
+    <li><code class="highlighter-rouge">top</code>, which matches the Bootstrap side param <code class="highlighter-rouge">t</code></li>
+    <li><code class="highlighter-rouge">bottom</code>, which matches the Bootstrap side param <code class="highlighter-rouge">b</code></li>
+    <li><code class="highlighter-rouge">left</code>, which matches the Bootstrap side param <code class="highlighter-rouge">l</code></li>
+    <li><code class="highlighter-rouge">right</code>, which matches the Bootstrap side param <code class="highlighter-rouge">r</code></li>
+    <li><code class="highlighter-rouge">horizontal</code>, which matches the Bootstrap side param <code class="highlighter-rouge">x</code></li>
+    <li><code class="highlighter-rouge">vertical</code>, which matches the Bootstrap side param <code class="highlighter-rouge">y</code></li>
+</ul>
+
+<p>Where <em>breakpoint</em> is one of:</p>
+
+<ul>
+    <li><code class="highlighter-rouge">sm</code></li>
+    <li><code class="highlighter-rouge">md</code></li>
+    <li><code class="highlighter-rouge">lg</code></li>
+    <li><code class="highlighter-rouge">xl</code></li>
+</ul>
+
+<p>The examples below uses the <code class="highlighter-rouge">&lt;Row/&gt;</code> component to demonstrate various examples of margin and padding.</p>
+<Example File=@typeof(SpacingExample) ShowSourcesOnly="true" />
