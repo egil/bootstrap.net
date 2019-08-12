@@ -1,6 +1,6 @@
 @import url('../libs/open-iconic/font/css/open-iconic-bootstrap.min.css');
 @import url('../libs/PrismJS/prism.css');
-@import url('examples.css');
+@import url('Example.css');
 @import url('references.css');
 
 .table-of-contents {

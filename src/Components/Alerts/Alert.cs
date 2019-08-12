@@ -23,7 +23,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Alerts
         private const string DismissButtonType = "button";
         private const string CloseCssClass = "close";
         private const string DefaultDismissAriaLabel = "Close";
-        private const string DefaultDismissText = "&times;";
+        private const string DefaultDismissText = "&#215;";
 
         private ICssClassAnimation DismissAnimation { get; } = new FadeOutAnimation();
 

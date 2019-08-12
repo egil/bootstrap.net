@@ -1,12 +1,12 @@
 ﻿@code {
     [Parameter]
-    private string Title { get; set; }
+    private string? Title { get; set; }
 
     [Parameter]
-    private string RelatedBootstrapDoc { get ; set;}
+    private string? RelatedBootstrapDoc { get ; set;}
 
     [Parameter]
-    private RenderFragment ChildContent { get; set; }
+    private RenderFragment? ChildContent { get; set; }
 }
 
 <h1 id="content">@Title</h1>

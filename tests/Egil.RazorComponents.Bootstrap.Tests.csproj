@@ -13,7 +13,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.Browser" Version="$(AspNetCoreVersion)" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
     <PackageReference Include="Moq" Version="4.12.0" />
-    <PackageReference Include="Razor.Components.Testing.Library" Version="0.1.0-preview7-19365-7-2" />
+    <PackageReference Include="Razor.Components.Testing.Library" Version="0.1.0-preview7-19365-7-6" />
     <PackageReference Include="Shouldly" Version="3.0.2" />
     <PackageReference Include="XMLUnit.Core" Version="2.7.1" />
     <PackageReference Include="xunit.core" Version="2.4.1" />

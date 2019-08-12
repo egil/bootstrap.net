@@ -76,7 +76,7 @@ namespace Egil.RazorComponents.Bootstrap.Components
         /// </summary>
         protected EventCallback<T>? JoinEventCallbacks<T>(string eventName, params EventCallback<T>?[] eventCallbacks)
         {
-            if (AdditionalAttributes.ContainsKey(eventName) && eventCallbacks.Length > 0 || eventCallbacks.Length > 1)
+            if ((AdditionalAttributes.ContainsKey(eventName) && eventCallbacks.Length > 0) || eventCallbacks.Length > 1)
                 return EventCallback.Factory.Create<T>(this, CallbackGroup);
             else if (eventCallbacks.Length == 1)
                 return eventCallbacks[0];

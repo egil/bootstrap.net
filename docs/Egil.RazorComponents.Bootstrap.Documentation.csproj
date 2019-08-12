@@ -4,6 +4,9 @@
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
     <PackageId>BootstrapDotNetDocs</PackageId>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <Nullable>enable</Nullable>
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -40,12 +43,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Pages\Docs\v4_3\Components\Examples\Cards\" />
     <Folder Include="Pages\Docs\v4_3\Extend\" />
+    <Folder Include="Shared\" />
     <Folder Include="wwwroot\images\" />
   </ItemGroup>
 
-  <ItemGroup>
-    <EmbeddedResource Include="Pages\**\Examples\*.razor"></EmbeddedResource>
+  <ItemGroup>    
+    <EmbeddedResource Include="Pages\**\Examples\**\*.razor"></EmbeddedResource>
   </ItemGroup>
-  
+
 </Project>

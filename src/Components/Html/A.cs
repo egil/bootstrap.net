@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace Egil.RazorComponents.Bootstrap.Components.Html
 {
-
+    // TODO: Allow user to override/set Active param - update examples in docs
     public sealed class A : ParentComponentBase, IToggleForCollapse
     {
         private ElementRef _domElement;
@@ -57,8 +57,9 @@ namespace Egil.RazorComponents.Bootstrap.Components.Html
 
         /// <summary>
         /// Gets or sets a value representing the URL matching behavior.
+        /// Default is <see cref="NavLinkMatch.All"/>.
         /// </summary>
-        [Parameter] public NavLinkMatch Match { get; set; } = NavLinkMatch.Prefix;
+        [Parameter] public NavLinkMatch Match { get; set; } = NavLinkMatch.All;
 
         /// <summary>
         /// Gets or sets a custom URL, that should be used instead of the URL 
@@ -132,6 +133,11 @@ namespace Egil.RazorComponents.Bootstrap.Components.Html
                 RemoveOverride(HtmlAttrs.TABINDEX);
                 RemoveOverride(HtmlAttrs.ARIA_DISABLED);
             }
+
+            if(Active && AsButton)
+            {
+                AddOverride(HtmlAttrs.ARIA_PRESSED, "true");
+            }
         }
 
         protected override Task OnCompomnentAfterRenderAsync()
@@ -161,7 +167,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Html
             }
         }
 
-        private void OnLocationChanged(object sender, LocationChangedEventArgs args)
+        private void OnLocationChanged(object? sender, LocationChangedEventArgs args)
         {
             // We could just re-render always, but for this component we know the
             // only relevant state change is to the _isActive property.
@@ -178,7 +184,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Html
         {
             if (!string.IsNullOrWhiteSpace(MatchUrl))
                 return UriHelper!.ToAbsoluteUri(MatchUrl).AbsoluteUri;
-            else if (AdditionalAttributes.TryGetValue(HtmlAttrs.HREF, out object value) && value is string href && !string.IsNullOrWhiteSpace(href))
+            else if (AdditionalAttributes.TryGetValue(HtmlAttrs.HREF, out object? value) && value is string href && !string.IsNullOrWhiteSpace(href))
                 return UriHelper!.ToAbsoluteUri(href).AbsoluteUri;
             else
                 return null;

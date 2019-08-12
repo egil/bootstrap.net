@@ -1,0 +1,68 @@
+﻿@page  "/docs/4.3/components/buttons"
+@using Egil.RazorComponents.Bootstrap.Documentation.Pages.Docs.v4_3.Components.Examples.Buttons
+
+<DocHead Title="Buttons" RelatedBootstrapDoc="4.3/components/buttons/">
+    Use Bootstrap’s custom button styles for actions in forms, dialogs, and more with support for multiple sizes, states, and more.
+</DocHead>
+
+<p>
+    The <code>Button</code> component in Bootstrap.NET is one of the special components that overrides the built-in HTML element of the same name. When using the component, standard attributes are set correctly automatically (e.g. <code>type="button"</code>) and Bootstrap styles are applied with minimum parameters needed.
+</p>
+<p>See more on this on the <a href="/docs/4.3/components/html-components">HTML Components</a> page.</p>
+
+<h2 id="examples">Examples</h2>
+<p>Bootstrap includes several predefined button styles, each serving its own semantic purpose, with a few extras thrown in for more control.</p>
+
+<Example File=@typeof(ColorExample) />
+
+<AssistiveTechCallout />
+
+<h2 id="button-tags">Button tags</h2>
+
+<p>Bootstraps <code class="highlighter-rouge">.btn</code> classes are designed to be used with the <code class="highlighter-rouge">&lt;button&gt;</code> element. However, you can also use these classes on <code class="highlighter-rouge">&lt;a&gt;</code> or <code class="highlighter-rouge">&lt;input&gt;</code> elements (though some browsers may apply a slightly different rendering).</p>
+
+<p>This is made easy with the <code>A</code> and <code>Input</code> components that override the built-in HTML elements of the same name, that also ensures that the <code class="highlighter-rouge">role="button"</code> attribute is added to appropriately convey their purpose to assistive technologies such as screen readers. See more on this on the <a href="/docs/4.3/components/html-components">HTML Components</a> page.</p>
+
+<Example File=@typeof(ButtonTags) />
+
+<h2 id="outline-buttons">Outline buttons</h2>
+
+<p>In need of a button, but not the hefty background colors they bring? Add the modifier <code class="highlighter-rouge">Outlined="true" / Outlined</code> to remove all background images and colors on any button.</p>
+
+<Example File=@typeof(Outline) />
+
+<h2 id="sizes">Sizes</h2>
+
+<p>Fancy larger or smaller buttons? Set <code class="highlighter-rouge">Size="lg"</code> or <code class="highlighter-rouge">Size="sm"</code> for additional sizes.</p>
+
+<Example File=@typeof(LargeButtons) />
+<Example File=@typeof(SmallButtons) />
+
+<p>Create block level buttons—those that span the full width of a parent—by adding <code class="highlighter-rouge">.btn-block</code> to the <code class="highlighter-rouge">class</code> attribute.</p>
+
+<Example File=@typeof(BlockLevelButtons) />
+
+<h2 id="active-state">Active state</h2>
+
+<p>Buttons will appear pressed (with a darker background, darker border, and inset shadow) when active. <strong>There’s no need to add a class to <code class="highlighter-rouge">&lt;button&gt;</code>s as they use a pseudo-class</strong>. However, you can still force the same active appearance with <code class="highlighter-rouge">.active</code> (and include the <code>aria-pressed="true"</code> attribute) should you need to replicate the state programmatically.</p>
+
+<p>If you are rendering a <code>A</code> component as a button, it will automatically appear as pressed (active), if its <code>href</code> attribute points to the current URL.</p>
+
+<Example File=@typeof(ActiveState) />
+
+<h2 id="disabled-state">Disabled state</h2>
+<p>Make buttons (and links) look inactive by adding the disabled boolean attribute to any <code>&lt;button&gt;</code> element.</p>
+
+<Example File=@typeof(DisabledState) />
+
+<p>When the disabled attribute is added to an <code>A</code> component, it will automatically set the <code>.disabled</code> css class, set <code>tabindex="-1"</code> and disabled the default click event.</p>
+
+<Example File=@typeof(DisabledLinkState) />
+
+<h2 id="toggle-states">Toggle states</h2>
+
+<p>Add <code class="highlighter-rouge">Toggleable="true"</code> to make a button toggleable. Then change the buttons state by setting the <code class="highlighter-rouge">Active</code> attribute. Try it by clicking the buttons below.</p>
+
+<Example File=@typeof(Toggleable) />
+
+<h2>TODO: Add checkbox/radio button toggle examples when done</h2>

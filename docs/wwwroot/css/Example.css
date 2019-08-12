@@ -1,0 +1,87 @@
+.example {
+    margin-bottom: 1rem;
+    border: 3px solid rgb(247, 247, 247);
+    border-radius: .25rem;
+}
+
+    .example .output {
+        padding: 1.25rem;
+    }
+
+        .example .output .row > [class^=col] {
+            background-color: #adb5bd;
+            border: 1px solid #a4a6a9;
+            color: #fff;
+            padding: 1rem;
+        }
+
+        .example .output > :last-child {
+            margin-bottom: 0;
+        }
+
+    .example .card-group {
+        background-color: rgb(247, 247, 247);
+    }
+
+    .example .card {
+        border: none;
+    }
+
+    .example .card-body {
+        background-color: rgb(247, 247, 247);
+        border: none;
+        overflow: auto;
+        scrollbar-width: thin;
+        padding-bottom: 1rem;
+    }
+
+    .example .card:first-child {
+        border-right: 3px solid rgb(240, 240, 240);
+    }
+
+    .example .card-body::-webkit-scrollbar-track {
+        background-color: rgb(240, 240, 240);
+    }
+
+    .example .card-body::-webkit-scrollbar {
+        height: 8px;
+        background-color: rgb(240, 240, 240);
+    }
+
+    .example .card-body::-webkit-scrollbar-thumb {
+        background-color: rgb(205, 205, 205);
+    }
+
+        .example .card-body::-webkit-scrollbar-thumb:hover {
+            background-color: #aaa;
+        }
+
+    .example .card-body pre[class*="language-"] {
+        font-size: 87.5%;
+        padding: 0;
+        margin: 0;
+        background-color: rgb(247, 247, 247);
+        overflow: visible;
+    }
+
+    .example .card-body pre {
+        margin-bottom: 0;
+    }
+
+    .example .card-footer {
+        border-top: 0;
+        padding-top: 0;
+    }
+
+
+/*@media (max-width: 991.98px) {
+    .example .border-top-sm {
+        border-top: 1px solid #dee2e6 !important;
+    }
+}
+
+@media (min-width: 992px) {
+    .example .border-left-lg {
+        border-left: 1px solid #dee2e6 !important;
+    }
+}*/

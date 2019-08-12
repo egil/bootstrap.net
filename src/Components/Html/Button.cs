@@ -82,15 +82,15 @@ namespace Egil.RazorComponents.Bootstrap.Components.Html
         /// <summary>
         /// Get or set the active state of the button. If set to true, the 'active' css class is added to the component.
         /// </summary>
-        [Parameter, CssClassToggleParameter("active")] public bool IsActive { get; set; }
+        [Parameter, CssClassToggleParameter("active")] public bool Active { get; set; }
 
         /// <summary>
         /// Gets or sets a callback that updates the bound active state.
         /// </summary>
-        [Parameter] public EventCallback<bool> IsActiveChanged { get; set; }
+        [Parameter] public EventCallback<bool> ActiveChanged { get; set; }
 
         /// <summary>
-        /// Gets or sets automatic toggling of <see cref="IsActive"/>.
+        /// Gets or sets automatic toggling of <see cref="Active"/>.
         /// </summary>
         [Parameter] public bool Toggleable { get; set; } = false;
 
@@ -107,14 +107,14 @@ namespace Egil.RazorComponents.Bootstrap.Components.Html
         }
 
         /// <summary>
-        /// Toggles <see cref="IsActive"/>.
+        /// Toggles <see cref="Active"/>.
         /// </summary>
         public void Toggle()
         {
             if (Toggleable)
             {
-                IsActive = !IsActive;
-                IsActiveChanged.InvokeAsync(IsActive);
+                Active = !Active;
+                ActiveChanged.InvokeAsync(Active);
             }
         }
 
@@ -132,9 +132,17 @@ namespace Egil.RazorComponents.Bootstrap.Components.Html
                 ToggleableClickHandler = EventCallback.Factory.Create<UIMouseEventArgs>(this, Toggle);
             }
 
-            if (ToggleableClickHandler.HasValue || ToggleForClickHandler.HasValue)
+            if (ToggleableClickHandler.HasValue && ToggleForClickHandler.HasValue)
             {
                 AddOverride(HtmlEvents.CLICK, JoinEventCallbacks(HtmlEvents.CLICK, ToggleableClickHandler, ToggleForClickHandler));
+            }
+            else if (ToggleableClickHandler.HasValue)
+            {
+                AddOverride(HtmlEvents.CLICK, JoinEventCallbacks(HtmlEvents.CLICK, ToggleableClickHandler));
+            }
+            else if (ToggleForClickHandler.HasValue)
+            {
+                AddOverride(HtmlEvents.CLICK, JoinEventCallbacks(HtmlEvents.CLICK, ToggleForClickHandler));
             }
         }
 
@@ -146,9 +154,9 @@ namespace Egil.RazorComponents.Bootstrap.Components.Html
             builder.AddAttribute(HtmlAttrs.TYPE, Type);
             builder.AddClassAttribute(CssClassValue);
 
-            if (Toggleable)
+            if (Toggleable || Active)
             {
-                AddOverride(HtmlAttrs.ARIA_PRESSED, IsActive.ToLowerCaseString());
+                AddOverride(HtmlAttrs.ARIA_PRESSED, Active.ToLowerCaseString());
             }
 
             if (Disabled)
