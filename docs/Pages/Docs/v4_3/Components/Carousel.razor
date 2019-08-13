@@ -1,0 +1,25 @@
+﻿@page  "/docs/4.3/components/carousel"
+@using Egil.RazorComponents.Bootstrap.Documentation.Pages.Docs.v4_3.Components.Examples.Carousel
+
+<DocHead Title="Carousel" RelatedBootstrapDoc="4.3/components/carousel/">
+    A slideshow component for cycling through elements—images or slides of text—like a carousel.
+</DocHead>
+
+<h2 id="how-it-works">How it works</h2>
+<p>The carousel is a slideshow for cycling through a series of content, built with CSS 3D transforms and a bit of JavaScript. It works with a series of images, text, or custom markup. It also includes support for previous/next controls and indicators.</p>
+
+<p>In browsers where the <a href="https://www.w3.org/TR/page-visibility/">Page Visibility API</a> is supported, the carousel will avoid sliding when the webpage is not visible to the user (such as when the browser tab is inactive, the browser window is minimized, etc.).</p>
+
+<Callout>
+    <p>The animation effect of this component is dependent on the <code class="highlighter-rouge">prefers-reduced-motion</code> media query. See the <a href="/docs/4.3/getting-started/accessibility/#reduced-motion">reduced motion section of our accessibility documentation</a>.</p>
+</Callout>
+
+<p>Please be aware that nested carousels are not supported, and carousels are generally not compliant with accessibility standards.</p>
+
+<h2 id="example">Example</h2>
+
+<p>Carousels don’t automatically normalize slide dimensions. As such, you may need to use additional utilities or custom styles to appropriately size content. While carousels support previous/next controls and indicators, they’re not explicitly required. Add and customize as you see fit.</p>
+
+<h3 id="slides-only">Slides only</h3>
+<p>Here’s a carousel with slides only.</p>
+<Example File=@typeof(SlidesOnly) />

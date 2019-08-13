@@ -39,10 +39,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\Egil.RazorComponents.Bootstrap.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="Pages\Docs\v4_3\Extend\" />
     <Folder Include="Shared\" />
     <Folder Include="wwwroot\images\" />
@@ -52,5 +48,8 @@
     <EmbeddedResource Include="Pages\**\Examples\**\*.razor"></EmbeddedResource>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\src\Egil.RazorComponents.Bootstrap.csproj" />
+  </ItemGroup>
 
 </Project>
