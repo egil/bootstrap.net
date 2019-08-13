@@ -3,6 +3,7 @@
     public static class HtmlTags
     {
         public const string A = "a";
+        public const string BLOCKQUOTE = "blockquote";
         public const string BUTTON = "button";
         public const string CAPTION = "caption";
         public const string DIV = "div";

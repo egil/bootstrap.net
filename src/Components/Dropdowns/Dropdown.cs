@@ -46,12 +46,12 @@ namespace Egil.RazorComponents.Bootstrap.Components.Dropdowns
         /// <summary>
         /// Gets or sets the color of the dropdowns toggle button.
         /// </summary>
-        [Parameter, CssClassExcluded] public ColorParameter<ButtonColor> Color { get; set; } = ColorParameter<ButtonColor>.None;
+        [Parameter, CssClassExcluded] public ColorParameter<ButtonColor>? Color { get; set; }
 
         /// <summary>
         /// Gets or sets the size of the dropdown toggle buttons.
         /// </summary>
-        [Parameter, CssClassExcluded] public SizeParamter<ButtonSize> Size { get; set; } = SizeParamter<ButtonSize>.Medium;
+        [Parameter, CssClassExcluded] public SizeParamter<ButtonSize>? Size { get; set; }
 
         /// <summary>
         /// Gets or sets the text displayed in the toggle button or the 
@@ -213,9 +213,9 @@ namespace Egil.RazorComponents.Bootstrap.Components.Dropdowns
 
                 if (!Split)
                 {
-                    a.DefaultCssClass = Size != SizeParamter<ButtonSize>.Medium
-                        ? $"{DropdownToggleCssClass} {Size.Value}"
-                        : DropdownToggleCssClass;
+                    a.DefaultCssClass = Size is null
+                        ? DropdownToggleCssClass
+                        : $"{DropdownToggleCssClass} {Size.Value}";
 
                     a.AddOverride(HtmlAttrs.ID, _toggleId);
                     a.AddOverride(HtmlAttrs.ARIA_HASPOPUP, TrueValue);
@@ -227,7 +227,8 @@ namespace Egil.RazorComponents.Bootstrap.Components.Dropdowns
                 }
                 else
                 {
-                    a.DefaultCssClass = Size.Value;
+                    if (!(Size is null))
+                        a.DefaultCssClass = Size.Value;
 
                     builder.AddContent(a.DefaultRenderFragment);
 

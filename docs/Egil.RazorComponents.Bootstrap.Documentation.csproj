@@ -43,7 +43,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Pages\Docs\v4_3\Components\Examples\Cards\" />
     <Folder Include="Pages\Docs\v4_3\Extend\" />
     <Folder Include="Shared\" />
     <Folder Include="wwwroot\images\" />
@@ -52,5 +51,6 @@
   <ItemGroup>    
     <EmbeddedResource Include="Pages\**\Examples\**\*.razor"></EmbeddedResource>
   </ItemGroup>
+
 
 </Project>

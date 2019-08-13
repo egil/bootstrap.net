@@ -6,7 +6,6 @@ namespace Egil.RazorComponents.Bootstrap.Options.CommonOptions
     public class ExtendedSizeOption : Option, IExtendedTextualSize, ISpanOption
     {
         private const string ExtraSmallValue = "xs";
-        private const string MediumValue = "md";
         private const string ExtraLargeValue = "xl";
 
         public override string Value { get; }
@@ -17,7 +16,6 @@ namespace Egil.RazorComponents.Bootstrap.Options.CommonOptions
         }
 
         public static ExtendedSizeOption ExtraSmall = new ExtendedSizeOption(ExtraSmallValue);
-        public static ExtendedSizeOption Medium = new ExtendedSizeOption(MediumValue);
         public static ExtendedSizeOption ExtraLarge = new ExtendedSizeOption(ExtraLargeValue);
 
         public static BreakpointWithNumber operator -(ExtendedSizeOption breakpoint, int width)

@@ -1,9 +1,12 @@
 ﻿using System.Collections.Generic;
 using Egil.RazorComponents.Bootstrap.Base;
+using Egil.RazorComponents.Bootstrap.Components.Cards.Parameters;
 using Egil.RazorComponents.Bootstrap.Components.Html;
 using Egil.RazorComponents.Bootstrap.Components.Layout;
 using Egil.RazorComponents.Bootstrap.Extensions;
+using Egil.RazorComponents.Bootstrap.Utilities.Colors;
 using Egil.RazorComponents.Bootstrap.Utilities.Sizings;
+using Egil.RazorComponents.Bootstrap.Utilities.Spacing;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.RenderTree;
 
@@ -36,6 +39,18 @@ namespace Egil.RazorComponents.Bootstrap.Components.Cards
         [Parameter] public NumericSizeParameter<WidthSizePrefix> Width { get; set; } = NumericSizeParameter<WidthSizePrefix>.None;
 
         [Parameter] public bool ImageOverlayed { get; set; } = false;
+
+        /// <summary>
+        /// Gets or sets the padding of the component, using Bootstrap.NETs spacing syntax.
+        /// </summary>
+        [Parameter] public SpacingParameter<PaddingSpacing> Padding { get; set; } = SpacingParameter<PaddingSpacing>.None;
+
+        /// <summary>
+        /// Gets or sets the margin of the component, using Bootstrap.NETs spacing syntax.
+        /// </summary>
+        [Parameter] public SpacingParameter<MarginSpacing> Margin { get; set; } = SpacingParameter<MarginSpacing>.None;
+
+        [Parameter] public ColorParameter<CardBackgroundColor>? Color { get; set; }
 
         public Card()
         {

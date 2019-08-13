@@ -55,7 +55,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Html
         /// <summary>
         /// Sets the color of the button.
         /// </summary>
-        [Parameter] public ColorParameter<ButtonColor> Color { get; set; } = ColorParameter<ButtonColor>.None;
+        [Parameter] public ColorParameter<ButtonColor>? Color { get; set; }
 
         /// <summary>
         /// Set to true to remove all background color from the button. Keeps the specified 
@@ -72,7 +72,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Html
         /// <summary>
         /// Gets or sets the size of the button.
         /// </summary>
-        [Parameter] public SizeParamter<ButtonSize> Size { get; set; } = SizeParamter<ButtonSize>.Medium;
+        [Parameter] public SizeParamter<ButtonSize>? Size { get; set; }
 
         /// <summary>
         /// Gets or sets whether the button should be disabled or not.
@@ -125,24 +125,17 @@ namespace Egil.RazorComponents.Bootstrap.Components.Html
 
         protected override void OnCompomnentParametersSet()
         {
-            Color.ColorPrefix.Outlined = Outlined;
+            if (!(Color is null))
+                Color.ColorPrefix.Outlined = Outlined;
 
             if (Toggleable && ToggleableClickHandler is null)
             {
                 ToggleableClickHandler = EventCallback.Factory.Create<UIMouseEventArgs>(this, Toggle);
             }
 
-            if (ToggleableClickHandler.HasValue && ToggleForClickHandler.HasValue)
+            if (ToggleableClickHandler.HasValue || ToggleForClickHandler.HasValue)
             {
                 AddOverride(HtmlEvents.CLICK, JoinEventCallbacks(HtmlEvents.CLICK, ToggleableClickHandler, ToggleForClickHandler));
-            }
-            else if (ToggleableClickHandler.HasValue)
-            {
-                AddOverride(HtmlEvents.CLICK, JoinEventCallbacks(HtmlEvents.CLICK, ToggleableClickHandler));
-            }
-            else if (ToggleForClickHandler.HasValue)
-            {
-                AddOverride(HtmlEvents.CLICK, JoinEventCallbacks(HtmlEvents.CLICK, ToggleForClickHandler));
             }
         }
 

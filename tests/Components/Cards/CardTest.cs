@@ -1,9 +1,14 @@
 ﻿using System;
+using System.Linq;
+using Egil.RazorComponents.Bootstrap.Components.Cards.Parameters;
 using Egil.RazorComponents.Bootstrap.Components.Html;
 using Egil.RazorComponents.Bootstrap.Components.Layout;
+using Egil.RazorComponents.Bootstrap.Utilities.Colors;
 using Egil.RazorComponents.Bootstrap.Utilities.Sizings;
 using Egil.RazorComponents.Testing;
 using Xunit;
+
+using static Egil.RazorComponents.Bootstrap.Utilities.Colors.Factory.LowerCase;
 
 namespace Egil.RazorComponents.Bootstrap.Components.Cards
 {
@@ -269,6 +274,19 @@ namespace Egil.RazorComponents.Bootstrap.Components.Cards
                         )
                     )
                 );
+
+            var result = component.Render();
+
+            result.ShouldBe(expectedHtml);
+        }
+
+        [Fact(DisplayName = "Card sets background color correctly")]
+        public void MyTestMethodColor()
+        {
+            var color = (ColorParameter<CardBackgroundColor>)primary;
+            var expectedHtml = $@"<div class=""card {color.Single()}"">
+                                  </div>";
+            var component = Component<Card>().WithParams(("color", color));
 
             var result = component.Render();
 

@@ -13,7 +13,7 @@ namespace Egil.RazorComponents.Bootstrap.Tests.Options.SpanOptions
         {
             DefaultSizeOption.Default.Value.ShouldBe(string.Empty);
             SizeOption.Small.Value.ShouldBe("sm");
-            ExtendedSizeOption.Medium.Value.ShouldBe("md");
+            SizeOption.Medium.Value.ShouldBe("md");
             SizeOption.Large.Value.ShouldBe("lg");
             ExtendedSizeOption.ExtraLarge.Value.ShouldBe("xl");
         }

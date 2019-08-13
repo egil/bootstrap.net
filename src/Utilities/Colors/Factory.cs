@@ -19,7 +19,6 @@
 
         public static class LowerCase
         {
-
             public static readonly ColorOption primary = Primary;
             public static readonly ColorOption secondary = Secondary;
             public static readonly ColorOption success = Success;

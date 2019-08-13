@@ -1,5 +1,16 @@
-﻿<div class="bd-callout bd-callout-warning">
-    <h5 id="conveying-meaning-to-assistive-technologies">Conveying meaning to assistive technologies</h5>
-
-    <p>Using color to add meaning only provides a visual indication, which will not be conveyed to users of assistive technologies – such as screen readers. Ensure that information denoted by the color is either obvious from the content itself (e.g. the visible text), or is included through alternative means, such as additional text hidden with the <code class="highlighter-rouge">&lt;SrOnly&gt;hidden text&lt;/SrOnly&gt;</code> component.</p>
+﻿@code {
+    [Parameter] public string Id { get; set; } = "conveying-meaning-to-assistive-technologies";
+    [Parameter] public string Heading { get; set; } = "Conveying meaning to assistive technologies";
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}
+<div class="callout callout-warning">
+    <h5 id=@Id>@Heading</h5>
+    @if (ChildContent is null)
+    {
+        <p>Using color to add meaning only provides a visual indication, which will not be conveyed to users of assistive technologies – such as screen readers. Ensure that information denoted by the color is either obvious from the content itself (e.g. the visible text), or is included through alternative means, such as additional text hidden with the <code class="highlighter-rouge">&lt;SrOnly&gt;hidden text&lt;/SrOnly&gt;</code> component.</p>
+    }
+    else
+    {
+        @ChildContent
+    }
 </div>

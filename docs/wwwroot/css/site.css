@@ -3,6 +3,27 @@
 @import url('Example.css');
 @import url('references.css');
 
+.callout {
+    padding: 1.25rem;
+    margin-top: 1.25rem;
+    margin-bottom: 1.25rem;
+    border: 1px solid #eee;
+    border-left-width: .25rem;
+    border-radius: .25rem;
+}
+
+    .callout p:last-child {
+        margin-bottom: 0;
+    }
+
+    .callout.callout-warning {
+        border-left-color: #fff3cd;
+    }
+
+    .callout.callout-info {
+        border-left-color: #5bc0de;
+    }
+
 .table-of-contents {
 }
 

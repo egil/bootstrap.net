@@ -12,7 +12,7 @@ namespace Egil.RazorComponents.Bootstrap.Options
 
         public static readonly DefaultSizeOption ExtraSmall = DefaultSizeOption.Default;
         public static readonly SizeOption Small = SizeOption.Small;
-        public static readonly ExtendedSizeOption Medium = ExtendedSizeOption.Medium;
+        public static readonly SizeOption Medium = SizeOption.Medium;
         public static readonly SizeOption Large = SizeOption.Large;
         public static readonly ExtendedSizeOption ExtraLarge = ExtendedSizeOption.ExtraLarge;
 
@@ -41,7 +41,7 @@ namespace Egil.RazorComponents.Bootstrap.Options
 
             public static readonly DefaultSizeOption extraSmall = ExtraSmall;
             public static readonly SizeOption small = Small;
-            public static readonly ExtendedSizeOption medium = Medium;
+            public static readonly SizeOption medium = Medium;
             public static readonly SizeOption large = Large;
             public static readonly ExtendedSizeOption extraLarge = ExtraLarge;
 
@@ -70,7 +70,7 @@ namespace Egil.RazorComponents.Bootstrap.Options
 
                 public static readonly DefaultSizeOption xs = ExtraSmall;
                 public static readonly SizeOption sm = Small;
-                public static readonly ExtendedSizeOption md = Medium;
+                public static readonly SizeOption md = Medium;
                 public static readonly SizeOption lg = Large;
                 public static readonly ExtendedSizeOption xl = ExtraLarge;
 

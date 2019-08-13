@@ -1,6 +1,177 @@
 ﻿@page  "/docs/4.3/components/cards"
-@*@using Egil.RazorComponents.Bootstrap.Documentation.Pages.Docs.v4_3.Components.Examples.Cards*@
+@using Egil.RazorComponents.Bootstrap.Documentation.Pages.Docs.v4_3.Components.Examples.Cards
+
+<style type="text/css">
+    .example .output .card + .card {
+        margin-top: 1rem;
+    }
+
+    .example .output .card-columns .card + .card,
+    .example .output .card-deck .card + .card,
+    .example .output .card-group .card + .card {
+        margin-top: inherit;
+    }
+</style>
 
 <DocHead Title="Cards" RelatedBootstrapDoc="4.3/components/cards/">
-    Indicate the current page’s location within a navigational hierarchy that automatically adds separators via CSS.
+    Bootstrap’s cards provide a flexible and extensible content container with multiple variants and options.
 </DocHead>
+<h2 id="about">About</h2>
+
+<p>A <strong>card</strong> is a flexible and extensible content container. It includes options for headers and footers, a wide variety of content, contextual background colors, and powerful display options.</p>
+
+<h2 id="example">Example</h2>
+
+<p>Cards are built with as little markup and styles as possible, but still manage to deliver a ton of control and customization. Built with flexbox, they offer easy alignment and mix well with other Bootstrap components. They have no <code class="highlighter-rouge">margin</code> by default, so use <a href="/docs/4.3/utilities/spacing/">spacing utilities</a> as needed.</p>
+
+<p>With Boostrap.NET there is even less markup needed compared to standard Boostrap, since a Card component will automatically modify the child components added to it, setting the necessary Bootstrap options on them when they are used inside a card.</p>
+
+<p>Below is an example of a basic card with mixed content and a fixed width. Cards have no fixed width to start, so they’ll naturally fill the full width of its parent element. This is easily customized with our various <a href="#sizing">sizing options</a>.</p>
+
+<Example File=@typeof(Basic) />
+
+<h2 id="content-types">Content types</h2>
+
+<p>Cards support a wide variety of content, including images, text, list groups, links, and more. Below are examples of what’s supported.</p>
+
+<h3 id="content">Content</h3>
+
+<p>The building block of a card is the <code class="highlighter-rouge">Content</code> component (in Bootstrap terminology this is called <em>body</em>). Use it whenever you need a padded section within a card.</p>
+
+<Example File=@typeof(ContentExample) />
+
+<h3 id="titles-text-and-links">Titles, text, and links</h3>
+<p>The Card component automatically sets the correct css classes on titles (H1-6 elements), text (paragraph elements), and links. For headings, the first heading seen in a card body gets the class <code>.card-title</code> and any subsequent gets the class <code>.card-subtitle</code>. When the <code class="highlighter-rouge">.card-title</code> and the <code class="highlighter-rouge">.card-subtitle</code> items are placed in a <code class="highlighter-rouge">.card-body</code> item, the card title and subtitle are aligned nicely. Links gets the <code>.card-link</code> class added, which places multiple links nicely next to each other with a little extra margin than normal.</p>
+
+<Example File=@typeof(TextContent) />
+
+<h3 id="images">Images</h3>
+
+<p>If an <code>img</code> or <code>svg</code> component is the <strong>first component in a card</strong>, it will automatically get the <code class="highlighter-rouge">.card-img-top</code> class added to it. This places the image at the top of the card. </p>
+
+<Example File=@typeof(ImageTopExample) />
+
+<p>If an <code>img</code> or <code>svg</code> component is the <strong>second or later component in a card</strong>, it will automatically get the <code class="highlighter-rouge">.card-img-bottom</code> class added to it. This places the image at the bottom of the card. </p>
+
+<Example File=@typeof(ImageBottomExample) />
+
+<h3 id="list-groups">List groups</h3>
+
+<p>Create lists of content in a card with a flush list group.</p>
+
+<Example File=@typeof(ListGroups) />
+<Example File=@typeof(ListGroupsWithHeader) />
+
+<h3 id="kitchen-sink">Kitchen sink</h3>
+<p>Mix and match multiple content types to create the card you need, or throw everything in there. Shown below are image styles, blocks, text styles, and a list group—all wrapped in a fixed-width card.</p>
+
+<Example File=@typeof(KitchenSink) />
+
+<h3 id="header-and-footer">Header and footer</h3>
+<p>Add an optional <code>header</code> and/or <code>footer</code> within a card using the <code>Header</code>/<code>Footer</code> components, and the necessary Bootstrap css classes are automatically added.</p>
+
+<Example File=@typeof(Header1) />
+
+<p>Card headers can also be <code>heading</code> elements, that will also be styled with the <code class="highlighter-rouge">.card-header</code> css class, if they are the first heading element in the card.</p>
+
+<Example File=@typeof(HeaderHeading) />
+<Example File=@typeof(HeaderQuote) />
+<Example File=@typeof(HeaderFooter) />
+
+<h2 id="sizing">Sizing</h2>
+<p>Cards assume no specific <code class="highlighter-rouge">width</code> to start, so they’ll be 100% wide unless otherwise stated. You can change this as needed with custom CSS, grid classes, grid Sass mixins, or utilities.</p>
+
+<h3 id="using-grid-markup">Using grid markup</h3>
+<p>Using the grid, wrap cards in columns and rows as needed.</p>
+<Example File=@typeof(GridSizing) />
+
+<h3 id="using-utilities">Using utilities</h3>
+<p>Use our handful of <a href="/docs/4.3/utilities/sizing/">available sizing utilities</a> to quickly set a card’s width.</p>
+<Example File=@typeof(UtilitySizing) />
+
+<h3 id="using-custom-css">Using custom CSS</h3>
+<p>Use custom CSS in your stylesheets or as inline styles to set a width.</p>
+<Example File=@typeof(CssSizing) />
+
+<h2 id="text-alignment">Text alignment</h2>
+<p>You can quickly change the text alignment of any card—in its entirety or specific parts—with our <a href="/docs/4.3/utilities/text/#text-alignment">text align classes</a>.</p>
+<Example File=@typeof(TextAlign) />
+
+<h2 id="navigation">Navigation</h2>
+<p>Add some navigation to a card’s header (or block) with Bootstrap’s <a href="/docs/4.3/components/navs/">nav components</a>.</p>
+
+<Example File=@typeof(Navigation) />
+<Example File=@typeof(NavigationPills) />
+
+<h2 id="images-1">Images</h2>
+
+<p>Cards include a few options for working with images. Choose from appending "image caps" at either end of a card, overlaying images with card content, or simply embedding the image in a card.</p>
+
+<h3 id="image-overlays">Image overlays</h3>
+
+<p>Turn an image into a card background and overlay your card’s text. Depending on the image, you may or may not need additional styles or utilities.</p>
+
+<Example File=@typeof(ImageOverlays) />
+
+<div class="callout callout-info">
+    <p>Note that content should not be larger than the height of the image. If content is larger than the image the content will be displayed outside the image.</p>
+</div>
+
+<h2 id="horizontal">Horizontal</h2>
+
+<p>Using a combination of grid and utility classes, cards can be made horizontal in a mobile-friendly and responsive way. In the example below, we remove the grid gutters with <code class="highlighter-rouge">NoGutters</code> and use <code class="highlighter-rouge">md-*</code> classes to make the card horizontal at the <code class="highlighter-rouge">md</code> breakpoint. Further adjustments may be needed depending on your card content.</p>
+
+<Example File=@typeof(Horizontal) />
+
+<h2 id="card-styles">Card styles</h2>
+
+<p>Cards include various options for customizing their backgrounds, borders, and color.</p>
+
+<h3 id="background-and-color">Background and color</h3>
+<p>Use <a href="/docs/4.3/utilities/colors/">text and background utilities</a> to change the appearance of a card.</p>
+<Example File=@typeof(BackgroundAndColor) />
+<AssistiveTechCallout />
+
+<h3 id="border">Border</h3>
+<p>Use <a href="/docs/4.3/utilities/borders/">border utilities</a> to change just the <code class="highlighter-rouge">border-color</code> of a card. Note that you can put <code class="highlighter-rouge">.text-{color}</code> classes on the parent <code class="highlighter-rouge">Card</code> or a subset of the card’s contents as shown below.</p>
+<Example File=@typeof(Border) />
+
+<h3 id="mixins-utilities">Mixins utilities</h3>
+
+<p>You can also change the borders on the card header and footer as needed, and even remove their <code class="highlighter-rouge">background-color</code> with <code class="highlighter-rouge">.bg-transparent</code>.</p>
+<Example File=@typeof(MixinsUtilities) />
+
+<h2 id="card-layout">Card layout</h2>
+<p>In addition to styling the content within cards, Bootstrap includes a few options for laying out series of cards. For the time being, <strong>these layout options are not yet responsive</strong>.</p>
+
+<h3 id="card-groups">Card groups</h3>
+<p>Use card groups to render cards as a single, attached element with equal width and height columns. Card groups use <code class="highlighter-rouge">display: flex;</code> to achieve their uniform sizing.</p>
+<Example File=@typeof(CardGroup) />
+<p>When using card groups with footers, their content will automatically line up.</p>
+<Example File=@typeof(CardGroupWithFooter) />
+
+<h3 id="card-decks">Card decks</h3>
+<p>Need a set of equal width and height cards that aren’t attached to one another? Use card decks.</p>
+<Example File=@typeof(DeckCards) />
+<p>Just like with card groups, card footers in decks will automatically line up.</p>
+<Example File=@typeof(DeckCardsWithFooter) />
+
+<h3 id="card-columns">Card columns</h3>
+
+<p>Cards can be organized into <a href="https://masonry.desandro.com/">Masonry</a>-like columns with just CSS by wrapping them in <code class="highlighter-rouge">.card-columns</code>. Cards are built with CSS <code class="highlighter-rouge">column</code> properties instead of flexbox for easier alignment. Cards are ordered from top to bottom and left to right.</p>
+
+<p><strong>Heads up!</strong> Your mileage with card columns may vary. To prevent cards breaking across columns, we must set them to <code class="highlighter-rouge">display: inline-block</code> as <code class="highlighter-rouge">column-break-inside: avoid</code> isn’t a bulletproof solution yet.</p>
+<Example File=@typeof(CardColumns) />
+
+<p>Card columns can also be extended and customized with some additional code. Shown below is an extension of the <code class="highlighter-rouge">Columns</code> component using the same CSS we use—CSS columns— to generate a set of responsive tiers for changing the number of columns.</p>
+
+<pre><code>
+.card-columns {
+    @@include media-breakpoint-only(lg) {
+        column-count: 4;
+    }
+    @@include media-breakpoint-only(xl) {
+        column-count: 5;
+    }
+}
+</code></pre>

@@ -15,7 +15,7 @@ namespace Egil.RazorComponents.Bootstrap.Utilities.Sizings
         public static implicit operator SizeParamter<TParamPrefix>(SizeOption size)
         {
             if (size == SizeOption.Small) return Small;
-            if (size == ExtendedSizeOption.Medium) return Medium;
+            if (size == SizeOption.Medium) return Medium;
             if (size == SizeOption.Large) return Large;
             else throw new InvalidOperationException("Unknown SizeOption type.");
         }

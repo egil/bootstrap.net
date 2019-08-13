@@ -76,7 +76,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Html
         /// <summary>
         /// Sets the color of the button.
         /// </summary>
-        [Parameter] public ColorParameter<ButtonColor> Color { get; set; } = ColorParameter<ButtonColor>.None;
+        [Parameter] public ColorParameter<ButtonColor>? Color { get; set; }
 
         /// <summary>
         /// Gets or sets whether to prevent default when a user clicks this link. 

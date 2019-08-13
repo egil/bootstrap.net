@@ -16,14 +16,16 @@ function tidyMarkup(html) {
     html = html_beautify(html);
     return escapeHtml(html);
 }
+function fadeInCode(example) {
+    var cards = example.querySelectorAll(".source-code > .card");
+    cards[0].classList.add("show");
+    setTimeout(function () { return cards[1].classList.add("show"); }, 100);
+}
 export function setOutputHtml(example) {
     var htmlOutputElm = example.getElementsByClassName("example-html-output")[0];
     var renderedCode = example.getElementsByClassName("output")[0].innerHTML;
     htmlOutputElm.innerHTML = tidyMarkup(renderedCode);
-    Prism.highlightAllUnder(example, false, function () {
-        var cards = example.getElementsByClassName("card");
-        cards[0].classList.add("show");
-        setTimeout(function () { return cards[1].classList.add("show"); }, 100);
-    });
+    Prism.highlightAllUnder(example, false);
+    fadeInCode(example);
 }
 //# sourceMappingURL=Example.js.map

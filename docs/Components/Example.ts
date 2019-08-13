@@ -23,15 +23,19 @@ function tidyMarkup(html: string): string {
     return escapeHtml(html);
 }
 
+function fadeInCode(example: HTMLDivElement) {
+    const cards = example.querySelectorAll(".source-code > .card");
+    cards[0].classList.add("show");
+    setTimeout(() => cards[1].classList.add("show"), 100);
+}
+
 export function setOutputHtml(example: HTMLDivElement): void {
     const htmlOutputElm = example.getElementsByClassName("example-html-output")[0];
     const renderedCode = example.getElementsByClassName("output")[0].innerHTML;
 
     htmlOutputElm.innerHTML = tidyMarkup(renderedCode);
 
-    Prism.highlightAllUnder(example, false, () => {
-        const cards = example.getElementsByClassName("card");
-        cards[0].classList.add("show");
-        setTimeout(() => cards[1].classList.add("show"), 100);
-    });
+    Prism.highlightAllUnder(example, false);
+
+    fadeInCode(example);
 }
