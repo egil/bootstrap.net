@@ -27,6 +27,7 @@
   
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="BootstrapDotNet" Version="0.1.0-preview7-19365-7-10" />
     <PackageReference Include="Microsoft.TypeScript.MSBuild" Version="3.6.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -46,10 +47,6 @@
 
   <ItemGroup>    
     <EmbeddedResource Include="Pages\**\Examples\**\*.razor"></EmbeddedResource>
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\src\Egil.RazorComponents.Bootstrap.csproj" />
   </ItemGroup>
 
 </Project>

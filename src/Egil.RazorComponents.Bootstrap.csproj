@@ -11,7 +11,7 @@
     <RepositoryUrl>https://github.com/egil/bootstrap.net</RepositoryUrl>
     <PackageProjectUrl>https://github.com/egil/bootstrap.net</PackageProjectUrl>
     <PackageTags>blazor blazor-server-side blazor-client-side razor-components bootstrap bootstrap4</PackageTags>
-    <Version>0.1.0-preview7-01</Version>
+    <Version>0.1.0-preview7-19365-7-10</Version>
     <Authors>Egil Hansen</Authors>
     <Company>Egil Hansen</Company>
     <Product>Bootstrap.NET</Product>
