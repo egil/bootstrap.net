@@ -10,6 +10,7 @@ using Egil.RazorComponents.Bootstrap.Utilities.Spacing;
 using Microsoft.AspNetCore.Components;
 using Egil.RazorComponents.Bootstrap.Components;
 using Microsoft.AspNetCore.Components.RenderTree;
+using System;
 
 namespace Egil.RazorComponents.Bootstrap.Components.Alerts
 {
@@ -58,8 +59,6 @@ namespace Egil.RazorComponents.Bootstrap.Components.Alerts
         [Parameter] public string DismissText { get; set; } = DefaultDismissText;
 
         public AlertState State { get; private set; } = AlertState.Visible;
-
-        public override RenderFragment ChildContent { get => ChildContentAndDismissButtonRenderFragment; protected set => base.ChildContent = value; }
 
         public Alert()
         {
@@ -127,13 +126,15 @@ namespace Egil.RazorComponents.Bootstrap.Components.Alerts
         protected internal override void DefaultRenderFragment(RenderTreeBuilder builder)
         {
             if (!EnableRendering) return;
-            base.DefaultRenderFragment(builder);
-        }
-
-        private void ChildContentAndDismissButtonRenderFragment(RenderTreeBuilder builder)
-        {
-            builder.AddContent(base.ChildContent);
+            builder.OpenElement(DefaultElementTag);
+            builder.AddIdAttribute(Id);
+            builder.AddClassAttribute(CssClassValue);
+            builder.AddMultipleAttributes(AdditionalAttributes);
+            builder.AddMultipleAttributes(OverriddenAttributes);
+            builder.AddContent(ChildContent);
             builder.AddContent(DismissButtonRenderFragment);
+            builder.AddElementReferenceCapture(DomElementCapture);
+            builder.CloseElement();
         }
 
         private void DismissButtonRenderFragment(RenderTreeBuilder builder)
@@ -150,6 +151,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Alerts
             builder.AddMarkupContent(DismissText);
             builder.CloseElement();
             builder.CloseElement();
+            builder.AddMarkupContent(Environment.NewLine);
         }
     }
 }

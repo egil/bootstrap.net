@@ -1,5 +1,5 @@
 ﻿@code {
     [Parameter] public string Type { get; set; } = "info";
-    [Parameter] public RenderFragment ChildContent { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
 }
 <div class="callout callout-@Type">@ChildContent</div>

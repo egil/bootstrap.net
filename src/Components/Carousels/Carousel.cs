@@ -40,14 +40,14 @@ namespace Egil.RazorComponents.Bootstrap.Components.Carousels
         /// </summary>
         public bool Cycling => _changeItemTimer.IsRunning;
 
-        [Parameter] public RenderFragment<TItem>? ChildContent { get; private set; }
+        [Parameter] public RenderFragment<TItem>? ChildContent { get; set; }
 
-        [Parameter] public IReadOnlyList<TItem>? Items { get; private set; }
+        [Parameter] public IReadOnlyList<TItem>? Items { get; set; }
 
         /// <summary>
         /// Gets or sets the current active index of carousel.
         /// </summary>
-        [Parameter] public ushort ActiveIndex { get; private set; } = 0;
+        [Parameter] public ushort ActiveIndex { get; set; } = 0;
 
         [Parameter] public EventCallback<ushort> ActiveIndexChanged { get; set; }
 
@@ -330,7 +330,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Carousels
             builder.OpenComponent<CascadingValue<ChildHooksInjector>>();
             builder.AddAttribute("Value", (ChildHooksInjector)ApplyChildHooksInternal);
             builder.AddAttribute("IsFixed", true);
-            builder.AddAttribute(RenderTreeBuilder.ChildContent, (RenderFragment)ItemsRenderFragment);
+            builder.AddChildContentFragment(ItemsRenderFragment);
             builder.CloseComponent();
 
             builder.CloseElement();
@@ -367,15 +367,15 @@ namespace Egil.RazorComponents.Bootstrap.Components.Carousels
 
                     if (!(ChildContent is null))
                     {
-                        builder.AddAttribute(RenderTreeBuilder.ChildContent, ChildContent(item));
+                        builder.AddChildContentFragment(ChildContent(item));
                     }
                     else if (item is string imageUrl)
                     {
-                        builder.AddAttribute(RenderTreeBuilder.ChildContent, ImageRenderTemplate(imageUrl));
+                        builder.AddChildContentFragment(ImageRenderTemplate(imageUrl));
                     }
                     else if (item is ValueTuple<string, string> tuple)
                     {
-                        builder.AddAttribute(RenderTreeBuilder.ChildContent, ImageRenderTemplate(tuple.Item1, tuple.Item2));
+                        builder.AddChildContentFragment(ImageRenderTemplate(tuple.Item1, tuple.Item2));
                     }
 
                     builder.CloseComponent();

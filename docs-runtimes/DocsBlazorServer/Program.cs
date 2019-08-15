@@ -16,7 +16,6 @@ namespace Egil.RazorComponents.Bootstrap.DocsBlazorServer
     {
         public static void Main(string[] args)
         {
-            CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("en-US");
             CreateHostBuilder(args).Build().Run();
         }
 

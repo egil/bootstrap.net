@@ -1,5 +1,9 @@
 ﻿@page  "/docs/4.3/components/carousel"
-@using Egil.RazorComponents.Bootstrap.Documentation.Pages.Docs.v4_3.Components.Examples.Carousel
+@using Egil.RazorComponents.Bootstrap.Documentation.Pages.Docs.v4_3.Components.Examples.Carousels
+
+@code{
+    string slidesExcludePattern = @" @bind-ActiveIndex=""Index""";
+}
 
 <DocHead Title="Carousel" RelatedBootstrapDoc="4.3/components/carousel/">
     A slideshow component for cycling through elements—images or slides of text—like a carousel.
@@ -20,6 +24,20 @@
 
 <p>Carousels don’t automatically normalize slide dimensions. As such, you may need to use additional utilities or custom styles to appropriately size content. While carousels support previous/next controls and indicators, they’re not explicitly required. Add and customize as you see fit.</p>
 
-<h3 id="slides-only">Slides only</h3>
-<p>Here’s a carousel with slides only.</p>
-<Example File=@typeof(SlidesOnly) />
+<h3 id="slides">Slides</h3>
+<p>There are a few ways to add or provide slides to the <code>Carousel</code> component.</p>
+<p>In this example images are provided to the carousel via the <code>Items</code> parameter. If you provide a simple collection of strings, the Carousel will assume it is being given URLs to images, and generate the correct <em>carousel items</em> as needed.</p>
+
+<Example File=@typeof(SlidesOnly) CustomExcludePattern=@slidesExcludePattern />
+
+<p>A better way is to provide <code>Items</code> parameter with a collection of <code>(string ImageUrl, string AltText)</code> tuples. Then the Carousel will generate images with an <code>alt</code> attribute set. </p>
+
+<Example File=@typeof(SlidesWithAltOnly) CustomExcludePattern=@slidesExcludePattern />
+
+<p>To get complete control over the rendered item, provide a template to the component. Note that <code>Img</code> and <code>Svg</code> components automatically gets the recommended css classes <code>d-block w-100</code> added to them.</p>
+
+<Example File=@typeof(SlidesWithTmpl) CustomExcludePattern=@slidesExcludePattern />
+
+<p>If you prefer to just add the slide items statically in the Carousel component, you can use the <code>CarouselItem</code> component and place whatever content you want inside your carousel.</p>
+
+<Example File=@typeof(SlidesStatic) CustomExcludePattern=@slidesExcludePattern />

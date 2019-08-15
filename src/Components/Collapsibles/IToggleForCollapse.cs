@@ -95,7 +95,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Collapsibles
         private void CollapseStateChangedHandler(IEvent<CollapseStateChangedEventType, Collapse> collapseStateChangedEvent)
         {
             AddOverride(HtmlAttrs.ARIA_EXPANDED, collapseStateChangedEvent.Source.Expanded.ToLowerCaseString());
-            Invoke(StateHasChanged);
+            InvokeAsync(StateHasChanged);
         }
     }
 }

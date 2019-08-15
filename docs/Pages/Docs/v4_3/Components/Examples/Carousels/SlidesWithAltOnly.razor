@@ -1,0 +1,17 @@
+﻿@*example_exclude*@
+@code {
+    [CascadingParameter] protected Example? ExampleContext { get; set; }
+    protected override void OnInitialized() { ExampleContext!.ExampleTriggersAfterRender = true; }
+    protected override Task OnAfterRenderAsync() => ExampleContext!.ExampleOnAfterRenderAsync();
+    protected ushort Index { get; set; } = 0;
+}
+@*end_example_exclude*@
+@code {
+    public (string url, string alt)[] Images { get; } = {
+        ("https://picsum.photos/1024/354?random=1", "Lorem ipsum dolor"),
+        ("https://picsum.photos/1024/354?random=2", "Fusce a pretium"),
+        ("https://picsum.photos/1024/354?random=3", "Aliquam eleifend arcu"),
+        ("https://picsum.photos/1024/354?random=4", "Curabitur mattis euismod"),
+    };
+}
+<Carousel Items="@Images" @bind-ActiveIndex="Index" />

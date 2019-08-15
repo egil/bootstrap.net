@@ -1,0 +1,24 @@
+﻿@*example_exclude*@
+@code {
+    [CascadingParameter] protected Example? ExampleContext { get; set; }
+    protected override void OnInitialized() { ExampleContext!.ExampleTriggersAfterRender = true; }
+    protected override Task OnAfterRenderAsync() => ExampleContext!.ExampleOnAfterRenderAsync();
+    protected ushort Index { get; set; } = 0;
+}
+@*end_example_exclude*@
+<Carousel TItem="CarouselStatic" @bind-ActiveIndex="Index" ShowControls="true">
+    <CarouselItem>
+        <Img src="https://picsum.photos/1024/354?random=1" />
+    </CarouselItem>
+    <CarouselItem>
+        <Svg width="100%" height="180" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Image cap">
+            <title>Placeholder</title>
+            <rect width="100%" height="100%" fill="#868e96" />
+            <text x="50%" y="50%" fill="#dee2e6" dominant-baseline="middle" text-anchor="middle">SVG image</text>
+        </Svg>
+    </CarouselItem>
+    <CarouselItem>
+        <H1>Hello world</H1>
+        <p>A carousel can have whatever you want inside it.</p>
+    </CarouselItem>
+</Carousel>

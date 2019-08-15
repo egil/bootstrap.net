@@ -1,19 +1,19 @@
 ﻿@code {
     [Parameter]
-    private string? Title { get; set; }
+    public string? Title { get; set; }
 
     [Parameter]
-    private string? RelatedBootstrapDoc { get ; set;}
+    public string? RelatedBootstrapDoc { get ; set;}
 
     [Parameter]
-    private RenderFragment? ChildContent { get; set; }
+    public RenderFragment? ChildContent { get; set; }
 }
 
 <h1 id="content">@Title</h1>
 <p class="lead">@ChildContent</p>
-<div class="callout callout-info">
+<Callout>
     <p>
         <em>All relevant examples to Boostrap.NET</em> and related text is based off of <a href=@("https://getbootstrap.com/docs/" + RelatedBootstrapDoc)>Bootstrap's own related documentation page</a>.
         Read Bootstrap's documentation for more details on the inner workings of Bootstrap and other non Boostrap.NET options related to this section.
     </p>
-</div>
+</Callout>

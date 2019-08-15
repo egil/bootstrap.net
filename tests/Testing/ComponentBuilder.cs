@@ -11,14 +11,14 @@ using System.Linq;
 using Microsoft.AspNetCore.Components.RenderTree;
 using Microsoft.JSInterop;
 using Shouldly;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace Egil.RazorComponents.Testing
 {
     public class ComponentBuilder<TComponent> where TComponent : ComponentBase
     {
+        public const string ChildContent = "ChildContent";
         private readonly Func<string, string> _encoder = (t) => HtmlEncoder.Default.Encode(t);
-        private readonly IDispatcher _dispatcher = Renderer.CreateDefaultDispatcher();
-
         protected ServiceCollection Services { get; } = new ServiceCollection();
         protected Dictionary<string, object> Parameters { get; } = new Dictionary<string, object>();
 
@@ -43,13 +43,13 @@ namespace Egil.RazorComponents.Testing
 
         public ComponentBuilder<TComponent> WithChildContent(RenderFragment renderFragment)
         {
-            Parameters[RenderTreeBuilder.ChildContent] = renderFragment;
+            Parameters[ChildContent] = renderFragment;
             return this;
         }
 
         public ComponentBuilder<TComponent> WithChildContent(params RenderFragment[] childContents)
         {
-            Parameters[RenderTreeBuilder.ChildContent] = ToFragment(childContents);
+            Parameters[ChildContent] = ToFragment(childContents);
             return this;
         }
 
@@ -61,9 +61,10 @@ namespace Egil.RazorComponents.Testing
         public ComponentRenderedText Render()
         {
             var serviceProvider = Services.BuildServiceProvider();
-            var paramCollection = Parameters.Count > 0 ? ParameterCollection.FromDictionary(Parameters) : ParameterCollection.Empty;
-            using var htmlRenderer = new HtmlRenderer(serviceProvider, _encoder, _dispatcher);
-            return GetResult(_dispatcher.InvokeAsync(() => htmlRenderer.RenderComponentAsync<TComponent>(paramCollection)));
+            var parameters = Parameters.Count > 0 ? ParameterView.FromDictionary(Parameters) : ParameterView.Empty;
+            using var htmlRenderer = new HtmlRenderer(serviceProvider, NullLoggerFactory.Instance, _encoder);
+            var renderTask = htmlRenderer.Dispatcher.InvokeAsync(() => htmlRenderer.RenderComponentAsync<TComponent>(parameters));
+            return GetResult(renderTask);
         }
 
         private ComponentRenderedText GetResult(Task<ComponentRenderedText> task)
@@ -94,7 +95,7 @@ namespace Egil.RazorComponents.Testing
 
     public class ComponentBuilder<TComponent, TItem> : ComponentBuilder<TComponent>
         where TComponent : ComponentBase
-    {
+    {        
         public new ComponentBuilder<TComponent, TItem> WithServices(Action<IServiceCollection> addServices)
         {
             addServices(Services);
@@ -133,19 +134,19 @@ namespace Egil.RazorComponents.Testing
 
         public ComponentBuilder<TComponent, TItem> WithTemplate(RenderFragment<TItem> renderTemplate)
         {
-            Parameters[RenderTreeBuilder.ChildContent] = renderTemplate;
+            Parameters[ChildContent] = renderTemplate;
             return this;
         }
 
         public ComponentBuilder<TComponent, TItem> WithTemplate(Func<TemplateBuilder<TItem>, RenderFragment<TItem>> templateBuilder)
         {
-            Parameters[RenderTreeBuilder.ChildContent] = templateBuilder(new TemplateBuilder<TItem>());
+            Parameters[ChildContent] = templateBuilder(new TemplateBuilder<TItem>());
             return this;
         }
 
         public ComponentBuilder<TComponent, TItem> WithTemplate(params RenderFragment[] renderFragments)
         {
-            Parameters[RenderTreeBuilder.ChildContent] = ToFragment<TItem>(renderFragments);
+            Parameters[ChildContent] = ToFragment<TItem>(renderFragments);
             return this;
         }
 

@@ -8,6 +8,7 @@ namespace Egil.RazorComponents.Bootstrap.Extensions
 {
     public static class RenderTreeBuilderExtensions
     {
+        public const string ChildContent = "ChildContent";
         private const int DEFAULT_SEQUENCE = -1;
 
         public static void OpenElement(this RenderTreeBuilder builder, string elementName, [CallerLineNumber] int sequence = DEFAULT_SEQUENCE)
@@ -20,7 +21,7 @@ namespace Egil.RazorComponents.Bootstrap.Extensions
             builder.OpenComponent<TComponent>(sequence);
         }
 
-        public static void AddElementReferenceCapture(this RenderTreeBuilder builder, Action<ElementRef>? elementReferenceCaptureAction, [CallerLineNumber] int sequence = DEFAULT_SEQUENCE)
+        public static void AddElementReferenceCapture(this RenderTreeBuilder builder, Action<ElementReference>? elementReferenceCaptureAction, [CallerLineNumber] int sequence = DEFAULT_SEQUENCE)
         {
             if (elementReferenceCaptureAction is null) return;
             builder.AddElementReferenceCapture(sequence, elementReferenceCaptureAction);
@@ -131,12 +132,12 @@ namespace Egil.RazorComponents.Bootstrap.Extensions
 
         public static void AddChildContentFragment(this RenderTreeBuilder builder, RenderFragment renderFragment, [CallerLineNumber] int sequence = DEFAULT_SEQUENCE)
         {
-            builder.AddAttribute(sequence, RenderTreeBuilder.ChildContent, renderFragment);
+            builder.AddAttribute(sequence, ChildContent, renderFragment);
         }
 
         public static void AddChildMarkupContent(this RenderTreeBuilder builder, string markupContent, [CallerLineNumber] int sequence = DEFAULT_SEQUENCE)
         {
-            builder.AddAttribute(sequence, RenderTreeBuilder.ChildContent, (RenderFragment)(nestedBuilder => nestedBuilder.AddMarkupContent(markupContent)));
+            builder.AddAttribute(sequence, ChildContent, (RenderFragment)(nestedBuilder => nestedBuilder.AddMarkupContent(markupContent)));
         }
 
         public static void AddDisableParentOverridesAttribute(this RenderTreeBuilder builder, bool value = true, [CallerLineNumber] int sequence = DEFAULT_SEQUENCE)

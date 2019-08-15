@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
+    <RazorLangVersion>3.0</RazorLangVersion>
     <LangVersion>8.0</LangVersion>
     <Nullable>enable</Nullable>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
@@ -10,10 +11,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components.Browser" Version="$(AspNetCoreVersion)" />
+    <PackageReference Include="Microsoft.AspNetCore.Components" Version="$(AspNetCoreVersion)" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="$(AspNetCoreVersion)" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
     <PackageReference Include="Moq" Version="4.12.0" />
-    <PackageReference Include="Razor.Components.Testing.Library" Version="0.1.0-preview7-19365-7-6" />
+    <PackageReference Include="Razor.Components.Testing.Library" Version="0.1.0-preview8-19405-7-1" />
     <PackageReference Include="Shouldly" Version="3.0.2" />
     <PackageReference Include="XMLUnit.Core" Version="2.7.1" />
     <PackageReference Include="xunit.core" Version="2.4.1" />

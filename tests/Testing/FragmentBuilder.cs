@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.RenderTree;
+using Egil.RazorComponents.Bootstrap.Extensions;
 
 namespace Egil.RazorComponents.Testing
 {
@@ -45,7 +46,7 @@ namespace Egil.RazorComponents.Testing
             return builder =>
             {
                 builder.OpenComponent(1, _componentType);
-                if (!(_childContent is null)) builder.AddAttribute(2, RenderTreeBuilder.ChildContent, _childContent);
+                if (!(_childContent is null)) builder.AddChildContentFragment(_childContent);
                 foreach (var (name, value) in _parameters)
                 {
                     builder.AddAttribute(3, name, value);

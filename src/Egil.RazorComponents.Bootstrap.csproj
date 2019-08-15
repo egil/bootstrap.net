@@ -8,10 +8,11 @@
     <LangVersion>8.0</LangVersion>
     <RazorLangVersion>3.0</RazorLangVersion>
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+    <!-- NUGET settings -->
     <RepositoryUrl>https://github.com/egil/bootstrap.net</RepositoryUrl>
     <PackageProjectUrl>https://github.com/egil/bootstrap.net</PackageProjectUrl>
     <PackageTags>blazor blazor-server-side blazor-client-side razor-components bootstrap bootstrap4</PackageTags>
-    <Version>0.1.0-preview7-19365-7-10</Version>
+    <Version>0.1.0-preview8-19405-7-1</Version>
     <Authors>Egil Hansen</Authors>
     <Company>Egil Hansen</Company>
     <Product>Bootstrap.NET</Product>
@@ -34,13 +35,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components.Browser" Version="$(AspNetCoreVersion)" />
+    <PackageReference Include="Microsoft.AspNetCore.Components" Version="$(AspNetCoreVersion)" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="$(AspNetCoreVersion)" />
   </ItemGroup>
-
-  <!--<ItemGroup>
-    <Content Update="**\*.razor">
-      <Pack>false</Pack>
-    </Content>
-  </ItemGroup>-->
-
+  
 </Project>

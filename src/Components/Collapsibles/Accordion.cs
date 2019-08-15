@@ -127,7 +127,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Collapsibles
                             builder.AddAttribute("AsLink", HeaderButtonAsLink);
                             builder.AddEventListener(HtmlEvents.CLICK, EventCallback.Factory.Create<UIMouseEventArgs>(card, _ => CardToggled(card)));
 
-                            builder.AddAttribute(RenderTreeBuilder.ChildContent, header.ChildContent);
+                            builder.AddChildContentFragment(header.ChildContent);
                             builder.CloseComponent();
 
                             builder.CloseElement();
@@ -137,7 +137,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Collapsibles
                         content.CustomRenderFragment = (builder) =>
                         {
                             builder.OpenComponent<Collapse>();
-                            builder.AddAttribute(RenderTreeBuilder.ChildContent, (RenderFragment)content.DefaultRenderFragment);
+                            builder.AddChildContentFragment((RenderFragment)content.DefaultRenderFragment);
                             builder.CloseComponent();
                         };
                         break;

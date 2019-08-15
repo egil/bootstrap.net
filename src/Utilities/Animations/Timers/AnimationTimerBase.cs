@@ -126,10 +126,16 @@ namespace Egil.RazorComponents.Bootstrap.Utilities.Animations.Timers
             _stopWatch.Restart();
         }
 
-        private static void TimerElapsed(object state)
+        private static void TimerElapsed(object? state)
         {
-            var animationTimer = (AnimationTimer)state;
-            animationTimer.TimerElapsedBase();
+            if (state is AnimationTimer animationTimer)
+            {
+                animationTimer.TimerElapsedBase();
+            }
+            else
+            {
+                throw new ArgumentNullException(nameof(state));
+            }
         }
 
         public void Dispose()

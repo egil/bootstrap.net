@@ -1,3 +1,33 @@
-﻿<Alert Color="warning" Dismissable="true">
+﻿@code {
+    /*example_exclude*/
+    bool firstRender = true;
+    [CascadingParameter] protected Example? ExampleContext { get; set; }
+    protected override void OnInitialized() { ExampleContext!.ExampleTriggersAfterRender = true; }
+    protected override void OnAfterRender()
+    {
+        if(firstRender)
+        {
+            #pragma warning disable BL0005 // Component parameter should not be set outside of its component.
+            alert!.OnDismissed = EventCallback.Factory.Create(this, () => ExampleContext!.ExampleOnAfterRenderAsync());
+            #pragma warning restore BL0005 // Component parameter should not be set outside of its component.
+        }
+        firstRender = false;
+    }
+    protected override Task OnAfterRenderAsync() => ExampleContext!.ExampleOnAfterRenderAsync();
+    #nullable disable
+    /*end_example_exclude*/
+    Alert alert;
+    void Toggle()
+    {
+        if (alert.State == AlertState.Dismissed)
+            alert.Show();
+        else
+            alert.Dismiss();
+    }
+}
+<div style="margin-bottom: 1rem;">
+    <Button Color="secondary" @onclick="Toggle">Toggle Alert</Button>
+</div>
+<Alert Dismissable Color="warning" @ref="alert" @ref:suppressField>
     <strong>Holy guacamole!</strong> You should check in on some of those fields below.
 </Alert>

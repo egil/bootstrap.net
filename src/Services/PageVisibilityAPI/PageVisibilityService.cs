@@ -1,17 +1,26 @@
 ﻿using System;
+using System.Threading;
+using Egil.RazorComponents.Bootstrap.Extensions;
+using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
 namespace Egil.RazorComponents.Bootstrap.Services.PageVisibilityAPI
 {
+    public enum PageVisibilityAPIServiceStatus
+    {
+        Initialized = 0,
+        Subscribing,
+        Subscribed
+    }
+
     public class PageVisibilityAPIService : IPageVisibilityAPI, IDisposable
     {
         private readonly IJSRuntime _jsRuntime;
+        private readonly IComponentContext _componentContext;
         private readonly Func<PageVisibilityAPIService, DotNetObjectRef<PageVisibilityAPIService>> _dotNetObjectRefFactory;
         private EventHandler<PageVisibilityChangedEventArgs>? _onPageVisibleChanged;
+        private CancellationTokenSource? _cancellationTokenSource;
         private bool _disposed = false;
-        private bool _subscribed = false;
-        private bool _subscribing = false;
-        private bool _unsubscribing = false;
 
         /// <summary>
         /// An event that fires when the pages visibilty has changed.
@@ -33,15 +42,19 @@ namespace Egil.RazorComponents.Bootstrap.Services.PageVisibilityAPI
             }
         }
 
+        public PageVisibilityAPIServiceStatus Status { get; private set; }
+
         public bool IsPageVisible { get; private set; } = true;
 
-        public PageVisibilityAPIService(IJSRuntime jsRuntime) : this(jsRuntime, null)
+        public PageVisibilityAPIService(IJSRuntime jsRuntime, IComponentContext componentContext) : this(jsRuntime, componentContext, null)
         { }
 
-        internal PageVisibilityAPIService(IJSRuntime jSRuntime, Func<PageVisibilityAPIService, DotNetObjectRef<PageVisibilityAPIService>>? dotNetObjectRefFactory)
+        internal PageVisibilityAPIService(IJSRuntime jSRuntime, IComponentContext componentContext, Func<PageVisibilityAPIService, DotNetObjectRef<PageVisibilityAPIService>>? dotNetObjectRefFactory)
         {
             _jsRuntime = jSRuntime;
+            _componentContext = componentContext;
             _dotNetObjectRefFactory = dotNetObjectRefFactory ?? CreateDotNetObjectRef;
+            Status = PageVisibilityAPIServiceStatus.Initialized;
         }
 
         [JSInvokable]
@@ -56,50 +69,40 @@ namespace Egil.RazorComponents.Bootstrap.Services.PageVisibilityAPI
 
         private async void EnsureSubscribedToAPI()
         {
-            if (_subscribing) return;
+            if (Status != PageVisibilityAPIServiceStatus.Initialized) return;
 
-            try
-            {
-                _subscribing = true;
+            Status = PageVisibilityAPIServiceStatus.Subscribing;
+            _cancellationTokenSource = new CancellationTokenSource();
 
-                if (!_subscribed)
-                {
-                    await _jsRuntime.InvokeAsync<object>("window.bootstrapDotNet.services.pageVisibilityApiInterop.subscribe", _dotNetObjectRefFactory(this), nameof(SetVisibilityState));
-                    _subscribed = true;
-                }
-            }
-            catch (InvalidOperationException e)
+            var isConnected = await _componentContext.IsConnectedAsync(_cancellationTokenSource.Token);
+            if (isConnected && !_cancellationTokenSource.IsCancellationRequested)
             {
-                throw new PageVisibilityApiInteropException("Unable to setup Page Visibility API Adapter and/or subscribe to it. " +
-                    "JsRuntime might not be available yet. Make sure you are subscribing during OnAfterRender.", e);
+                await _jsRuntime.InvokeAsync<object>("window.bootstrapDotNet.services.pageVisibilityApiInterop.subscribe",
+                    new object[] { _dotNetObjectRefFactory(this), nameof(SetVisibilityState) },
+                    _cancellationTokenSource.Token);
+
+                Status = PageVisibilityAPIServiceStatus.Subscribed;
             }
-            finally
+            else
             {
-                _subscribing = false;
+                Status = PageVisibilityAPIServiceStatus.Initialized;
             }
         }
 
         private async void UnsubscribeFromAPI()
         {
-            if (_unsubscribing) return;
-            try
+            if (Status != PageVisibilityAPIServiceStatus.Subscribed)
             {
-                _unsubscribing = true;
-                
+                _cancellationTokenSource?.Cancel();
+                return;
+            }
+
+            if (_componentContext.IsConnected)
+            {
                 await _jsRuntime.InvokeAsync<object>("window.bootstrapDotNet.services.pageVisibilityApiInterop.unsubscribe");
-                
-                _subscribed = false; 
-                _subscribing = false; 
             }
-            catch (InvalidOperationException e)
-            {
-                throw new PageVisibilityApiInteropException("Unable to unsubscribe from Page Visibility API Adapter. " +
-                    "JsRuntime might not be available. Make sure you are unsubscribing during OnAfterRender.", e);
-            }
-            finally
-            {
-                _unsubscribing = false;
-            }
+
+            Status = PageVisibilityAPIServiceStatus.Initialized;
         }
 
         #region IDisposable Support
@@ -111,8 +114,10 @@ namespace Egil.RazorComponents.Bootstrap.Services.PageVisibilityAPI
                 {
                     _onPageVisibleChanged = null;
                     UnsubscribeFromAPI();
+                    _cancellationTokenSource?.Dispose();
                 }
                 _disposed = true;
+                _cancellationTokenSource = null;
             }
         }
 

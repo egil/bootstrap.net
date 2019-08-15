@@ -1,8 +1,8 @@
 ﻿@inject IUriHelper UriHelper
-<button Color="success" Active="true">An active button</button>
-<a href="#" class="active" Color="primary" AsButton="true">
+<Button Color="success" Active="true">An active button</Button>
+<A href="#" class="active" Color="primary" AsButton="true">
     Primary link (manually set to active)
-</a>
-<a href=@UriHelper.GetAbsoluteUri() Color="secondary" AsButton="true">
+</A>
+<A href=@UriHelper.GetAbsoluteUri() Color="secondary" AsButton="true">
     Link (automatically set to active due to matching URL)
-</a>
+</A>

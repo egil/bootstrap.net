@@ -1,14 +1,11 @@
 ﻿@inherits ExampleCode
 
-<div class="example @Class" id=@Id @ref="ExampleElement">
-    @if (!ShowSourcesOnly)
-    {
-        <div class="output">
-            <CascadingValue IsFixed="true" Value="this">
-                @ExampleOutput
-            </CascadingValue>
-        </div>
-    }
+<div class="example @Class" id=@Id @ref="ExampleElement" @ref:suppressField>
+    <div class=@(ShowSourcesOnly ? "output d-none" : "output")>
+        <CascadingValue IsFixed="true" Value="this">
+            @ExampleOutput
+        </CascadingValue>
+    </div>
     <div class="card-group source-code">
         <div class="card fade">
             <div class="card-body">

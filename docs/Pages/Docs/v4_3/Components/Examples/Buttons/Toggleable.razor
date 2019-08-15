@@ -1,15 +1,15 @@
 ﻿@code {
     /*example_exclude*/
     [CascadingParameter] protected Example? ExampleContext { get; set; }
-    protected override void OnInit() { ExampleContext!.ExampleTriggersAfterRender = true; }
+    protected override void OnInitialized() { ExampleContext!.ExampleTriggersAfterRender = true; }
     protected override Task OnAfterRenderAsync() => ExampleContext!.ExampleOnAfterRenderAsync();
     /*end_example_exclude*/
     bool Btn1Toggled { get; set; } = true;
     bool Btn2Toggled { get; set; } = false;
 }
-<button color="primary" @bind-Active="Btn1Toggled" Toggleable="true">
+<Button Color="primary" @bind-Active="Btn1Toggled" Toggleable="true">
     @(Btn1Toggled ? "ON" : "OFF")
-</button>
-<button color="secondary" @bind-Active="Btn2Toggled" Toggleable>
+</Button>
+<Button Color="secondary" @bind-Active="Btn2Toggled" Toggleable>
     @(Btn2Toggled ? "ON" : "OFF")
-</button>
+</Button>

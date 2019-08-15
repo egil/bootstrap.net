@@ -3,7 +3,7 @@
     [Parameter] public string Heading { get; set; } = "Conveying meaning to assistive technologies";
     [Parameter] public RenderFragment? ChildContent { get; set; }
 }
-<div class="callout callout-warning">
+<Callout Type="warning">
     <h5 id=@Id>@Heading</h5>
     @if (ChildContent is null)
     {
@@ -13,4 +13,4 @@
     {
         @ChildContent
     }
-</div>
+</Callout>

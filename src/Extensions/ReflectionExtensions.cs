@@ -30,18 +30,19 @@ namespace Egil.RazorComponents.Bootstrap.Extensions
             }
         }
 
-        public static T GetValue<T>(this PropertyInfo property, object sourceObject)
+        public static T GetValue<T>(this PropertyInfo property, object sourceObject, T defaultIfNull = default)
         {
-            return (T)property.GetValue(sourceObject);
+            var value = property.GetValue(sourceObject);
+            if (value is null) return defaultIfNull;
+            return (T)value;
         }
 
         public static IEnumerable<T> GetValues<T>(this IEnumerable<PropertyInfo> properties, object sourceObject) where T : class
         {
             foreach (var propInfo in properties)
             {
-                var value = propInfo.GetValue(sourceObject) as T;
-                if (value is null) continue;
-                yield return value;
+                if (propInfo.GetValue(sourceObject) is T value)
+                    yield return value;
             }
         }
     }

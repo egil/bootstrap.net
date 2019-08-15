@@ -9,10 +9,10 @@ namespace Egil.RazorComponents.Bootstrap.Components
         private RenderFragment? _childContent;
 
         [Parameter]
-        public virtual RenderFragment ChildContent
+        public RenderFragment ChildContent
         {
             get => BuildChildContentRenderTree;
-            protected set => _childContent = value;
+            set => _childContent = value;
         }
 
         internal ChildHooksInjector? CustomChildHooksInjector { get; set; }

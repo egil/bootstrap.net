@@ -16,9 +16,15 @@ namespace Egil.RazorComponents.Bootstrap.Components
     {
         protected override void AddServices(IServiceCollection services)
         {
-            services.AddBootstrapServices();
             services.AddSingleton(x => Mock.Of<IJSRuntime>());
-            services.AddSingleton(x => Mock.Of<IUriHelper>());            
+            services.AddSingleton(x => Mock.Of<IUriHelper>());
+            services.AddSingleton(x =>
+           {
+               var mock = new Mock<IComponentContext>();
+               mock.SetupGet(x => x.IsConnected).Returns(true);
+               return mock.Object;
+           });
+            services.AddBootstrapServices();
         }
     }
 }

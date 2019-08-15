@@ -1,0 +1,12 @@
+﻿@*example_exclude*@
+@code {
+    [CascadingParameter] protected Example? ExampleContext { get; set; }
+    protected override void OnInitialized() { ExampleContext!.ExampleTriggersAfterRender = true; }
+    protected override Task OnAfterRenderAsync() => ExampleContext!.ExampleOnAfterRenderAsync();
+    protected ushort Index { get; set; } = 0;
+}
+@*end_example_exclude*@
+<Carousel Items='@(new []{ "https://picsum.photos/1024/354?random=1",
+                           "https://picsum.photos/1024/354?random=2",
+                           "https://picsum.photos/1024/354?random=3",
+                           "https://picsum.photos/1024/354?random=4"})' @bind-ActiveIndex="Index" />

@@ -25,7 +25,7 @@ namespace Egil.RazorComponents.Bootstrap.Options
             return Value.Equals(other.Value, StringComparison.Ordinal);
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj is IOption other)
                 return Equals(other);

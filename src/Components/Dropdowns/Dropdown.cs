@@ -28,10 +28,9 @@ namespace Egil.RazorComponents.Bootstrap.Components.Dropdowns
         private const string MenuCssClass = "dropdown-menu";
         private const string DropdownItemCssClass = "dropdown-item";
         private const string TrueValue = "true";
-        private const string FalseValue = "false";
 
         private readonly string _toggleId;
-        private ElementRef _menuDomElement;
+        private ElementReference _menuDomElement;
 
         [Inject] private IJSRuntime? JSRT { get; set; }
 
@@ -201,7 +200,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Dropdowns
         private void DropDownOpenedEventHandler(IEvent<DropdownOpenedEventType, Dropdown> evt)
         {
             if (evt.Source == this) return;
-            Invoke(Hide);
+            InvokeAsync(Hide);
         }
 
         private void ApplyAHooks(A a)

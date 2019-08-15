@@ -178,7 +178,7 @@ namespace Egil.RazorComponents.Bootstrap.NewBase
             void IChildTrackingParentComponent.AddChild(ComponentBase component)
             {
                 Children.Add(component);
-                Invoke(StateHasChanged);
+                InvokeAsync(StateHasChanged);
             }
 
             void IChildTrackingParentComponent.RemoveChild(ComponentBase component)
@@ -188,7 +188,7 @@ namespace Egil.RazorComponents.Bootstrap.NewBase
         }
         #endregion
 
-        private static List<string> CallOrder { get; set; }
+        private static List<string> CallOrder { get; set; } = new List<string>();
 
         public ComponentBaseTest()
         {
@@ -202,7 +202,7 @@ namespace Egil.RazorComponents.Bootstrap.NewBase
                 .WithChildContent(Fragment<DummyParentComponent>().WithChildContent(
                     Fragment<DummyComponent>()));
 
-            var result = component.Render();
+            component.Render();
 
             CallOrder.ShouldBe(new string[] {
                 "DummySuperParentComponent.OnCompomnentInit",

@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Egil.RazorComponents.Bootstrap.Documentation.Services;
+using Egil.RazorComponents.Bootstrap.Documentation;
 
 namespace Egil.RazorComponents.Bootstrap.DocsBlazorServer
 {
@@ -40,7 +41,7 @@ namespace Egil.RazorComponents.Bootstrap.DocsBlazorServer
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler("/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
@@ -52,7 +53,7 @@ namespace Egil.RazorComponents.Bootstrap.DocsBlazorServer
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapBlazorHub();
+                endpoints.MapBlazorHub<App>(selector: "app");
                 endpoints.MapFallbackToPage("/_Host");
             });
         }

@@ -37,7 +37,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Breadcrumbs
                 isSeparatorDataUrl ? "" : "\"",
                 ";}");
         }
-
+        
         protected override void ApplyChildHooks(ComponentBase component)
         {
             if (component is A a)

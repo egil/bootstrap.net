@@ -32,7 +32,7 @@ namespace Egil.RazorComponents.Bootstrap.Components
         protected internal IReadOnlyDictionary<string, object> OverriddenAttributes => _overriddenAttributes ?? EmptyDictionary;
 
         [Parameter(CaptureUnmatchedValues = true)]
-        protected internal IReadOnlyDictionary<string, object> AdditionalAttributes { get; private set; } = EmptyDictionary;
+        public IReadOnlyDictionary<string, object> AdditionalAttributes { get; set; } = EmptyDictionary;
 
         [CascadingParameter] internal ChildHooksInjector ParentHooksInjector { get => _parentHooks; private set => _parentHooks = value ?? Noop; }
 
@@ -56,12 +56,6 @@ namespace Egil.RazorComponents.Bootstrap.Components
             if (value is null) return;
             if (_overriddenAttributes is null) _overriddenAttributes = new Dictionary<string, object>();
             _overriddenAttributes[key] = value;
-        }
-
-        protected internal void RemoveOverride<TUIEvent>(string key, EventCallback<TUIEvent> eventCallback)
-        {
-            if (_overriddenAttributes is null) return;
-            _overriddenAttributes.Remove(key);
         }
 
         protected internal void RemoveOverride(string key)
@@ -103,21 +97,21 @@ namespace Egil.RazorComponents.Bootstrap.Components
         }
 
         protected internal RenderFragment? CustomRenderFragment { get; set; }
-        protected internal Action<ElementRef>? DomElementCapture { get; set; }
+        protected internal Action<ElementReference>? DomElementCapture { get; set; }
 
         protected internal string CssClassValue => this.BuildCssClass();
 
         #region Blazor life-cycle methods
-        protected sealed override void OnInit()
+        protected sealed override void OnInitialized()
         {
-            base.OnInit();
+            base.OnInitialized();
             if (!DisableParentOverrides) ParentHooksInjector(this);
             OnCompomnentInit();
             OnInitHook(this);
         }
-        protected sealed async override Task OnInitAsync()
+        protected sealed async override Task OnInitializedAsync()
         {
-            await base.OnInitAsync();
+            await base.OnInitializedAsync();
             await OnCompomnentInitAsync();
             await OnInitHookAsync(this);
         }
@@ -249,11 +243,10 @@ namespace Egil.RazorComponents.Bootstrap.Components
 
         #region IComponent explicit implementation
         void IComponent.StateHasChanged() => StateHasChanged();
-        Task IComponent.Invoke(Action workItem) => Invoke(workItem);
+        Task IComponent.InvokeAsync(Action workItem) => InvokeAsync(workItem);
         Task IComponent.InvokeAsync(Func<Task> workItem) => InvokeAsync(workItem);
         void IComponent.AddOverride<TUIEvent>(string key, EventCallback<TUIEvent> eventCallback) => AddOverride(key, eventCallback);
         void IComponent.AddOverride(string key, object value) => AddOverride(key, value);
-        void IComponent.RemoveOverride<TUIEvent>(string key, EventCallback<TUIEvent> eventCallback) => RemoveOverride(key, eventCallback);
         void IComponent.RemoveOverride(string key) => RemoveOverride(key);
         #endregion
     }

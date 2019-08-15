@@ -16,10 +16,10 @@ namespace Egil.RazorComponents.Bootstrap.Components.Collapsibles
     public sealed class Collapse : ParentComponentBase
     {
         private const string CollapsedCssClass = "collapse";
-        private ElementRef _domElement;
+        private ElementReference _domElement;
         private string? _subscribedId;
 
-        private Action<IEvent<CollapseTogglerTriggeredEventType, ComponentBase>> _togglerTriggeredHandler;
+        private readonly Action<IEvent<CollapseTogglerTriggeredEventType, ComponentBase>> _togglerTriggeredHandler;
 
         [Inject] private IJSRuntime? JSRuntime { get; set; }
 
@@ -35,13 +35,13 @@ namespace Egil.RazorComponents.Bootstrap.Components.Collapsibles
         {
             DefaultCssClass = CollapsedCssClass;
             DomElementCapture = (elm) => _domElement = elm;
-            _togglerTriggeredHandler = _ => Invoke(Toggle);
+            _togglerTriggeredHandler = _ => InvokeAsync(Toggle);
         }
 
         public void Toggle()
         {
             Expanded = !Expanded;
-            Invoke(StateHasChanged);
+            InvokeAsync(StateHasChanged);
         }
 
         public void Show()

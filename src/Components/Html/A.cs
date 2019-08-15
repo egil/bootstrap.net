@@ -18,7 +18,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Html
     // TODO: Allow user to override/set Active param - update examples in docs
     public sealed class A : ParentComponentBase, IToggleForCollapse
     {
-        private ElementRef _domElement;
+        private ElementReference _domElement;
         private bool _preventDefaultHandlerRegistered;
 
         #region IToggleForCollapse state
@@ -38,10 +38,9 @@ namespace Egil.RazorComponents.Bootstrap.Components.Html
 
         private ICssClassProvider ActiveCssClass { get; set; } = CssClassProviderBase.Empty;
 
+        [Inject] private IComponentContext? ComponentContext { get; set; }
         [Inject] private IUriHelper? UriHelper { get; set; }
-
         [Inject] private IJSRuntime? JsRuntime { get; set; }
-
         [Inject] private IEventBus? EventBus { get; set; }
 
         /// <summary>
@@ -134,7 +133,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Html
                 RemoveOverride(HtmlAttrs.ARIA_DISABLED);
             }
 
-            if(Active && AsButton)
+            if (Active && AsButton)
             {
                 AddOverride(HtmlAttrs.ARIA_PRESSED, "true");
             }
@@ -151,19 +150,20 @@ namespace Egil.RazorComponents.Bootstrap.Components.Html
             UriHelper!.OnLocationChanged -= OnLocationChanged;
         }
 
-        private async Task ApplyPreventDefaultRule()
+        private Task ApplyPreventDefaultRule()
         {
-            if (!Disabled && !PreventDefaultOnClick && !_preventDefaultHandlerRegistered) return;
+            if (!ComponentContext!.IsConnected) return Task.CompletedTask;
+            if (!Disabled && !PreventDefaultOnClick && !_preventDefaultHandlerRegistered) return Task.CompletedTask;
 
             if (Disabled || PreventDefaultOnClick)
             {
-                await _domElement.PreventDefault(JsRuntime, "click");
                 _preventDefaultHandlerRegistered = true;
+                return _domElement.PreventDefault(JsRuntime, "click");
             }
             else
             {
-                await _domElement.AllowDefault(JsRuntime, "click");
                 _preventDefaultHandlerRegistered = false;
+                return _domElement.AllowDefault(JsRuntime, "click");
             }
         }
 

@@ -30,14 +30,14 @@ namespace Egil.RazorComponents.Bootstrap.Documentation.Services
 
         private async Task FindExampleInAssembly(string fullname)
         {
-            using (var stream = _sourceAssembly.GetManifestResourceStream($"{fullname}.razor"))
-            {
-                using (var reader = new StreamReader(stream))
-                {
-                    var content = await reader.ReadToEndAsync();
-                    _cache.Add(fullname, content);
-                }
-            }
+            var file = $"{fullname}.razor";
+            using var stream = _sourceAssembly.GetManifestResourceStream(file);
+            
+            if(stream is null) throw new InvalidOperationException($"The file '{file}' is not embedded in the assembly.");
+
+            using var reader = new StreamReader(stream);
+            var content = await reader.ReadToEndAsync();
+            _cache.Add(fullname, content);
         }
     }
 }
