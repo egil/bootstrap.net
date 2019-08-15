@@ -5,15 +5,15 @@ using Microsoft.AspNetCore.Components;
 
 namespace Egil.RazorComponents.Bootstrap.Extensions
 {
-public static class ComponentContextExtensions
-{
-    public static async Task<bool> IsConnectedAsync(this IComponentContext componentContext, CancellationToken token = default)
+    public static class ComponentContextExtensions
     {
-        while (!componentContext.IsConnected && !token.IsCancellationRequested)
+        public static async Task<bool> IsConnectedAsync(this IComponentContext componentContext, CancellationToken token = default)
         {
-            await Task.Delay(50, token);
+            while (!componentContext.IsConnected && !token.IsCancellationRequested)
+            {
+                await Task.Delay(50, token);
+            }
+            return componentContext.IsConnected;
         }
-        return componentContext.IsConnected;
     }
-}
 }

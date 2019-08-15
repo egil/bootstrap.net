@@ -72,7 +72,12 @@ namespace Egil.RazorComponents.Bootstrap.Services.PageVisibilityAPI
             if (Status != PageVisibilityAPIServiceStatus.Initialized) return;
 
             Status = PageVisibilityAPIServiceStatus.Subscribing;
-            _cancellationTokenSource = new CancellationTokenSource();
+
+            if (_cancellationTokenSource is null || _cancellationTokenSource.IsCancellationRequested)
+            {
+                _cancellationTokenSource?.Dispose();
+                _cancellationTokenSource = new CancellationTokenSource();
+            }
 
             var isConnected = await _componentContext.IsConnectedAsync(_cancellationTokenSource.Token);
             if (isConnected && !_cancellationTokenSource.IsCancellationRequested)
@@ -91,13 +96,11 @@ namespace Egil.RazorComponents.Bootstrap.Services.PageVisibilityAPI
 
         private async void UnsubscribeFromAPI()
         {
-            if (Status != PageVisibilityAPIServiceStatus.Subscribed)
+            if (Status == PageVisibilityAPIServiceStatus.Subscribing && _cancellationTokenSource != null && !_cancellationTokenSource.IsCancellationRequested)
             {
-                _cancellationTokenSource?.Cancel();
-                return;
+                _cancellationTokenSource.Cancel();
             }
-
-            if (_componentContext.IsConnected)
+            else if (_componentContext.IsConnected)
             {
                 await _jsRuntime.InvokeAsync<object>("window.bootstrapDotNet.services.pageVisibilityApiInterop.unsubscribe");
             }
@@ -113,7 +116,9 @@ namespace Egil.RazorComponents.Bootstrap.Services.PageVisibilityAPI
                 if (disposing)
                 {
                     _onPageVisibleChanged = null;
+                    
                     UnsubscribeFromAPI();
+
                     _cancellationTokenSource?.Dispose();
                 }
                 _disposed = true;

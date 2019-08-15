@@ -41,3 +41,196 @@
 <p>If you prefer to just add the slide items statically in the Carousel component, you can use the <code>CarouselItem</code> component and place whatever content you want inside your carousel.</p>
 
 <Example File=@typeof(SlidesStatic) CustomExcludePattern=@slidesExcludePattern />
+
+<Callout><p>When no <code>Items</code> is passed to the <code>Carousel</code>, we have to give it a item type to satisfy the compiler. This is done via the <code>TItem="CarouselStatic"</code> parameter. In the future, we hope the Razor compiler will allow us to define two versions of a component with the same name, one that takes a template and items, and one that just have content. Until then, we are stuck with this workaround.</p></Callout>
+
+<h3 id="with-controls">With controls</h3>
+<p>Adding in the previous and next controls using the <code>ShowControls</code> parameter.</p>
+<Example File=@typeof(Controls) CustomExcludePattern=@slidesExcludePattern />
+
+<p>If you want control over the <em>screen-reader only</em> text in the controls, use the <code>NextControlSrText</code> and <code>PreviousControlSrText</code> parameters.</p>
+<Example File=@typeof(ControlsSrOnlyText) ShowSourcesOnly="true" />
+
+<h3 id="with-indicators">With indicators</h3>
+<p>You can also add the indicators to the carousel, alongside the controls, too. Just add the <code>ShowIndicators</code> parameter to the carousel.</p>
+<Example File=@typeof(ControlsIndicators) CustomExcludePattern=@slidesExcludePattern />
+
+<Callout>
+    <p>Note that indicators and controls will only be displayed if there is two or more items in the carousel.</p>
+</Callout>
+
+<h3 id="with-captions">With captions</h3>
+
+<p>Add captions to your slides easily with the <code class="highlighter-rouge">Caption</code> element inside your template or <code>CarouselItem</code>. They can be easily hidden on smaller viewports, as shown below, with optional <a href="/docs/4.3/utilities/display/">display utilities</a>. In the following example, we hide them initially with <code class="highlighter-rouge">.d-none</code> and bring them back on medium-sized devices with <code class="highlighter-rouge">.d-md-block</code>.</p>
+
+<Example File=@typeof(Captions) CustomExcludePattern=@slidesExcludePattern />
+
+<h3 id="crossfade">Crossfade</h3>
+
+<p>Set the <code>Animation</code> parameter to <code>fade</code> to get your carousel to animate slides with a fade transition instead of a slide.</p>
+
+<Callout>The <code>fade</code> argument is part of the <code>Egil.RazorComponents.Bootstrap.Utilities.Animations.Factory.LowerCase</code> animation options factory, which you can import statically using <code>@@using static</code>.</Callout>
+
+<Example File=@typeof(Crossfade) CustomExcludePattern=@slidesExcludePattern />
+
+<h2>Options</h2>
+<p>There are a bunch of other options you can use to control the appearance and functionality of your carousel.</p>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th style="width: 100px;">Name</th>
+            <th style="width: 200px;">Type</th>
+            <th style="width: 100px;">Default</th>
+            <th style="width: 100px;">Binding</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>ActiveIndex</td>
+            <td>ushort</td>
+            <td>0</td>
+            <td>Two-way</td>
+            <td>
+                Gets or sets the current active index of carousel. This property supports two-way binding, so it can be subscribed to using <code>@@bind-ActiveIndex="..."</code>.
+            </td>
+        </tr>
+        <tr>
+            <td>Animation</td>
+            <td>AnimationParameter</td>
+            <td>slide</td>
+            <td>One-way</td>
+            <td>Controls the animation of the carousel. AnimationParameter instances can be imported from <code>Egil.RazorComponents.Bootstrap.Utilities.Animations.Factory.LowerCase</code>.</td>
+        </tr>
+        <tr>
+            <td>Autoplay</td>
+            <td>bool</td>
+            <td>true</td>
+            <td>One-way</td>
+            <td>Gets or sets whether the carousel will automatically cycle to the next item after the specified interval.</td>
+        </tr>
+        <tr>
+            <td>Interval</td>
+            <td>TimeSpan</td>
+            <td>5 seconds</td>
+            <td>One-way</td>
+            <td>Gets or sets the amount of time to delay between automatically cycling an item.</td>
+        </tr>
+        <tr>
+            <td>Wrap</td>
+            <td>bool</td>
+            <td>true</td>
+            <td>One-way</td>
+            <td>Gets or sets whether the carousel should cycle continuously or stop autoplay at the last item.</td>
+        </tr>
+        <tr>
+            <td>Ride</td>
+            <td>bool</td>
+            <td>true</td>
+            <td>One-way</td>
+            <td>Gets or sets whether the carousel should continue autoplay after the user manually cycles the an item.</td>
+        </tr>
+        <tr>
+            <td>PauseOnHover</td>
+            <td>bool</td>
+            <td>true</td>
+            <td>One-way</td>
+            <td>Gets or sets whether the carousel pauses autoplay when the user hovers a pointer over the carousel.</td>
+        </tr>
+        <tr>
+            <td>EnableKeyboard</td>
+            <td>bool</td>
+            <td>true</td>
+            <td>One-way</td>
+            <td>Gets or sets whether the carousel should react to keyboard events (left-arrow/right-arrow).</td>
+        </tr>
+        <tr>
+            <td>EnableTouch</td>
+            <td>bool</td>
+            <td>true</td>
+            <td>One-way</td>
+            <td>Gets or sets whether the carousel should support left/right swipe interactions on touchscreen devices.</td>
+        </tr>
+        <tr>
+            <td>ShowControls</td>
+            <td>bool</td>
+            <td>false</td>
+            <td>One-way</td>
+            <td>Gets or sets whether Next/Previous controls should be rendered.</td>
+        </tr>
+        <tr>
+            <td>PreviousControlSrText</td>
+            <td>string</td>
+            <td>Previous</td>
+            <td>One-way</td>
+            <td>Gets or sets the screen-reader only text for the Previous control.</td>
+        </tr>
+        <tr>
+            <td>NextControlSrText</td>
+            <td>string</td>
+            <td>Next</td>
+            <td>One-way</td>
+            <td>Gets or sets the screen-reader only text for the Next control.</td>
+        </tr>
+        <tr>
+            <td>ShowIndicators</td>
+            <td>bool</td>
+            <td>false</td>
+            <td>One-way</td>
+            <td>Gets or sets whether indicators should be rendered.</td>
+        </tr>
+    </tbody>
+</table>
+
+<p>There are also a methods on the Carousel component that allows you to control it programmatically.</p>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th style="width: 200px;">Name</th>
+            <th style="width: 50px;">Type</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Cycle()</td>
+            <td>void</td>
+            <td>Starts the automatic cycling of items in the carousel based on the specified interval.</td>
+        </tr>
+        <tr>
+            <td>Resume()</td>
+            <td>void</td>
+            <td>Resumes the automatic cycling of the carousel that has been paused.</td>
+        </tr>
+        <tr>
+            <td>Pause()</td>
+            <td>void</td>
+            <td>Pauses the automatic cycling of the carousel.</td>
+        </tr>
+        <tr>
+            <td>Stop()</td>
+            <td>void</td>
+            <td>Stops the automatic cycling of the carousel.</td>
+        </tr>
+        <tr>
+            <td>Goto(ushort index)</td>
+            <td>Task</td>
+            <td>Changes the active index to another item. Zero based indexing is used.</td>
+        </tr>
+        <tr>
+            <td>Previous()</td>
+            <td>Task</td>
+            <td>Sets the previous item as the active in the carousel.</td>
+        </tr>
+        <tr>
+            <td>Next()</td>
+            <td>Task</td>
+            <td>Sets the next item as the active in the carousel.</td>
+        </tr>
+    </tbody>
+</table>
+
+<p>The following example shows a carousel with all parameters used.</p>
+
+<Example File=@typeof(AllParams) />

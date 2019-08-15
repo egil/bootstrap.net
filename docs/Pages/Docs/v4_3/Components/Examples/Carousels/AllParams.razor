@@ -1,0 +1,37 @@
+﻿@*example_exclude*@
+@code {
+    [CascadingParameter] protected Example? ExampleContext { get; set; }
+    protected override void OnInitialized() { ExampleContext!.ExampleTriggersAfterRender = true; }
+    protected override Task OnAfterRenderAsync() => ExampleContext!.ExampleOnAfterRenderAsync();
+}
+@*end_example_exclude*@
+@using static Egil.RazorComponents.Bootstrap.Utilities.Animations.Factory.LowerCase;
+@code {
+    public ushort Index { get; set; } = 0;
+    public (string url, string headline, string text)[] Images { get; } = {
+        ("https://picsum.photos/1024/354?random=13", "First slide label", "Nulla vitae elit libero, a pharetra augue mollis interdum."),
+        ("https://picsum.photos/1024/354?random=23", "Second slide label", "Lorem ipsum dolor sit amet, consectetur adipiscing elit."),
+        ("https://picsum.photos/1024/354?random=33", "Third slide label", "Praesent commodo cursus magna, vel scelerisque nisl consectetur."),
+    };
+}
+<Carousel @bind-ActiveIndex="Index"
+          Animation="slide"
+          Autoplay="true"
+          Interval=@TimeSpan.FromSeconds(5)
+          Wrap="true"
+          Ride="true"
+          PauseOnHover="true"
+          EnableKeyboard="true"
+          EnableTouch="true"
+          ShowControls="true"
+          PreviousControlSrText="To the future"
+          NextControlSrText="To the past"
+          ShowIndicators="true"
+          Items="@Images" 
+          Context="item">
+    <Img src=@item.url alt="image from picsum" />
+    <Caption class="d-none d-md-block">
+        <h5>@item.headline</h5>
+        <p>@item.text</p>
+    </Caption>
+</Carousel>

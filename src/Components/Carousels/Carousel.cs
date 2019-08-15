@@ -177,10 +177,10 @@ namespace Egil.RazorComponents.Bootstrap.Components.Carousels
         /// </summary>
         /// <param name="index">A zero based index</param>
         /// <returns></returns>
-        public async Task GoTo(ushort index)
+        public Task GoTo(ushort index)
         {
             if (index >= Count) throw new ArgumentOutOfRangeException(nameof(index), "Index cannot be higher than the number of items in the carousel.");
-            await ChangeActiveItem(ActiveIndex, index);
+            return ChangeActiveItem(ActiveIndex, index);
         }
 
         /// <summary>
@@ -188,57 +188,57 @@ namespace Egil.RazorComponents.Bootstrap.Components.Carousels
         /// </summary>
         /// <param name="index">A zero based index</param>
         /// <returns></returns>
-        public async Task GoTo(object index)
+        public Task GoTo(object index)
         {
-            await GoTo(ushort.Parse(index?.ToString() ?? string.Empty));
+            return GoTo(ushort.Parse(index?.ToString() ?? string.Empty));
         }
 
         /// <summary>
         /// Sets the previous item as the active in the carousel.
         /// </summary>
         /// <returns></returns>
-        public async Task Previous()
+        public Task Previous()
         {
-            if (Count < 2) return;
-            await ChangeActiveItem(ActiveIndex, (ActiveIndex - 1 + Count) % Count);
+            if (Count < 2) return Task.CompletedTask;
+            return ChangeActiveItem(ActiveIndex, (ActiveIndex - 1 + Count) % Count);
         }
 
         /// <summary>
         /// Sets the next item as the active in the carousel.
         /// </summary>
         /// <returns></returns>
-        public async Task Next()
+        public Task Next()
         {
-            if (Count < 2) return;
-            await ChangeActiveItem(ActiveIndex, (ActiveIndex + 1 + Count) % Count);
+            if (Count < 2) return Task.CompletedTask;
+            return ChangeActiveItem(ActiveIndex, (ActiveIndex + 1 + Count) % Count);
         }
 
-        private async Task UserNext()
-        {
-            Autoplay = Ride;
-            await Next();
-        }
-
-        private async Task UserPrevious()
+        private Task UserNext()
         {
             Autoplay = Ride;
-            await Previous();
+            return Next();
         }
 
-        private async Task UserGoTo(ushort index)
+        private Task UserPrevious()
         {
             Autoplay = Ride;
-            await GoTo(index);
+            return Previous();
         }
 
-        private async Task AutoplayNext()
+        private Task UserGoTo(ushort index)
+        {
+            Autoplay = Ride;
+            return GoTo(index);
+        }
+
+        private Task AutoplayNext()
         {
             if (!Wrap && ActiveIndex + 1 == Count)
             {
                 _changeItemTimer.Stop();
-                return;
+                return Task.CompletedTask;
             }
-            await Next();
+            return Next();
         }
 
         protected override void OnCompomnentAfterFirstRender()
@@ -335,6 +335,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Carousels
 
             builder.CloseElement();
         }
+
         internal ChildHooksInjector? CustomChildHooksInjector { get; set; }
 
         private void ApplyChildHooksInternal(ComponentBase component)
@@ -386,7 +387,8 @@ namespace Egil.RazorComponents.Bootstrap.Components.Carousels
         private void ControlsRenderFragment(RenderTreeBuilder builder)
         {
             if (!ShowControls || Count < 2) return;
-
+            
+            builder.AddLine();
             builder.OpenElement(HtmlTags.A);
             builder.AddEventListener(HtmlEvents.CLICK, EventCallback.Factory.Create<UIMouseEventArgs>(this, UserPrevious));
             builder.AddClassAttribute("carousel-control-prev");
@@ -395,6 +397,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Carousels
             builder.AddMarkupContent($@"<span class=""sr-only"">{PreviousControlSrText}</span>");
             builder.CloseElement();
 
+            builder.AddLine();
             builder.OpenElement(HtmlTags.A);
             builder.AddEventListener(HtmlEvents.CLICK, EventCallback.Factory.Create<UIMouseEventArgs>(this, UserNext));
             builder.AddClassAttribute("carousel-control-next");
@@ -436,20 +439,21 @@ namespace Egil.RazorComponents.Bootstrap.Components.Carousels
             };
         }
 
-        private async Task ChangeActiveItem(int oldActiveIndex, int newActiveIndex)
+        private Task ChangeActiveItem(int oldActiveIndex, int newActiveIndex)
         {
-            if (oldActiveIndex == newActiveIndex || ChangingItems) return;
+            if (oldActiveIndex == newActiveIndex || ChangingItems) return Task.CompletedTask;
 
             ChangingItems = true;
             if (!_changeItemTimer.IsStopped) _changeItemTimer.Stop();
 
-            if (Animation == AnimationParameter.None)
-                await InstantChangeActiveItem(oldActiveIndex, newActiveIndex);
-            else
-                await AnimateChangeActiveItem(oldActiveIndex, newActiveIndex);
+            var changeTask = Animation == AnimationParameter.None
+                ? InstantChangeActiveItem(oldActiveIndex, newActiveIndex)
+                : AnimateChangeActiveItem(oldActiveIndex, newActiveIndex);
 
             ChangingItems = false;
             if (Autoplay) _changeItemTimer.Start();
+
+            return changeTask;
         }
 
         private async Task AnimateChangeActiveItem(int oldActiveIndex, int newActiveIndex)
@@ -481,13 +485,11 @@ namespace Egil.RazorComponents.Bootstrap.Components.Carousels
             ActiveIndex = (ushort)newActiveIndex;
             await ActiveIndexChanged.InvokeAsync(ActiveIndex);
             StateHasChanged();
-
             await Task.Delay(1);
 
             // Step 2
             activeElm.UpdateCssClass(directionalClassName);
             nextElm.UpdateCssClass($"{directionalClassName} {orderClassName}");
-
             await Task.Delay(600);
 
             // Step 3
@@ -498,14 +500,14 @@ namespace Egil.RazorComponents.Bootstrap.Components.Carousels
             nextElm.UpdateCssClass(string.Empty);
         }
 
-        private async Task InstantChangeActiveItem(int oldActiveIndex, int newActiveIndex)
+        private Task InstantChangeActiveItem(int oldActiveIndex, int newActiveIndex)
         {
             _carouselItems[oldActiveIndex].Active = false;
             _carouselItems[newActiveIndex].Active = true;
 
             ActiveIndex = (ushort)newActiveIndex;
-            await ActiveIndexChanged.InvokeAsync(ActiveIndex);
             StateHasChanged();
+            return ActiveIndexChanged.InvokeAsync(ActiveIndex);
         }
 
         private void PageVisibilityAPI_OnPageVisibilityChanged(object? sender, PageVisibilityChangedEventArgs e)
@@ -528,7 +530,11 @@ namespace Egil.RazorComponents.Bootstrap.Components.Carousels
             {
                 item.Active = ActiveIndex == _carouselItems.Count;
                 _carouselItems.Add(item);
-                if (StaticContentMode) StateHasChanged();
+                if (StaticContentMode && Autoplay)
+                {
+                    Cycle();
+                    StateHasChanged();
+                }
             }
             else
             {

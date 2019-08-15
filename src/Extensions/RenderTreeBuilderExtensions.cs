@@ -144,5 +144,10 @@ namespace Egil.RazorComponents.Bootstrap.Extensions
         {
             builder.AddAttribute(sequence, "DisableParentOverrides", value);
         }
+        
+        public static void AddLine(this RenderTreeBuilder builder, [CallerLineNumber] int sequence = DEFAULT_SEQUENCE)
+        {
+            builder.AddMarkupContent(sequence, Environment.NewLine);
+        }
     }
 }

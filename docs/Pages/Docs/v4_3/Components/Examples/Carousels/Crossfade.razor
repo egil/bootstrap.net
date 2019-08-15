@@ -1,0 +1,18 @@
+﻿@*example_exclude*@
+@code {
+    [CascadingParameter] protected Example? ExampleContext { get; set; }
+    protected override void OnInitialized() { ExampleContext!.ExampleTriggersAfterRender = true; }
+    protected override Task OnAfterRenderAsync() => ExampleContext!.ExampleOnAfterRenderAsync();
+    protected ushort Index { get; set; } = 0;
+}
+@code {
+    public (string url, string alt)[] Images { get; } = {
+        ("https://picsum.photos/1024/354?random=12", "Lorem ipsum dolor"),
+        ("https://picsum.photos/1024/354?random=22", "Fusce a pretium"),
+        ("https://picsum.photos/1024/354?random=32", "Aliquam eleifend arcu"),
+        ("https://picsum.photos/1024/354?random=42", "Curabitur mattis euismod"),
+    };
+}
+@*end_example_exclude*@
+@using static Egil.RazorComponents.Bootstrap.Utilities.Animations.Factory.LowerCase;
+<Carousel Animation="fade" ShowIndicators ShowControls Items="@Images" @bind-ActiveIndex="Index" />

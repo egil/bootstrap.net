@@ -151,7 +151,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Alerts
             builder.AddMarkupContent(DismissText);
             builder.CloseElement();
             builder.CloseElement();
-            builder.AddMarkupContent(Environment.NewLine);
+            builder.AddLine();
         }
     }
 }
