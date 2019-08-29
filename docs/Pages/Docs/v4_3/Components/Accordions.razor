@@ -1,0 +1,36 @@
+﻿@page  "/docs/4.3/components/accordion"
+@using Egil.RazorComponents.Bootstrap.Documentation.Pages.Docs.v4_3.Components.Examples.AccordionExamples
+
+@code{
+    string excludePattern = @" @bind-ExpandedIndex=""Index""";
+    string excludePatternMulti = @" @bind-ExpandedIndexes=""Indexes""";
+}
+
+<DocHead Title="Accordion" RelatedBootstrapDoc="4.3/components/collapse/#accordion-example">
+    Wrap a Card component in an Accordion component to easily create an accordion.
+</DocHead>
+
+<h2 id="examples">Examples</h2>
+<p>Using the <a href="/docs/4.3/components/cards">Card</a> component, you can easily create an accordion with any content that can go into a Card component.</p>
+
+<Example File=@typeof(AccordionExample1) CustomExcludePattern=@excludePattern TrimLoremLipsumText=true />
+
+<h3>Set and change the expanded Card</h3>
+<p>Using the <code>ExpandedIndex/ExpandedIndexChanged</code> two-way parameter, you can set an initially expanded Card and change it programmatically. Note that the index is zero-based. In the example below, use the input field to change the expanded Card.</p>
+
+<Example File=@typeof(AccordionExample2) TrimLoremLipsumText=true />
+
+<H3 id="multiexpand">Allowing multi cards to be visible</H3>
+<p>By default, an accordion only allows one card inside it to be visible at the same time. However, if you want to allow the user to toggle the individual cards independent of each other, set the <code>Multi</code></p>
+
+<Example File=@typeof(MultiExpand1) CustomExcludePattern=@excludePatternMulti TrimLoremLipsumText=true />
+
+<p>Using the <code>ExpandedIndexes/ExpandedIndexesChanged</code> two-way parameter, you can set an initially expanded Cards and change them programmatically. Note that the indexes is zero-based. In the example below, the text display the indexes of the expanded cards.</p>
+
+<Example File=@typeof(MultiExpand2) TrimLoremLipsumText=true />
+
+<Callout>
+    <h3>Accessibility</h3>
+    <p>The <code>Accordion</code> component makes sure to automatically set the correct <code>aria-*</code> attributes in the rendered HTML, so you do not have to. Inspect the rendered HTML code in the examples above to see this in action. Note how the various attributes are set and change depending on whether the Collapse component is expanded or not.</p>
+    <p>Note that Bootstrap.NET’s current implementation does not cover the various keyboard interactions described in the <a href="https://www.w3.org/TR/wai-aria-practices-1.1/#accordion">WAI-ARIA Authoring Practices 1.1 accordion pattern</a> - you will need to include these yourself with custom code.</p>
+</Callout>

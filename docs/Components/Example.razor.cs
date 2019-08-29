@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Egil.RazorComponents.Bootstrap.Documentation.Services;
 using Microsoft.AspNetCore.Components;
@@ -9,15 +10,17 @@ using Microsoft.JSInterop;
 
 namespace Egil.RazorComponents.Bootstrap.Documentation.Components
 {
-    public class ExampleCode : ComponentBase
+    public abstract class ExampleCode : ComponentBase
     {
+        private Type? _file;
+
         protected RenderFragment ExampleOutput => (builder) =>
         {
             builder.OpenComponent(0, File);
             builder.CloseComponent();
         };
 
-        protected string? Id => File?.FullName?.Replace(".", "");
+        protected string? Id => File?.FullName?.Replace(".", "", StringComparison.OrdinalIgnoreCase);
         protected string? ExampleSource { get; set; }
 
         [Inject] private IJSRuntime? JsRuntime { get; set; }
@@ -25,7 +28,17 @@ namespace Egil.RazorComponents.Bootstrap.Documentation.Components
         [Inject] private IExampleComponentRepository? ExampleRepo { get; set; }
 
         [Parameter]
-        public Type? File { get; set; }
+        public Type File
+        {
+            get => _file!;
+            set
+            {
+                if (value is null || value.FullName is null)
+                    throw new ArgumentNullException(nameof(File));
+
+                _file = value;
+            }
+        }
 
         [Parameter]
         public bool ShowSourcesOnly { get; set; }
@@ -33,7 +46,9 @@ namespace Egil.RazorComponents.Bootstrap.Documentation.Components
         [Parameter]
         public string Class { get; set; } = string.Empty;
 
-        [Parameter] public string? CustomExcludePattern { get;set;}
+        [Parameter] public string? CustomExcludePattern { get; set; }
+
+        [Parameter] public bool TrimLoremLipsumText { get; set; }
 
         protected ElementReference ExampleElement { get; set; }
 
@@ -41,18 +56,24 @@ namespace Egil.RazorComponents.Bootstrap.Documentation.Components
 
         protected override async Task OnInitializedAsync()
         {
-            if (File is null || File.FullName is null) throw new ArgumentNullException(nameof(File));
-            var source = await ExampleRepo!.GetExampleAsync(File.FullName);
-            source = RemoveExcludedExampleCode(source);
-            source = RemoveExcludedExampleCode2(source);
-            if(CustomExcludePattern != null)
+            var source = await ExampleRepo!.GetExampleAsync(File.FullName!);
+            source = RemoveCsharpExcludedExampleCode(source);
+            source = RemoveRazorExcludedExampleCode(source);
+            if (CustomExcludePattern != null)
             {
-                source = source.Replace(CustomExcludePattern, "");
+                source = source.Replace(CustomExcludePattern, "", StringComparison.OrdinalIgnoreCase);
+            }
+            if(TrimLoremLipsumText)
+            {
+                source = Regex.Replace(source, 
+                    @"Lorem ipsum dolor sit amet[,| |a-z|\.]*", 
+                    "Lorem ipsum dolor sit amet, consectetur adipiscing ...", 
+                    RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
             }
             ExampleSource = source;
         }
 
-        private static string RemoveExcludedExampleCode(string source)
+        private static string RemoveCsharpExcludedExampleCode(string source)
         {
             const string startExcludeMarker = "/*example_exclude*/";
             const string endExcludeMarker = "/*end_example_exclude*/";
@@ -66,7 +87,7 @@ namespace Egil.RazorComponents.Bootstrap.Documentation.Components
             return source;
         }
 
-        private static string RemoveExcludedExampleCode2(string source)
+        private static string RemoveRazorExcludedExampleCode(string source)
         {
             const string startExcludeMarker = "@*example_exclude*@";
             const string endExcludeMarker = "@*end_example_exclude*@";
@@ -96,7 +117,7 @@ namespace Egil.RazorComponents.Bootstrap.Documentation.Components
             if (!isConnected)
                 return Task.CompletedTask;
             else
-                return JsRuntime!.InvokeAsync<object>("bootstrapDotNetDocs.example.setOutputHtml", ExampleElement);
+                return JsRuntime!.InvokeAsync<object>("bootstrapDotNetDocs.example.setOutputHtml", ExampleElement, TrimLoremLipsumText);
         }
     }
 }

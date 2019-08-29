@@ -1,6 +1,10 @@
 ﻿@page "/docs/4.3/components/alerts"
 @using Egil.RazorComponents.Bootstrap.Documentation.Pages.Docs.v4_3.Components.Examples.Alerts
 
+@code{
+    string excludePattern = @" OnDismissed=""OnDismissed""";
+}
+
 <DocHead Title="Alerts" RelatedBootstrapDoc="4.3/components/alerts/">
     Provide contextual feedback messages for typical user actions with the handful of available and flexible alert messages.
 </DocHead>
@@ -26,8 +30,12 @@
 <Example File=@typeof(AlertsAdditionalContent) />
 
 <h3 id="dismissing">Dismissing</h3>
-<p>To make an alert dismissable by the users, you only need to set the property <code class="highlighter-rouge">Dismissable="true"</code> on the Alert component.</p>
+<p>To make an alert dismissable by the users, you only need to set the property <code class="highlighter-rouge">Dismissable="true"</code> on the Alert component. After the alert is dismissed, nothing is rendered, which is why the output in the example below changes to empty.</p>
 <p>You can see this in action with a live demo below:</p>
+
+<Example File=@(typeof(AlertDismissableBasic)) CustomExcludePattern="excludePattern" />
+
+<p>This example shows how to control the <code>Alert</code>'s state programmatically:</p>
 
 <Example File=@typeof(AlertDismissable) />
 

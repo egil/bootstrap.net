@@ -137,6 +137,17 @@ namespace Egil.RazorComponents.Bootstrap.Components.Html
             {
                 AddOverride(HtmlAttrs.ARIA_PRESSED, "true");
             }
+
+            // HACK for href="#" urls being redirected to href="/#".
+            if (AdditionalAttributes.TryGetValue("href", out string href) && href.StartsWith('#'))
+            {
+                var relativeUrl = UriHelper!.ToBaseRelativePath(UriHelper.GetBaseUri(), UriHelper.GetAbsoluteUri());
+                AddOverride("href", href.GenerateRelativeUrlWithHash(relativeUrl));
+            }
+            else
+            {
+                RemoveOverride("href");
+            }
         }
 
         protected override Task OnCompomnentAfterRenderAsync()

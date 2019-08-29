@@ -1,0 +1,63 @@
+﻿@*example_exclude*@
+@code {
+    bool firstRender = true;
+    [CascadingParameter] protected Example? ExampleContext { get; set; }
+    protected override void OnInitialized() { ExampleContext!.ExampleTriggersAfterRender = true; }
+    protected override Task OnAfterRenderAsync()
+    {
+        if (firstRender)
+        {
+            firstRender = false;
+            return ExampleContext!.ExampleOnAfterRenderAsync();
+        }
+        else
+        {
+            return Task.Delay(400).ContinueWith(_ =>
+            {
+                ExampleContext!.ExampleOnAfterRenderAsync();
+            });
+        }
+    }
+}
+@*end_example_exclude*@
+@code {
+    Collapse collapseExample;
+
+    bool ToggleExpanded { get; set; } = true;
+
+    void ToggleWithToggle()
+    {
+        collapseExample.Toggle();
+    }
+
+    void ToggleWithHideShow()
+    {
+        if (ToggleExpanded)
+            collapseExample.Hide();
+        else
+            collapseExample.Show();
+    }
+
+    void ToggleWithExpandedProp()
+    {
+        ToggleExpanded = !ToggleExpanded;
+    }
+}
+<p>
+    <button @onclick="ToggleWithToggle" aria-expanded=@ToggleExpanded.ToString().ToLower() aria-controls="collapseExample" class="btn btn-primary">
+        Custom toggle with Toggle() method
+    </button>
+    <button @onclick="ToggleWithHideShow" aria-expanded=@ToggleExpanded.ToString().ToLower() aria-controls="collapseExample" class="btn btn-primary">
+        Custom toggle with Hide() and Show() methods
+    </button>
+    <button @onclick="ToggleWithExpandedProp" aria-expanded=@ToggleExpanded.ToString().ToLower() aria-controls="collapseExample" class="btn btn-primary">
+        Custom toggle using Expanded parameter
+    </button>
+</p>
+<Collapse Id="collapseExample" @bind-Expanded="ToggleExpanded" @ref="collapseExample" @ref:suppressField>
+    <Card>
+        <Content>
+            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid.
+        </Content>
+    </Card>
+</Collapse>

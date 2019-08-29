@@ -27,7 +27,7 @@ namespace Egil.RazorComponents.Bootstrap.Base.PointerEvents
             _swipeRightAction = swipeRightAction;
             _swipeLeftAction = swipeLeftAction;
         }
-        
+
         internal void OnPointerDownHandler(UIPointerEventArgs e)
         {
             if (ShouldSkip(e)) return;
@@ -46,7 +46,6 @@ namespace Egil.RazorComponents.Bootstrap.Base.PointerEvents
 
             if (Math.Abs(diffX) < DeltaBeforeTriggering) return;
             if (diffX > 0)
-
                 _swipeLeftAction();
             else
                 _swipeRightAction();

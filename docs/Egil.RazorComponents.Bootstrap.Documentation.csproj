@@ -38,5 +38,4 @@
     <EmbeddedResource Include="Pages\**\Examples\**\*.razor"></EmbeddedResource>
   </ItemGroup>
 
-
 </Project>

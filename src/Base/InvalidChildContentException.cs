@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace Egil.RazorComponents.Bootstrap.Base
 {
     [Serializable]
-    internal class InvalidChildContentException : Exception
+    public class InvalidChildContentException : Exception
     {
         public InvalidChildContentException()
         {

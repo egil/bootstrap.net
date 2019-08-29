@@ -1,0 +1,27 @@
+﻿@*example_exclude*@
+@code {
+    bool firstRender = true;
+    [CascadingParameter] protected Example? ExampleContext { get; set; }
+    protected override void OnInitialized() { ExampleContext!.ExampleTriggersAfterRender = true; }
+    protected override Task OnAfterRenderAsync()
+    {
+        if (firstRender)
+        {
+            firstRender = false;
+            return ExampleContext!.ExampleOnAfterRenderAsync();
+        }
+        else
+        {
+            return Task.Delay(400).ContinueWith(_ =>
+            {
+                ExampleContext!.ExampleOnAfterRenderAsync();
+            });
+        }
+    }
+
+    void OnDismissed() { }
+}
+@*end_example_exclude*@
+<Alert Dismissable Color="warning" OnDismissed="OnDismissed">
+    <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+</Alert>

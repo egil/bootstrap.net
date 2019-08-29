@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Threading.Tasks;
 using Egil.RazorComponents.Bootstrap.Base;
 using Egil.RazorComponents.Bootstrap.Base.PointerEvents;
@@ -131,7 +132,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Carousels
         public Carousel()
         {
             DefaultCssClass = DefaultCarouselCssClass;
-            _changeItemTimer = new AnimationTimer(async () => await InvokeAsync(AutoplayNext));
+            _changeItemTimer = new AnimationTimer(() => InvokeAsync(AutoplayNext));
         }
 
         /// <summary>
@@ -190,7 +191,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Carousels
         /// <returns></returns>
         public Task GoTo(object index)
         {
-            return GoTo(ushort.Parse(index?.ToString() ?? string.Empty));
+            return GoTo(ushort.Parse(index?.ToString() ?? string.Empty, CultureInfo.InvariantCulture));
         }
 
         /// <summary>
@@ -299,15 +300,14 @@ namespace Egil.RazorComponents.Bootstrap.Components.Carousels
             // See https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/tabindex for details.
             builder.AddTabIndex(-1);
 
-            builder.AddEventListener(HtmlEvents.KEYDOWN, EventCallback.Factory.Create<UIKeyboardEventArgs>(this, async (UIKeyboardEventArgs e) =>
+            builder.AddEventListener(HtmlEvents.KEYDOWN, EventCallback.Factory.Create<UIKeyboardEventArgs>(this, NavigationHandler));
+
+            Task NavigationHandler(UIKeyboardEventArgs e) => e.Code switch
             {
-                switch (e.Code)
-                {
-                    case "ArrowLeft": await UserPrevious(); break;
-                    case "ArrowRight": await UserNext(); break;
-                    default: break;
-                }
-            }));
+                "ArrowLeft" => UserPrevious(),
+                "ArrowRight" => UserNext(),
+                _ => Task.CompletedTask
+            };
         }
 
         private void AddTouchNavigation(RenderTreeBuilder builder)
@@ -316,7 +316,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Carousels
 
             if (_swipeDetector is null)
             {
-                _swipeDetector = new HorizontalSwipePointerEventDetector(async () => await Previous(), async () => await Next());
+                _swipeDetector = new HorizontalSwipePointerEventDetector(() => Previous(), () => Next());
             }
 
             builder.AddEventListeners(_swipeDetector);
@@ -387,7 +387,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Carousels
         private void ControlsRenderFragment(RenderTreeBuilder builder)
         {
             if (!ShowControls || Count < 2) return;
-            
+
             builder.AddLine();
             builder.OpenElement(HtmlTags.A);
             builder.AddEventListener(HtmlEvents.CLICK, EventCallback.Factory.Create<UIMouseEventArgs>(this, UserPrevious));
@@ -418,9 +418,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Carousels
                 var itemIndex = i;
                 builder.OpenElement(HtmlTags.LI);
                 builder.AddEventListener(HtmlEvents.CLICK,
-                    EventCallback.Factory.Create<UIMouseEventArgs>(this,
-                        async () => await UserGoTo(itemIndex)
-                    )
+                    EventCallback.Factory.Create<UIMouseEventArgs>(this, () => UserGoTo(itemIndex))
                 );
                 if (ActiveIndex == itemIndex) builder.AddClassAttribute("active");
                 builder.CloseElement();
@@ -428,7 +426,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Carousels
             builder.CloseElement();
         }
 
-        private RenderFragment ImageRenderTemplate(string imageUrl, string? altText = null)
+        private static RenderFragment ImageRenderTemplate(string imageUrl, string? altText = null)
         {
             return builder =>
             {
@@ -483,14 +481,14 @@ namespace Egil.RazorComponents.Bootstrap.Components.Carousels
             // Step 1
             nextElm.Class = orderClassName;
             ActiveIndex = (ushort)newActiveIndex;
-            await ActiveIndexChanged.InvokeAsync(ActiveIndex);
+            await ActiveIndexChanged.InvokeAsync(ActiveIndex).ConfigureAwait(true);
             StateHasChanged();
-            await Task.Delay(1);
+            await Task.Delay(1).ConfigureAwait(true);
 
             // Step 2
             activeElm.UpdateCssClass(directionalClassName);
             nextElm.UpdateCssClass($"{directionalClassName} {orderClassName}");
-            await Task.Delay(600);
+            await Task.Delay(600).ConfigureAwait(true);
 
             // Step 3
             activeElm.Active = false;

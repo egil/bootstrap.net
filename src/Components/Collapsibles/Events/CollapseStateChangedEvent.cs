@@ -24,7 +24,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Collapsibles.Events
 
         public CollapseStateChangedEvent(Collapse source)
         {
-            if (source.Id is null) throw new ArgumentNullException("Source's ID cannot be null");
+            if (source.Id is null) throw new ArgumentException("Collapse source's ID cannot be null");
             Type = new CollapseStateChangedEventType(source.Id);
             Source = source;
         }

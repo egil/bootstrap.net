@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Reflection;
 using System.IO;
+using System.Threading;
 
 namespace Egil.RazorComponents.Bootstrap.Documentation.Services
 {
@@ -18,26 +19,35 @@ namespace Egil.RazorComponents.Bootstrap.Documentation.Services
             _sourceAssembly = sourceAssembly;
         }
 
-        public async Task<string> GetExampleAsync(string fullname)
+        public Task<string> GetExampleAsync(string fullname)
         {
             if (!_cache.ContainsKey(fullname))
             {
-                await FindExampleInAssembly(fullname);
+                return FindExampleInAssembly(fullname);
             }
-
-            return _cache[fullname];
+            else
+            {
+                return Task.FromResult(_cache[fullname]);
+            }
         }
 
-        private async Task FindExampleInAssembly(string fullname)
+        private Task<string> FindExampleInAssembly(string fullname)
         {
             var file = $"{fullname}.razor";
             using var stream = _sourceAssembly.GetManifestResourceStream(file);
-            
-            if(stream is null) throw new InvalidOperationException($"The file '{file}' is not embedded in the assembly.");
+
+            if (stream is null) throw new InvalidOperationException($"The file '{file}' is not embedded in the assembly.");
 
             using var reader = new StreamReader(stream);
-            var content = await reader.ReadToEndAsync();
-            _cache.Add(fullname, content);
+            return reader.ReadToEndAsync().ContinueWith(x =>
+            {                
+                var text = x.Result;
+                _cache.Add(fullname, text);                
+                return text;
+            }, 
+            default(CancellationToken), 
+            TaskContinuationOptions.OnlyOnRanToCompletion, 
+            TaskScheduler.Default);
         }
     }
 }

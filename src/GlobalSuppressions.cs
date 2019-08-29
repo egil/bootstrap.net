@@ -6,3 +6,7 @@
     Justification = "Part of the library's context adaptable logic",
     Scope = "namespaceanddescendants",
     Target = "Egil.RazorComponents.Bootstrap.Components")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters", 
+    Justification = "Locallization is on the TODO list", 
+    Scope = "namespaceanddescendants",
+    Target = "Egil.RazorComponents.Bootstrap")]

@@ -13,6 +13,7 @@ namespace Egil.RazorComponents.Bootstrap.Base.PointerEvents
 
         public static void AddEventListeners(this RenderTreeBuilder builder, HorizontalSwipePointerEventDetector eventHandler, [CallerLineNumber] int sequence = DEFAULT_SEQUENCE)
         {
+            if (builder is null) throw new ArgumentNullException(nameof(builder));
             if (eventHandler is null) return;
 
             builder.AddAttribute(sequence, HtmlEvents.POINTERDOWN, EventCallback.Factory.Create<UIPointerEventArgs>(eventHandler, eventHandler.OnPointerDownHandler));

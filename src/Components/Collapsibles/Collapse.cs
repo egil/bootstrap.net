@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Egil.RazorComponents.Bootstrap.Base;
-using Egil.RazorComponents.Bootstrap.Base.Context;
 using Egil.RazorComponents.Bootstrap.Base.CssClassValues;
 using Egil.RazorComponents.Bootstrap.Components.Collapsibles.Events;
 using Egil.RazorComponents.Bootstrap.Extensions;
@@ -29,6 +28,8 @@ namespace Egil.RazorComponents.Bootstrap.Components.Collapsibles
 
         [Parameter] public bool Expanded { get; set; }
 
+        [Parameter] public EventCallback<bool> ExpandedChanged { get; set; }
+
         [Parameter] public string? AriaLabelledBy { get; set; }
 
         public Collapse()
@@ -41,6 +42,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Collapsibles
         public void Toggle()
         {
             Expanded = !Expanded;
+            ExpandedChanged.InvokeAsync(Expanded);
             InvokeAsync(StateHasChanged);
         }
 
@@ -80,7 +82,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Collapsibles
             AddOverride(HtmlAttrs.ARIA_LABELLEDBY, AriaLabelledBy);
         }
 
-        protected override async Task OnCompomnentAfterRenderAsync()
+        protected override Task OnCompomnentAfterRenderAsync()
         {
             if (Expanded != Showing)
             {
@@ -89,14 +91,17 @@ namespace Egil.RazorComponents.Bootstrap.Components.Collapsibles
 
             if (Expanded && !Showing)
             {
-                await _domElement.Show(JSRuntime);
                 Showing = true;
+                return _domElement.Show(JSRuntime);
             }
-            else if (!Expanded && Showing)
+
+            if (!Expanded && Showing)
             {
-                await _domElement.Hide(JSRuntime);
                 Showing = false;
+                return _domElement.Hide(JSRuntime);
             }
+
+            return Task.CompletedTask;
         }
 
         protected override void OnCompomnentDispose()

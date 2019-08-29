@@ -1,0 +1,55 @@
+﻿@*example_exclude*@
+@code {
+    bool firstRender = true;
+    [CascadingParameter] protected Example? ExampleContext { get; set; }
+    protected override void OnInitialized() { ExampleContext!.ExampleTriggersAfterRender = true; }
+    protected override Task OnAfterRenderAsync()
+    {
+        if (firstRender)
+        {
+            firstRender = false;
+            return ExampleContext!.ExampleOnAfterRenderAsync();
+        }
+        else
+        {
+            return Task.Delay(400).ContinueWith(_ =>
+            {
+                ExampleContext!.ExampleOnAfterRenderAsync();
+            });
+        }
+    }
+}
+@*end_example_exclude*@
+@code {
+    public int? ExpandedIndex { get; set; } = 2;
+}
+<form class="form-inline mb-3">
+    <label class="mr-2" for="accordion-example-2">Change expanded card: </label>
+    <input @bind-value="ExpandedIndex" type="number" min="0" max="2" class="form-control" style="width: 100px;" id="accordion-example-2" />
+</form>
+<Accordion @bind-ExpandedIndex="ExpandedIndex">
+    <Card>
+        <Header>
+            <h3 Margin="bottom-0">Collapsible Group Item #1</h3>
+        </Header>
+        <Content>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus pellentesque tortor auctor, vulputate odio et, tempor sapien. Suspendisse imperdiet varius tellus eget accumsan. Etiam tristique ultrices condimentum. Morbi mollis interdum dapibus. Etiam pharetra a elit vitae porta. Quisque varius semper nulla, sed rutrum massa elementum et. Fusce sit amet libero facilisis, vehicula odio eu, scelerisque elit. Sed maximus auctor elit, sit amet iaculis est tristique sed. Integer et eleifend mi. Ut mattis urna sit amet velit blandit vulputate.
+        </Content>
+    </Card>
+    <Card>
+        <Header>
+            <h3 Margin="bottom-0">Collapsible Group Item #2</h3>
+        </Header>
+        <Content>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus pellentesque tortor auctor, vulputate odio et, tempor sapien. Suspendisse imperdiet varius tellus eget accumsan. Etiam tristique ultrices condimentum. Morbi mollis interdum dapibus. Etiam pharetra a elit vitae porta. Quisque varius semper nulla, sed rutrum massa elementum et. Fusce sit amet libero facilisis, vehicula odio eu, scelerisque elit. Sed maximus auctor elit, sit amet iaculis est tristique sed. Integer et eleifend mi. Ut mattis urna sit amet velit blandit vulputate.
+        </Content>
+    </Card>
+    <Card>
+        <Header>
+            <h3 Margin="bottom-0">Collapsible Group Item #3</h3>
+        </Header>
+        <Content>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus pellentesque tortor auctor, vulputate odio et, tempor sapien. Suspendisse imperdiet varius tellus eget accumsan. Etiam tristique ultrices condimentum. Morbi mollis interdum dapibus. Etiam pharetra a elit vitae porta. Quisque varius semper nulla, sed rutrum massa elementum et. Fusce sit amet libero facilisis, vehicula odio eu, scelerisque elit. Sed maximus auctor elit, sit amet iaculis est tristique sed. Integer et eleifend mi. Ut mattis urna sit amet velit blandit vulputate.
+        </Content>
+    </Card>
+</Accordion>

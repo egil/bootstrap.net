@@ -5,49 +5,76 @@ using System.Text;
 using System.Threading.Tasks;
 using Egil.RazorComponents.Bootstrap.Base;
 using Egil.RazorComponents.Bootstrap.Components.Cards;
+using Egil.RazorComponents.Bootstrap.Components.Collapsibles.Events;
 using Egil.RazorComponents.Bootstrap.Components.Html;
 using Egil.RazorComponents.Bootstrap.Extensions;
+using Egil.RazorComponents.Bootstrap.Services.EventBus;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.RenderTree;
 
 namespace Egil.RazorComponents.Bootstrap.Components.Collapsibles
 {
+
     public sealed class Accordion : ParentComponentBase, IChildTrackingParentComponent
     {
-        private readonly Dictionary<Card, AccordionCardState> _items = new Dictionary<Card, AccordionCardState>();
-        private readonly ISet<int> _expandedIndexes = new SortedSet<int>() { 0 };
+        private readonly List<AccordionItem> _items = new List<AccordionItem>();
+
+        private int? _expandedIndex = 0;
+        private HashSet<int>? _expandedIndexes;
 
         /// <summary>
-        /// Gets or sets the index numbers of the expanded <see cref="Card"/>'s in the
-        /// accordion. Specify a single or multiple numbers (zero based index) separated
-        /// by a comma or space.
+        /// Gets or sets the index number of the expanded <see cref="Card"/> in the accordion.
         /// </summary>
         [Parameter]
-        public string ExpandedIndex
+        public int? ExpandedIndex
         {
-            get => string.Join(',', _expandedIndexes);
+            get => _expandedIndex;
             set
             {
-                _expandedIndexes.Clear();
-                foreach (var item in value.SplitOnCommaOrSpace())
+                if (value.HasValue && value.Value < 0)
                 {
-                    if (int.TryParse(item, out var index))
-                    {
-                        _expandedIndexes.Add(index);
-                    }
-                    else
-                    {
-                        throw new ArgumentException("ExpandedIndex must be a list of integers, separated by a comma (,)");
-                    }
+                    throw new ArgumentException($"{nameof(ExpandedIndex)} must be a integer equal to or larger than zero (0)");
                 }
+                _expandedIndex = value;
             }
         }
+        [Parameter] public EventCallback<int?> ExpandedIndexChanged { get; set; }
+
 
         /// <summary>
         /// Gets or sets whether the accordion allows for multiple cards 
         /// to be visible/expanded at the same time.
         /// </summary>
         [Parameter] public bool MultiExpand { get; set; }
+
+        /// <summary>
+        /// Gets or sets the index numbers of the expanded <see cref="Card"/>s in the accordion.
+        /// </summary>
+        [Parameter]
+        public IReadOnlyCollection<int> ExpandedIndexes
+        {
+            get
+            {
+                if (_expandedIndexes is null)
+                    return Array.Empty<int>();
+                else
+                    return _expandedIndexes;
+            }
+            set
+            {
+                if (value is null) return;
+
+                _expandedIndexes = value.ToHashSet();
+
+                int removed = _expandedIndexes.RemoveWhere(x => x < 0);
+                if (removed > 0)
+                {
+                    throw new ArgumentException($"{nameof(ExpandedIndexes)} must only contain integers equal to or larger than zero (0)");
+                }
+            }
+        }
+
+        [Parameter] public EventCallback<IReadOnlyCollection<int>> ExpandedIndexesChanged { get; set; }
 
         /// <summary>
         /// Gets or sets whether the buttons in the headers of each <see cref="Card"/>
@@ -60,32 +87,53 @@ namespace Egil.RazorComponents.Bootstrap.Components.Collapsibles
             DefaultCssClass = "accordion";
         }
 
-        private void CardToggled(Card toggledCard)
+        private void CardToggled(AccordionItem toggledItem)
         {
-            if (MultiExpand)
-            {
-                var state = _items[toggledCard];
-                state.Toggle();
+            if (toggledItem.Collapse is null)
+                throw new InvalidOperationException($"BUG: {nameof(AccordionItem.Collapse)} not set to a value.");
 
-                if (state.Expanded)
-                    _expandedIndexes.Add(state.Index);
-                else
-                    _expandedIndexes.Remove(state.Index);
-            }
+            if (!MultiExpand)
+                ExclusiveCardToggle(toggledItem);
             else
-            {
-                foreach (var (card, state) in _items)
-                {
-                    if (card == toggledCard)
-                        state.Toggle();
-                    else
-                        state.Hide();
+                MultiCardToggle(toggledItem);
+        }
 
-                    if (state.Expanded)
-                        _expandedIndexes.Add(state.Index);
-                    else
-                        _expandedIndexes.Remove(state.Index);
-                }
+        private void MultiCardToggle(AccordionItem toggledItem)
+        {
+            var expand = !toggledItem.Collapse.Expanded;
+            var toggledItemIdx = _items.IndexOf(toggledItem);
+
+            if (expand)
+                _expandedIndexes?.Add(toggledItemIdx);
+            else
+                _expandedIndexes?.Remove(toggledItemIdx);
+
+            ExpandedIndexesChanged.InvokeAsync(ExpandedIndexes);
+        }
+
+        private void ExclusiveCardToggle(AccordionItem toggledItem)
+        {
+            if (!toggledItem.Collapse.Expanded)
+                ExpandedIndex = _items.IndexOf(toggledItem);
+            else
+                ExpandedIndex = null;
+
+            ExpandedIndexChanged.InvokeAsync(ExpandedIndex);
+        }
+
+        protected override void OnCompomnentInit()
+        {
+            if (MultiExpand && _expandedIndexes is null)
+            {
+                _expandedIndexes = new HashSet<int>() { 0 };
+            }
+        }
+
+        protected override void OnCompomnentParametersSet()
+        {
+            if (!MultiExpand && !(_expandedIndexes is null))
+            {
+                throw new ArgumentException($"Do not use {nameof(ExpandedIndexes)} when {nameof(MultiExpand)} is not set or false. Use {nameof(ExpandedIndex)} instead.");
             }
         }
 
@@ -101,11 +149,20 @@ namespace Egil.RazorComponents.Bootstrap.Components.Collapsibles
             }
         }
 
+        private bool ShouldCardBeExpanded(AccordionItem item)
+        {
+            return MultiExpand
+                ? ExpandedIndexes.Contains(_items.IndexOf(item))
+                : _items.IndexOf(item) == ExpandedIndex;
+        }
+
         private void ApplyCardHooks(Card card)
         {
             var cardId = $"card-{card.GetHashCode()}";
             var headerId = $"header-{cardId}";
             var collapseId = $"body-{cardId}";
+            var item = new AccordionItem() { Card = card };
+            _items.Add(item);
 
             card.CustomChildHooksInjector = (component) =>
             {
@@ -123,10 +180,9 @@ namespace Egil.RazorComponents.Bootstrap.Components.Collapsibles
 
                             builder.OpenComponent<Button>();
                             builder.AddAttribute(HtmlAttrs.ARIA_CONTROLS, collapseId);
-                            builder.AddAttribute(HtmlAttrs.ARIA_EXPANDED, _items[card].Expanded.ToLowerCaseString());
-                            builder.AddAttribute("AsLink", HeaderButtonAsLink);
-                            builder.AddEventListener(HtmlEvents.CLICK, EventCallback.Factory.Create<UIMouseEventArgs>(card, _ => CardToggled(card)));
-
+                            builder.AddAttribute(HtmlAttrs.ARIA_EXPANDED, ShouldCardBeExpanded(item).ToLowerCaseString());
+                            builder.AddAttribute(nameof(Button.AsLink), HeaderButtonAsLink);
+                            builder.AddEventListener(HtmlEvents.CLICK, EventCallback.Factory.Create<UIMouseEventArgs>(card, _ => CardToggled(item)));
                             builder.AddChildContentFragment(header.ChildContent);
                             builder.CloseComponent();
 
@@ -137,19 +193,20 @@ namespace Egil.RazorComponents.Bootstrap.Components.Collapsibles
                         content.CustomRenderFragment = (builder) =>
                         {
                             builder.OpenComponent<Collapse>();
-                            builder.AddChildContentFragment((RenderFragment)content.DefaultRenderFragment);
+                            builder.AddChildContentFragment(content.DefaultRenderFragment);
                             builder.CloseComponent();
                         };
                         break;
 
                     case Collapse collapse:
-                        var item = _items[card];
-
+                        item.Collapse = collapse;
                         collapse.Id = collapseId;
-                        collapse.AriaLabelledBy = headerId;
-                        collapse.Expanded = item.Expanded;
-
-                        _items[card].Collapse = collapse;
+                        collapse.Expanded = ShouldCardBeExpanded(item);
+                        collapse.AddOverride(HtmlAttrs.ARIA_LABELLEDBY, headerId);
+                        collapse.OnParametersSetHook = _ =>
+                        {
+                            collapse.Expanded = ShouldCardBeExpanded(item);
+                        };
                         break;
 
                     default: break;
@@ -159,25 +216,15 @@ namespace Egil.RazorComponents.Bootstrap.Components.Collapsibles
 
         void IChildTrackingParentComponent.AddChild(ComponentBase component)
         {
-            if (component is Card card)
-            {
-                _items[card] = new AccordionCardState(_items.Count) { Expanded = _expandedIndexes.Contains(_items.Count) };
-            }
-            else
-            {
+            if (!(component is Card))
                 throw new InvalidChildContentException($"Only {nameof(Card)} components are allowed inside an {nameof(Accordion)}.");
-            }
         }
 
         void IChildTrackingParentComponent.RemoveChild(ComponentBase component)
         {
             if (component is Card card)
             {
-                if (_items.TryGetValue(card, out var state))
-                {
-                    if (state.Expanded) CardToggled(card);
-                    _items.Remove(card);
-                }
+                _items.RemoveAll(x => x.Card == card);
             }
             else
             {

@@ -5,16 +5,16 @@
     protected override void OnInitialized() { ExampleContext!.ExampleTriggersAfterRender = true; }
     protected override void OnAfterRender()
     {
-        if(firstRender)
+        if (firstRender)
         {
-            #pragma warning disable BL0005 // Component parameter should not be set outside of its component.
+#pragma warning disable BL0005 // Component parameter should not be set outside of its component.
             alert!.OnDismissed = EventCallback.Factory.Create(this, () => ExampleContext!.ExampleOnAfterRenderAsync());
-            #pragma warning restore BL0005 // Component parameter should not be set outside of its component.
+#pragma warning restore BL0005 // Component parameter should not be set outside of its component.
         }
         firstRender = false;
     }
     protected override Task OnAfterRenderAsync() => ExampleContext!.ExampleOnAfterRenderAsync();
-    #nullable disable
+#nullable disable
     /*end_example_exclude*/
     Alert alert;
     void Toggle()
@@ -25,9 +25,9 @@
             alert.Dismiss();
     }
 }
-<div style="margin-bottom: 1rem;">
+<p>
     <Button Color="secondary" @onclick="Toggle">Toggle Alert</Button>
-</div>
+</p>
 <Alert Dismissable Color="warning" @ref="alert" @ref:suppressField>
     <strong>Holy guacamole!</strong> You should check in on some of those fields below.
 </Alert>

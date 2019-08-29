@@ -1,5 +1,6 @@
 ﻿namespace Egil.RazorComponents.Bootstrap.Base
 {
+    #pragma warning disable CA1707 // Identifiers should not contain underscores
     public static class HtmlTags
     {
         public const string A = "a";
@@ -41,7 +42,6 @@
         public const string SRC = "src";
         public const string TABINDEX = "tabindex";
         public const string TYPE = "type";
-        
     }
 
     public static class HtmlEvents

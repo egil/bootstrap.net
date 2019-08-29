@@ -1,0 +1,46 @@
+﻿@page  "/docs/4.3/components/collapse"
+@using Egil.RazorComponents.Bootstrap.Documentation.Pages.Docs.v4_3.Components.Examples.CollapseExamples
+
+@code{
+    string excludePattern = @" @bind-Expanded=""IsExpanded""";
+}
+
+<DocHead Title="Collapse" RelatedBootstrapDoc="4.3/components/collapse/">
+    Toggle the visibility of other components and content across your project.
+</DocHead>
+
+<h2 id="how-it-works">How it works</h2>
+
+<p>The <code>Collapse</code> component is used to show and hide content. Buttons or anchors components are used as triggers that are mapped to specific components you toggle. Collapsing an element will animate the <code class="highlighter-rouge">height</code> from its current value to <code class="highlighter-rouge">0</code>. Given how CSS handles animations, you cannot use <code class="highlighter-rouge">padding</code> on a <code class="highlighter-rouge">Collapse</code> component. Instead, use the class as an independent wrapping element.</p>
+
+<div class="bd-callout bd-callout-info">
+    <p>The animation effect of this component is dependent on the <code class="highlighter-rouge">prefers-reduced-motion</code> media query. See the <a href="/docs/4.3/getting-started/accessibility/#reduced-motion">reduced motion section of our accessibility documentation</a>.</p>
+</div>
+
+<h2 id="example">Example</h2>
+
+<p>There are a few ways to make a <code>Button</code> or anchor (<code>A</code>) component a toggle for a <code>Collapse</code> component. In this example, the <code>Collapse</code> component has an <code>Id</code> assigned to it (<code>Id="collapseExample"</code>, and the two toggles have their <code>ToggleFor</code> parameter set to the <code>Id</code> of the <code>Collapse</code> component (<code>ToggleFor="collapseExample"</code>. </p>
+<p>Click the buttons below to show and hide the card inside the collapse component:</p>
+
+<Example File=@typeof(SingleTarget) CustomExcludePattern=@excludePattern />
+
+<h3 id="multiple-targets">Multiple targets</h3>
+<p><code>Button</code> or anchor (<code>A</code>) component can be a toggle for multiple <code>Collapse</code> component at the same time. Just add the ID's of each collapse component to the ToggleFor parameter, in a space or comma separated list (<code>ToggleFor="collapseExample1, collapseExample2"</code>).</p>
+
+<Example File=@typeof(MultipleTargets) CustomExcludePattern=@excludePattern />
+
+<Callout>
+    <h3>Accessibility</h3>
+    <p>The <code>Collapse</code> component, along with the <code>Button</code> and <code>A</code> component, makes sure to automatically set the correct <code>aria-*</code> attributes in the rendered HTML. Inspect the rendered HTML code in the examples above to see this in action. Note how the various attributes are set and change depending on whether the Collapse component is expanded or not.</p>
+    <p>If you have a toggler that targets multiple collapse components, then its <code>aria-expanded</code> attribute will be set based on the latests changed of the targeted collapse components.</p>
+    <p>Note that Bootstrap.NET’s current implementation does not cover the various keyboard interactions described in the <a href="https://www.w3.org/TR/wai-aria-practices-1.1/#accordion">WAI-ARIA Authoring Practices 1.1 accordion pattern</a> - you will need to include these yourself with custom code.</p>
+</Callout>
+
+<h3 id="programmatic-toggling">Programmatic toggling</h3>
+<p>You can also toggle a <code>Collapse</code> component manually via either the <code>Expanded/ExpandedChanged</code> parameter, or one of the <code>Toggle()</code>, <code>Show()</code>, or <code>Hide()</code> methods.</p>
+<Example File=@typeof(ManualToggle) />
+
+<Callout Type="warning"><p>Remember to manually set the expected <code>aria-*</code> attributes on any visible toggles you have on screen, when manually controlling a Collapse component. In the example above, this is done on the three buttons.</p></Callout>
+
+<h2 id="accordions">Accordions</h2>
+<p>It is possible to use multiple Collapse component to create an accordion manually. The recommended approach is however to use the built-in <a href="/docs/4.3/components/accordion" title="Link to documentation on the built-in Accordion component"><code>Accordion</code> component</a>.</p>

@@ -1,0 +1,64 @@
+﻿@*example_exclude*@
+@code {
+    [CascadingParameter] protected Example? ExampleContext { get; set; }
+    protected override void OnInitialized() { ExampleContext!.ExampleTriggersAfterRender = true; }
+    protected override Task OnAfterRenderAsync() => ExampleContext!.ExampleOnAfterRenderAsync();
+    private bool _expanded1 = false;
+    public bool IsExpanded1
+    {
+        get => _expanded1;
+        set
+        {
+            _expanded1 = value;
+            Task.Delay(400).ContinueWith(_ =>
+            {
+                ExampleContext!.ExampleOnAfterRenderAsync();
+            });
+        }
+    }
+    private bool _expanded2 = false;
+    public bool IsExpanded2
+    {
+        get => _expanded2;
+        set
+        {
+            _expanded2 = value;
+            Task.Delay(400).ContinueWith(_ =>
+            {
+                ExampleContext!.ExampleOnAfterRenderAsync();
+            });
+        }
+    }
+}
+@*end_example_exclude*@
+<p>
+    <A ToggleFor="collapseExample1" AsButton Color="primary" class="text-white">
+        Toggle first collapse component
+    </A>
+    <Button ToggleFor="collapseExample2" Color="primary">
+        Toggle second collapse component
+    </Button>
+    <Button ToggleFor="collapseExample1, collapseExample2" Color="secondary">
+        Toggle both collapse components
+    </Button>
+</p>
+<Row>
+    <Column>
+        <Collapse Id="collapseExample1" @bind-Expanded="IsExpanded1">
+            <Card>
+                <Content>
+                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
+                </Content>
+            </Card>
+        </Collapse>
+    </Column>
+    <Column>
+        <Collapse Id="collapseExample2" @bind-Expanded="IsExpanded2">
+            <Card>
+                <Content>
+                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
+                </Content>
+            </Card>
+        </Collapse>
+    </Column>
+</Row>

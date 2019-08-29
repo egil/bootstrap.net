@@ -1,0 +1,35 @@
+﻿@*example_exclude*@
+@code {
+    [CascadingParameter] protected Example? ExampleContext { get; set; }
+    protected override void OnInitialized() { ExampleContext!.ExampleTriggersAfterRender = true; }
+    protected override Task OnAfterRenderAsync() => ExampleContext!.ExampleOnAfterRenderAsync();
+    private bool _expanded = false;
+    public bool IsExpanded
+    {
+        get => _expanded;
+        set
+        {
+            _expanded = value;
+            Task.Delay(400).ContinueWith(_ =>
+            {
+                ExampleContext!.ExampleOnAfterRenderAsync();
+            });
+        }
+    }
+}
+@*end_example_exclude*@
+<p>
+    <A ToggleFor="collapseExample" AsButton Color="primary" class="text-white">
+        Link
+    </A>
+    <Button ToggleFor="collapseExample" Color="primary">
+        Button
+    </Button>
+</p>
+<Collapse Id="collapseExample" @bind-Expanded="IsExpanded">
+    <Card>
+        <Content>
+            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
+        </Content>
+    </Card>
+</Collapse>

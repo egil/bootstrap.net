@@ -3,8 +3,11 @@
 const COLLAPSE = "collapse";
 const COLLAPSING = "collapsing";
 const SHOW = "show";
+const collapseStatus = new WeakMap();
 
 export function show(elm) {
+    collapseStatus.set(elm, SHOW);
+
     const dimension = "height";
     let animationTime = 0;
 
@@ -17,17 +20,22 @@ export function show(elm) {
     elm.style[dimension] = elm["scrollHeight"] + "px";
 
     setTimeout(() => {
+        if (collapseStatus.get(elm) !== SHOW) return;
+        collapseStatus.delete(elm);
+
         elm.classList.remove(COLLAPSING);
         elm.classList.add(COLLAPSE);
         elm.classList.add(SHOW);
-
         elm.style[dimension] = '';
     }, animationTime);
 
+    
     return animationTime;
 };
 
 export function hide(elm) {
+    collapseStatus.set(elm, COLLAPSE);
+
     const dimension = "height";
     let animationTime = 0;
 
@@ -42,10 +50,13 @@ export function hide(elm) {
 
     animationTime = util.getTransitionDurationFromElement(elm);
 
-    setTimeout(() => {
+    setTimeout(() => {        
+        if (collapseStatus.get(elm) !== COLLAPSE) return;
+        collapseStatus.delete(elm);
+
         elm.classList.remove(COLLAPSING);
         elm.classList.add(COLLAPSE);
     }, animationTime);
-
+    
     return animationTime;
 };

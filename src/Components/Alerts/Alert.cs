@@ -67,26 +67,26 @@ namespace Egil.RazorComponents.Bootstrap.Components.Alerts
 
         public async void Dismiss()
         {
-            var evt = await NotifyParent();
+            var evt = await NotifyParent().ConfigureAwait(true);
             if (evt.Cancel) { return; }
 
-            await DismissAlert();
+            await DismissAlert().ConfigureAwait(true);
 
             DisableAfter();
 
             async Task<UIDismissingEventArgs> NotifyParent()
             {
                 var evt = new UIDismissingEventArgs();
-                await OnDismissing.InvokeAsync(evt);
+                await OnDismissing.InvokeAsync(evt).ConfigureAwait(true);
                 return evt;
             }
 
             async Task DismissAlert()
             {
                 State = AlertState.Dismissing;
-                await DismissAnimation.Run();
+                await DismissAnimation.Run().ConfigureAwait(true);
                 State = AlertState.Dismissed;
-                await OnDismissed.InvokeAsync(EventCallback.Empty);
+                await OnDismissed.InvokeAsync(EventCallback.Empty).ConfigureAwait(true);
             }
 
             void DisableAfter()

@@ -1,0 +1,192 @@
+﻿<Fact DisplayName="Accordion has accordion class added">
+    <TestSetup><Accordion /></TestSetup>
+    <ExpectedHtml><div class="accordion"></div></ExpectedHtml>
+</Fact>
+
+<Fact DisplayName="Accordion will turn card>header>content into a clickable item that toggles the card in the accordion">
+    <TestSetup>
+        <Accordion>
+            <Card>
+                <Header>header</Header>
+                <Content>content</Content>
+            </Card>
+        </Accordion>
+    </TestSetup>
+    <ExpectedHtml>
+        <div class="accordion">
+            <div class="card">
+                <div class="card-header" id="RegEx:^header-card" role="heading">
+                    <button aria-expanded="true" aria-controls="RegEx:^body-card" type="button" class="btn">header</button>
+                </div>
+                <div class="collapse show" id="RegEx:^body-card" aria-labelledby="RegEx:^header-card">
+                    <div class="card-body">content</div>
+                </div>
+            </div>
+        </div>
+    </ExpectedHtml>
+</Fact>
+
+<Fact DisplayName="First card in accordion is expanded by default">
+    <TestSetup>
+        <Accordion>
+            <Card><Header>header1</Header><Content>content1</Content></Card>
+            <Card><Header>header2</Header><Content>content2</Content></Card>
+        </Accordion>
+    </TestSetup>
+    <ExpectedHtml>
+        <div class="accordion">
+            <div class="card">
+                <div class="card-header" id="RegEx:^header-card" role="heading">
+                    <button aria-expanded="true" aria-controls="RegEx:^body-card" type="button" class="btn">header1</button>
+                </div>
+                <div class="collapse show" id="RegEx:^body-card" aria-labelledby="RegEx:^header-card">
+                    <div class="card-body">content1</div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header" id="RegEx:^header-card" role="heading">
+                    <button aria-expanded="false" aria-controls="RegEx:^body-card" type="button" class="btn">header2</button>
+                </div>
+                <div class="collapse" id="RegEx:^body-card" aria-labelledby="RegEx:^header-card">
+                    <div class="card-body">content2</div>
+                </div>
+            </div>
+        </div>
+    </ExpectedHtml>
+</Fact>
+
+<Fact DisplayName="Setting ExpandedIndex to empty/null renders accordion with no expanded card on init">
+    <TestSetup>
+        <Accordion ExpandedIndex="null">
+            <Card><Header>h1</Header><Content>c1</Content></Card>
+        </Accordion>
+    </TestSetup>
+    <ExpectedHtml>
+        <div class="accordion">
+            <div class="card">
+                <div class="card-header" id="RegEx:^header-card" role="heading">
+                    <button aria-expanded="false" aria-controls="RegEx:^body-card" type="button" class="btn">h1</button>
+                </div>
+                <div class="collapse" id="RegEx:^body-card" aria-labelledby="RegEx:^header-card">
+                    <div class="card-body">c1</div>
+                </div>
+            </div>
+        </div>
+    </ExpectedHtml>
+</Fact>
+
+<Fact DisplayName="Setting ExpandedIndex to N rendered accorion with Nth card expanded on init">
+    <TestSetup>
+        <Accordion ExpandedIndex="1">
+            <Card><Header>h0</Header><Content>c0</Content></Card>
+            <Card><Header>h1</Header><Content>c1</Content></Card>
+        </Accordion>
+    </TestSetup>
+    <ExpectedHtml>
+        <div class="accordion">
+            <div class="card">
+                <div class="card-header" id="RegEx:^header-card" role="heading">
+                    <button aria-expanded="false" aria-controls="RegEx:^body-card" type="button" class="btn">h0</button>
+                </div>
+                <div class="collapse" id="RegEx:^body-card" aria-labelledby="RegEx:^header-card">
+                    <div class="card-body">c0</div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header" id="RegEx:^header-card" role="heading">
+                    <button aria-expanded="true" aria-controls="RegEx:^body-card" type="button" class="btn">h1</button>
+                </div>
+                <div class="collapse show" id="RegEx:^body-card" aria-labelledby="RegEx:^header-card">
+                    <div class="card-body">c1</div>
+                </div>
+            </div>
+        </div>
+    </ExpectedHtml>
+</Fact>
+
+<Fact DisplayName="Setting MultiExpand='true' without setting ExpandedIndexes has first card expanded on init">
+    <TestSetup>
+        <Accordion MultiExpand="true">
+            <Card><Header>header1</Header><Content>content1</Content></Card>
+            <Card><Header>header2</Header><Content>content2</Content></Card>
+        </Accordion>
+    </TestSetup>
+    <ExpectedHtml>
+        <div class="accordion">
+            <div class="card">
+                <div class="card-header" id="RegEx:^header-card" role="heading">
+                    <button aria-expanded="true" aria-controls="RegEx:^body-card" type="button" class="btn">header1</button>
+                </div>
+                <div class="collapse show" id="RegEx:^body-card" aria-labelledby="RegEx:^header-card">
+                    <div class="card-body">content1</div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header" id="RegEx:^header-card" role="heading">
+                    <button aria-expanded="false" aria-controls="RegEx:^body-card" type="button" class="btn">header2</button>
+                </div>
+                <div class="collapse" id="RegEx:^body-card" aria-labelledby="RegEx:^header-card">
+                    <div class="card-body">content2</div>
+                </div>
+            </div>
+        </div>
+    </ExpectedHtml>
+</Fact>
+
+<Fact DisplayName="Setting MultiExpand='true' and settting ExpandedIndexes to empty renderes all Cards as closed on init">
+    <TestSetup>
+        <Accordion ExpandedIndexes=@(Array.Empty<int>()) MultiExpand="true">
+            <Card><Header>h0</Header><Content>c0</Content></Card>
+            <Card><Header>h1</Header><Content>c1</Content></Card>
+        </Accordion>
+    </TestSetup>
+    <ExpectedHtml>
+        <div class="accordion">
+            <div class="card">
+                <div class="card-header" id="RegEx:^header-card" role="heading">
+                    <button aria-expanded="false" aria-controls="RegEx:^body-card" type="button" class="btn">h0</button>
+                </div>
+                <div class="collapse" id="RegEx:^body-card" aria-labelledby="RegEx:^header-card">
+                    <div class="card-body">c0</div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header" id="RegEx:^header-card" role="heading">
+                    <button aria-expanded="false" aria-controls="RegEx:^body-card" type="button" class="btn">h1</button>
+                </div>
+                <div class="collapse" id="RegEx:^body-card" aria-labelledby="RegEx:^header-card">
+                    <div class="card-body">c1</div>
+                </div>
+            </div>
+        </div>
+    </ExpectedHtml>
+</Fact>
+
+<Fact DisplayName="Setting MultiExpand='true' allows for multiple card to be expanded at the same time (toggled individually)">
+    <TestSetup>
+        <Accordion ExpandedIndexes=@(new []{0, 1}) MultiExpand="true">
+            <Card><Header>h0</Header><Content>c0</Content></Card>
+            <Card><Header>h1</Header><Content>c1</Content></Card>
+        </Accordion>
+    </TestSetup>
+    <ExpectedHtml>
+        <div class="accordion">
+            <div class="card">
+                <div class="card-header" id="RegEx:^header-card" role="heading">
+                    <button aria-expanded="true" aria-controls="RegEx:^body-card" type="button" class="btn">h0</button>
+                </div>
+                <div class="collapse show" id="RegEx:^body-card" aria-labelledby="RegEx:^header-card">
+                    <div class="card-body">c0</div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header" id="RegEx:^header-card" role="heading">
+                    <button aria-expanded="true" aria-controls="RegEx:^body-card" type="button" class="btn">h1</button>
+                </div>
+                <div class="collapse show" id="RegEx:^body-card" aria-labelledby="RegEx:^header-card">
+                    <div class="card-body">c1</div>
+                </div>
+            </div>
+        </div>
+    </ExpectedHtml>
+</Fact>

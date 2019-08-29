@@ -11,7 +11,11 @@ namespace Egil.RazorComponents.Bootstrap.Options
 
         string Value { get; }
 
-        public string CombineWith(IOption otherOption) => string.Concat(Value, OptionSeparator, otherOption.Value);
+        public string CombineWith(IOption otherOption)
+        {
+            if(otherOption is null) throw new ArgumentNullException(nameof(otherOption));
+            return string.Concat(Value, OptionSeparator, otherOption.Value);
+        }
     }
 
 

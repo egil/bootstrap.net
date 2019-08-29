@@ -6,6 +6,7 @@ using Egil.RazorComponents.Bootstrap.Options.SimpleOptions;
 namespace Egil.RazorComponents.Bootstrap.Options
 {
 #pragma warning disable IDE1006 // Naming Styles
+#pragma warning disable CA1034 // Nested types should not be visible
     public static class Factory
     {
         public static readonly ContainerTypeParameter Fluid = ContainerTypeParameter.Fluid;

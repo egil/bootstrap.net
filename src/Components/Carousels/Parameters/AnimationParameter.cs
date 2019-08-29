@@ -3,6 +3,7 @@ using Egil.RazorComponents.Bootstrap.Base.CssClassValues;
 
 namespace Egil.RazorComponents.Bootstrap.Components.Carousels.Parameters
 {
+    #pragma warning disable CA1710 // Identifiers should have correct suffix
     public class AnimationParameter : CssClassProviderBase
     {
         private readonly string? _cssClassValue;

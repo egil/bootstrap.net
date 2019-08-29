@@ -25,7 +25,7 @@ namespace Egil.RazorComponents.Bootstrap.Components.Breadcrumbs
         protected override void OnCompomnentParametersSet()
         {
             if (Separator is null) return;
-            var isSeparatorDataUrl = Separator.StartsWith("url(data:");
+            var isSeparatorDataUrl = Separator.StartsWith("url(data:", StringComparison.OrdinalIgnoreCase);
             CssScope = new CssClassValueProvider("breadcrumb-" + Guid.NewGuid().ToString());
 
             // TODO BUG: The new separator is not visible at first render - flashes 

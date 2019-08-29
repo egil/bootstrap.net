@@ -31,6 +31,8 @@ namespace Egil.RazorComponents.Bootstrap.Components
 
         protected internal IReadOnlyDictionary<string, object> OverriddenAttributes => _overriddenAttributes ?? EmptyDictionary;
 
+        [Inject] private IComponentContext? ComponentContext { get; set; }
+
         [Parameter(CaptureUnmatchedValues = true)]
         public IReadOnlyDictionary<string, object> AdditionalAttributes { get; set; } = EmptyDictionary;
 
@@ -138,6 +140,11 @@ namespace Egil.RazorComponents.Bootstrap.Components
 
         protected sealed override void OnAfterRender()
         {
+            if (!ComponentContext!.IsConnected) // BANG: injected via setters at this point
+            {
+                return;
+            }
+
             base.OnAfterRender();
             if (_isFirstRender)
             {
@@ -150,6 +157,11 @@ namespace Egil.RazorComponents.Bootstrap.Components
 
         protected sealed override async Task OnAfterRenderAsync()
         {
+            if (!ComponentContext!.IsConnected) // BANG: injected via setters at this point
+            {
+                return;
+            }
+
             await base.OnAfterRenderAsync();
 
             if (_isFirstRender)
@@ -160,19 +172,31 @@ namespace Egil.RazorComponents.Bootstrap.Components
             }
 
             await OnCompomnentAfterRenderAsync();
-            await OnAfterRenderHookAsync(this);
+            await OnAfterRenderHookAsync(this).ConfigureAwait(false);
+        }
+        
+        #region IDisposable Support
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    OnCompomnentDispose();
+                    OnDisposedHook(this);
+                }
+                
+                _disposed = true;
+            }
         }
 
         public void Dispose()
         {
-            if (!_disposed)
-            {
-                _disposed = true;
-
-                OnCompomnentDispose();
-                OnDisposedHook(this);
-            }
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
+        #endregion
+
         #endregion
 
         #region Sub component life-cycle methods
@@ -248,6 +272,7 @@ namespace Egil.RazorComponents.Bootstrap.Components
         void IComponent.AddOverride<TUIEvent>(string key, EventCallback<TUIEvent> eventCallback) => AddOverride(key, eventCallback);
         void IComponent.AddOverride(string key, object value) => AddOverride(key, value);
         void IComponent.RemoveOverride(string key) => RemoveOverride(key);
+
         #endregion
     }
 }
